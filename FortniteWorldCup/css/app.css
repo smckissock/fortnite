@@ -1,3 +1,7 @@
+:root {
+    --left-width: 300px;
+}
+
 body {
     font-family: Sans-Serif;
     font: "rubic";
@@ -5,7 +9,43 @@ body {
 }
 
 
-.container {
-    /*background-color: yellow;*/
+.grid {
+    display: grid;
+    grid-template-areas: 
+        "title              title"
+        "subtitle           subtitle"
+        "region             player"
+        "week               player";
+    grid-template-columns: var(--left-width) auto;
+    grid-template-rows: 3rem 1.8rem 17rem auto; 
+    grid-gap: .0em;
+    margin: 0px;
+    height: 100vh;
+    width: calc(100vw - 1.1rem); 
 }
-  
+
+.title {
+    grid-area: title;
+    font-weight: 800;
+    font-size: 2.2em;
+}
+
+.subtitle {
+    grid-area: title;
+    font-weight: 700;
+    font-size: 1.2em;
+}
+
+.week {
+    grid-area: week;
+    font-weight: 500;
+}
+
+.region {
+    grid-area: region;
+}
+
+.player {
+    grid-area: player;
+}
+
