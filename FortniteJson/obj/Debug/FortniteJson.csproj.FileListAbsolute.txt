@@ -1,0 +1,10 @@
+C:\Fortnite\FortniteJson\bin\Debug\FortniteJson.exe.config
+C:\Fortnite\FortniteJson\bin\Debug\FortniteJson.exe
+C:\Fortnite\FortniteJson\bin\Debug\FortniteJson.pdb
+C:\Fortnite\FortniteJson\bin\Debug\Newtonsoft.Json.dll
+C:\Fortnite\FortniteJson\bin\Debug\Newtonsoft.Json.xml
+C:\Fortnite\FortniteJson\obj\Debug\FortniteJson.csprojResolveAssemblyReference.cache
+C:\Fortnite\FortniteJson\obj\Debug\FortniteJson.csproj.CoreCompileInputs.cache
+C:\Fortnite\FortniteJson\obj\Debug\FortniteJson.csproj.CopyComplete
+C:\Fortnite\FortniteJson\obj\Debug\FortniteJson.exe
+C:\Fortnite\FortniteJson\obj\Debug\FortniteJson.pdb
