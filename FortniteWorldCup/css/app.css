@@ -2,8 +2,13 @@
     --left-width: 300px;
 }
 
+@font-face {
+    font-family: 'burbank';
+    src: url('burbank.ttf') format('truetype');
+  }
+
 body {
-    font-family: Sans-Serif;
+    font-family: burbank;
     font: "rubic";
     /* color: #404040; */
 }
@@ -12,26 +17,41 @@ body {
 .grid {
     display: grid;
     grid-template-areas: 
-        "title              title"
-        "subtitle           subtitle"
-        "region             player"
-        "week               player";
-    grid-template-columns: var(--left-width) auto;
-    grid-template-rows: 3rem 1.8rem 17rem auto; 
+        "left-margin    title              title"
+        "left-margin    subtitle           search"
+        "left-margin    region             player"
+        "left-margin    week               player";
+    grid-template-columns: 2rem var(--left-width) auto;
+    grid-template-rows: 5rem 2.2rem 17rem auto; 
     grid-gap: .0em;
     margin: 0px;
     height: 100vh;
     width: calc(100vw - 1.1rem); 
 }
 
+.gradient {
+    background-image:
+      radial-gradient(
+        circle at top right,
+        yellow,
+        #f06d06
+      );
+  }
+
 .title {
     grid-area: title;
     font-weight: 800;
-    font-size: 2.2em;
+    font-size: 3.4em;
 }
 
 .subtitle {
-    grid-area: title;
+    grid-area: subtitle;
+    font-weight: 700;
+    font-size: 1.2em;
+}
+
+.search {
+    grid-area: search;
     font-weight: 700;
     font-size: 1.2em;
 }

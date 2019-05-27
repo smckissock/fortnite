@@ -11,9 +11,9 @@ d3.json('data/data.json').then(function (data)  {
 });
 
 function draw(facts) {
-    new RowChart(facts, "player", 300, 100);
+    new RowChart(facts, "player", 300, 25);
     new RowChart(facts, "region", 300, 10);
-    new RowChart(facts, "soloOrDuo", 300, 10);
+    //new RowChart(facts, "soloOrDuo", 300, 10);
     new RowChart(facts, "week", 300, 10);
 
     // draw all dc charts. w/o this nothing happens!  

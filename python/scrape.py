@@ -29,10 +29,14 @@ def save_places (json, week, region, solo_or_duo):
                 name1 = display_names[0]
 
             # Insert first player (or only if it is solo)    
-            cursor.execute("INSERT INTO Place VALUES (?, ?, ?, ?, ?, ?, ?)", \
-                week, solo_or_duo, name1, region, rank, payout, points)
-            conn.commit()            
+            #cursor.execute("INSERT INTO Place VALUES (?, ?, ?, ?, ?, ?, ?)", \
+            #    week, solo_or_duo, name1, region, rank, payout, points)
+            #conn.commit()            
             
+            
+            if  name1 == "Nittle GG":
+                print("Posick") 
+
             # duo
             if solo_or_duo == 'Duo':  
                 name2 = ''
@@ -40,9 +44,12 @@ def save_places (json, week, region, solo_or_duo):
                     if display_names[1] is not None:
                         name2 = display_names[1] 
 
-                cursor.execute("INSERT INTO Place VALUES (?, ?, ?, ?, ?, ?, ?)", \
-                    week, solo_or_duo, name2, region, rank, payout, points)
-                conn.commit()
+                if  name2 == "Posick GG":
+                    print("Posick") 
+
+                #cursor.execute("INSERT INTO Place VALUES (?, ?, ?, ?, ?, ?, ?)", \
+                #    week, solo_or_duo, name2, region, rank, payout, points)
+                #conn.commit()
     except Exception as e:
         print('Error inserting Place PLAYER1=' + name1 + ' PLAYER2=' + name2 + " " + str(e)) 
         
