@@ -1,6 +1,25 @@
 import requests
 
-from db import cmd, cursor, conn
+from db import cmd, cursor, conn, max_id
+
+
+def insert_placement(week, solo_or_duo, name, region, rank, payout, points):
+    cursor.execute("INSERT INTO Placement VALUES (?, ?, ?, ?, ?, ?, ?)", \
+        week, solo_or_duo, name, region, rank, payout, points)
+    conn.commit()
+
+
+def insert_stats(point_breakdown):
+    placement_id = max_id('Placement')
+    
+    for k, v in point_breakdown.items():
+        stat_index = k
+        points_earned = v.get('pointsEarned')
+        times_achieved =  v.get('timesAchieved')
+        
+        cursor.execute("INSERT INTO Stat VALUES (?, ?, ?, ?)", \
+            placement_id, stat_index, points_earned, times_achieved)
+        conn.commit()
 
 
 def save_places (json, week, region, solo_or_duo):
@@ -28,15 +47,10 @@ def save_places (json, week, region, solo_or_duo):
             if display_names[0] is not None:
                 name1 = display_names[0]
 
-            # Insert first player (or only if it is solo)    
-            #cursor.execute("INSERT INTO Place VALUES (?, ?, ?, ?, ?, ?, ?)", \
-            #    week, solo_or_duo, name1, region, rank, payout, points)
-            #conn.commit()            
+            # Insert first player (or only player if it is solo)    
+            insert_placement(week, solo_or_duo, name1, region, rank, payout, points)
+            insert_stats(place.get("pointBreakdown"))
             
-            
-            if  name1 == "Nittle GG":
-                print("Posick") 
-
             # duo
             if solo_or_duo == 'Duo':  
                 name2 = ''
@@ -44,19 +58,19 @@ def save_places (json, week, region, solo_or_duo):
                     if display_names[1] is not None:
                         name2 = display_names[1] 
 
-                if  name2 == "Posick GG":
-                    print("Posick") 
-
-                #cursor.execute("INSERT INTO Place VALUES (?, ?, ?, ?, ?, ?, ?)", \
-                #    week, solo_or_duo, name2, region, rank, payout, points)
-                #conn.commit()
+                insert_placement(week, solo_or_duo, name2, region, rank, payout, points)
+                insert_stats(place.get("pointBreakdown"))
+            
     except Exception as e:
         print('Error inserting Place PLAYER1=' + name1 + ' PLAYER2=' + name2 + " " + str(e)) 
         
 
+#regions = ["NAE"]
 regions = ["NAE", "NAW", "EU", "OCE", "ASIA", "BR"]
-solo_weeks = ["Week1", "Week3", "Week5"]
+solo_weeks = ["Week1", "Week3", "Week5", "Week7"]
+#duo_weeks = ["Week2"]
 duo_weeks = ["Week2", "Week4", "Week6"]
+
 event = "Event2"
 for region in regions:
 
