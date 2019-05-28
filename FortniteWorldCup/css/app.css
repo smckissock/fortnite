@@ -20,10 +20,9 @@ body {
         "left-margin    title              title"
         "left-margin    subtitle           search"
         "left-margin    region             player"
-        "left-margin    week               player"
-        "left-margin    week              table";
+        "left-margin    week               player";
     grid-template-columns: 2rem var(--left-width) auto;
-    grid-template-rows: 5rem 2.2rem 17rem auto auto; 
+    grid-template-rows: 5rem 2.2rem 17rem auto; 
     grid-gap: .0em;
     margin: 0px;
     height: 100vh;

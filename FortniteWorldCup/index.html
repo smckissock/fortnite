@@ -9,7 +9,6 @@
     <script type="text/javascript" src="js/d3.js"></script>
     <script type="text/javascript" src="js/crossfilter.js"></script>
     <script type="text/javascript" src="js/dc.js"></script>
-    <script type="text/javascript" src="js/tableChart.js"></script>
     <script type="text/javascript" src="js/app.js"></script>
 </head>
 <body>
@@ -28,7 +27,19 @@
         <input id="search-input" class="search-input" placeholder=" Player">
     </div>
 
-    <div class="player" id="dc-chart-player">
+    <!-- <div class="player" id="dc-chart-player"> -->
+    <div class="player">
+        <table id="dc-chart-player">
+            <thead>
+                <tr>
+                    <th>Player</th>
+                    <th>Payout</th>
+                    <th>Score</th>
+                    <th>Wins</th>
+                    <th>Elims</th>
+                </tr>
+            </thead>
+        </table>
     </div>
     
     <div class="region" id="dc-chart-region">
@@ -37,10 +48,6 @@
 
     <div class="week" id="dc-chart-week">
     Week
-    </div>
-
-    <div class="table" id="dc-chart-table">
-        HI
     </div>
 </div>
 

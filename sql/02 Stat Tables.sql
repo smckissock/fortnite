@@ -70,7 +70,7 @@ AS (
 	FROM Stat
 	GROUP BY PlacementID
 ),
-GrandRoyale (PlacementID, Points)
+Wins (PlacementID, Points)
 AS (
 	SELECT PlacementID, SUM(PointsEarned)
 	FROM Stat
@@ -95,13 +95,13 @@ SELECT
 	p.points,
 	CASE WHEN SoloOrDuo = 'Solo' THEN Payout ELSE Payout / 2 END payout,
 	--c.Points PointsFromStats,
-	ISNULL(g.Points, 0) grandRoyale,
-	ISNULL(e.Points, 0) elimPoints,
+	ISNULL(w.Points, 0) wins,
+	ISNULL(e.Points, 0) elims,
 	ISNULL(p.Points, 0) - ISNULL(e.Points, 0) placementPoints 
 FROM Placement p 
 JOIN Region r ON p.RegionCode = r.Code 		
 LEFT JOIN PointCalc c ON c.PlacementID = p.ID
-LEFT JOIN GrandRoyale g ON g.PlacementID = p.ID 
+LEFT JOIN Wins w ON w.PlacementID = p.ID 
 LEFT JOIN Elim e ON e.PlacementID = p.ID 
 
 
@@ -109,23 +109,6 @@ SELECT * FROM StatView
 
 SELECT * FROM DataView
 
-USE [Fortnite]
-GO
 
 
-CREATE VIEW [dbo].[DataView] 
-AS
-SELECT 
-	REPLACE(WeekNumber, 'k', 'k ') week,
-	soloOrDuo,
-	player,
-	r.Name region,
-	rank,
-	CASE WHEN SoloOrDuo = 'Solo' THEN Payout ELSE Payout / 2 END payout,
-	points
-FROM Placement
-JOIN Region r ON Placement.RegionCode = r.Code 				
-GO
-
-
-SELECT * FROM Placement 
+SELECT DISTINCT PLayer FROM StatView 
