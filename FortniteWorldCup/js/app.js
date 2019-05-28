@@ -31,8 +31,9 @@ var RowChart = function (facts, attribute, width, maxItems) {
         .height(maxItems * 22)
         .margins({ top: 0, right: 10, bottom: 20, left: 20 })
         .elasticX(true)
-        .ordinalColors(['#9ecae1']) // light blue
+        //.ordinalColors(['#9ecae1']) // light blue
         //.ordinalColors(['#00008b']) // dark blue
+        .ordinalColors(['#04c7ff']) // dark blue
         .labelOffsetX(5)
         .xAxis().ticks(4).tickFormat(d3.format(".2s"));
 }
