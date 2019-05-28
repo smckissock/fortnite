@@ -44,9 +44,9 @@ INSERT INTO Region VALUES ('ASIA', 'Asia')
 INSERT INTO Region VALUES ('BR', 'Brazil') 
 
 
-EXEC DropTable 'Place'
+EXEC DropTable 'Placement'
 GO
-CREATE TABLE Place (
+CREATE TABLE Placement (
 	ID [int] IDENTITY(1,1) NOT NULL,
 	WeekNumber varchar(10) NOT NULL,
 	SoloOrDuo varchar(4) NOT NULL,
@@ -74,21 +74,9 @@ SELECT
 	rank,
 	CASE WHEN SoloOrDuo = 'Solo' THEN Payout ELSE Payout / 2 END payout,
 	points
-FROM Place
-JOIN Region r ON Place.RegionCode = r.Code 				
+FROM Placement
+JOIN Region r ON Placement.RegionCode = r.Code 				
 
 
-SELECT * FROM Region
-
-SELECT * FROM DataView 
-ORDER BY week, region, rank
 
 
-SELECT Count(*) FROM Place
-
-SELECT SoloOrDuo, Count(*) FROM Place GROUp BY SoloOrDuo
-									
-SELECT * FROM DataView
-SELECT * FROM Place			
-
-SELECT SoloOrDuo, Count(*), SUM(Payout) FROM DataView GROUP BY SoloOrDuo

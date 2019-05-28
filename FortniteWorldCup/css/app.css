@@ -20,9 +20,10 @@ body {
         "left-margin    title              title"
         "left-margin    subtitle           search"
         "left-margin    region             player"
-        "left-margin    week               player";
+        "left-margin    week               player"
+        "left-margin    week              table";
     grid-template-columns: 2rem var(--left-width) auto;
-    grid-template-rows: 5rem 2.2rem 17rem auto; 
+    grid-template-rows: 5rem 2.2rem 17rem auto auto; 
     grid-gap: .0em;
     margin: 0px;
     height: 100vh;
@@ -54,6 +55,10 @@ body {
     grid-area: search;
     font-weight: 700;
     font-size: 1.2em;
+}
+
+.table {
+    grid-area: table;
 }
 
 .week {

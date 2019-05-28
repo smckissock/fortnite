@@ -28,3 +28,104 @@ PRIMARY KEY CLUSTERED
 ) ON [PRIMARY]
 GO
 
+
+
+EXEC DropView 'PointsTestView'
+GO
+
+CREATE VIEW PointsTestView
+AS 
+WITH PointCalc (PlacementID, Points)
+AS (
+	SELECT PlacementID, SUM(PointsEarned)
+	FROM Stat
+	GROUP BY PlacementID
+)
+
+SELECT 
+	p.ID,
+	p.WeekNumber,
+	p.SoloOrDuo,
+	p.Player,
+	p.RegionCode,
+	p.Points,
+	c.Points PointsFromStats
+FROM Placement p 
+JOIN PointCalc c ON c.PlacementID = p.ID 
+
+
+-- Should have no results
+-- SELECT * FROM PointsTestView WHERE Points <> PointsFromStats
+
+
+EXEC DropView 'StatView'
+GO
+
+CREATE VIEW StatView 
+AS
+
+WITH PointCalc (PlacementID, Points)
+AS (
+	SELECT PlacementID, SUM(PointsEarned)
+	FROM Stat
+	GROUP BY PlacementID
+),
+GrandRoyale (PlacementID, Points)
+AS (
+	SELECT PlacementID, SUM(PointsEarned)
+	FROM Stat
+	WHERE StatIndex = 'PLACEMENT_STAT_INDEX:1'
+	GROUP BY PlacementID
+),
+Elim (PlacementID, Points)
+AS (
+	SELECT PlacementID, SUM(PointsEarned)
+	FROM Stat
+	WHERE StatIndex LIKE '%ELIMS%' 
+	GROUP BY PlacementID
+)
+
+SELECT 
+	--p.ID,
+	REPLACE(WeekNumber, 'k', 'k ') week,
+	p.soloOrDuo,
+	p.player,
+	r.Name region,
+	rank,
+	p.points,
+	CASE WHEN SoloOrDuo = 'Solo' THEN Payout ELSE Payout / 2 END payout,
+	--c.Points PointsFromStats,
+	ISNULL(g.Points, 0) grandRoyale,
+	ISNULL(e.Points, 0) elimPoints,
+	ISNULL(p.Points, 0) - ISNULL(e.Points, 0) placementPoints 
+FROM Placement p 
+JOIN Region r ON p.RegionCode = r.Code 		
+LEFT JOIN PointCalc c ON c.PlacementID = p.ID
+LEFT JOIN GrandRoyale g ON g.PlacementID = p.ID 
+LEFT JOIN Elim e ON e.PlacementID = p.ID 
+
+
+SELECT * FROM StatView
+
+SELECT * FROM DataView
+
+USE [Fortnite]
+GO
+
+
+CREATE VIEW [dbo].[DataView] 
+AS
+SELECT 
+	REPLACE(WeekNumber, 'k', 'k ') week,
+	soloOrDuo,
+	player,
+	r.Name region,
+	rank,
+	CASE WHEN SoloOrDuo = 'Solo' THEN Payout ELSE Payout / 2 END payout,
+	points
+FROM Placement
+JOIN Region r ON Placement.RegionCode = r.Code 				
+GO
+
+
+SELECT * FROM Placement 

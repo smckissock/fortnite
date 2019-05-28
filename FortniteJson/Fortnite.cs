@@ -14,6 +14,8 @@ namespace FortniteJson {
         public int rank;
         public int payout;
         public int points;
+        public int grandRoyale;
+        public int elimPoints;
     }
 
     public class Fortnite {
@@ -21,7 +23,7 @@ namespace FortniteJson {
         public static void MakeJson() {
 
             var places = new List<Place>();
-            var reader = SqlUtil.Query("SELECT * FROM DataView");
+            var reader = SqlUtil.Query("SELECT * FROM StatView");
             while (reader.Read()) {
                 var place = new Place();
                 place.week = reader["week"].ToString();
@@ -31,6 +33,8 @@ namespace FortniteJson {
                 place.rank = (System.Int32)reader["rank"];
                 place.payout = (System.Int32)reader["payout"];
                 place.points = (System.Int32)reader["points"];
+                place.grandRoyale = (System.Int32)reader["grandRoyale"];
+                place.elimPoints = (System.Int32)reader["elimPoints"];
                 places.Add(place);
             }
             reader.Close();
