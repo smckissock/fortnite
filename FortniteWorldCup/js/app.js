@@ -1,8 +1,9 @@
 'use strict';
 
 let playerDim;
+let playerStatsGroup;
 
-let playerStats;
+//let playerStats;
 
 let playerTable;
 
@@ -18,15 +19,14 @@ d3.json('data/data.json').then(function (data)  {
     d3.select("#search-input").on('keyup', function (event) {
         const searchTerm = document.getElementById("search-input").value;
         console.log(searchTerm);
+        console.group(playerDim.top(10000).length);
+        console.log(playerStatsGroup.all().length);
 
         playerDim.filter(function (d) { 
-            return d.toLowerCase().indexOf (searchTerm) !== -1;} );
-            //$(".resetall").attr("disabled",false);
-            //throttle();
-            dc.redrawAll();
-            // RefreshTable
+            return d.toLowerCase().indexOf(searchTerm) !== -1;
+        });
 
-            playerTable.render();
+        dc.redrawAll();
     });
 });
 
@@ -36,7 +36,7 @@ function draw(facts) {
     new RowChart(facts, "week", 300, 10);
 
     playerDim = facts.dimension(dc.pluck("player"));
-    var playerStatsGroup = playerDim.group().reduce(
+    playerStatsGroup = playerDim.group().reduce(
         function (p, v) {
             p.payout = p.payout + v.payout;
             p.points = p.points + v.points;
@@ -63,39 +63,24 @@ function draw(facts) {
         }
     );
 
-    playerTable = dc.dataTable("#dc-chart-player");
+    playerTable = dc.newDataTable("#dc-chart-player");
     playerTable
         .width(768)
         .height(480)
         .showSections(false)
+        .size(Infinity)
         .dimension(playerStatsGroup)
         .columns([function (d) { return d.key },
               function (d) { return d.value.payout },
               function (d) { return d.value.points },
               function (d) { return d.value.wins },
               function (d) { return d.value.elims }])
-        .sortBy(function (d) { return d.value.payout })
+        .sortBy(function (d) { return d })
         .order(d3.descending)
         
-/*     dc.dataGrid("#dc-chart-table")
-    .dimension(playerStats)
-    .section(function (d) {
-        return "HI";
-    })
-    .size(10000)
-    .html (function(d) { return chartHtml(d);})
-    .sortBy(function (d) {
-        return d.payout;
-    })
-    .order(d3.descending) */
-
-
     dc.renderAll();
 }
 
-function chartHtml (d) {
-    return "PLPP";
-}
 
 var RowChart = function (facts, attribute, width, maxItems) {
     this.dim = facts.dimension(dc.pluck(attribute));

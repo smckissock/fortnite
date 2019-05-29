@@ -103,7 +103,7 @@ JOIN Region r ON p.RegionCode = r.Code
 LEFT JOIN PointCalc c ON c.PlacementID = p.ID
 LEFT JOIN Wins w ON w.PlacementID = p.ID 
 LEFT JOIN Elim e ON e.PlacementID = p.ID 
-
+		
 
 SELECT * FROM StatView
 

@@ -73,3 +73,8 @@ body {
     grid-area: player;
 }
 
+.dc-table-column {
+    font-weight: 400;
+    font-size: .9em;
+}
+
