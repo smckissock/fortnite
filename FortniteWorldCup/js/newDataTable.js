@@ -26,7 +26,7 @@
  * Interaction with a chart will only trigger events and redraws within the chart's group.
  * @returns {dc.dataTable}
  */
-dc.newDataTable = function (parent, chartGroup) {
+dc.newDataTable = function (parent, chartGroup, playerDim) {
     var LABEL_CSS_CLASS = 'dc-table-label';
     var ROW_CSS_CLASS = 'dc-table-row';
     var COLUMN_CSS_CLASS = 'dc-table-column';
@@ -45,6 +45,8 @@ dc.newDataTable = function (parent, chartGroup) {
     var _endSlice;
     var _showSections = true;
     var _section = function () { return ''; }; // all in one section
+
+    var _playerDim = playerDim;
 
     _chart._mandatoryAttributes(['dimension']);
 
@@ -180,11 +182,23 @@ dc.newDataTable = function (parent, chartGroup) {
             }).slice(_beginSlice, _endSlice));
     }
 
+    // This should be fast
+    // https://stackoverflow.com/questions/32376651/javascript-filter-array-by-data-from-another  search for "O(n^2)""
+    function filterPlayersFast(data, dimVals) {
+        let names = dimVals.map(x => x.player); 
+
+        var index = names.reduce(function(a,b) {a[b] = 1; return a;}, {});
+        return data.filter(function(item) {
+            return index[item.key] === 1;
+        });
+    }
+
     function renderRows (sections) {
         var rows = sections.order()
             .selectAll('tr.' + ROW_CSS_CLASS)
             .data(function (d) {
-                return d.values;
+                let toShow = filterPlayersFast(d.values, _playerDim.top(Infinity));
+                return toShow;
             });
 
         var rowEnter = rows.enter()

@@ -5,7 +5,7 @@
 @font-face {
     font-family: 'burbank';
     src: url('burbank.ttf') format('truetype');
-  }
+} 
 
 body {
     font-family: burbank;
@@ -22,9 +22,9 @@ body {
         "left-margin    region             player"
         "left-margin    week               player";
     grid-template-columns: 2rem var(--left-width) auto;
-    grid-template-rows: 5rem 2.2rem 17rem auto; 
-    grid-gap: .0em;
-    margin: 0px;
+    grid-template-rows: 4.5rem 2.2rem 17rem auto; 
+    grid-gap: .4em;
+    margin: .25em;
     height: 100vh;
     width: calc(100vw - 1.1rem); 
 }
@@ -47,7 +47,7 @@ body {
 .subtitle {
     grid-area: subtitle;
     font-weight: 700;
-    font-size: 1.2em;
+    font-size: 1.0em;
 }
 
 .search {

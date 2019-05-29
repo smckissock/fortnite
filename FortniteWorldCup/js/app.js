@@ -25,10 +25,20 @@ d3.json('data/data.json').then(function (data)  {
         playerDim.filter(function (d) { 
             return d.toLowerCase().indexOf(searchTerm) !== -1;
         });
+        
+        updateCounts();
 
         dc.redrawAll();
     });
 });
+
+
+function updateCounts() {
+    makePlayerStatsGroup(playerDim);
+    
+    d3.select("#count-box")
+        .text(playerDim.top(10000).length + " dim; " + playerStatsGroup.all().length + " group");
+}
 
 
 function draw(facts) {
@@ -36,7 +46,9 @@ function draw(facts) {
     new RowChart(facts, "week", 300, 10);
 
     playerDim = facts.dimension(dc.pluck("player"));
-    playerStatsGroup = playerDim.group().reduce(
+    makePlayerStatsGroup(playerDim);
+
+   /*  playerStatsGroup = playerDim.group().reduce(
         function (p, v) {
             p.payout = p.payout + v.payout;
             p.points = p.points + v.points;
@@ -62,8 +74,8 @@ function draw(facts) {
             };
         }
     );
-
-    playerTable = dc.newDataTable("#dc-chart-player");
+ */
+    playerTable = dc.newDataTable("#dc-chart-player", null, playerDim);
     playerTable
         .width(768)
         .height(480)
@@ -79,6 +91,39 @@ function draw(facts) {
         .order(d3.descending)
         
     dc.renderAll();
+}
+
+function makePlayerStatsGroup() {
+    playerStatsGroup =  
+
+    playerDim.group().reduce(
+        function (p, v) {
+            p.payout = p.payout + v.payout;
+            p.points = p.points + v.points;
+            p.wins = p.wins + v.wins;
+            p.elims = p.elims + v.elims;
+            return p;
+        },
+        function (p, v) {
+            p.payout = p.payout - v.payout;
+            p.points = p.points - v.points;
+            p.wins = p.wins - v.wins;
+            p.elims = p.elims - v.elims;
+            return p;
+        },
+        function () {
+            return {   
+                payout: 0
+                , points: 0
+                , wins: 0
+                , elims: 0
+                    //, grandRoyale: 0
+                    //,elimPoints: 0
+            };
+        }
+    );  
+    
+    console.log(playerStatsGroup);
 }
 
 
@@ -97,5 +142,6 @@ var RowChart = function (facts, attribute, width, maxItems) {
         //.ordinalColors(['#00008b']) // dark blue
         .ordinalColors(['#04c7ff']) // dark blue
         .labelOffsetX(5)
+        .on('filtered', updateCounts)
         .xAxis().ticks(4).tickFormat(d3.format(".2s"));
 }
