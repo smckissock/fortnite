@@ -27,7 +27,6 @@ d3.json('data/data.json').then(function (data)  {
         });
         
         updateCounts();
-
         dc.redrawAll();
     });
 });
@@ -37,9 +36,8 @@ function updateCounts() {
     makePlayerStatsGroup(playerDim);
     
     d3.select("#count-box")
-        .text(playerDim.top(10000).length + " dim; " + playerStatsGroup.all().length + " group");
+        .text(playerDim.top(10000).length);
 }
-
 
 function draw(facts) {
     new RowChart(facts, "region", 300, 10);
@@ -48,33 +46,6 @@ function draw(facts) {
     playerDim = facts.dimension(dc.pluck("player"));
     makePlayerStatsGroup(playerDim);
 
-   /*  playerStatsGroup = playerDim.group().reduce(
-        function (p, v) {
-            p.payout = p.payout + v.payout;
-            p.points = p.points + v.points;
-            p.wins = p.wins + v.wins;
-            p.elims = p.elims + v.elims;
-            return p;
-        },
-        function (p, v) {
-            p.payout = p.payout - v.payout;
-            p.points = p.points - v.points;
-            p.wins = p.wins - v.wins;
-            p.elims = p.elims - v.elims;
-            return p;
-        },
-        function () {
-            return {   
-                payout: 0
-                , points: 0
-                , wins: 0
-                , elims: 0
-                    //, grandRoyale: 0
-                    //,elimPoints: 0
-            };
-        }
-    );
- */
     playerTable = dc.newDataTable("#dc-chart-player", null, playerDim);
     playerTable
         .width(768)
@@ -91,6 +62,7 @@ function draw(facts) {
         .order(d3.descending)
         
     dc.renderAll();
+    updateCounts();
 }
 
 function makePlayerStatsGroup() {
@@ -117,8 +89,6 @@ function makePlayerStatsGroup() {
                 , points: 0
                 , wins: 0
                 , elims: 0
-                    //, grandRoyale: 0
-                    //,elimPoints: 0
             };
         }
     );  

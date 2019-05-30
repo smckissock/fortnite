@@ -56,6 +56,12 @@ body {
     font-size: 1.2em;
 }
 
+.player-count {
+    grid-area: search;
+    font-weight: 400;
+    font-size: .6em;
+}
+
 .table {
     grid-area: table;
 }
