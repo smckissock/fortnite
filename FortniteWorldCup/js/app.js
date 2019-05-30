@@ -59,7 +59,25 @@ function draw(facts) {
               function (d) { return d.value.wins },
               function (d) { return d.value.elims }])
         .sortBy(function (d) { return d })
-        .order(d3.descending)
+        .order(d3.descending);
+
+    let dim = facts.dimension(dc.pluck("region"));
+    let group = dim.group().reduceSum(dc.pluck("payout"));
+
+    var select = dc.pickChart('#dc-chart-Region2')
+        .dimension(dim)
+        .group(group)
+        .order(function (a,b) {
+            return a.value > b.value ? 1 : b.value > a.value ? -1 : 0;
+        });
+    // the option text can be set via the title() function
+    // by default the option text is '`key`: `value`'
+    select.title(function (d){
+        return d.key;
+    });
+    //select.title(function (d){
+    //    return 'STATE: ' + d.key;
+    //});
         
     dc.renderAll();
     updateCounts();
@@ -91,9 +109,7 @@ function makePlayerStatsGroup() {
                 , elims: 0
             };
         }
-    );  
-    
-    console.log(playerStatsGroup);
+    );
 }
 
 

@@ -10,13 +10,14 @@
     <script type="text/javascript" src="js/crossfilter.js"></script>
     <script type="text/javascript" src="js/dc.js"></script>
     <script type="text/javascript" src="js/newDataTable.js"></script>
+    <script type="text/javascript" src="js/pickChart.js"></script>
     <script type="text/javascript" src="js/app.js"></script>
 </head>
 <body>
 
 <div class="grid gradient">
     <div class="title">
-        Fortnite World Cup Stats
+        FORTNITE &nbsp;World Cup Stats
     </div>
 
     <div class="subtitle">
@@ -29,16 +30,15 @@
         <span id="count-box" class="player-count"></span>
     </div>
 
-    <!-- <div class="player" id="dc-chart-player"> -->
     <div class="player">
         <table id="dc-chart-player">
             <thead>
                 <tr>
-                    <th>Player</th>
-                    <th>Payout</th>
-                    <th>Score</th>
-                    <th>Wins</th>
-                    <th>Elims</th>
+                    <th style="width:160px">Player</th>
+                    <th style="width:60px">Payout</th>
+                    <th style="width:50px">Score</th>
+                    <th style="width:40px">Wins</th>
+                    <th style="width:50px">Elims</th>
                 </tr>
             </thead>
         </table>
@@ -50,6 +50,10 @@
 
     <div class="week" id="dc-chart-week">
     Week
+    </div>
+
+    <div class="region2" id="dc-chart-Region2">
+        Region 2
     </div>
 </div>
 

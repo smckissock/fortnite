@@ -22,9 +22,10 @@ body {
         "left-margin    title              title"
         "left-margin    subtitle           search"
         "left-margin    region             player"
-        "left-margin    week               player";
-    grid-template-columns: 2rem var(--left-width) auto;
-    grid-template-rows: 4.5rem 2.2rem 17rem auto; 
+        "left-margin    week               player"
+        "left-margin    region2               player";
+    grid-template-columns: 1rem var(--left-width) auto;
+    grid-template-rows: 4.5rem 2.2rem 17rem 15rem auto; 
     grid-gap: .4em;
     margin: .25em;
     height: 100vh;
@@ -75,6 +76,11 @@ body {
 
 .region {
     grid-area: region;
+}
+
+.region2 {
+    grid-area: region2;
+    font-weight: 500;
 }
 
 .player {

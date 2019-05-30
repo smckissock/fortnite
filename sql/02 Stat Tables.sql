@@ -1,6 +1,27 @@
 USE Fortnite
 GO
 
+EXEC DropTable 'StatIndex'
+GO  
+
+CREATE TABLE [dbo].[StatIndex](
+	[ID] [int] IDENTITY(1,1) NOT NULL,
+	[PlacementID] [int] NOT NULL,
+	[StatIndex] [nvarchar](30) NOT NULL,
+	[PointsEarned] [int] NOT NULL,
+	[TimesAchieved] [int] NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[StatIndex]  WITH CHECK ADD FOREIGN KEY([PlacementID])
+REFERENCES [dbo].[Placement] ([ID])
+GO
+
+
 EXEC DropView 'PlacementCountView'
 GO
 CREATE VIEW [dbo].[PlacementCountView]
@@ -18,7 +39,7 @@ GO
 CREATE TABLE Stat (
 	ID [int] IDENTITY(1,1) NOT NULL,
 	PlacementID int NOT NULL REFERENCES Placement(ID),
-	StatIndex varchar(30) NOT NULL,
+	StatIndex nvarchar(30) NOT NULL,
 	PointsEarned int NOT NULL,
 	TimesAchieved int NOT NULL
 PRIMARY KEY CLUSTERED 
@@ -57,9 +78,10 @@ JOIN PointCalc c ON c.PlacementID = p.ID
 -- Should have no results
 -- SELECT * FROM PointsTestView WHERE Points <> PointsFromStats
 
-
+SELECT * FROM PLacementCountView
 EXEC DropView 'StatView'
 GO
+
 
 CREATE VIEW StatView 
 AS
@@ -109,7 +131,15 @@ SELECT * FROM StatView
 
 SELECT * FROM DataView
 
+SELECT * FROM PointsTestView
 
-SELECT * FROM sys.fn_helpcollations()
 
-SELECT DISTINCT PLayer FROM StatView WHERE PLayer Like 'ghost%'
+DELETE FROM Stat
+DELETE FROM Placement 
+
+
+SELECT * FROM PLacement
+
+
+
+SELECT * FROM PLacement ORDER BY WeekNumber
