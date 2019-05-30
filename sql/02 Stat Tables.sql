@@ -110,5 +110,6 @@ SELECT * FROM StatView
 SELECT * FROM DataView
 
 
+SELECT * FROM sys.fn_helpcollations()
 
-SELECT DISTINCT PLayer FROM StatView 
+SELECT DISTINCT PLayer FROM StatView WHERE PLayer Like 'ghost%'

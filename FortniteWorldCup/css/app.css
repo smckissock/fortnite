@@ -9,10 +9,12 @@
 
 body {
     font-family: burbank;
+    /* font-family: OpenSans,sans-serif; */
     font: "rubic";
     /* color: #404040; */
 }
 
+/* <td class="asdt-name">SEN Bughа</td> */
 
 .grid {
     display: grid;

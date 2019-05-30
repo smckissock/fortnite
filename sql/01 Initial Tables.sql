@@ -26,8 +26,8 @@ EXEC DropTable 'Region'
 GO
 CREATE TABLE Region (
 	ID [int] IDENTITY(1,1) NOT NULL,
-	Code varchar(5) NOT NULL,
-	Name varchar (20) NOT NULL,
+	Code nvarchar(5) NOT NULL,
+	Name nvarchar (20) NOT NULL,
 PRIMARY KEY CLUSTERED 
 (
 	[ID] ASC
@@ -48,10 +48,10 @@ EXEC DropTable 'Placement'
 GO
 CREATE TABLE Placement (
 	ID [int] IDENTITY(1,1) NOT NULL,
-	WeekNumber varchar(10) NOT NULL,
-	SoloOrDuo varchar(4) NOT NULL,
-	Player varchar(500) NOT NULL,
-	RegionCode varchar(4) NOT NULL,
+	WeekNumber nvarchar(10) NOT NULL,
+	SoloOrDuo nvarchar(4) NOT NULL,
+	Player nvarchar(500) NOT NULL,
+	RegionCode nvarchar(4) NOT NULL,
 	Rank int NOT NULL,
 	Payout int NOT NULL,
 	Points int NOT NULL
@@ -76,7 +76,4 @@ SELECT
 	points
 FROM Placement
 JOIN Region r ON Placement.RegionCode = r.Code 				
-
-
-
 
