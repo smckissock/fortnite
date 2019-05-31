@@ -5,6 +5,8 @@ let playerStatsGroup;
 
 let playerTable;
 
+let playerColors;
+
 
 
 d3.json('data/data.json').then(function (data)  {
@@ -44,9 +46,11 @@ function draw(facts) {
     new RowChart(facts, "week", 300, 10);
 
     playerDim = facts.dimension(dc.pluck("player"));
+    makePlayerColors();
+
     makePlayerStatsGroup(playerDim);
 
-    playerTable = dc.newDataTable("#dc-chart-player", null, playerDim);
+    playerTable = dc.tableChart("#dc-chart-player", null, playerDim);
     playerTable
         .width(768)
         .height(480)
@@ -85,6 +89,25 @@ function draw(facts) {
     updateCounts();
 }
 
+function makePlayerColors() {
+    playerColors = {};
+    playerDim.top(Infinity).forEach(function (d) {
+        playerColors[d.player] =  getColorForRegion(d.region);
+    });
+}
+
+function getColorForRegion(region) {
+    console.log(region);
+    switch (region) {
+        case "NA West": return "purple"; break;
+        case "NA East": return "green"; break;
+        case "Europe": return "blue"; break;
+        case "Oceana": return "red"; break;
+        case "Asia": return "lime"; break;
+        case "Brazil": return "teal"; break;
+    }  
+}
+
 function makePlayerStatsGroup() {
     playerStatsGroup =  
 
@@ -103,7 +126,7 @@ function makePlayerStatsGroup() {
             p.elims = p.elims - v.elims;
             return p;
         },
-        function () {
+        function (p) {
             return {   
                 payout: 0
                 , points: 0

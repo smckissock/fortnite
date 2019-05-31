@@ -18,8 +18,6 @@ const weeks = [
 ];
   
 
-console.log ("WWKS!!!");
-
 function weekChart(id) {
 
     let div = d3.select(id);

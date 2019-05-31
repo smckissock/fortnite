@@ -14,7 +14,6 @@ body {
     /* color: #404040; */
 }
 
-/* <td class="asdt-name">SEN Bughа</td> */
 
 .grid {
     display: grid;
@@ -40,6 +39,25 @@ body {
         #f06d06
       );
   }
+
+.red {
+    color: #DB4441; 
+}
+.green {
+    color: #319236;
+}
+.purple { 
+    color: #9D4DBB;
+}
+.blue {
+    color: #4C51F7;
+}
+.lime { 
+    color: #3E93BC
+}
+.teal {
+    color: #3CFF3E
+}
 
 .title {
     grid-area: title;

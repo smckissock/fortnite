@@ -26,7 +26,7 @@
  * Interaction with a chart will only trigger events and redraws within the chart's group.
  * @returns {dc.dataTable}
  */
-dc.newDataTable = function (parent, chartGroup, playerDim) {
+dc.tableChart = function (parent, chartGroup, playerDim) {
     var LABEL_CSS_CLASS = 'dc-table-label';
     var ROW_CSS_CLASS = 'dc-table-row';
     var COLUMN_CSS_CLASS = 'dc-table-column';
@@ -155,6 +155,8 @@ dc.newDataTable = function (parent, chartGroup, playerDim) {
                 .attr('class', SECTION_CSS_CLASS)
                     .append('td')
                     .attr('class', LABEL_CSS_CLASS)
+                    .attr('class', function (d) {
+                        return d.color })
                     .attr('colspan', _columns.length)
                     .html(function (d) {
                         return _chart.keyAccessor()(d);
@@ -182,15 +184,17 @@ dc.newDataTable = function (parent, chartGroup, playerDim) {
             }).slice(_beginSlice, _endSlice));
     }
 
+    
     // This should be fast
     // https://stackoverflow.com/questions/32376651/javascript-filter-array-by-data-from-another  search for "O(n^2)""
     function filterPlayersFast(data, dimVals) {
         let names = dimVals.map(x => x.player); 
-
         var index = names.reduce(function(a,b) {a[b] = 1; return a;}, {});
-        return data.filter(function(item) {
+        let filteredData = data.filter(function(item) {
+            item.color = playerColors[item.key];
             return index[item.key] === 1;
         });
+        return filteredData;
     }
 
     function renderRows (sections) {
@@ -208,11 +212,12 @@ dc.newDataTable = function (parent, chartGroup, playerDim) {
         _columns.forEach(function (v, i) {
             rowEnter.append('td')
                 .attr('class', COLUMN_CSS_CLASS + ' _' + i)
+                .attr('class', function (d) {
+                    return d.color })
                 .html(function (d) {
                     return _chart._doColumnValueFormat(v, d);
                 });
         });
-
         rows.exit().remove();
 
         return rows;
