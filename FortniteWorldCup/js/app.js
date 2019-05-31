@@ -3,9 +3,9 @@
 let playerDim;
 let playerStatsGroup;
 
-//let playerStats;
-
 let playerTable;
+
+
 
 d3.json('data/data.json').then(function (data)  {
     data.forEach(function (d) {
@@ -40,7 +40,7 @@ function updateCounts() {
 }
 
 function draw(facts) {
-    new RowChart(facts, "region", 300, 10);
+    //new RowChart(facts, "region2", 300, 10);
     new RowChart(facts, "week", 300, 10);
 
     playerDim = facts.dimension(dc.pluck("player"));
@@ -64,7 +64,7 @@ function draw(facts) {
     let dim = facts.dimension(dc.pluck("region"));
     let group = dim.group().reduceSum(dc.pluck("payout"));
 
-    var select = dc.pickChart('#dc-chart-Region2')
+    var select = dc.pickChart('#dc-chart-region')
         .dimension(dim)
         .group(group)
         .order(function (a,b) {

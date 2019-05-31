@@ -1,3 +1,10 @@
+let green ='#319236';
+let purple = '#9D4DBB';
+let blue = '#4C51F7';
+let red = '#DB4441';
+let lime = '#3E93BC';
+let teal = '#3CFF3E';
+
 
 /**
  * The select menu is a simple widget designed to filter a dimension by selecting an option from
@@ -53,9 +60,52 @@ dc.pickChart = function (parent, chartGroup) {
                         .classed(SELECT_CSS_CLASS, true);
         _select.append('option').text(_promptText).attr('value', '');
 
+        _chart._makeCircles();
         _chart._doRedraw();
         return _chart;
     };
+
+    _chart._makeCircles = function () {
+        console.log("Make Circles!");
+
+        let svg = _chart.root().append("svg")
+            .attr("width", 300)
+            .attr("height", 220);
+        
+        const radius = 49;    
+        let regions = [
+            {x:50, y:60, color: green, name: "NA EAST", textOffset:33},
+            {x:150, y:60, color: purple, name: "NA WEST", textOffset:35},
+            {x:250, y:60, color: blue, name: "EUROPE", textOffset:30},
+            {x:50, y:160, color: red, name: "OCEANA", textOffset:32},
+            {x:150, y:160, color: lime, name: "ASIA", textOffset:20},
+            {x:250, y:160, color: teal, name: "BRAZIL", textOffset:26}
+        ]; 
+
+        regions.forEach(function(region) {
+            svg.append("circle")
+                .attr("cx", region.x)
+                .attr("cy", region.y)
+                .attr("r", radius)
+                .attr("fill", region.color);
+
+            svg.append("text")
+                .attr("x", region.x - region.textOffset)
+                .attr("y", region.y + 5)
+                .text(region.name)
+                .attr("font-size", "1.4em")
+                .attr("fill", "black");
+        });
+ 
+/*         var circle = svgContainer.append("circle")
+            .attr("cx", 60)
+            .attr("cy", 60)
+            .attr("r", 60); */
+
+        console.log(_chart.data());
+    }
+
+
     // Fixing IE 11 crash when redrawing the chart
     // see here for list of IE user Agents :
     // http://www.useragentstring.com/pages/useragentstring.php?name=Internet+Explorer
