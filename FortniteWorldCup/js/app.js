@@ -102,7 +102,7 @@ function getColorForRegion(region) {
         case "NA East": return "green"; break;
         case "Europe": return "blue"; break;
         case "Oceana": return "red"; break;
-        case "Asia": return "lime"; break;
+        case "Asia": return "brown"; break;
         case "Brazil": return "teal"; break;
     }  
 }

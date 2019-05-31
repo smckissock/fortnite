@@ -58,6 +58,13 @@ body {
 .lime {
     color: #3CFF3E;
 }
+.grey {
+    color: #B3B3B3;
+}
+.brown {
+    color: #8B4513;
+}
+
 
 .title {
     grid-area: title;

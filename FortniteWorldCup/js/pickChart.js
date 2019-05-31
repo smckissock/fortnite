@@ -1,9 +1,12 @@
-let green ='#319236';
-let purple = '#9D4DBB';
-let blue = '#4C51F7';
-let red = '#DB4441';
-let lime = '#3E93BC';
-let teal = '#3CFF3E';
+
+const green ='#319236';
+const purple = '#9D4DBB';
+const blue = '#4C51F7';
+const red = '#DB4441';
+const teal = '#3E93BC';
+const lime = '#3CFF3E';
+const grey = '#B3B3B3';
+const brown = '#8B4513';
 
 
 /**
@@ -77,8 +80,8 @@ dc.pickChart = function (parent, chartGroup) {
             {x:150, y:60, color: purple, name: "NA WEST", textOffset:35},
             {x:250, y:60, color: blue, name: "EUROPE", textOffset:30},
             {x:50, y:160, color: red, name: "OCEANA", textOffset:32},
-            {x:150, y:160, color: lime, name: "ASIA", textOffset:20},
-            {x:250, y:160, color: teal, name: "BRAZIL", textOffset:26}
+            {x:150, y:160, color: teal, name: "BRAZIL", textOffset:26},
+            {x:250, y:160, color: brown, name: "ASIA", textOffset:20}
         ]; 
 
         regions.forEach(function(region) {
