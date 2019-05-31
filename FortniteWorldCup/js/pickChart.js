@@ -66,8 +66,7 @@ dc.pickChart = function (parent, chartGroup) {
     };
 
     _chart._makeCircles = function () {
-        console.log("Make Circles!");
-
+        
         let svg = _chart.root().append("svg")
             .attr("width", 300)
             .attr("height", 220);
@@ -87,14 +86,29 @@ dc.pickChart = function (parent, chartGroup) {
                 .attr("cx", region.x)
                 .attr("cy", region.y)
                 .attr("r", radius)
-                .attr("fill", region.color);
-
+                .attr("fill", region.color)
+                .attr("stroke", "black")
+                .attr("stroke-width", 0)
+                .on('mouseover', function (d) {
+                    d3.select(this)
+                        .transition()
+                        .duration(100)
+                        .attr("stroke-width", 6)
+                })
+                .on('mouseout', function (d) {
+                    d3.select(this)
+                        .transition()
+                        .duration(100)
+                        .attr("stroke-width", 0)
+                })
+                
             svg.append("text")
                 .attr("x", region.x - region.textOffset)
                 .attr("y", region.y + 5)
                 .text(region.name)
                 .attr("font-size", "1.4em")
-                .attr("fill", "black");
+                .attr("fill", "black")
+                .attr("pointer-events", "none");
         });
         console.log(_chart.data());
     }

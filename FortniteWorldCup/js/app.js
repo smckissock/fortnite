@@ -20,9 +20,9 @@ d3.json('data/data.json').then(function (data)  {
 
     d3.select("#search-input").on('keyup', function (event) {
         const searchTerm = document.getElementById("search-input").value;
-        console.log(searchTerm);
-        console.group(playerDim.top(10000).length);
-        console.log(playerStatsGroup.all().length);
+        //console.log(searchTerm);
+        //console.group(playerDim.top(10000).length);
+        //console.log(playerStatsGroup.all().length);
 
         playerDim.filter(function (d) { 
             return d.toLowerCase().indexOf(searchTerm) !== -1;
@@ -97,7 +97,6 @@ function makePlayerColors() {
 }
 
 function getColorForRegion(region) {
-    console.log(region);
     switch (region) {
         case "NA West": return "purple"; break;
         case "NA East": return "green"; break;
