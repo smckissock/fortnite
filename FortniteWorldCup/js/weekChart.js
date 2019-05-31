@@ -33,19 +33,41 @@ function weekChart(id) {
 
         svg.append("rect")
             .attr("x", x)
-            .attr("y", y)
+            .attr("y", y + 3)
             .attr("width", width)
             .attr("height", height - 10)
             .attr("fill", "black")
-            .classed("week-chart", true);
+            .attr("stroke", "black")
+            .attr("stroke-width", 0)
+            .classed("week-chart", true)
+            .on('mouseover', function (d) {
+                console.log('RECT');
+                d3.select(this)
+                    .transition()
+                    .duration(100)
+                    .attr("stroke-width", 7)
+            })
+            .on('mouseout', function (d) {
+                d3.select(this)
+                    .transition()
+                    .duration(100)
+                    .attr("stroke-width", 0)
+            })
+            .on('mousedown', function (d) {
+                console.log("DOWN")
+                d3.select(this)
+                    .transition()
+                    .duration(100)
+                    .attr("stroke-width", 12)
+            })
 
         svg.append("text")
-            .attr("x", x + 6)
-            .attr("y", y + 20)
-            .text("Week " + (count + 1))
-            .attr("font-size", "1.2em")
-            .attr("fill", "black");
-        
+            .attr("x", x + 10)
+            .attr("y", y + 25)
+            .text("Week " + (count + 1) + " " + week.type)
+            .attr("font-size", "1.1em")
+            .attr("fill", "black")
+            .attr("pointer-events", "none");
         count++;    
     });
 }

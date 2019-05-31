@@ -104,6 +104,14 @@ dc.pickChart = function (parent, chartGroup) {
                         .duration(100)
                         .attr("stroke-width", 0)
                 })
+                .on('mousedown', function (d) {
+                    console.log("DOWN")
+                    d3.select(this)
+                        .transition()
+                        .duration(100)
+                        .attr("stroke-width", 12)
+                });
+    
                 
             svg.append("text")
                 .attr("x", region.x - region.textOffset)
