@@ -126,34 +126,3 @@ LEFT JOIN PointCalc c ON c.PlacementID = p.ID
 LEFT JOIN Wins w ON w.PlacementID = p.ID 
 LEFT JOIN Elim e ON e.PlacementID = p.ID 
 		
-
-SELECT * FROM StatView
-
-SELECT * FROM DataView
-
-SELECT * FROM PointsTestView
-
-
-DELETE FROM Stat
-DELETE FROM Placement 
-
-
-SELECT * FROM PLacement
-
-
-
-SELECT * FROM PLacement ORDER BY WeekNumber
-
-SELECT * FROM Placement
-
-SELECT Distinct RegionCode FROM Placement
-
-
-
-
-SELECT * FROM placement WHERE Player Like '%hood%'
-
-
-
-SELECT * FROM placement WHERE Player Like '%kga sexy%' -- Asia
-SELECT * FROM placement WHERE Player Like '%Lasers s2%'  -- BR
