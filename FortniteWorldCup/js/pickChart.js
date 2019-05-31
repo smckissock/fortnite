@@ -72,8 +72,8 @@ dc.pickChart = function (parent, chartGroup) {
             .attr("width", 300)
             .attr("height", 220);
         
-        const radius = 49;    
-        let regions = [
+        const radius = 45;    
+        const regions = [
             {x:50, y:60, color: green, name: "NA EAST", textOffset:33},
             {x:150, y:60, color: purple, name: "NA WEST", textOffset:35},
             {x:250, y:60, color: blue, name: "EUROPE", textOffset:30},
@@ -96,12 +96,6 @@ dc.pickChart = function (parent, chartGroup) {
                 .attr("font-size", "1.4em")
                 .attr("fill", "black");
         });
- 
-/*         var circle = svgContainer.append("circle")
-            .attr("cx", 60)
-            .attr("cy", 60)
-            .attr("r", 60); */
-
         console.log(_chart.data());
     }
 

@@ -22,10 +22,10 @@ body {
         "left-margin    title              title"
         "left-margin    subtitle           search"
         "left-margin    region             player"
-        "left-margin    week               player"
-        "left-margin    region2            player";
+        "left-margin    weeks              player"
+        "left-margin    week               player";
     grid-template-columns: 1rem var(--left-width) auto;
-    grid-template-rows: 4.0rem 1.7rem 14.2rem 15rem auto; 
+    grid-template-rows: 4.0rem 1.7rem 14.2rem 26rem auto; 
     grid-gap: .8em;
     margin: .25em;
     height: 100vh;
@@ -69,26 +69,38 @@ body {
     grid-area: table;
 }
 
+.weeks {
+    grid-area: weeks;
+    font-weight: 500;
+}
+
 .week {
     grid-area: week;
     font-weight: 500;
 }
 
+.week-chart {
+    fill: red;
+}
+
 .region {
     grid-area: region;
 }
-
+/* 
 .region2 {
     grid-area: region2;
     font-weight: 500;
 }
-
+ */
 .player {
     grid-area: player;
+    font-family: sans-serif;
+    font-weight: 700;
+    font-size: .8em;
 }
-
+/* 
 .dc-table-column {
     font-weight: 400;
     font-size: .9em;
-}
+} */
 
