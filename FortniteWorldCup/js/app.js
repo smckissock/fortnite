@@ -68,7 +68,13 @@ function draw(facts) {
     let dim = facts.dimension(dc.pluck("region"));
     let group = dim.group().reduceSum(dc.pluck("payout"));
 
-    weekChart("#dc-chart-weeks");        
+    let weekDim = facts.dimension(dc.pluck("week"));
+    //dc.rowChart("#dc-chart-" + attribute)
+    let weekPayoutGroup = weekDim.group().reduceSum(dc.pluck("payout"));
+
+    weekChart("#dc-chart-weeks")
+        .dimension(weekDim)
+        .group(weekPayoutGroup);        
 
     var select = dc.pickChart('#dc-chart-region')
         .dimension(dim)

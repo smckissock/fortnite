@@ -120,8 +120,8 @@ body {
 .player {
     grid-area: player;
     font-family: sans-serif;
-    font-weight: 700;
-    font-size: .8em;
+    font-weight: 800;
+    font-size: 1.0em;
 }
 /* 
 .dc-table-column {

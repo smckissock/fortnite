@@ -5,24 +5,32 @@ const width = 135;
 const height = 80;
 
 const weeks = [
-    {type:"Solo"},
-    {type:"Duo"},
-    {type:"Solo"},
-    {type:"Duo"},
-    {type:"Solo"},
-    {type:"Duo"},
-    {type:"Solo"},
-    {type:"Duo"},
-    {type:"Solo"},
-    {type:"Duo"},
+    {num: 1, type:"Solo"},
+    {num: 2, type:"Duo"},
+    {num: 3, type:"Solo"},
+    {num: 4, type:"Duo"},
+    {num: 5, type:"Solo"},
+    {num: 6, type:"Duo"},
+    {num: 7, type:"Solo"},
+    {num: 8, type:"Duo"},
+    {num: 9, type:"Solo"},
+    {num: 10, type:"Duo"},
 ];
   
 
 function weekChart(id) {
+    const div = d3.select(id);
+    
+    // Include this, and add a dimension and group
+    // Later call these on a click to filter: 
+    //    _chart.filter(filter);
+    //    _chart.redrawGroup();
+    const _chart = dc.baseMixin({});
+    // This only filters. It doesn't display a group metric, and it does not respond
+    // to changes in the group metric based on other filters.
 
-    let div = d3.select(id);
 
-    let svg = div.append("svg")
+    const svg = div.append("svg")
             .attr("width", 300)
             .attr("height", (height * 5) + 10);
 
@@ -39,6 +47,7 @@ function weekChart(id) {
             .attr("fill", "black")
             .attr("stroke", "black")
             .attr("stroke-width", 0)
+            .attr("data", week.num)
             .classed("week-chart", true)
             .on('mouseover', function (d) {
                 console.log('RECT');
@@ -53,13 +62,18 @@ function weekChart(id) {
                     .duration(100)
                     .attr("stroke-width", 0)
             })
-            .on('mousedown', function (d) {
+            .on('mouseup', function (d) {
                 console.log("DOWN")
                 d3.select(this)
                     .transition()
                     .duration(100)
                     .attr("stroke-width", 12)
-            })
+
+                const filter = "Week " + d3.select(this).attr("data");
+                _chart.filter(filter);
+                _chart.redrawGroup();    
+                updateCounts(); 
+            });
 
         svg.append("text")
             .attr("x", x + 10)
@@ -70,4 +84,6 @@ function weekChart(id) {
             .attr("pointer-events", "none");
         count++;    
     });
+
+    return _chart;
 }

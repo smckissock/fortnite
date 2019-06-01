@@ -76,15 +76,17 @@ dc.pickChart = function (parent, chartGroup) {
         
         const radius = 45;    
         const regions = [
-            {x:50, y:60, color: green, name: "NA EAST", textOffset:33},
-            {x:150, y:60, color: purple, name: "NA WEST", textOffset:35},
-            {x:250, y:60, color: blue, name: "EUROPE", textOffset:30},
-            {x:50, y:160, color: red, name: "OCEANA", textOffset:32},
-            {x:150, y:160, color: teal, name: "BRAZIL", textOffset:26},
-            {x:250, y:160, color: brown, name: "ASIA", textOffset:20}
+            {x:50, y:60, color: green, name: "NA EAST", filter: "NA East", textOffset:33},
+            {x:150, y:60, color: purple, name: "NA WEST", filter: "NA West", textOffset:35},
+            {x:250, y:60, color: blue, name: "EUROPE", filter: "Europe", textOffset:30},
+            {x:50, y:160, color: red, name: "OCEANA", filter: "Oceana", textOffset:32},
+            {x:150, y:160, color: teal, name: "BRAZIL", filter: "Brazil", textOffset:26},
+            {x:250, y:160, color: brown, name: "ASIA", filter: "Asia", textOffset:20}
         ]; 
 
         regions.forEach(function(region) {
+            //svg.append("g")
+            //    .attr("title", region.name)
             svg.append("circle")
                 .attr("cx", region.x)
                 .attr("cy", region.y)
@@ -92,6 +94,8 @@ dc.pickChart = function (parent, chartGroup) {
                 .attr("fill", region.color)
                 .attr("stroke", "black")
                 .attr("stroke-width", 0)
+                .attr("data", region.filter)
+                //.attr("title", region.name)
                 .on('mouseover', function (d) {
                     d3.select(this)
                         .transition()
@@ -104,12 +108,17 @@ dc.pickChart = function (parent, chartGroup) {
                         .duration(100)
                         .attr("stroke-width", 0)
                 })
-                .on('mousedown', function (d) {
+                .on('mouseup', function (d) {
                     console.log("DOWN")
                     d3.select(this)
                         .transition()
                         .duration(100)
-                        .attr("stroke-width", 12)
+                        .attr("stroke-width", 12);
+
+                    const filter = d3.select(this).attr("data");
+                    _chart.filter(filter);
+                    _chart.redrawGroup();   
+                    updateCounts();
                 });
     
                 
