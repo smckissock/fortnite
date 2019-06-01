@@ -202,6 +202,7 @@ dc.tableChart = function (parent, chartGroup, playerDim) {
             .selectAll('tr.' + ROW_CSS_CLASS)
             .data(function (d) {
                 let toShow = filterPlayersFast(d.values, _playerDim.top(Infinity));
+                filters.playerCount = toShow.length;
                 return toShow;
             });
 

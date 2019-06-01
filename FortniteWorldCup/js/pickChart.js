@@ -8,6 +8,8 @@ const lime = '#3CFF3E';
 const grey = '#B3B3B3';
 const brown = '#8B4513';
 
+let regionCircles = [];
+
 
 /**
  * The select menu is a simple widget designed to filter a dimension by selecting an option from
@@ -87,7 +89,7 @@ dc.pickChart = function (parent, chartGroup) {
         regions.forEach(function(region) {
             //svg.append("g")
             //    .attr("title", region.name)
-            svg.append("circle")
+            let circle = svg.append("circle")
                 .attr("cx", region.x)
                 .attr("cy", region.y)
                 .attr("r", radius)
@@ -100,28 +102,34 @@ dc.pickChart = function (parent, chartGroup) {
                     d3.select(this)
                         .transition()
                         .duration(100)
-                        .attr("stroke-width", 6)
+                        .attr("stroke-width", 5)
                 })
                 .on('mouseout', function (d) {
-                    d3.select(this)
-                        .transition()
-                        .duration(100)
-                        .attr("stroke-width", 0)
+                    let dom = d3.select(this);
+                    console.log(dom.attr("data") + "!!!");
+                    if (dom.attr("data") != filters.region)
+                        dom
+                            .transition()
+                            .duration(100)
+                            .attr("stroke-width", 0); 
                 })
                 .on('mouseup', function (d) {
                     console.log("DOWN")
                     d3.select(this)
                         .transition()
                         .duration(100)
-                        .attr("stroke-width", 12);
+                        .attr("stroke-width", 10);
 
                     const filter = d3.select(this).attr("data");
+                    filters.region = filter;
                     _chart.filter(filter);
                     _chart.redrawGroup();   
+                    _chart._drawBorders();
+                    
                     updateCounts();
                 });
-    
-                
+            regionCircles.push(circle);    
+                    
             svg.append("text")
                 .attr("x", region.x - region.textOffset)
                 .attr("y", region.y + 5)
@@ -132,6 +140,19 @@ dc.pickChart = function (parent, chartGroup) {
         });
         console.log(_chart.data());
     }
+
+    _chart._drawBorders = function () {
+        regionCircles.forEach(function(circle) {
+            let dom = d3.select(circle._groups[0][0]);
+            if (dom.attr("data") != filters.region) {
+                dom
+                    .transition()
+                    .duration(100)
+                    .attr("stroke-width", 0)
+            }
+        });
+    };
+
 
 
     // Fixing IE 11 crash when redrawing the chart

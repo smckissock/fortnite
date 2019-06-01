@@ -24,7 +24,7 @@ body {
         "left-margin    weeks              player"
         "left-margin    week               player";
     grid-template-columns: 1rem var(--left-width) auto;
-    grid-template-rows: 4.0rem 1.7rem 14.2rem 26rem auto; 
+    grid-template-rows: 4.0rem 1.7rem 14.2rem 27rem auto; 
     grid-gap: .8em;
     margin: .25em;
     height: 100vh;

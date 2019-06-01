@@ -7,6 +7,12 @@ let playerTable;
 
 let playerColors;
 
+let filters = {
+    week: "",
+    region: "",
+    search: "",
+    playerCount: 0
+}
 
 
 d3.json('data/data.json').then(function (data)  {
@@ -24,6 +30,7 @@ d3.json('data/data.json').then(function (data)  {
         //console.group(playerDim.top(10000).length);
         //console.log(playerStatsGroup.all().length);
 
+        filters.search = searchTerm; 
         playerDim.filter(function (d) { 
             return d.toLowerCase().indexOf(searchTerm) !== -1;
         });
@@ -37,8 +44,11 @@ d3.json('data/data.json').then(function (data)  {
 function updateCounts() {
     makePlayerStatsGroup(playerDim);
     
+    const searches = filters.region + " " + filters.week + " " + filters.search + " " + filters.playerCount;  
+
     d3.select("#count-box")
-        .text(playerDim.top(10000).length);
+        .text(searches);
+        //.text(playerDim.top(10000).length);
 }
 
 function draw(facts) {
