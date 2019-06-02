@@ -15,7 +15,7 @@ let filters = {
 }
 
 
-d3.json('data/data.json').then(function (data)  {
+d3.json('FortniteWorldCup/data/data.json').then(function (data)  {
     data.forEach(function (d) {
         d.rank = +d.rank;
         d.payout = +d.payout;

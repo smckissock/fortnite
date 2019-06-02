@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Fortnite World Cup Results</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="FortniteWorldCup/css/dc.css"/>
+    <link rel="stylesheet" type="text/css" href="FortniteWorldCup/css/app.css"/>
+
+    <script type="text/javascript" src="FortniteWorldCup/js/d3.js"></script>
+    <script type="text/javascript" src="FortniteWorldCup/js/crossfilter.js"></script>
+    <script type="text/javascript" src="FortniteWorldCup/js/dc.js"></script>
+    <script type="text/javascript" src="FortniteWorldCup/js/tableChart.js"></script>
+    <script type="text/javascript" src="FortniteWorldCup/js/pickChart.js"></script>
+    <script type="text/javascript" src="FortniteWorldCup/js/weekChart.js"></script>
+    <script type="text/javascript" src="FortniteWorldCup/js/app.js"></script>
+</head>
+<body>
+
+<div class="grid gradient">
+    <div class="title">
+        FORTNITE &nbsp;World Cup Stats
+    </div>
+
+    <div class="subtitle">
+        Last updated May 18 at 4:00 PM EST
+    </div>
+
+    <div class="search">
+        Search&nbsp;
+        <input id="search-input" class="search-input" placeholder=" Player" spellcheck="false">
+        <span id="count-box" class="player-count"></span>
+    </div>
+
+    <div class="player">
+        <table id="dc-chart-player">
+            <thead>
+                <tr>
+                    <th style="width:160px">Player</th>
+                    <th style="width:60px">Payout</th>
+                    <th style="width:50px">Score</th>
+                    <th style="width:40px">Wins</th>
+                    <th style="width:50px">Elims</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+    
+    <div class="region" id="dc-chart-region">
+    Region
+    </div>
+
+    <div class="weeks" id="dc-chart-weeks">
+    </div>
+
+    <div class="week" id="dc-chart-week">
+    Week
+    </div>
+
+<!--     <div class="region2" id="dc-chart-region2">
+        Region 2
+    </div> -->
+</div>
+
+</body>
