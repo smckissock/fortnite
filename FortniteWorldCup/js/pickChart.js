@@ -99,6 +99,10 @@ dc.pickChart = function (parent, chartGroup) {
                 .attr("data", region.filter)
                 //.attr("title", region.name)
                 .on('mouseover', function (d) {
+
+                    if (d3.select(this).attr("data") === filters.region)
+                        return;
+
                     d3.select(this)
                         .transition()
                         .duration(100)
@@ -112,31 +116,8 @@ dc.pickChart = function (parent, chartGroup) {
                             .duration(100)
                             .attr("stroke-width", 0); 
                 })
-                .on('mouseup', function (d) {
-
-                    d3.select(this)
-                        .transition()
-                        .duration(100)
-                        .attr("stroke-width", 10);
-
-                    const filter = d3.select(this).attr("data");
-
-                    if (filter == filters.region) {
-                        _chart.filter(null);
-                        d3.select(this)
-                            .transition()
-                            .duration(100)
-                            .attr("stroke-width", 0);
-                    } else {
-                        // chart.replaceFilter(filter)
-                        _chart._unfilter();
-                    }
-                    
-                    filters.region = filter;
-                    _chart.filter(filter);
-                    _chart.redrawGroup();   
-                    
-                    updateCounts();
+                .on('click', function (d) {
+                    _chart.selectCircles(d3.select(this));
                 });
             regionCircles.push(circle);    
                     
@@ -151,18 +132,72 @@ dc.pickChart = function (parent, chartGroup) {
         console.log(_chart.data());
     }
 
-    _chart._unfilter = function () {
-        regionCircles.forEach(function(circle) {
-            let dom = d3.select(circle._groups[0][0]);
-            if (dom.attr("data") == filters.region) {
-                _chart.filter(filters.region);
-                dom
-                    .transition()
-                    .duration(100)
-                    .attr("stroke-width", 0)
-            }
-        });
-    };
+    _chart.selectCircles = function(d3Circle) {
+        const newFilter = d3Circle.attr("data");
+
+        // 5 things need to happen:
+
+        // 1) Update filters.region
+        // 2) Set/unset crossfilter filter
+        // 3) Draw correct outlines
+        // 4) DC Redraw
+        // 5) Update counts
+
+       // 1 None were selected, this is the first selection
+       if (filters.region === "") {
+            filters.region = newFilter;
+            _chart.filter(filters.region);
+            d3Circle
+                .transition()
+                .duration(100)
+                .attr("stroke-width", 10);
+
+            _chart.redrawGroup();   
+            updateCounts();
+           return;
+        }
+
+        // 2 One is selected, so unselect it and select this
+        if (filters.region != newFilter) {
+            const oldFilter = filters.region;
+
+            // Uncircle old one
+            regionCircles.forEach(function(circle) {
+                let dom = d3.select(circle._groups[0][0]);
+                if (dom.attr("data") == oldFilter) {
+                    // This will toggle it off
+                    _chart.filter(oldFilter);
+                    dom
+                        .transition()
+                        .duration(100)
+                        .attr("stroke-width", 0)
+                }
+            });
+
+            filters.region = newFilter;
+            _chart.filter(filters.region);
+            d3Circle
+                .transition()
+                .duration(100)
+                .attr("stroke-width", 10);
+
+            _chart.redrawGroup();   
+            updateCounts();
+            return;
+        }   
+        
+        // 3 This was selected, so unselect it - all will be selected
+        filters.region = "";
+        _chart.filter(null);
+        d3Circle
+            .transition()
+            .duration(100)
+            .attr("stroke-width", 0);
+        
+            _chart.redrawGroup();   
+        updateCounts();
+    }
+
 
     // Fixing IE 11 crash when redrawing the chart
     // see here for list of IE user Agents :

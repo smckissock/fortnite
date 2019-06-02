@@ -71,7 +71,11 @@ function weekChart(id) {
             .attr("data", week.num)
             .classed("week-chart", true)
             .on('mouseover', function (d) {
-                console.log('RECT');
+
+                // The are mousing over the selected item - don't shrink the border
+                if ("Week " + d3.select(this).attr("data") === filters.week)
+                    return;
+                
                 d3.select(this)
                     .transition()
                     .duration(100)
@@ -84,37 +88,11 @@ function weekChart(id) {
                         .transition()
                         .duration(100)
                         .attr("stroke-width", 0); 
-
-/*                 d3.select(this)
-                    .transition()
-                    .duration(100)
-                    .attr("stroke-width", 0) */
             })
-            .on('mouseup', function (d) {
-
-                d3.select(this)
-                    .transition()
-                    .duration(100)
-                    .attr("stroke-width", 10)
-
-                const filter = "Week " + d3.select(this).attr("data");
-                
-                if (filter == filters.week) {
-                    _chart.filter(null);
-                    d3.select(this)
-                        .transition()
-                        .duration(100)
-                        .attr("stroke-width", 0);
-                } else {
-                    unfilter();
-                }
-
-                filters.week = filter;
-                _chart.filter(filter);
-                _chart.redrawGroup();    
-                updateCounts(); 
-                unfilter();
+            .on('click', function (d) {
+                clickRect(d3.select(this));
             });
+
         weekRects.push(rect);
 
         svg.append("text")
@@ -128,18 +106,72 @@ function weekChart(id) {
         count++;    
     });
 
-   unfilter = function () {
-        weekRects.forEach(function(week) {
-            let dom = d3.select(week._groups[0][0]);
-            if ("Week " + dom.attr("data") == filters.week) {
-                _chart.filter(filters.week);
-                dom
-                    .transition()
-                    .duration(100)
-                    .attr("stroke-width", 0)
-            }
-        });
-    };
+    clickRect = function(d3Rect) {
+        const newFilter = "Week " + d3Rect.attr("data");
+
+        // 5 things need to happen:
+
+        // 1) Update filters.region
+        // 2) Set/unset crossfilter filter
+        // 3) Draw correct outlines
+        // 4) DC Redraw
+        // 5) Update counts
+
+       // 1 None were selected, this is the first selection
+       if (filters.week === "") {
+            filters.week = newFilter;
+
+            _chart.filter(filters.week);
+            d3Rect
+                .transition()
+                .duration(100)
+                .attr("stroke-width", 9);
+
+            _chart.redrawGroup();   
+            updateCounts();
+           return;
+        }
+
+        // 2 One is selected, so unselect it and select this
+        if (filters.week != newFilter) {
+            const oldFilter = filters.week;
+
+            // Un-border old one
+            weekRects.forEach(function(week) {
+                let dom = d3.select(week._groups[0][0]);
+                if ("Week " + dom.attr("data") == oldFilter) {
+                    // This will toggle it off
+                    _chart.filter(oldFilter);
+                    dom
+                        .transition()
+                        .duration(100)
+                        .attr("stroke-width", 0)
+                }
+            });
+
+            filters.week = newFilter;
+            _chart.filter(filters.week);
+            d3Rect
+                .transition()
+                .duration(100)
+                .attr("stroke-width", 9);
+
+            _chart.redrawGroup();   
+            updateCounts();
+            return;
+        }   
+
+        // 3 This was selected, so unselect it - all will be selected
+        filters.region = "";
+        _chart.filter(null);
+        d3Rect
+            .transition()
+            .duration(100)
+            .attr("stroke-width", 0);
+        
+        _chart.redrawGroup();   
+        updateCounts();
+    }
 
     return _chart;
 }
