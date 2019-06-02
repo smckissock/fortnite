@@ -21,7 +21,7 @@ d3.json('FortniteWorldCup/data/data.json').then(function (data)  {
         d.payout = +d.payout;
         d.points = d.points;
     });
-    var facts = crossfilter(data);
+    const facts = crossfilter(data);
     draw(facts);
 
     d3.select("#search-input").on('keyup', function (event) {
@@ -52,8 +52,6 @@ function updateCounts() {
 }
 
 function draw(facts) {
-    //new RowChart(facts, "region2", 300, 10);
-    new RowChart(facts, "week", 300, 10);
 
     playerDim = facts.dimension(dc.pluck("player"));
     makePlayerColors();
@@ -75,18 +73,21 @@ function draw(facts) {
         .sortBy(function (d) { return d })
         .order(d3.descending);
 
-    let dim = facts.dimension(dc.pluck("region"));
-    let group = dim.group().reduceSum(dc.pluck("payout"));
+    const dim = facts.dimension(dc.pluck("region"));
+    const group = dim.group().reduceSum(dc.pluck("payout"));
 
-    let weekDim = facts.dimension(dc.pluck("week"));
-    //dc.rowChart("#dc-chart-" + attribute)
-    let weekPayoutGroup = weekDim.group().reduceSum(dc.pluck("payout"));
+    const weekDim = facts.dimension(dc.pluck("week"));
+    const weekPayoutGroup = weekDim.group().reduceSum(dc.pluck("payout"));
 
     weekChart("#dc-chart-weeks")
         .dimension(weekDim)
-        .group(weekPayoutGroup);        
+        .group(weekPayoutGroup);      
+        
+    regionChart("#dc-chart-region")
+        .dimension(dim)
+        .group(group);          
 
-    var select = dc.pickChart('#dc-chart-region')
+/*     const select = dc.pickChart('#dc-chart-region')
         .dimension(dim)
         .group(group)
         .order(function (a,b) {
@@ -99,7 +100,7 @@ function draw(facts) {
     });
     //select.title(function (d){
     //    return 'STATE: ' + d.key;
-    //});
+    //});  */
         
     dc.renderAll();
     updateCounts();
@@ -150,24 +151,4 @@ function makePlayerStatsGroup() {
             };
         }
     );
-}
-
-
-var RowChart = function (facts, attribute, width, maxItems) {
-    this.dim = facts.dimension(dc.pluck(attribute));
-    //dc.rowChart("#dc-chart-" + attribute)
-    dc.rowChart("#dc-chart-" + attribute)
-        .dimension(this.dim)
-        .group(this.dim.group().reduceSum(dc.pluck("payout")))
-        .data(function (d) { return d.top(maxItems); })
-        .width(width)
-        .height(maxItems * 22)
-        .margins({ top: 0, right: 10, bottom: 20, left: 20 })
-        .elasticX(true)
-        //.ordinalColors(['#9ecae1']) // light blue
-        //.ordinalColors(['#00008b']) // dark blue
-        .ordinalColors(['#04c7ff']) // dark blue
-        .labelOffsetX(5)
-        .on('filtered', updateCounts)
-        .xAxis().ticks(4).tickFormat(d3.format(".2s"));
 }
