@@ -1,14 +1,12 @@
 ﻿USE Fortnite
 GO
 
-
-
 EXEC DropTable 'Qualification'
 GO
 CREATE TABLE Qualification (
 	ID [int] IDENTITY(1,1) NOT NULL,
 	Player nvarchar(500) NOT NULL,
-	Week int NOT NULL
+	Week nvarchar(10) NOT NULL
 PRIMARY KEY CLUSTERED 
 (
 	[ID] ASC
@@ -16,6 +14,33 @@ PRIMARY KEY CLUSTERED
 ) ON [PRIMARY]
 GO
 
+
+EXEC DropView 'QualificationView'
+GO
+
+CREATE VIEW QualificationView 
+AS 
+SELECT 
+	q.Player,
+	q.Week,
+	p.SoloOrDuo,
+	p.RegionCode,
+	p.Rank,
+	p.Payout,
+	p.Points
+FROM Qualification q 
+JOIN Placement p ON p.Player = q.player AND p.WeekNumber = q.week 
+
+
+
+
+
+SELECT * FROM Placement WHERE WeekNumber = 'Week1' AND RegionCode = 'OCE'
+
+SELECT * FROM Placement WHERE Player LIKE '%slаyа%'
+
+
+INSERT INTO Qualification VALUES ((SELECT Player FROM Placement WHERE ID = 15001), 'Week1') 
 
 INSERT INTO Qualification VALUES ('slаyа', 1)
 INSERT INTO Qualification VALUES ('TOP_FaxFox iwnl', 1)
@@ -39,6 +64,11 @@ INSERT INTO Qualification VALUES ('Liquid Riversan', 1)
 
 
 SELECT * FROM Qualification
+
+SELECT * FROM Qualification
+
+DELETE FROM Qualification 
+
 
 
 slаyа
