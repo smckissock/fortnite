@@ -1,29 +1,28 @@
 "use strict"
 
-const green ='#319236';
-const purple = '#9D4DBB';
-const blue = '#4C51F7';
-const red = '#DB4441';
-const teal = '#3E93BC';
-const lime = '#3CFF3E';
-const grey = '#B3B3B3';
-const brown = '#8B4513';
-
- const radius = 45;    
- const regions = [
-    {x:50, y:80, color: green, name: "NA EAST", filter: "NA East", textOffset:33},
-    {x:150, y:80, color: purple, name: "NA WEST", filter: "NA West", textOffset:35},
-    {x:250, y:80, color: blue, name: "EUROPE", filter: "Europe", textOffset:30},
-    {x:50, y:180, color: red, name: "OCEANA", filter: "Oceana", textOffset:32},
-    {x:150, y:180, color: teal, name: "BRAZIL", filter: "Brazil", textOffset:26},
-    {x:250, y:180, color: brown, name: "ASIA", filter: "Asia", textOffset:20}
-]; 
-
-let regionCircles = [];
-
-
 
 function regionChart(id) {
+
+    const green ='#319236';
+    const purple = '#9D4DBB';
+    const blue = '#4C51F7';
+    const red = '#DB4441';
+    const teal = '#3E93BC';
+    const lime = '#3CFF3E';
+    const grey = '#B3B3B3';
+    const brown = '#8B4513';
+   
+    const regions = [
+        {x:50, y:80, color: green, name: "NA EAST", filter: "NA East", textOffset:33},
+        {x:150, y:80, color: purple, name: "NA WEST", filter: "NA West", textOffset:35},
+        {x:250, y:80, color: blue, name: "EUROPE", filter: "Europe", textOffset:30},
+        {x:50, y:180, color: red, name: "OCEANA", filter: "Oceana", textOffset:32},
+        {x:150, y:180, color: teal, name: "BRAZIL", filter: "Brazil", textOffset:26},
+        {x:250, y:180, color: brown, name: "ASIA", filter: "Asia", textOffset:20}
+    ];
+    
+    let regionCircles = [];
+    const radius = 45; 
     
     const width = 135;
     const height = 80;

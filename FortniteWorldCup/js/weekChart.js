@@ -1,22 +1,22 @@
 "use strict"
-
-const weeks = [
-    {num: 1, type:"Solo"},
-    {num: 2, type:"Duo"},
-    {num: 3, type:"Solo"},
-    {num: 4, type:"Duo"},
-    {num: 5, type:"Solo"},
-    {num: 6, type:"Duo"},
-    {num: 7, type:"Solo"},
-    {num: 8, type:"Duo"},
-    {num: 9, type:"Solo"},
-    {num: 10, type:"Duo"},
-];
-
-let weekRects = [];
-  
-
+ 
 function weekChart(id) {
+
+    const weeks = [
+        {num: 1, type:"Solo", done: true},
+        {num: 2, type:"Duo", done: true},
+        {num: 3, type:"Solo", done: true},
+        {num: 4, type:"Duo", done: true},
+        {num: 5, type:"Solo", done: true},
+        {num: 6, type:"Duo", done: true},
+        {num: 7, type:"Solo", done: true},
+        {num: 8, type:"Duo", done: false},
+        {num: 9, type:"Solo", done: false},
+        {num: 10, type:"Duo", done: false},
+    ];
+    
+    let weekRects = [];
+
     const soloX = 10;
     const duoX = 155; 
 
@@ -35,7 +35,7 @@ function weekChart(id) {
 
     // Also - make sure to return _chart; at the end of the function, or chaining won't work! 
 
-    const bigLabel = {x: 25, y: 48, size: "2em" }
+    const bigLabel = {x: 25, y: 45, size: "2em" }
     const smallLabel = {x: 40, y: 30, size: "1.2em" }
 
     const svg = div.append("svg")
@@ -56,27 +56,40 @@ function weekChart(id) {
         .attr("font-size", "1.8em")
         .attr("fill", "black");
 
-    const top = 30;
+    const top = 40;
     let count = 0;      
     weeks.forEach(function(week) {
-        let x = week.type === "Solo" ? soloX : duoX;
-        let y = Math.round((count-1)/2) * height + top;
+        const x = week.type === "Solo" ? soloX : duoX;
+        const y = Math.round((count-1)/2) * height + top;
 
-        let rect = svg.append("rect")
+        const yellowGreen = "#9ACD32"
+        const red = "Red";
+        const grey = '#B3B3B3';
+
+        let color = (week.type === "Duo") ? yellowGreen : red;
+        if (!week.done)
+            color = grey;
+
+        const rect = svg.append("rect")
             .attr("x", x)
-            .attr("y", y + 3)
+            .attr("y", y)
             .attr("width", width)
             .attr("height", height - 10)
-            .attr("fill", "black")
+            .attr("fill", color)
             .attr("stroke", "black")
             .attr("stroke-width", 0)
             .attr("data", week.num)
-            .classed("week-chart", true)
+            //.classed("week-chart", true)
             .on('mouseover', function (d) {
+                const num = d3.select(this).attr("data");
 
                 // The are mousing over the selected item - don't shrink the border
-                if ("Week " + d3.select(this).attr("data") === filters.week)
+                if ("Week " + num === filters.week)
                     return;
+
+                // Don't do anything for weeks that aren't done     
+                if (!weeks.filter(x => x.num == num)[0].done)
+                    return;    
                 
                 d3.select(this)
                     .transition()
@@ -109,7 +122,13 @@ function weekChart(id) {
     });
 
     const clickRect = function(d3Rect) {
-        const newFilter = "Week " + d3Rect.attr("data");
+        const num = d3Rect.attr("data");
+
+        // Don't do anything for weeks that aren't done     
+        if (!weeks.filter(x => x.num == num)[0].done)
+            return;   
+
+        const newFilter = "Week " + num;
 
         // 5 things need to happen:
 
@@ -164,7 +183,7 @@ function weekChart(id) {
         }   
 
         // 3 This was selected, so unselect it - all will be selected
-        filters.region = "";
+        filters.week = "";
         _chart.filter(null);
         d3Rect
             .transition()

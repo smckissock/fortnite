@@ -86,7 +86,7 @@ body {
 .player-count {
     grid-area: search;
     font-weight: 400;
-    font-size: 1.0em;
+    font-size: .6em;
 }
 
 .table {
@@ -98,11 +98,6 @@ body {
     font-weight: 500;
 }
 
-.week {
-    grid-area: week;
-    font-weight: 500;
-}
-
 .week-chart {
     fill: red;
 }
@@ -110,12 +105,8 @@ body {
 .region {
     grid-area: region;
 }
-/* 
-.region2 {
-    grid-area: region2;
-    font-weight: 500;
-}
- */
+
+
 .player {
     grid-area: player;
     font-family: sans-serif;
