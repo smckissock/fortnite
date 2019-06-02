@@ -39,6 +39,10 @@ body {
       );
   }
 
+.right-align {
+    text-align: right;
+};
+
 .red {
     color: #DB4441; 
 }

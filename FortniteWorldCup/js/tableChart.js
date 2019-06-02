@@ -157,6 +157,7 @@ dc.tableChart = function (parent, chartGroup, playerDim) {
                     .attr('class', LABEL_CSS_CLASS)
                     .attr('class', function (d) {
                         return d.color })
+                    .attr("right-align")
                     .attr('colspan', _columns.length)
                     .html(function (d) {
                         return _chart.keyAccessor()(d);
@@ -211,10 +212,12 @@ dc.tableChart = function (parent, chartGroup, playerDim) {
             .attr('class', ROW_CSS_CLASS);
 
         _columns.forEach(function (v, i) {
+
             rowEnter.append('td')
                 .attr('class', COLUMN_CSS_CLASS + ' _' + i)
                 .attr('class', function (d) {
                     return d.color })
+                .classed("right-align", i > 0)    
                 .html(function (d) {
                     return _chart._doColumnValueFormat(v, d);
                 });
