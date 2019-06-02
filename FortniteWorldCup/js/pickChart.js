@@ -106,7 +106,6 @@ dc.pickChart = function (parent, chartGroup) {
                 })
                 .on('mouseout', function (d) {
                     let dom = d3.select(this);
-                    console.log(dom.attr("data") + "!!!");
                     if (dom.attr("data") != filters.region)
                         dom
                             .transition()
@@ -114,17 +113,28 @@ dc.pickChart = function (parent, chartGroup) {
                             .attr("stroke-width", 0); 
                 })
                 .on('mouseup', function (d) {
-                    console.log("DOWN")
+
                     d3.select(this)
                         .transition()
                         .duration(100)
                         .attr("stroke-width", 10);
 
                     const filter = d3.select(this).attr("data");
+
+                    if (filter == filters.region) {
+                        _chart.filter(null);
+                        d3.select(this)
+                            .transition()
+                            .duration(100)
+                            .attr("stroke-width", 0);
+                    } else {
+                        // chart.replaceFilter(filter)
+                        _chart._unfilter();
+                    }
+                    
                     filters.region = filter;
                     _chart.filter(filter);
                     _chart.redrawGroup();   
-                    _chart._drawBorders();
                     
                     updateCounts();
                 });
@@ -132,7 +142,7 @@ dc.pickChart = function (parent, chartGroup) {
                     
             svg.append("text")
                 .attr("x", region.x - region.textOffset)
-                .attr("y", region.y + 5)
+                .attr("y", region.y + 6)
                 .text(region.name)
                 .attr("font-size", "1.4em")
                 .attr("fill", "black")
@@ -141,10 +151,11 @@ dc.pickChart = function (parent, chartGroup) {
         console.log(_chart.data());
     }
 
-    _chart._drawBorders = function () {
+    _chart._unfilter = function () {
         regionCircles.forEach(function(circle) {
             let dom = d3.select(circle._groups[0][0]);
-            if (dom.attr("data") != filters.region) {
+            if (dom.attr("data") == filters.region) {
+                _chart.filter(filters.region);
                 dom
                     .transition()
                     .duration(100)
@@ -152,8 +163,6 @@ dc.pickChart = function (parent, chartGroup) {
             }
         });
     };
-
-
 
     // Fixing IE 11 crash when redrawing the chart
     // see here for list of IE user Agents :

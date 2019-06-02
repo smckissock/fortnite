@@ -10,6 +10,8 @@ const weeks = [
     {num: 9, type:"Solo"},
     {num: 10, type:"Duo"},
 ];
+
+let weekRects = [];
   
 
 function weekChart(id) {
@@ -58,7 +60,7 @@ function weekChart(id) {
         let x = week.type === "Solo" ? soloX : duoX;
         let y = Math.round((count-1)/2) * height + top;
 
-        svg.append("rect")
+        let rect = svg.append("rect")
             .attr("x", x)
             .attr("y", y + 3)
             .attr("width", width)
@@ -73,27 +75,47 @@ function weekChart(id) {
                 d3.select(this)
                     .transition()
                     .duration(100)
-                    .attr("stroke-width", 7)
+                    .attr("stroke-width", 5)
             })
             .on('mouseout', function (d) {
-                d3.select(this)
+                let dom = d3.select(this);
+                if ("Week " + dom.attr("data") != filters.week)
+                    dom
+                        .transition()
+                        .duration(100)
+                        .attr("stroke-width", 0); 
+
+/*                 d3.select(this)
                     .transition()
                     .duration(100)
-                    .attr("stroke-width", 0)
+                    .attr("stroke-width", 0) */
             })
             .on('mouseup', function (d) {
-                console.log("DOWN")
+
                 d3.select(this)
                     .transition()
                     .duration(100)
-                    .attr("stroke-width", 12)
+                    .attr("stroke-width", 10)
 
                 const filter = "Week " + d3.select(this).attr("data");
+                
+                if (filter == filters.week) {
+                    _chart.filter(null);
+                    d3.select(this)
+                        .transition()
+                        .duration(100)
+                        .attr("stroke-width", 0);
+                } else {
+                    unfilter();
+                }
+
                 filters.week = filter;
                 _chart.filter(filter);
                 _chart.redrawGroup();    
                 updateCounts(); 
+                unfilter();
             });
+        weekRects.push(rect);
 
         svg.append("text")
             .attr("x", x + bigLabel.x)
@@ -102,16 +124,22 @@ function weekChart(id) {
             .attr("font-size", bigLabel.size)
             .attr("fill", "black")    
             .attr("pointer-events", "none");
-
-/*             .attr("x", x + 10)
-            .attr("y", y + 25)
-            //.text("Week " + (count + 1) + " " + week.type)
-            .text("Week " + (count + 1))
-            .attr("font-size", "1.1em")
-            .attr("fill", "black") */
             
         count++;    
     });
+
+   unfilter = function () {
+        weekRects.forEach(function(week) {
+            let dom = d3.select(week._groups[0][0]);
+            if ("Week " + dom.attr("data") == filters.week) {
+                _chart.filter(filters.week);
+                dom
+                    .transition()
+                    .duration(100)
+                    .attr("stroke-width", 0)
+            }
+        });
+    };
 
     return _chart;
 }

@@ -87,7 +87,7 @@ body {
 .player-count {
     grid-area: search;
     font-weight: 400;
-    font-size: .6em;
+    font-size: 1.0em;
 }
 
 .table {

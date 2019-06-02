@@ -44,7 +44,7 @@ d3.json('data/data.json').then(function (data)  {
 function updateCounts() {
     makePlayerStatsGroup(playerDim);
     
-    const searches = filters.region + " " + filters.week + " " + filters.search + " " + filters.playerCount;  
+    const searches = filters.region + " " + filters.week + " " + filters.search + " " + filters.playerCount + " players";  
 
     d3.select("#count-box")
         .text(searches);
