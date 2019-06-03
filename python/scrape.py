@@ -69,7 +69,7 @@ def save_places (json, week, region, solo_or_duo):
 regions = ["NAE", "NAW", "EU", "OCE", "ASIA", "BR"]
 solo_weeks = ["Week1", "Week3", "Week5", "Week7"]
 #duo_weeks = ["Week2"]
-duo_weeks = ["Week2", "Week4", "Week6"]
+duo_weeks = ["Week2", "Week4", "Week6", "Week8"]
 
 event = "Event2"
 for region in regions:

@@ -26,13 +26,10 @@ d3.json('FortniteWorldCup/data/data.json').then(function (data)  {
 
     d3.select("#search-input").on('keyup', function (event) {
         const searchTerm = document.getElementById("search-input").value;
-        //console.log(searchTerm);
-        //console.group(playerDim.top(10000).length);
-        //console.log(playerStatsGroup.all().length);
-
+        
         filters.search = searchTerm; 
         playerDim.filter(function (d) { 
-            return d.toLowerCase().indexOf(searchTerm) !== -1;
+            return d.toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1;
         });
         
         updateCounts();
@@ -48,7 +45,6 @@ function updateCounts() {
 
     d3.select("#count-box")
         .text(searches);
-        //.text(playerDim.top(10000).length);
 }
 
 function draw(facts) {
@@ -86,21 +82,6 @@ function draw(facts) {
     regionChart("#dc-chart-region")
         .dimension(dim)
         .group(group);          
-
-/*     const select = dc.pickChart('#dc-chart-region')
-        .dimension(dim)
-        .group(group)
-        .order(function (a,b) {
-            return a.value > b.value ? 1 : b.value > a.value ? -1 : 0;
-        });
-    // the option text can be set via the title() function
-    // by default the option text is '`key`: `value`'
-    select.title(function (d){
-        return d.key;
-    });
-    //select.title(function (d){
-    //    return 'STATE: ' + d.key;
-    //});  */
         
     dc.renderAll();
     updateCounts();

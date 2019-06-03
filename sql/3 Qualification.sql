@@ -14,6 +14,8 @@ PRIMARY KEY CLUSTERED
 ) ON [PRIMARY]
 GO
 
+ -- Add unique index on player and week
+
 
 EXEC DropView 'QualificationView'
 GO
@@ -32,7 +34,7 @@ FROM Qualification q
 JOIN Placement p ON p.Player = q.player AND p.WeekNumber = q.week 
 
 
-
+INSERT INTO Qualification VALUES ((SELECT Player FROM Placement WHERE ID = 15001), 'Week1') 
 
 
 SELECT * FROM Placement WHERE WeekNumber = 'Week1' AND RegionCode = 'OCE'
@@ -40,35 +42,10 @@ SELECT * FROM Placement WHERE WeekNumber = 'Week1' AND RegionCode = 'OCE'
 SELECT * FROM Placement WHERE Player LIKE '%slаyа%'
 
 
-INSERT INTO Qualification VALUES ((SELECT Player FROM Placement WHERE ID = 15001), 'Week1') 
+SELECT * FROM Placement
 
-INSERT INTO Qualification VALUES ('slаyа', 1)
-INSERT INTO Qualification VALUES ('TOP_FaxFox iwnl', 1)
-INSERT INTO Qualification VALUES ('E11 Stompy', 1)
-INSERT INTO Qualification VALUES ('TQ Prisi0n3r0', 1)
-INSERT INTO Qualification VALUES ('NRG benjуfishу', 1)
-INSERT INTO Qualification VALUES ('hREDS BELAEU', 1)
-INSERT INTO Qualification VALUES ('Gambit.letw1k3', 1)
-INSERT INTO Qualification VALUES ('nqyte', 1)
-INSERT INTO Qualification VALUES ('S2V DiegoGB', 1)
-INSERT INTO Qualification VALUES ('ÐRG', 1)
-INSERT INTO Qualification VALUES ('LOUD leleo', 1)
-INSERT INTO Qualification VALUES ('SEN Bughа', 1)
-INSERT INTO Qualification VALUES ('FaZe Dubs.', 1)
-INSERT INTO Qualification VALUES ('Ghost Bizzle', 1)
-INSERT INTO Qualification VALUES ('TSM_Comado', 1)
-INSERT INTO Qualification VALUES ('Mjólnir', 1)
-INSERT INTO Qualification VALUES ('100T Ceice', 1)
-INSERT INTO Qualification VALUES ('snоw xd', 1)
-INSERT INTO Qualification VALUES ('Liquid Riversan', 1)
-
-
-SELECT * FROM Qualification
-
-SELECT * FROM Qualification
-
-DELETE FROM Qualification 
-
+DELETE FROM Stat -- 74842
+DELETE FROM Placement --6000
 
 
 slаyа

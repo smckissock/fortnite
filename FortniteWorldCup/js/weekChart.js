@@ -10,7 +10,7 @@ function weekChart(id) {
         {num: 5, type:"Solo", done: true},
         {num: 6, type:"Duo", done: true},
         {num: 7, type:"Solo", done: true},
-        {num: 8, type:"Duo", done: false},
+        {num: 8, type:"Duo", done: true},
         {num: 9, type:"Solo", done: false},
         {num: 10, type:"Duo", done: false},
     ];
