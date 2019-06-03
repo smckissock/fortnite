@@ -48,6 +48,10 @@ DELETE FROM Stat -- 74842
 DELETE FROM Placement --6000
 
 
+ALTER TABLE Placement ADD SoloWeek int NOT NULL DEFAULT 0
+ALTER TABLE Placement ADD DuoWeek int NOT NULL DEFAULT 0
+
+
 slаyа
 TOP_FaxFox iwnl
 E11 Stompy
@@ -202,3 +206,4 @@ GusTavox8
 S2 little
 S2 jay
 
+SELECT * FROM Placement

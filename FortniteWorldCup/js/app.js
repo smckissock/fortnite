@@ -62,10 +62,12 @@ function draw(facts) {
         .size(Infinity)
         .dimension(playerStatsGroup)
         .columns([function (d) { return d.key },
-              function (d) { return d.value.payout },
-              function (d) { return d.value.points },
-              function (d) { return d.value.wins },
-              function (d) { return d.value.elims }])
+            function (d) { return d.value.soloQual },
+            function (d) { return d.value.duoQual },
+            function (d) { return d.value.payout },
+            function (d) { return d.value.points },
+            function (d) { return d.value.wins },
+            function (d) { return d.value.elims }])
         .sortBy(function (d) { return d })
         .order(d3.descending);
 
@@ -110,6 +112,9 @@ function makePlayerStatsGroup() {
 
     playerDim.group().reduce(
         function (p, v) {
+            p.soloQual = p.soloQual + v.soloQual;
+            p.duoQual = p.duoQual + v.duoQual;
+
             p.payout = p.payout + v.payout;
             p.points = p.points + v.points;
             p.wins = p.wins + v.wins;
@@ -117,6 +122,9 @@ function makePlayerStatsGroup() {
             return p;
         },
         function (p, v) {
+            p.soloQual = p.soloQual - v.soloQual;
+            p.duoQual = p.duoQual - v.duoQual;
+
             p.payout = p.payout - v.payout;
             p.points = p.points - v.points;
             p.wins = p.wins - v.wins;
@@ -125,7 +133,9 @@ function makePlayerStatsGroup() {
         },
         function (p) {
             return {   
-                payout: 0
+                soloQual:0
+                ,duoQual: 0 
+                ,payout: 0
                 , points: 0
                 , wins: 0
                 , elims: 0

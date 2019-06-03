@@ -8,6 +8,8 @@ namespace FortniteJson {
 
     public class Place {
         public string week;
+        public int soloQual;
+        public int duoQual;
         public string soloOrDuo;
         public string player;
         public string region;
@@ -27,6 +29,8 @@ namespace FortniteJson {
             while (reader.Read()) {
                 var place = new Place();
                 place.week = reader["week"].ToString();
+                place.soloQual = (System.Int32)reader["soloWeek"];
+                place.duoQual = (System.Int32)reader["duoWeek"];
                 place.soloOrDuo = reader["soloOrDuo"].ToString();
                 place.player = reader["player"].ToString();
                 place.region = reader["region"].ToString();
