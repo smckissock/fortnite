@@ -217,6 +217,7 @@ dc.tableChart = function (parent, chartGroup, playerDim) {
                 .attr('class', COLUMN_CSS_CLASS + ' _' + i)
                 .attr('class', function (d) {
                     return d.color })
+                .classed("wrap", true)
                 .classed("right-align", i > 0)    
                 .html(function (d) {
                     return _chart._doColumnValueFormat(v, d);

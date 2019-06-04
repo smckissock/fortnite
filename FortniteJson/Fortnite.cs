@@ -43,7 +43,7 @@ namespace FortniteJson {
             }
             reader.Close();
 
-            string fileName = @"c:\fortnite\FortniteWorldCup\data\data.json";
+            string fileName = @"c:\fortnite\fwc\data\data.json";
 
             string json = JsonConvert.SerializeObject(places);
             var niceJson = Newtonsoft.Json.Linq.JToken.Parse(json).ToString();

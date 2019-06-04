@@ -43,6 +43,15 @@ body {
     text-align: right;
 }
 
+
+#dc-chart-player {
+    table-layout: fixed;
+}
+
+.wrap {
+    word-wrap: break-word;
+}
+
 .red2 {
     color: #DB4441; 
 }
