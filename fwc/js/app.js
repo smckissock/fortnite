@@ -7,6 +7,12 @@ let playerTable;
 
 let playerColors;
 
+let theWeekChart; 
+
+// Function that weekChart sets and personChart calls!! 
+let showPlayerOnWeekChart;
+
+
 let filters = {
     week: "",
     region: "",

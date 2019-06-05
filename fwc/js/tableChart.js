@@ -209,7 +209,14 @@ dc.tableChart = function (parent, chartGroup, playerDim) {
 
         var rowEnter = rows.enter()
             .append('tr')
-            .attr('class', ROW_CSS_CLASS);
+            .attr('class', ROW_CSS_CLASS)
+            .attr("data", function (d) {
+                return d;
+            })
+            .on('click', function (d) {
+                // Call function on week chart that's been assigned to a global variable
+                showPlayerOnWeekChart(d.key);
+            });;
 
         _columns.forEach(function (v, i) {
 
@@ -226,6 +233,11 @@ dc.tableChart = function (parent, chartGroup, playerDim) {
         rows.exit().remove();
 
         return rows;
+    }
+
+    function selectRow () {
+        console.log ('QQQQ');
+
     }
 
     _chart._doRedraw = function () {

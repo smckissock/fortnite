@@ -1,5 +1,6 @@
 "use strict"
- 
+
+
 function weekChart(id) {
 
     const weeks = [
@@ -14,14 +15,18 @@ function weekChart(id) {
         {num: 9, type:"Solo", done: false},
         {num: 10, type:"Duo", done: false},
     ];
-    
     let weekRects = [];
+    let weekLabels = [];
 
     const soloX = 10;
     const duoX = 155; 
 
     const width = 135;
     const height = 80;
+
+    const bigLabel = {x: 25, y: 45, size: "2em" };
+    const smallLabel = {x: 40, y: 20, size: "1.2em" };
+
     
     const div = d3.select(id);
     
@@ -34,9 +39,6 @@ function weekChart(id) {
     // to changes in the group metric based on other filters.
 
     // Also - make sure to return _chart; at the end of the function, or chaining won't work! 
-
-    const bigLabel = {x: 25, y: 45, size: "2em" }
-    const smallLabel = {x: 40, y: 30, size: "1.2em" }
 
     const svg = div.append("svg")
         .attr("width", 300)
@@ -107,17 +109,17 @@ function weekChart(id) {
             .on('click', function (d) {
                 clickRect(d3.select(this));
             });
-
         weekRects.push(rect);
 
-        svg.append("text")
+        const label = svg.append("text")
             .attr("x", x + bigLabel.x)
             .attr("y", y + bigLabel.y)
             .text("Week " + (count + 1))
             .attr("font-size", bigLabel.size)
             .attr("fill", "black")    
             .attr("pointer-events", "none");
-            
+        weekLabels.push(label);
+
         count++;    
     });
 
@@ -179,6 +181,8 @@ function weekChart(id) {
 
             _chart.redrawGroup();   
             updateCounts();
+
+            showSinglePlayer("");
             return;
         }   
 
@@ -193,6 +197,38 @@ function weekChart(id) {
         _chart.redrawGroup();   
         updateCounts();
     }
+
+    const showSinglePlayer = function(player) {
+        const labelSize = player === "" ? bigLabel : smallLabel;
+                
+        const top = 40;
+        let count = 0;      
+        weeks.forEach(function(week) {
+            // Copied from above!!
+            const x = week.type === "Solo" ? soloX : duoX;
+            const y = Math.round((count-1)/2) * height + top;
+
+            weekLabels[count]
+                .transition()
+                .attr("x", x + labelSize.x)
+                .attr("y", y + labelSize.y)
+                .attr("font-size", labelSize.size)
+
+/*             svg.append("text")
+                .attr("x", x + smallLabel.x)
+                .attr("y", y + smallLabel.y)
+                .text("Week " + (count + 1))
+                .attr("font-size", smallLabel.size)
+                .attr("fill", "black")    
+                .attr("pointer-events", "none"); */
+            
+            count++;
+        });
+    };
+
+    // Assign this function to global variable so the player can call it when a plyer is clicked!! 
+    showPlayerOnWeekChart = showSinglePlayer; 
+
 
     return _chart;
 }

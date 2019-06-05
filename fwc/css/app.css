@@ -43,6 +43,10 @@ body {
     text-align: right;
 }
 
+tr:hover {
+    background-color: black;
+  }
+
 
 #dc-chart-player {
     table-layout: fixed;
@@ -50,6 +54,7 @@ body {
 
 .wrap {
     word-wrap: break-word;
+    border: 0px;
 }
 
 .red2 {

@@ -143,6 +143,8 @@ function regionChart(id) {
 
             _chart.redrawGroup();   
             updateCounts();
+            
+            showPlayerOnWeekChart("");
             return;
         }   
         
