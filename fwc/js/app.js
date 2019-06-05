@@ -9,6 +9,8 @@ let playerColors;
 
 let theWeekChart; 
 
+let facts;
+
 // Function that weekChart sets and personChart calls!! 
 let showPlayerOnWeekChart;
 
@@ -27,7 +29,7 @@ d3.json('fwc/data/data.json').then(function (data)  {
         d.payout = +d.payout;
         d.points = d.points;
     });
-    const facts = crossfilter(data);
+    facts = crossfilter(data);
     draw(facts);
 
     d3.select("#search-input").on('keyup', function (event) {

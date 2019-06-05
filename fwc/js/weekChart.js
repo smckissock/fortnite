@@ -4,28 +4,32 @@
 function weekChart(id) {
 
     const weeks = [
-        {num: 1, type:"Solo", done: true},
-        {num: 2, type:"Duo", done: true},
-        {num: 3, type:"Solo", done: true},
-        {num: 4, type:"Duo", done: true},
-        {num: 5, type:"Solo", done: true},
-        {num: 6, type:"Duo", done: true},
-        {num: 7, type:"Solo", done: true},
-        {num: 8, type:"Duo", done: true},
-        {num: 9, type:"Solo", done: false},
-        {num: 10, type:"Duo", done: false},
+        {num: 1, name: "Week 1", type:"Solo", done: true},
+        {num: 2, name: "Week 2", type:"Duo", done: true},
+        {num: 3, name: "Week 3", type:"Solo", done: true},
+        {num: 4, name: "Week 4", type:"Duo", done: true},
+        {num: 5, name: "Week 5", type:"Solo", done: true},
+        {num: 6, name: "Week 6", type:"Duo", done: true},
+        {num: 7, name: "Week 7", type:"Solo", done: true},
+        {num: 8, name: "Week 8", type:"Duo", done: true},
+        {num: 9, name: "Week 9", type:"Solo", done: false},
+        {num: 10, name: "Week 10", type:"Duo", done: false},
     ];
-    let weekRects = [];
-    let weekLabels = [];
+
+    let weekSelections = [];
 
     const soloX = 10;
     const duoX = 155; 
 
     const width = 135;
-    const height = 80;
+    const height = 87;
 
-    const bigLabel = {x: 25, y: 45, size: "2em" };
+    const bigLabel = {x: 25, y: 49, size: "2em" };
     const smallLabel = {x: 40, y: 20, size: "1.2em" };
+
+    const placeLabelPos = {x: 6, y: 35, size: ".8em" };
+    const moneyLabelPos = {x: 6, y: 51, size: ".8em" };
+    const winsLabelPos = {x: 6, y: 67, size: ".8em" };
 
     
     const div = d3.select(id);
@@ -61,6 +65,9 @@ function weekChart(id) {
     const top = 40;
     let count = 0;      
     weeks.forEach(function(week) {
+
+        let weekSelection = {};
+
         const x = week.type === "Solo" ? soloX : duoX;
         const y = Math.round((count-1)/2) * height + top;
 
@@ -81,7 +88,6 @@ function weekChart(id) {
             .attr("stroke", "black")
             .attr("stroke-width", 0)
             .attr("data", week.num)
-            //.classed("week-chart", true)
             .on('mouseover', function (d) {
                 const num = d3.select(this).attr("data");
 
@@ -109,7 +115,7 @@ function weekChart(id) {
             .on('click', function (d) {
                 clickRect(d3.select(this));
             });
-        weekRects.push(rect);
+        weekSelection.rect = rect;  
 
         const label = svg.append("text")
             .attr("x", x + bigLabel.x)
@@ -118,7 +124,39 @@ function weekChart(id) {
             .attr("font-size", bigLabel.size)
             .attr("fill", "black")    
             .attr("pointer-events", "none");
-        weekLabels.push(label);
+        weekSelection.label = label;
+
+        const placeLabel = svg.append("text")
+            .attr("x", x + placeLabelPos.x)
+            .attr("y", y + placeLabelPos.y)
+            .text("Place")
+            .attr("font-size", placeLabelPos.size)
+            .attr("fill", "black")    
+            .attr("pointer-events", "none")
+            .attr("fill-opacity", "0.2");
+        weekSelection.placeLabel = placeLabel;
+
+        const moneyLabel = svg.append("text")
+            .attr("x", x + moneyLabelPos.x)
+            .attr("y", y + moneyLabelPos.y)
+            .text("Money")
+            .attr("font-size", moneyLabelPos.size)
+            .attr("fill", "black")    
+            .attr("pointer-events", "none")
+            .attr("fill-opacity", "0.2");
+        weekSelection.moneyLabel = moneyLabel;
+
+        const winsLabel = svg.append("text")
+            .attr("x", x + winsLabelPos.x)
+            .attr("y", y + winsLabelPos.y)
+            .text("Wins")
+            .attr("font-size", winsLabelPos.size)
+            .attr("fill", "black")    
+            .attr("pointer-events", "none")
+            .attr("fill-opacity", "0.2");
+        weekSelection.winsLabel = winsLabel;
+
+        weekSelections.push(weekSelection);
 
         count++;    
     });
@@ -160,8 +198,8 @@ function weekChart(id) {
             const oldFilter = filters.week;
 
             // Un-border old one
-            weekRects.forEach(function(week) {
-                let dom = d3.select(week._groups[0][0]);
+            weekSelections.forEach(function(week) {
+                let dom = d3.select(week.rect._groups[0][0]);
                 if ("Week " + dom.attr("data") == oldFilter) {
                     // This will toggle it off
                     _chart.filter(oldFilter);
@@ -182,7 +220,6 @@ function weekChart(id) {
             _chart.redrawGroup();   
             updateCounts();
 
-            showSinglePlayer("");
             return;
         }   
 
@@ -199,29 +236,48 @@ function weekChart(id) {
     }
 
     const showSinglePlayer = function(player) {
-        const labelSize = player === "" ? bigLabel : smallLabel;
-                
+        const neverShowPlace = player === "";
+        
+        //let labelSize = player === "" ? bigLabel : smallLabel;
+
+        const recs = facts.all().filter(x => x.player === player);
+        console.log(recs);
+
         const top = 40;
         let count = 0;      
         weeks.forEach(function(week) {
+            
+            const matches = recs.filter(x => week.name === x.week);
+            console.log(matches);
+
+            const showPlace = (matches.length != 0) && (!neverShowPlace);
+
+            const labelSize = showPlace ? smallLabel : bigLabel;
+            const opacity = showPlace ? "1.0" : "0.1";    
+                
             // Copied from above!!
             const x = week.type === "Solo" ? soloX : duoX;
             const y = Math.round((count-1)/2) * height + top;
 
-            weekLabels[count]
+            //weekLabels[count]
+            weekSelections[count].label
                 .transition()
                 .attr("x", x + labelSize.x)
                 .attr("y", y + labelSize.y)
-                .attr("font-size", labelSize.size)
+                .attr("font-size", labelSize.size);
 
-/*             svg.append("text")
-                .attr("x", x + smallLabel.x)
-                .attr("y", y + smallLabel.y)
-                .text("Week " + (count + 1))
-                .attr("font-size", smallLabel.size)
-                .attr("fill", "black")    
-                .attr("pointer-events", "none"); */
-            
+            weekSelections[count].placeLabel
+                .transition()
+                .attr("fill-opacity", opacity);
+
+            weekSelections[count].moneyLabel
+                .transition()
+                .attr("fill-opacity", opacity);
+
+            weekSelections[count].winsLabel
+                .transition()
+                .attr("fill-opacity", opacity); 
+
             count++;
         });
     };
