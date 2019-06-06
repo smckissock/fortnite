@@ -19,6 +19,7 @@ let filters = {
     week: "",
     region: "",
     search: "",
+    player: "",
     playerCount: 0
 }
 
@@ -55,7 +56,7 @@ function title() {
         .attr("height", "70px");
     
     svg.append("text")
-        .attr("x", 10)
+        .attr("x", 0)
         .attr("y", 65)
         .text("FORTNITE  World Cup Stats")
         .attr("font-size", "1.1em")

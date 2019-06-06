@@ -152,7 +152,7 @@ function weekChart(id) {
             .attr("font-size", labelPos.size)
             .attr("fill", "black")    
             .attr("pointer-events", "none")
-            .attr("fill-opacity", "0.2");
+            .attr("fill-opacity", "0.0");
     }
 
     const clickRect = function(d3Rect) {
