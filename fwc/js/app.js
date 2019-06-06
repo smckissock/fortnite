@@ -24,6 +24,8 @@ let filters = {
 
 
 d3.json('fwc/data/data.json').then(function (data)  {
+    title();
+    
     data.forEach(function (d) {
         d.rank = +d.rank;
         d.payout = +d.payout;
@@ -44,6 +46,58 @@ d3.json('fwc/data/data.json').then(function (data)  {
         dc.redrawAll();
     });
 });
+
+
+
+function title() {
+    const div = d3.select(".title");
+    const svg = div.append("svg")
+        .attr("width", "1000px")
+        .attr("height", "70px");
+    
+    svg.append("text")
+        .attr("x", 10)
+        .attr("y", 65)
+        .text("FORTNITE  World Cup Stats")
+        .attr("font-size", "1.1em")
+        .attr("fill", "black"); 
+    
+    helpButton(svg);
+}
+
+function helpButton(svg) {
+    svg.append("circle")
+        .attr("cx", 730)
+        .attr("cy", 46)
+        .attr("r", 22)
+        .attr("fill", "green")
+        .attr("stroke", "black")
+        .attr("stroke-width", 0)
+        .on('mouseover', function (d) {
+            console.log("Hello")
+            d3.select(this)
+                .transition()
+                .duration(100)
+                .attr("stroke-width", 4)
+        })
+        .on('mouseout', function (d) {
+            d3.select(this)
+                .transition()
+                .duration(100)
+                .attr("stroke-width", 0); 
+        })
+        .on('click', function (d) {
+            window.open('help.html', '_blank');    
+        });
+        
+    svg.append("text")
+        .attr("x", 722)
+        .attr("y", 59)
+        .text("?")
+        .attr("font-size", ".7em")
+        .attr("fill", "black")
+        .attr("pointer-events", "none");     
+}
 
 
 function updateCounts() {

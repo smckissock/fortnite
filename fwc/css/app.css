@@ -9,9 +9,7 @@
 
 body {
     font-family: burbank;
-    /* font-family: OpenSans,sans-serif; */
     font: "rubic";
-    /* color: #404040; */
 }
 
 
@@ -22,12 +20,12 @@ body {
         "left-margin    subtitle           search"
         "left-margin    region             player"
         "left-margin    weeks              player";
-    grid-template-columns: 1rem var(--left-width) auto;
-    grid-template-rows: 4.0rem 1.7rem 14.2rem auto; 
-    grid-gap: .9em;
-    margin: .25em;
-    height: 100vh;
-    width: calc(100vw - 1.1rem); 
+    grid-template-columns: 10px var(--left-width) 1000px;
+    grid-template-rows: 70px 1.7rem 14.2rem auto; 
+    grid-gap: 5px;
+    margin: 0px;
+    height: 1080px;
+    width: 1400px; 
 }
 
 .gradient {
