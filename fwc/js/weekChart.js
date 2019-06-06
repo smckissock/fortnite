@@ -27,9 +27,15 @@ function weekChart(id) {
     const bigLabel = {x: 25, y: 49, size: "2em" };
     const smallLabel = {x: 40, y: 20, size: "1.2em" };
 
-    const placeLabelPos = {x: 6, y: 35, size: ".8em" };
-    const moneyLabelPos = {x: 6, y: 51, size: ".8em" };
-    const winsLabelPos = {x: 6, y: 67, size: ".8em" };
+    const col1 = 8; 
+    const placeLabelPos = {x: col1, y: 35, size: ".8em" };
+    const moneyLabelPos = {x: col1, y: 51, size: ".8em" };
+    const winsLabelPos = {x: col1, y: 67, size: ".8em" };
+
+    const col2 = 72;
+    const pointsLabelPos = {x: col2, y: 35, size: ".8em" };
+    const elimsLabelPos = {x: col2, y: 51, size: ".8em" };
+    //const winsLabelPos = {x: 6, y: 67, size: ".8em" };
 
     
     const div = d3.select(id);
@@ -126,40 +132,28 @@ function weekChart(id) {
             .attr("pointer-events", "none");
         weekSelection.label = label;
 
-        const placeLabel = svg.append("text")
-            .attr("x", x + placeLabelPos.x)
-            .attr("y", y + placeLabelPos.y)
-            .text("Place")
-            .attr("font-size", placeLabelPos.size)
-            .attr("fill", "black")    
-            .attr("pointer-events", "none")
-            .attr("fill-opacity", "0.2");
-        weekSelection.placeLabel = placeLabel;
+        weekSelection.placeLabel = makeLabel(svg, x, y, placeLabelPos);
+        weekSelection.moneyLabel = makeLabel(svg, x, y, moneyLabelPos);
+        weekSelection.winsLabel = makeLabel(svg, x, y, winsLabelPos);
 
-        const moneyLabel = svg.append("text")
-            .attr("x", x + moneyLabelPos.x)
-            .attr("y", y + moneyLabelPos.y)
-            .text("Money")
-            .attr("font-size", moneyLabelPos.size)
-            .attr("fill", "black")    
-            .attr("pointer-events", "none")
-            .attr("fill-opacity", "0.2");
-        weekSelection.moneyLabel = moneyLabel;
-
-        const winsLabel = svg.append("text")
-            .attr("x", x + winsLabelPos.x)
-            .attr("y", y + winsLabelPos.y)
-            .text("Wins")
-            .attr("font-size", winsLabelPos.size)
-            .attr("fill", "black")    
-            .attr("pointer-events", "none")
-            .attr("fill-opacity", "0.2");
-        weekSelection.winsLabel = winsLabel;
+        weekSelection.pointsLabel = makeLabel(svg, x, y, pointsLabelPos);
+        weekSelection.elimsLabel = makeLabel(svg, x, y, elimsLabelPos);
 
         weekSelections.push(weekSelection);
 
         count++;    
     });
+
+    function makeLabel(svg, x, y, labelPos) {
+        return svg.append("text")
+            .attr("x", x + labelPos.x)
+            .attr("y", y + labelPos.y)
+            .text("Wins")
+            .attr("font-size", labelPos.size)
+            .attr("fill", "black")    
+            .attr("pointer-events", "none")
+            .attr("fill-opacity", "0.2");
+    }
 
     const clickRect = function(d3Rect) {
         const num = d3Rect.attr("data");
@@ -238,14 +232,14 @@ function weekChart(id) {
     const showSinglePlayer = function(player) {
         const neverShowPlace = player === "";
         
-        //let labelSize = player === "" ? bigLabel : smallLabel;
-
         const recs = facts.all().filter(x => x.player === player);
         console.log(recs);
 
         const top = 40;
         let count = 0;      
         weeks.forEach(function(week) {
+            // Add commas to number
+            const num = d3.format(",d");	
             
             const matches = recs.filter(x => week.name === x.week);
             console.log(matches);
@@ -253,31 +247,57 @@ function weekChart(id) {
             const showPlace = (matches.length != 0) && (!neverShowPlace);
 
             const labelSize = showPlace ? smallLabel : bigLabel;
-            const opacity = showPlace ? "1.0" : "0.1";    
+            const opacity = showPlace ? "1.0" : "0.1";  
+            
+            let place = "";
+            let money = "";
+            let wins = "";
+            let points = "";
+            let elims = "";
+            if (showPlace) {
+                place = "# " +matches[0].rank;
+                money = "$ " + num(matches[0].payout);
+                wins = matches[0].wins.toString() + (wins === 1 ? " win" : " wins")
+                points = matches[0].points + " points";
+                elims = matches[0].elims.toString() + (elims === 1 ? " elim" : " elims")
+            }
                 
             // Copied from above!!
             const x = week.type === "Solo" ? soloX : duoX;
             const y = Math.round((count-1)/2) * height + top;
 
-            //weekLabels[count]
             weekSelections[count].label
                 .transition()
                 .attr("x", x + labelSize.x)
                 .attr("y", y + labelSize.y)
                 .attr("font-size", labelSize.size);
+            ///
 
             weekSelections[count].placeLabel
+                .text(place)
                 .transition()
                 .attr("fill-opacity", opacity);
 
             weekSelections[count].moneyLabel
+                .text(money)
                 .transition()
                 .attr("fill-opacity", opacity);
 
             weekSelections[count].winsLabel
+                .text(wins) 
                 .transition()
-                .attr("fill-opacity", opacity); 
-
+                .attr("fill-opacity", opacity);
+                
+            weekSelections[count].pointsLabel
+                .text(points) 
+                .transition()
+                .attr("fill-opacity", opacity);
+            
+                weekSelections[count].elimsLabel
+                .text(elims) 
+                .transition()
+                .attr("fill-opacity", opacity);
+            
             count++;
         });
     };

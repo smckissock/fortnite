@@ -48,7 +48,6 @@ d3.json('fwc/data/data.json').then(function (data)  {
 });
 
 
-
 function title() {
     const div = d3.select(".title");
     const svg = div.append("svg")
@@ -92,7 +91,7 @@ function helpButton(svg) {
         
     svg.append("text")
         .attr("x", 722)
-        .attr("y", 59)
+        .attr("y", 61)
         .text("?")
         .attr("font-size", ".7em")
         .attr("fill", "black")
@@ -103,7 +102,9 @@ function helpButton(svg) {
 function updateCounts() {
     makePlayerStatsGroup(playerDim);
     
-    const searches = filters.region + " " + filters.week + " " + filters.search + " " + filters.playerCount + " players";  
+    // Add commas to number
+    const num = d3.format(",d");
+    const searches = filters.region + " " + filters.week + " " + filters.search + " " + num(filters.playerCount) + " players";  
 
     d3.select("#count-box")
         .text(searches);
