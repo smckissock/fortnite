@@ -210,13 +210,39 @@ dc.tableChart = function (parent, chartGroup, playerDim) {
         var rowEnter = rows.enter()
             .append('tr')
             .attr('class', ROW_CSS_CLASS)
-            .attr("data", function (d) {
-                return d;
+            .on('mouseover', function (d) {
+                const player = d.key;
+                if (filters.player === player)
+                    return;
+
+                d3.select(this)
+                    .attr("bgcolor", "rgb(200, 200, 200, .4)")  
+                     
             })
+            .on('mouseout', function (d) {
+                //let dom = d3.select(this);
+
+                const player = d.key;
+                if (filters.player === player)
+                    return;
+                
+                this.removeAttribute("bgcolor");        
+            }) 
             .on('click', function (d) {
+                if (selectedPlayerNode)
+                    selectedPlayerNode.removeAttribute("bgcolor");
+                     
+                selectedPlayerNode = this;    
+                d3.select(this)
+                    .attr("bgcolor", "black");
+                    
+                const player = d.key;
+                filters.player = player;
+
                 // Call function on week chart that's been assigned to a global variable
-                showPlayerOnWeekChart(d.key);
-            });;
+                showPlayerOnWeekChart(player);
+
+            });
 
         _columns.forEach(function (v, i) {
 

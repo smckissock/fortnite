@@ -300,6 +300,8 @@ function weekChart(id) {
             
             count++;
         });
+
+        updateCounts();
     };
 
     // Assign this function to global variable so the player can call it when a plyer is clicked!! 

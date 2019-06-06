@@ -11,6 +11,8 @@ let theWeekChart;
 
 let facts;
 
+let selectedPlayerNode;
+
 // Function that weekChart sets and personChart calls!! 
 let showPlayerOnWeekChart;
 
@@ -102,13 +104,18 @@ function helpButton(svg) {
 
 function updateCounts() {
     makePlayerStatsGroup(playerDim);
-    
-    // Add commas to number
-    const num = d3.format(",d");
-    const searches = filters.region + " " + filters.week + " " + filters.search + " " + num(filters.playerCount) + " players";  
+
+    let filtersText = "";
+    if (filters.player != "") {
+        filtersText = filters.player;
+    } else {
+        // Add commas to number
+        const num = d3.format(",d");
+        filtersText = filters.region + " " + filters.week + " " + filters.search + " " + num(filters.playerCount) + " players";  
+    }
 
     d3.select("#count-box")
-        .text(searches);
+        .text(filtersText);
 }
 
 function draw(facts) {
