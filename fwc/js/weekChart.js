@@ -163,7 +163,7 @@ function weekChart(id) {
             return;   
 
         const newFilter = "Week " + num;
-
+        
         // 5 things need to happen:
 
         // 1) Update filters.region
@@ -172,8 +172,12 @@ function weekChart(id) {
         // 4) DC Redraw
         // 5) Update counts
 
-       // 1 None were selected, this is the first selection
-       if (filters.week === "") {
+        // Regardless of what happens below, selected player needs to be cleared 
+        filters.player = "";
+        showPlayerOnWeekChart();
+
+        // 1 None were selected, this is the first selection
+        if (filters.week === "") {
             filters.week = newFilter;
 
             _chart.filter(filters.week);
@@ -231,9 +235,7 @@ function weekChart(id) {
 
     const showSinglePlayer = function(player) {
         const neverShowPlace = player === "";
-        
         const recs = facts.all().filter(x => x.player === player);
-        console.log(recs);
 
         const top = 40;
         let count = 0;      
@@ -242,10 +244,7 @@ function weekChart(id) {
             const num = d3.format(",d");	
             
             const matches = recs.filter(x => week.name === x.week);
-            console.log(matches);
-
             const showPlace = (matches.length != 0) && (!neverShowPlace);
-
             const labelSize = showPlace ? smallLabel : bigLabel;
             const opacity = showPlace ? "1.0" : "0.1";  
             
@@ -293,7 +292,7 @@ function weekChart(id) {
                 .transition()
                 .attr("fill-opacity", opacity);
             
-                weekSelections[count].elimsLabel
+            weekSelections[count].elimsLabel
                 .text(elims) 
                 .transition()
                 .attr("fill-opacity", opacity);

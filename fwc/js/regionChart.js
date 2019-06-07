@@ -94,7 +94,7 @@ function regionChart(id) {
 
     const clickCircle = function(d3Circle) {
         const newFilter = d3Circle.attr("data");
-
+        
         // 5 things need to happen:
 
         // 1) Update filters.region
@@ -103,8 +103,12 @@ function regionChart(id) {
         // 4) DC Redraw
         // 5) Update counts
 
-       // 1 None were selected, this is the first selection
-       if (filters.region === "") {
+        // Regardless of what happens below, selected player needs to be cleared 
+        filters.player = "";
+        showPlayerOnWeekChart();
+
+        // 1 None were selected, this is the first selection
+        if (filters.region === "") {
             filters.region = newFilter;
             _chart.filter(filters.region);
             d3Circle

@@ -16,7 +16,6 @@ let selectedPlayerNode;
 // Function that weekChart sets and personChart calls!! 
 let showPlayerOnWeekChart;
 
-
 let filters = {
     week: "",
     region: "",
@@ -38,6 +37,10 @@ d3.json('fwc/data/data.json').then(function (data)  {
     draw(facts);
 
     d3.select("#search-input").on('keyup', function (event) {
+        // Regardless of what happens below, selected player needs to be cleared 
+        filters.player = "";
+        showPlayerOnWeekChart();
+
         const searchTerm = document.getElementById("search-input").value;
         
         filters.search = searchTerm; 
@@ -68,6 +71,7 @@ function title() {
 }
 
 function helpButton(svg) {
+    
     svg.append("circle")
         .attr("cx", 730)
         .attr("cy", 46)
@@ -76,7 +80,6 @@ function helpButton(svg) {
         .attr("stroke", "black")
         .attr("stroke-width", 0)
         .on('mouseover', function (d) {
-            console.log("Hello")
             d3.select(this)
                 .transition()
                 .duration(100)
@@ -111,7 +114,8 @@ function updateCounts() {
     } else {
         // Add commas to number
         const num = d3.format(",d");
-        filtersText = filters.region + " " + filters.week + " " + filters.search + " " + num(filters.playerCount) + " players";  
+        filtersText = 
+            filters.week + " " + filters.region + " " + filters.search + " " + num(filters.playerCount) + " players";  
     }
 
     d3.select("#count-box")
@@ -119,7 +123,6 @@ function updateCounts() {
 }
 
 function draw(facts) {
-
     playerDim = facts.dimension(dc.pluck("player"));
     makePlayerColors();
 

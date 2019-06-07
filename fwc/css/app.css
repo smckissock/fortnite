@@ -41,9 +41,6 @@ body {
     text-align: right;
 }
 
-tr:hover {
-    /* background-color: grey; */
-}
 
 
 #dc-chart-player {
@@ -102,7 +99,7 @@ tr:hover {
 .player-count {
     grid-area: search;
     font-weight: 400;
-    font-size: .7em;
+    font-size: .8em;
 }
 
 .table {
