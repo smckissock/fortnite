@@ -22,19 +22,19 @@ function weekChart(id) {
     const duoX = 155; 
 
     const width = 135;
-    const height = 87;
+    const height = 97; //87
 
-    const bigLabel = {x: 25, y: 49, size: "2em" };
-    const smallLabel = {x: 40, y: 20, size: "1.2em" };
+    const bigLabel = {x: 25, y: 54, size: "2em" };  //49
+    const smallLabel = {x: 40, y: 25, size: "1.2em" }; // 20
 
     const col1 = 8; 
-    const placeLabelPos = {x: col1, y: 35, size: ".8em" };
-    const moneyLabelPos = {x: col1, y: 51, size: ".8em" };
-    const winsLabelPos = {x: col1, y: 67, size: ".8em" };
+    const placeLabelPos = {x: col1, y: 45, size: "1.0em" }; // 35
+    const moneyLabelPos = {x: col1, y: 62, size: ".9em" }; // 51
+    const winsLabelPos = {x: col1, y: 79, size: ".9em" };  // 67
 
     const col2 = 72;
-    const pointsLabelPos = {x: col2, y: 35, size: ".8em" };
-    const elimsLabelPos = {x: col2, y: 51, size: ".8em" };
+    const pointsLabelPos = {x: col2, y: 45, size: ".9em" };
+    const elimsLabelPos = {x: col2, y: 62, size: ".9em" };
     //const winsLabelPos = {x: 6, y: 67, size: ".8em" };
 
     
@@ -122,6 +122,8 @@ function weekChart(id) {
                 clickRect(d3.select(this));
             });
         weekSelection.rect = rect;  
+        
+        makeStar(svg, x, y);
 
         const label = svg.append("text")
             .attr("x", x + bigLabel.x)
@@ -153,6 +155,17 @@ function weekChart(id) {
             .attr("fill", "black")    
             .attr("pointer-events", "none")
             .attr("fill-opacity", "0.0");
+    }
+
+    function makeStar(svg, x, y) {
+        svg
+            .append("polygon")
+            .attr("points", "250,75 323,301 131,161 369,161 177,301")
+            .style("fill", "gold")
+            .attr("transform", "translate(" + (x-13) + "," + (y-7) + ") scale(.12)")
+            .attr("stroke-linecap", "round")
+            .style("stroke", "gold")
+            .style("strokeWidth", "14px");
     }
 
     const clickRect = function(d3Rect) {
@@ -270,7 +283,6 @@ function weekChart(id) {
                 .attr("x", x + labelSize.x)
                 .attr("y", y + labelSize.y)
                 .attr("font-size", labelSize.size);
-            ///
 
             weekSelections[count].placeLabel
                 .text(place)

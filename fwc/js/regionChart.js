@@ -114,7 +114,7 @@ function regionChart(id) {
             d3Circle
                 .transition()
                 .duration(100)
-                .attr("stroke-width", 10);
+                .attr("stroke-width", 11);
 
             _chart.redrawGroup();   
             updateCounts();
@@ -143,7 +143,7 @@ function regionChart(id) {
             d3Circle
                 .transition()
                 .duration(100)
-                .attr("stroke-width", 10);
+                .attr("stroke-width", 11);
 
             _chart.redrawGroup();   
             updateCounts();
