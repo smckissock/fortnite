@@ -17,6 +17,7 @@ function weekChart(id) {
     ];
 
     let weekSelections = [];
+    let stars = [];
 
     const soloX = 10;
     const duoX = 155; 
@@ -86,6 +87,7 @@ function weekChart(id) {
             color = grey;
 
         const rect = svg.append("rect")
+            .attr("data", week.num)
             .attr("x", x)
             .attr("y", y)
             .attr("width", width)
@@ -93,7 +95,7 @@ function weekChart(id) {
             .attr("fill", color)
             .attr("stroke", "black")
             .attr("stroke-width", 0)
-            .attr("data", week.num)
+            
             .on('mouseover', function (d) {
                 const num = d3.select(this).attr("data");
 
@@ -123,7 +125,7 @@ function weekChart(id) {
             });
         weekSelection.rect = rect;  
         
-        makeStar(svg, x, y);
+        stars.push(makeStar(svg, x, y, week.num));
 
         const label = svg.append("text")
             .attr("x", x + bigLabel.x)
@@ -157,15 +159,17 @@ function weekChart(id) {
             .attr("fill-opacity", "0.0");
     }
 
-    function makeStar(svg, x, y) {
-        svg
-            .append("polygon")
+    function makeStar(svg, x, y, week) {
+        return svg.append("polygon")
+            .attr("data", week)
             .attr("points", "250,75 323,301 131,161 369,161 177,301")
             .style("fill", "gold")
+            .style("opacity", 0)
             .attr("transform", "translate(" + (x-13) + "," + (y-7) + ") scale(.12)")
             .attr("stroke-linecap", "round")
             .style("stroke", "gold")
-            .style("strokeWidth", "14px");
+            .style("strokeWidth", "14px")
+            .attr("pointer-events", "none");
     }
 
     const clickRect = function(d3Rect) {
@@ -197,7 +201,7 @@ function weekChart(id) {
             d3Rect
                 .transition()
                 .duration(100)
-                .attr("stroke-width", 9);
+                .attr("stroke-width", 10);
 
             _chart.redrawGroup();   
             updateCounts();
@@ -226,7 +230,7 @@ function weekChart(id) {
             d3Rect
                 .transition()
                 .duration(100)
-                .attr("stroke-width", 9);
+                .attr("stroke-width", 10);
 
             _chart.redrawGroup();   
             updateCounts();
@@ -259,8 +263,14 @@ function weekChart(id) {
             const matches = recs.filter(x => week.name === x.week);
             const showPlace = (matches.length != 0) && (!neverShowPlace);
             const labelSize = showPlace ? smallLabel : bigLabel;
-            const opacity = showPlace ? "1.0" : "0.1";  
-            
+            const opacity = showPlace ? "1.0" : "0.0";  
+
+            // Show the star if they qualified, otherwise hide
+            const qualified = ((matches.length != 0) &&(matches[0].soloQual + matches[0].duoQual) > 0); 
+            stars[count]
+                .transition()
+                .style("opacity", qualified ? 1 : 0);
+
             let place = "";
             let money = "";
             let wins = "";
