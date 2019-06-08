@@ -1,219 +1,28 @@
-'use strict';
-
-let playerDim;
-let playerStatsGroup;
-
-let playerTable;
-
-let playerColors;
-
-let theWeekChart; 
-
-let facts;
-
-let selectedPlayerNode;
-
-// Function that weekChart sets and personChart calls!! 
-let showPlayerOnWeekChart;
-
-let filters = {
-    week: "",
-    region: "",
-    search: "",
-    player: "",
-    playerCount: 0
-}
-
-
-d3.json('fwc/data/data.json').then(function (data)  {
-    title();
-    
-    data.forEach(function (d) {
-        d.rank = +d.rank;
-        d.payout = +d.payout;
-        d.points = d.points;
-    });
-    facts = crossfilter(data);
-    draw(facts);
-
-    d3.select("#search-input").on('keyup', function (event) {
-        // Regardless of what happens below, selected player needs to be cleared 
-        filters.player = "";
-        showPlayerOnWeekChart();
-
-        const searchTerm = document.getElementById("search-input").value;
-        
-        filters.search = searchTerm; 
-        playerDim.filter(function (d) { 
-            return d.toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1;
-        });
-        
-        updateCounts();
-        dc.redrawAll();
-    });
-});
-
-
-function title() {
-    const div = d3.select(".title");
-    const svg = div.append("svg")
-        .attr("width", "1000px")
-        .attr("height", "70px");
-    
-    svg.append("text")
-        .attr("x", 0)
-        .attr("y", 65)
-        .text("FORTNITE  World Cup Stats")
-        .attr("font-size", "1.1em")
-        .attr("fill", "black"); 
-    
-    helpButton(svg);
-}
-
-function helpButton(svg) {
-    
-    svg.append("circle")
-        .attr("cx", 730)
-        .attr("cy", 46)
-        .attr("r", 22)
-        .attr("fill", "green")
-        .attr("stroke", "black")
-        .attr("stroke-width", 0)
-        .on('mouseover', function (d) {
-            d3.select(this)
-                .transition()
-                .duration(100)
-                .attr("stroke-width", 4)
-        })
-        .on('mouseout', function (d) {
-            d3.select(this)
-                .transition()
-                .duration(100)
-                .attr("stroke-width", 0); 
-        })
-        .on('click', function (d) {
-            window.open('help.html', '_blank');    
-        });
-        
-    svg.append("text")
-        .attr("x", 722)
-        .attr("y", 61)
-        .text("?")
-        .attr("font-size", ".7em")
-        .attr("fill", "black")
-        .attr("pointer-events", "none");     
-}
-
-
-function updateCounts() {
-    makePlayerStatsGroup(playerDim);
-
-    let filtersText = "";
-    if (filters.player != "") {
-        filtersText = filters.player;
-    } else {
-        // Add commas to number
-        const num = d3.format(",d");
-        filtersText = 
-            filters.week + " " + filters.region + " " + filters.search + " " + num(filters.playerCount) + " players";  
-    }
-
-    d3.select("#count-box")
-        .text(filtersText);
-}
-
-function draw(facts) {
-    playerDim = facts.dimension(dc.pluck("player"));
-    makePlayerColors();
-
-    makePlayerStatsGroup(playerDim);
-
-    playerTable = dc.tableChart("#dc-chart-player", null, playerDim);
-    playerTable
-        .width(768)
-        .height(480)
-        .showSections(false)
-        .size(Infinity)
-        .dimension(playerStatsGroup)
-        .columns([function (d) { return d.key },
-            function (d) { return d.value.soloQual },
-            function (d) { return d.value.duoQual },
-            function (d) { return d.value.payout },
-            function (d) { return d.value.points },
-            function (d) { return d.value.wins },
-            function (d) { return d.value.elims }])
-        .sortBy(function (d) { return d })
-        .order(d3.descending);
-
-    const dim = facts.dimension(dc.pluck("region"));
-    const group = dim.group().reduceSum(dc.pluck("payout"));
-
-    const weekDim = facts.dimension(dc.pluck("week"));
-    const weekPayoutGroup = weekDim.group().reduceSum(dc.pluck("payout"));
-
-    weekChart("#dc-chart-weeks")
-        .dimension(weekDim)
-        .group(weekPayoutGroup);      
-        
-    regionChart("#dc-chart-region")
-        .dimension(dim)
-        .group(group);          
-        
-    dc.renderAll();
-    updateCounts();
-}
-
-function makePlayerColors() {
-    playerColors = {};
-    playerDim.top(Infinity).forEach(function (d) {
-        playerColors[d.player] =  getColorForRegion(d.region);
-    });
-}
-
-function getColorForRegion(region) {
-    switch (region) {
-        case "NA West": return "purple"; break;
-        case "NA East": return "green"; break;
-        case "Europe": return "blue"; break;
-        case "Oceana": return "red2"; break;
-        case "Asia": return "brown"; break;
-        case "Brazil": return "teal"; break;
-    }  
-}
-
-function makePlayerStatsGroup() {
-    playerStatsGroup =  
-
-    playerDim.group().reduce(
-        function (p, v) {
-            p.soloQual = p.soloQual + v.soloQual;
-            p.duoQual = p.duoQual + v.duoQual;
-
-            p.payout = p.payout + v.payout;
-            p.points = p.points + v.points;
-            p.wins = p.wins + v.wins;
-            p.elims = p.elims + v.elims;
-            return p;
-        },
-        function (p, v) {
-            p.soloQual = p.soloQual - v.soloQual;
-            p.duoQual = p.duoQual - v.duoQual;
-
-            p.payout = p.payout - v.payout;
-            p.points = p.points - v.points;
-            p.wins = p.wins - v.wins;
-            p.elims = p.elims - v.elims;
-            return p;
-        },
-        function (p) {
-            return {   
-                soloQual:0
-                ,duoQual: 0 
-                ,payout: 0
-                , points: 0
-                , wins: 0
-                , elims: 0
-            };
-        }
-    );
-}
+dc.tableChart=function(a,c,e){function h(){var d=!0;m.forEach(function(a){d&="function"===typeof a});if(!d){var a=b.selectAll("thead").data([0]);a.exit().remove();a=a.enter().append("thead").merge(a);a=a.selectAll("tr").data([0]);a.exit().remove();a=a.enter().append("tr").merge(a);a=a.selectAll("th").data(m);a.exit().remove();a.enter().append("th").merge(a).attr("class","dc-table-head").html(function(a){return b._doColumnHeaderFormat(a)})}a=b.root().selectAll("tbody").data(g(),function(a){return b.keyAccessor()(a)});
+var y=a.enter().append("tbody");!0===f&&y.append("tr").attr("class","dc-table-section dc-table-group").append("td").attr("class","dc-table-label").attr("class",function(a){return a.color}).attr("right-align").attr("colspan",m.length).html(function(a){return b.keyAccessor()(a)});a.exit().remove();return y}function g(){var a=n===d3.ascending?b.dimension().bottom(q):b.dimension().top(q);return d3.nest().key(b.section()).sortKeys(n).entries(a.sort(function(a,d){return n(p(a.value.payout),p(d.value.payout))}).slice(r,
+l))}function v(a,b){var d=b.map(function(a){return a.player}).reduce(function(a,d){a[d]=1;return a},{});return a.filter(function(a){a.color=playerColors[a.key];return 1===d[a.key]})}function u(a){a=a.order().selectAll("tr.dc-table-row").data(function(a){a=v(a.values,x.top(Infinity));filters.playerCount=a.length;return a});var d=a.enter().append("tr").attr("class","dc-table-row").on("mouseover",function(a){filters.player!==a.key&&d3.select(this).attr("bgcolor","rgb(200, 200, 200, .4)")}).on("mouseout",
+function(a){filters.player!==a.key&&this.removeAttribute("bgcolor")}).on("click",function(a){selectedPlayerNode&&selectedPlayerNode.removeAttribute("bgcolor");selectedPlayerNode=this;d3.select(this).attr("bgcolor","black");a=a.key;filters.player=a;showPlayerOnWeekChart(a)});m.forEach(function(a,c){d.append("td").attr("class","dc-table-column _"+c).attr("class",function(a){return a.color}).classed("wrap",!0).classed("right-align",0<c).html(function(d){return b._doColumnValueFormat(a,d)})});a.exit().remove();
+return a}var b=dc.baseMixin({}),q=25,m=[],p=function(a){return a},n=d3.ascending,r=0,l,f=!0,t=function(){return""},x=e;b._mandatoryAttributes(["dimension"]);b._doRender=function(){b.selectAll("tbody").remove();u(h());return b};b._doColumnValueFormat=function(a,b){return"function"===typeof a?a(b):"string"===typeof a?b[a]:a.format(b)};b._doColumnHeaderFormat=function(a){return"function"===typeof a?b._doColumnHeaderFnToString(a):"string"===typeof a?b._doColumnHeaderCapitalize(a):String(a.label)};b._doColumnHeaderCapitalize=
+function(a){return a.charAt(0).toUpperCase()+a.slice(1)};b._doColumnHeaderFnToString=function(a){a=String(a);var b=a.indexOf("return ");if(0<=b){var d=a.lastIndexOf(";");0<=d&&(a=a.substring(b+7,d),0<=a.indexOf("numberFormat")&&(a=a.replace("numberFormat","")))}return a};b._doRedraw=function(){return b._doRender()};b.section=function(a){if(!arguments.length)return t;t=a;return b};b.group=dc.logger.annotate(b.section,"consider using dataTable.section instead of dataTable.group for clarity");b.size=
+function(a){if(!arguments.length)return q;q=a;return b};b.beginSlice=function(a){if(!arguments.length)return r;r=a;return b};b.endSlice=function(a){if(!arguments.length)return l;l=a;return b};b.columns=function(a){if(!arguments.length)return m;m=a;return b};b.sortBy=function(a){if(!arguments.length)return p;p=a;return b};b.order=function(a){if(!arguments.length)return n;n=a;return b};b.showSections=function(a){if(!arguments.length)return f;f=a;return b};b.showGroups=dc.logger.annotate(b.showSections,
+"consider using dataTable.showSections instead of dataTable.showGroups for clarity");return b.anchor(a,c)};function regionChart(a){var c=[];a=d3.select(a);var e=dc.baseMixin({}),h=a.append("svg").attr("width",300).attr("height",430);h.append("text").attr("x",10).attr("y",20).text("Region").attr("font-size","1.6em").attr("fill","black");[{x:50,y:80,color:"#319236",name:"NA EAST",filter:"NA East",textOffset:33},{x:150,y:80,color:"#9D4DBB",name:"NA WEST",filter:"NA West",textOffset:35},{x:250,y:80,color:"#4C51F7",name:"EUROPE",filter:"Europe",textOffset:30},{x:50,y:180,color:"#DB4441",name:"OCEANA",filter:"Oceana",
+textOffset:32},{x:150,y:180,color:"#3E93BC",name:"BRAZIL",filter:"Brazil",textOffset:26},{x:250,y:180,color:"#8B4513",name:"ASIA",filter:"Asia",textOffset:20}].forEach(function(a){var e=h.append("circle").attr("cx",a.x).attr("cy",a.y).attr("r",45).attr("fill",a.color).attr("stroke","black").attr("stroke-width",0).attr("data",a.filter).on("mouseover",function(a){d3.select(this).attr("data")!==filters.region&&d3.select(this).transition().duration(100).attr("stroke-width",5)}).on("mouseout",function(a){a=
+d3.select(this);a.attr("data")!=filters.region&&a.transition().duration(100).attr("stroke-width",0)}).on("click",function(a){g(d3.select(this))});c.push(e);h.append("text").attr("x",a.x-a.textOffset).attr("y",a.y+6).text(a.name).attr("font-size","1.4em").attr("fill","black").attr("pointer-events","none")});var g=function(a){var g=a.attr("data");filters.player="";showPlayerOnWeekChart();if(""===filters.region)filters.region=g,e.filter(filters.region),a.transition().duration(100).attr("stroke-width",
+11),e.redrawGroup(),updateCounts();else if(filters.region!=g){var b=filters.region;c.forEach(function(a){a=d3.select(a._groups[0][0]);a.attr("data")==b&&(e.filter(b),a.transition().duration(100).attr("stroke-width",0))});filters.region=g;e.filter(filters.region);a.transition().duration(100).attr("stroke-width",11);e.redrawGroup();updateCounts();showPlayerOnWeekChart("")}else filters.region="",e.filter(null),a.transition().duration(100).attr("stroke-width",0),e.redrawGroup(),updateCounts()};return e}
+;function weekChart(a){function c(a,b,c,g){return a.append("text").attr("x",b+g.x).attr("y",c+g.y).text("Wins").attr("font-size",g.size).attr("fill","black").attr("pointer-events","none").attr("fill-opacity","0.0")}function e(a,b,c,g){return a.append("polygon").attr("data",g).attr("points","250,75 323,301 131,161 369,161 177,301").style("fill","gold").style("opacity",0).attr("transform","translate("+(b-13)+","+(c-7)+") scale(.12)").attr("stroke-linecap","round").style("stroke","gold").style("strokeWidth",
+"14px").attr("pointer-events","none")}var h=[{num:1,name:"Week 1",type:"Solo",done:!0},{num:2,name:"Week 2",type:"Duo",done:!0},{num:3,name:"Week 3",type:"Solo",done:!0},{num:4,name:"Week 4",type:"Duo",done:!0},{num:5,name:"Week 5",type:"Solo",done:!0},{num:6,name:"Week 6",type:"Duo",done:!0},{num:7,name:"Week 7",type:"Solo",done:!0},{num:8,name:"Week 8",type:"Duo",done:!0},{num:9,name:"Week 9",type:"Solo",done:!1},{num:10,name:"Week 10",type:"Duo",done:!1}],g=[],v=[],u={x:25,y:54,size:"2em"},b={x:40,
+y:25,size:"1.2em"},q={x:8,y:45,size:"1.0em"},m={x:8,y:62,size:".9em"},p={x:8,y:79,size:".9em"},n={x:72,y:45,size:".9em"},r={x:72,y:62,size:".9em"};a=d3.select(a);var l=dc.baseMixin({}),f=a.append("svg").attr("width",300).attr("height",515);f.append("text").attr("x",60).attr("y",25).text("Solo").attr("font-size","1.6em").attr("fill","black");f.append("text").attr("x",200).attr("y",25).text("Duo").attr("font-size","1.8em").attr("fill","black");var t=0;h.forEach(function(a){var b={},d="Solo"===a.type?
+10:155,k=97*Math.round((t-1)/2)+40,w="Duo"===a.type?"#9ACD32":"Red";a.done||(w="#B3B3B3");w=f.append("rect").attr("data",a.num).attr("x",d).attr("y",k).attr("width",135).attr("height",87).attr("fill",w).attr("stroke","black").attr("stroke-width",0).on("mouseover",function(a){var b=d3.select(this).attr("data");"Week "+b!==filters.week&&h.filter(function(a){return a.num==b})[0].done&&d3.select(this).transition().duration(100).attr("stroke-width",5)}).on("mouseout",function(a){a=d3.select(this);"Week "+
+a.attr("data")!=filters.week&&a.transition().duration(100).attr("stroke-width",0)}).on("click",function(a){x(d3.select(this))});b.rect=w;v.push(e(f,d,k,a.num));a=f.append("text").attr("x",d+u.x).attr("y",k+u.y).text("Week "+(t+1)).attr("font-size",u.size).attr("fill","black").attr("pointer-events","none");b.label=a;b.placeLabel=c(f,d,k,q);b.moneyLabel=c(f,d,k,m);b.winsLabel=c(f,d,k,p);b.pointsLabel=c(f,d,k,n);b.elimsLabel=c(f,d,k,r);g.push(b);t++});var x=function(a){var b=a.attr("data");if(h.filter(function(a){return a.num==
+b})[0].done){var c="Week "+b;filters.player="";showPlayerOnWeekChart();if(""===filters.week)filters.week=c,l.filter(filters.week),a.transition().duration(100).attr("stroke-width",10);else if(filters.week!=c){var d=filters.week;g.forEach(function(a){a=d3.select(a.rect._groups[0][0]);"Week "+a.attr("data")==d&&(l.filter(d),a.transition().duration(100).attr("stroke-width",0))});filters.week=c;l.filter(filters.week);a.transition().duration(100).attr("stroke-width",10)}else filters.week="",l.filter(null),
+a.transition().duration(100).attr("stroke-width",0);l.redrawGroup();updateCounts()}};showPlayerOnWeekChart=function(a){var c=""===a,d=facts.all().filter(function(b){return b.player===a}),e=0;h.forEach(function(a){var h=d3.format(",d"),f=d.filter(function(b){return a.name===b.week}),l=0!=f.length&&!c,m=l?b:u,k=l?"1.0":"0.0",n=0!=f.length&&0<f[0].soloQual+f[0].duoQual;v[e].transition().style("opacity",n?1:0);var q=n="",p="",t="",r="";l&&(n="# "+f[0].rank,q="$ "+h(f[0].payout),p=f[0].wins.toString()+
+(1===p?" win":" wins"),t=f[0].points+" points",r=f[0].elims.toString()+(1===r?" elim":" elims"));h="Solo"===a.type?10:155;f=97*Math.round((e-1)/2)+40;g[e].label.transition().attr("x",h+m.x).attr("y",f+m.y).attr("font-size",m.size);g[e].placeLabel.text(n).transition().attr("fill-opacity",k);g[e].moneyLabel.text(q).transition().attr("fill-opacity",k);g[e].winsLabel.text(p).transition().attr("fill-opacity",k);g[e].pointsLabel.text(t).transition().attr("fill-opacity",k);g[e].elimsLabel.text(r).transition().attr("fill-opacity",
+k);e++});updateCounts()};return l};var playerDim,playerStatsGroup,playerTable,playerColors,theWeekChart,facts,selectedPlayerNode,showPlayerOnWeekChart,filters={week:"",region:"",search:"",player:"",playerCount:0};
+d3.json("fwc/data/data.json").then(function(a){title();a.forEach(function(a){a.rank=+a.rank;a.payout=+a.payout;a.points=a.points});facts=crossfilter(a);draw(facts);d3.select("#search-input").on("keyup",function(a){filters.player="";showPlayerOnWeekChart();var c=document.getElementById("search-input").value;filters.search=c;playerDim.filter(function(a){return-1!==a.toLowerCase().indexOf(c.toLowerCase())});updateCounts();dc.redrawAll()})});
+function title(){var a=d3.select(".title").append("svg").attr("width","1000px").attr("height","70px");a.append("text").attr("x",0).attr("y",65).text("FORTNITE  World Cup Stats").attr("font-size","1.1em").attr("fill","black");helpButton(a)}
+function helpButton(a){a.append("circle").attr("cx",730).attr("cy",46).attr("r",22).attr("fill","green").attr("stroke","black").attr("stroke-width",0).on("mouseover",function(a){d3.select(this).transition().duration(100).attr("stroke-width",4)}).on("mouseout",function(a){d3.select(this).transition().duration(100).attr("stroke-width",0)}).on("click",function(a){window.open("help.html","_blank")});a.append("text").attr("x",722).attr("y",61).text("?").attr("font-size",".7em").attr("fill","black").attr("pointer-events",
+"none")}function updateCounts(){makePlayerStatsGroup(playerDim);if(""!=filters.player)var a=filters.player;else a=d3.format(",d"),a=filters.week+" "+filters.region+" "+filters.search+" "+a(filters.playerCount)+" players";d3.select("#count-box").text(a)}
+function draw(a){playerDim=a.dimension(dc.pluck("player"));makePlayerColors();makePlayerStatsGroup(playerDim);playerTable=dc.tableChart("#dc-chart-player",null,playerDim);playerTable.width(768).height(480).showSections(!1).size(Infinity).dimension(playerStatsGroup).columns([function(a){return a.key},function(a){return a.value.soloQual},function(a){return a.value.duoQual},function(a){return a.value.payout},function(a){return a.value.points},function(a){return a.value.wins},function(a){return a.value.elims}]).sortBy(function(a){return a}).order(d3.descending);
+var c=a.dimension(dc.pluck("region")),e=c.group().reduceSum(dc.pluck("payout"));a=a.dimension(dc.pluck("week"));var h=a.group().reduceSum(dc.pluck("payout"));weekChart("#dc-chart-weeks").dimension(a).group(h);regionChart("#dc-chart-region").dimension(c).group(e);dc.renderAll();updateCounts()}function makePlayerColors(){playerColors={};playerDim.top(Infinity).forEach(function(a){playerColors[a.player]=getColorForRegion(a.region)})}
+function getColorForRegion(a){switch(a){case "NA West":return"purple";case "NA East":return"green";case "Europe":return"blue";case "Oceana":return"red2";case "Asia":return"brown";case "Brazil":return"teal"}}
+function makePlayerStatsGroup(){playerStatsGroup=playerDim.group().reduce(function(a,c){a.soloQual+=c.soloQual;a.duoQual+=c.duoQual;a.payout+=c.payout;a.points+=c.points;a.wins+=c.wins;a.elims+=c.elims;return a},function(a,c){a.soloQual-=c.soloQual;a.duoQual-=c.duoQual;a.payout-=c.payout;a.points-=c.points;a.wins-=c.wins;a.elims-=c.elims;return a},function(a){return{soloQual:0,duoQual:0,payout:0,points:0,wins:0,elims:0}})};

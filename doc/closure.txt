@@ -1,0 +1,27 @@
+https://closure-compiler.appspot.com/
+
+// ==ClosureCompiler==
+// @compilation_level SIMPLE_OPTIMIZATIONS
+// @output_file_name default.js
+// @code_url https://fortnitewc.netlify.com/fwc/js/tableChart.js
+// @code_url https://fortnitewc.netlify.com/fwc/js/regionChart.js
+// @code_url https://fortnitewc.netlify.com/fwc/js/weekChart.js
+// @code_url https://fortnitewc.netlify.com/fwc/js/main.js
+// ==/ClosureCompiler==
+
+
+Below is the POST data that was used to make the REST request to the Closure Compiler web service. The documentation for the REST API explains how to use the Closure Compiler programmatically.
+
+output_format=json
+&output_info=compiled_code
+&output_info=warnings
+&output_info=errors
+&output_info=statistics
+&compilation_level=SIMPLE_OPTIMIZATIONS
+&warning_level=default
+&output_file_name=default.js
+&code_url=https%3A%2F%2Ffortnitewc.netlify.com%2Ffwc%2Fjs%2FtableChart.js
+&code_url=https%3A%2F%2Ffortnitewc.netlify.com%2Ffwc%2Fjs%2FregionChart.js
+&code_url=https%3A%2F%2Ffortnitewc.netlify.com%2Ffwc%2Fjs%2FweekChart.js
+&code_url=https%3A%2F%2Ffortnitewc.netlify.com%2Ffwc%2Fjs%2Fapp.js
+&js_code=
