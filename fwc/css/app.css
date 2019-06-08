@@ -16,11 +16,11 @@ body {
 .grid {
     display: grid;
     grid-template-areas: 
-        "left-margin    title              title"
-        "left-margin    subtitle           search"
-        "left-margin    region             player"
-        "left-margin    weeks              player";
-    grid-template-columns: 10px var(--left-width) 1000px;
+        "left-margin    title              title    title"
+        "left-margin    subtitle           search   search"
+        "left-margin    region             player   player2"
+        "left-margin    weeks              player   player2";
+    grid-template-columns: 10px var(--left-width) 600px 1000px;
     grid-template-rows: 70px 1.7rem 14.2rem auto; 
     grid-gap: 15px;
     margin: 0px;
@@ -40,7 +40,6 @@ body {
 .right-align {
     text-align: right;
 }
-
 
 
 #dc-chart-player {
@@ -126,6 +125,14 @@ body {
     font-weight: 800;
     font-size: 1.0em;
 }
+
+.player2 {
+    grid-area: player2;
+    font-family: sans-serif;
+    font-weight: 800;
+    font-size: 1.0em;
+}
+
 /* 
 .dc-table-column {
     font-weight: 400;

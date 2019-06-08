@@ -57,7 +57,7 @@ d3.json('fwc/data/data.json').then(function (data)  {
 function title() {
     const div = d3.select(".title");
     const svg = div.append("svg")
-        .attr("width", "1000px")
+        .attr("width", "800px")
         .attr("height", "70px");
     
     svg.append("text")
@@ -157,7 +157,9 @@ function draw(facts) {
         
     regionChart("#dc-chart-region")
         .dimension(dim)
-        .group(group);          
+        .group(group);
+        
+    playerChart("#dc-chart-player2");    
         
     dc.renderAll();
     updateCounts();

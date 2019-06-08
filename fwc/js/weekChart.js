@@ -166,9 +166,6 @@ function weekChart(id) {
             .style("fill", "gold")
             .style("opacity", 0)
             .attr("transform", "translate(" + (x-13) + "," + (y-7) + ") scale(.12)")
-            .attr("stroke-linecap", "round")
-            .style("stroke", "gold")
-            .style("strokeWidth", "14px")
             .attr("pointer-events", "none");
     }
 
