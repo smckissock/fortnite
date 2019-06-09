@@ -82,13 +82,13 @@ function helpButton(svg) {
         .on('mouseover', function (d) {
             d3.select(this)
                 .transition()
-                .duration(100)
+                .duration(50)
                 .attr("stroke-width", 4)
         })
         .on('mouseout', function (d) {
             d3.select(this)
                 .transition()
-                .duration(100)
+                .duration(50)
                 .attr("stroke-width", 0); 
         })
         .on('click', function (d) {
@@ -128,7 +128,7 @@ function draw(facts) {
 
     makePlayerStatsGroup(playerDim);
 
-    playerTable = dc.tableChart("#dc-chart-player", null, playerDim);
+    /* playerTable = dc.tableChart("#dc-chart-player", null, playerDim);
     playerTable
         .width(768)
         .height(480)
@@ -144,7 +144,7 @@ function draw(facts) {
             function (d) { return d.value.elims }])
         .sortBy(function (d) { return d })
         .order(d3.descending);
-
+ */
     const dim = facts.dimension(dc.pluck("region"));
     const group = dim.group().reduceSum(dc.pluck("payout"));
 

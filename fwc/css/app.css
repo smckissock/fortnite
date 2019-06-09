@@ -18,8 +18,8 @@ body {
     grid-template-areas: 
         "left-margin    title              title    title"
         "left-margin    subtitle           search   search"
-        "left-margin    region             player   player2"
-        "left-margin    weeks              player   player2";
+        "left-margin    region             player2   player2"
+        "left-margin    weeks              player2   player2";
     grid-template-columns: 10px var(--left-width) 450px 1000px;
     grid-template-rows: 70px 1.7rem 14.2rem auto; 
     grid-gap: 15px;

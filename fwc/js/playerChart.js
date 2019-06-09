@@ -22,6 +22,11 @@ function playerChart(id) {
     const rowHeight = 25; 
     const rowCount = 27;
 
+    let svgWidth = 640;
+
+    // The data currently displayed, in order 
+    let playerRows = [];
+
     // Important!!
     // baseMixin has mandatory ['dimension', 'group'], but we don't have a group here. 
     _chart._mandatoryAttributes(['dimension']);
@@ -37,7 +42,7 @@ function playerChart(id) {
         rows.push({num: i});
 
     const svg = div.append("svg")
-        .attr("width", 700)
+        .attr("width", svgWidth)
         .attr("height", 1000);
 
     drawHeaders(svg);
@@ -52,7 +57,7 @@ function playerChart(id) {
             .attr("height", headerPos.height)
             .attr("fill", "none") // Yellow
             .attr("stroke", "black")
-            .attr("stroke-width", 0)
+            .attr("stroke-width", 1)
             .on('mouseover', function (d) {
                 // The are mousing over the selected item - don't shrink the border
                 //if ("Week " + num === filters.week)
@@ -89,31 +94,43 @@ function playerChart(id) {
 
     function drawRows() {
         rows.forEach(function(row)  {
-            svg.selectAll(".row").data(columns).enter().append("rect")
-                .attr("x", (d, i) => (i == 0) ? 0 : playerWidth + headerPos.gap + (headerPos.width * (i - 1)))
+            const player = row;
+            svg.append("rect")
+                .attr("data", player.num)
+                .attr("x", 0)
                 .attr("y", top + (row.num * rowHeight))
-                .attr("width", (d, i) => (i == 0) ? playerWidth : headerPos.width - headerPos.gap)
-                .attr("height", rowHeight - 2)
+                .attr("width", svgWidth)
+                .attr("height", rowHeight - 4)
                 //.attr("fill", "yellow")
                 .attr("fill", "none") // Yellow
-                .attr("stroke", "black")
-                .attr("stroke-width", 0)
-                .attr("class", d => "row" + row.num + " " + d.code)
+                //.attr("stroke", "black")
+                //.attr("stroke-width", 4)
+                .attr("class", "row" + row.num)
                 .on('mouseover', function (d) {
-                    d3.select(this)
-                        .transition()
-                        .duration(100)
-                        .attr("fill", "red");
+                    const node = d3.select(this);
+                    console.log("ENTER " + playerRows[node.attr("data")].key)
+                    node.attr("fill", "red");
                 })
                 .on('mouseout', function (d) {
-                    d3.select(this)
-                        .transition()
-                        .duration(100)
-                        //.attr("fill", "yellow"); 
-                        .attr("fill", "none") // Yellow
-                });  
-        });
+                    const node = d3.select(this);
+                    console.log("EXIT " + playerRows[node.attr("data")].key)
+                    node.attr("fill", "none");
+                })
+                .on('click', function (d) {
+                    const node = d3.select(this);
+                    const player = playerRows[node.attr("data")].key;
+                    
+                    console.log("CLICK " + playerRows[node.attr("data")].key)
+                    node.attr("fill", "green");
 
+                    filters.player = player;
+
+                    // Call function on week chart that's been assigned to a global variable
+                    showPlayerOnWeekChart(player);
+                })
+                .attr("stroke", "black")
+                .attr("stroke-width", 1);  
+        });    
     }
    
 
@@ -145,26 +162,25 @@ function playerChart(id) {
 
         let toShow = filterPlayersFast(sortedValues, playerDim.top(Infinity));
         
-        let playerRows = [];
+        playerRows = [];
         for (let i = 0; i < rowCount; i++) 
             playerRows.push(toShow[i]);
         
         let x = svg.selectAll("text").remove();
-
         columnHeaders();
 
         let rowNum = 0;
         playerRows.forEach(function(row)  {
             const textColor = row.color; 
             svg.selectAll(".row").data(columns).enter().append("text")
-                .attr("x", (d, i) => (i == 0) ? 0 : playerWidth + headerPos.gap + (headerPos.width * (i - 1)))
+                .attr("x", (d, i) => (i == 0) ? 10 : playerWidth + headerPos.gap + 10 + (headerPos.width * (i - 1)))
                 .attr("y", top + (rowNum * rowHeight) + 16)
                 .text(function (d, i) {
                     return (i == 0) ? row.key : row.values[0].value[columns[i].code];
                 })
                 .attr('fill', textColor)
                 .attr("font-size", ".8em")
-                .attr("pointer-events", "none");
+                .attr("pointer-events", "none"); 
                 
             rowNum++;    
         });
