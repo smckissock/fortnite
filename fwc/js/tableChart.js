@@ -140,6 +140,7 @@ dc.tableChart = function (parent, chartGroup, playerDim) {
                     });
         }
 
+        let test = nestEntries();
         var sections = _chart.root().selectAll('tbody')
             .data(nestEntries(), function (d) {
                 return _chart.keyAccessor()(d);
@@ -202,6 +203,12 @@ dc.tableChart = function (parent, chartGroup, playerDim) {
         var rows = sections.order()
             .selectAll('tr.' + ROW_CSS_CLASS)
             .data(function (d) {
+                
+                /* console.log("TABLE VALUES");
+                console.log(d.values);
+                console.log("TABLE DIM");
+                console.log(_playerDim.top(Infinity)); */
+
                 let toShow = filterPlayersFast(d.values, _playerDim.top(Infinity));
                 filters.playerCount = toShow.length;
                 return toShow;
@@ -259,11 +266,6 @@ dc.tableChart = function (parent, chartGroup, playerDim) {
         rows.exit().remove();
 
         return rows;
-    }
-
-    function selectRow () {
-        console.log ('QQQQ');
-
     }
 
     _chart._doRedraw = function () {

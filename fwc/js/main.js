@@ -159,8 +159,12 @@ function draw(facts) {
         .dimension(dim)
         .group(group);
         
-    playerChart("#dc-chart-player2");    
-        
+    let players = playerChart("#dc-chart-player2")
+        .dimension(playerStatsGroup); 
+
+    //players._doRedraw();
+    dc.registerChart(players, null);
+
     dc.renderAll();
     updateCounts();
 }
