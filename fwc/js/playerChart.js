@@ -4,25 +4,31 @@
 function playerChart(id) {
 
     const columns = [
-        {name: "Player", code: "player"},
-        {name: "Solo Qual", code: "soloQual"},
-        {name: "Duo Qual", code: "duoQual"},
-        {name: "Payout", code: "payout"},
-        {name: "Points", code: "points"},
-        {name: "Wins", code: "wins"},
-        {name: "Elims", code: "elims"}
+        {name: "Player", code: "player", x: 20},
+        //{name: "Solo Qual", code: "soloQual"},
+        //{name: "Duo Qual", code: "duoQual"},
+        {name: "Payout", code: "payout", x: 9},
+        {name: "Points", code: "points", x: 13},
+        {name: "Wins", code: "wins", x: 17},
+        {name: "Elims", code: "elims", x: 15}
     ];
 
-    const playerWidth = 150;
-    const headerPos = {left: 150, top: 0, height: 60, width: 80, gap: 4};
+    
+    const headerPos = {left: 150, top: 0, height: 50, width: 80, gap: 7};
+
+    const playerColWidth = 200;
+    PlayerTableWidth = playerColWidth + (headerPos.width * (columns.length - 1));
     
     const _chart = dc.baseMixin({});
 
     const top = headerPos.height + 10;
-    const rowHeight = 25; 
-    const rowCount = 27;
+    const rowHeight = 36; 
+    const rowCount = 19;
 
-    let svgWidth = 640;
+    let svgWidth = PlayerTableWidth; //640;
+
+    // Ugh - currently selected rect, so it can be unselected easily
+    let selectedRect;
 
     // The data currently displayed, in order 
     let playerRows = [];
@@ -51,13 +57,14 @@ function playerChart(id) {
     function drawHeaders() {
     
          svg.selectAll("rect").data(columns).enter().append("rect")
-            .attr("x", (d, i) => (i == 0) ? 0 : playerWidth + headerPos.gap + (headerPos.width * (i - 1)))
+            .attr("x", (d, i) => (i == 0) ? 0 : playerColWidth + headerPos.gap + (headerPos.width * (i - 1)))
             .attr("y", headerPos.top + 4)
-            .attr("width", (d, i) => (i == 0) ? playerWidth : headerPos.width - headerPos.gap)
+            .attr("width", (d, i) => (i == 0) ? playerColWidth : headerPos.width - headerPos.gap - 3) // -3 because right-most was having its right border cup off 
             .attr("height", headerPos.height)
-            .attr("fill", "none") // Yellow
+            //.attr("fill", "yellow") 
+            .attr("fill", (d, i) => (i == 0) ? "none" : "lightblue")
             .attr("stroke", "black")
-            .attr("stroke-width", 1)
+            .attr("stroke-width", 0)
             .on('mouseover', function (d) {
                 // The are mousing over the selected item - don't shrink the border
                 //if ("Week " + num === filters.week)
@@ -66,7 +73,7 @@ function playerChart(id) {
                 d3.select(this)
                     .transition()
                     .duration(100)
-                    .attr("stroke-width", 5);
+                    .attr("stroke-width", 3);
             })
             .on('mouseout', function (d) {
                 // The are mousing over the selected item - don't shrink the border
@@ -79,20 +86,22 @@ function playerChart(id) {
                     .attr("stroke-width", 0);
             }); 
 
-        columnHeaders();
+        columnHeaderText();
     }
 
-    function columnHeaders() {
+    function columnHeaderText() {
         svg.selectAll("text").data(columns).enter().append("text")
-            .attr("x", (d, i) => (i == 0) ? 0 : playerWidth + headerPos.gap + (headerPos.width * (i - 1)))
-            .attr("y", headerPos.top + 35)
+            .attr("x", (d, i) => (i == 0) ? columns[i].x : playerColWidth + headerPos.gap + (headerPos.width * (i - 1)) + columns[i].x    )
+            .attr("y", (d, i) => (i == 0) ? 42 : 35)
             .text((d, i) => columns[i].name)
-            .attr("font-size", ".8em")
+            .attr("font-family", "burbank")
+            .attr("font-size", (d, i) => i ===0 ? "1.8em" : "1.3em")
             .attr("fill", "black")    
             .attr("pointer-events", "none");
     }
 
     function drawRows() {
+        const gap = 6;
         rows.forEach(function(row)  {
             const player = row;
             svg.append("rect")
@@ -100,54 +109,84 @@ function playerChart(id) {
                 .attr("x", 0)
                 .attr("y", top + (row.num * rowHeight))
                 .attr("width", svgWidth)
-                .attr("height", rowHeight - 4)
-                //.attr("fill", "yellow")
-                .attr("fill", "none") // Yellow
-                //.attr("stroke", "black")
-                //.attr("stroke-width", 4)
+                .attr("height", rowHeight - gap)
+                .attr("fill", "none") 
                 .attr("class", "row" + row.num)
+                .attr("visible", "hidden")
+                .attr("fill", player.color) 
+                .attr("stroke", "black")
+                .attr("stroke-width", 0) 
                 .on('mouseover', function (d) {
                     const node = d3.select(this);
-                    console.log("ENTER " + playerRows[node.attr("data")].key)
-                    node.attr("fill", "red");
+                    const player = playerRows[node.attr("data")].key;
+                    if (filters.player === player)
+                        return;
+
+                    node.attr("stroke-width", "4");
                 })
                 .on('mouseout', function (d) {
                     const node = d3.select(this);
-                    console.log("EXIT " + playerRows[node.attr("data")].key)
-                    node.attr("fill", "none");
+                    const player = playerRows[node.attr("data")].key;
+
+                    // Don't remove filter is this is the selected player
+                    if (filters.player === player)
+                        return;
+
+                    node.attr("stroke-width", "0");
                 })
                 .on('click', function (d) {
-                    const node = d3.select(this);
-                    const player = playerRows[node.attr("data")].key;
-                    
-                    console.log("CLICK " + playerRows[node.attr("data")].key)
-                    node.attr("fill", "green");
-
-                    filters.player = player;
-
-                    // Call function on week chart that's been assigned to a global variable
-                    showPlayerOnWeekChart(player);
+                    clickPerson(this);
                 })
-                .attr("stroke", "black")
-                .attr("stroke-width", 1);  
         });    
+
+        function clickPerson(node) {
+            const clickedNode = d3.select(node);
+            const clickedPlayer = playerRows[clickedNode.attr("data")].key;
+            // const rowNum = clickedNode.attr("data");
+                  
+            // 1) None were clicked
+            if (filters.player === "") {
+                filters.player = clickedPlayer;
+
+                clickedNode.attr("stroke-width", "8");
+                showPlayerOnWeekChart(clickedPlayer);
+                selectedRect = clickedNode;
+                return;
+            }
+
+            // 2 One is selected, so unselect it and select this
+            if (filters.player != "") {
+                selectedRect.attr("stroke", 0);
+                selectedRect = clickedNode;
+
+                filters.player = clickedPlayer;
+                clickedNode.attr("stroke-width", "8");
+                showPlayerOnWeekChart(clickedPlayer);
+                return;
+            }
+
+            // 3 This was selected, so unselect it - all will be selected
+            clickedNode.attr("stroke-width", "8");
+            filters.player = "";
+            selectedRect = null;
+
+            showPlayerOnWeekChart(clickedPlayer);
+        }
     }
    
-
-    // This should be fast
-    // https://stackoverflow.com/questions/32376651/javascript-filter-array-by-data-from-another  search for "O(n^2)""
-    function filterPlayersFast(data, dimVals) {
-        let names = dimVals.map(x => x.player); 
-        var index = names.reduce(function(a,b) {a[b] = 1; return a;}, {});
-        let filteredData = data.filter(function(item) {
-            item.color = playerColors[item.key];
-            return index[item.key] === 1;
-        });
-        return filteredData;
-    }
-
-
     function renderRows (sections) {
+
+        // https://stackoverflow.com/questions/32376651/javascript-filter-array-by-data-from-another  search for "O(n^2)""
+        function filterPlayersFast(data, dimVals) {
+            let names = dimVals.map(x => x.player); 
+            var index = names.reduce(function(a,b) {a[b] = 1; return a;}, {});
+            let filteredData = data.filter(function(item) {
+                item.color = playerColors[item.key];
+                return index[item.key] === 1;
+            });
+            return filteredData;
+        }
+
         const sortColumn = "payout";
 
         let values = d3.nest()
@@ -161,26 +200,30 @@ function playerChart(id) {
         });
 
         let toShow = filterPlayersFast(sortedValues, playerDim.top(Infinity));
-        
+        filters.playerCount = toShow.length;
+
         playerRows = [];
         for (let i = 0; i < rowCount; i++) 
             playerRows.push(toShow[i]);
         
         let x = svg.selectAll("text").remove();
-        columnHeaders();
+        columnHeaderText();
 
         let rowNum = 0;
         playerRows.forEach(function(row)  {
             const textColor = row.color; 
             svg.selectAll(".row").data(columns).enter().append("text")
-                .attr("x", (d, i) => (i == 0) ? 10 : playerWidth + headerPos.gap + 10 + (headerPos.width * (i - 1)))
-                .attr("y", top + (rowNum * rowHeight) + 16)
+                .attr("x", (d, i) => (i == 0) ? 10 : playerColWidth + headerPos.gap + 10 + (headerPos.width * (i - 1)))
+                .attr("y", top + (rowNum * rowHeight) + 21)
                 .text(function (d, i) {
                     return (i == 0) ? row.key : row.values[0].value[columns[i].code];
                 })
-                .attr('fill', textColor)
-                .attr("font-size", ".8em")
+                .attr('fill', "black")
+                .attr("font-size", "1.3em")
                 .attr("pointer-events", "none"); 
+
+            svg.select(".row" + rowNum)
+                .attr("fill", row.color);     
                 
             rowNum++;    
         });

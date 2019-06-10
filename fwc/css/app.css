@@ -18,9 +18,9 @@ body {
     grid-template-areas: 
         "left-margin    title              title    title"
         "left-margin    subtitle           search   search"
-        "left-margin    region             player2   player2"
-        "left-margin    weeks              player2   player2";
-    grid-template-columns: 10px var(--left-width) 450px 1000px;
+        "left-margin    region             player   player"
+        "left-margin    weeks              player   player";
+    grid-template-columns: 10px var(--left-width) 520px 1000px;
     grid-template-rows: 70px 1.7rem 14.2rem auto; 
     grid-gap: 15px;
     margin: 0px;
@@ -98,7 +98,7 @@ body {
 .player-count {
     grid-area: search;
     font-weight: 400;
-    font-size: .8em;
+    font-size: 1.2em;
 }
 
 .table {
@@ -118,24 +118,11 @@ body {
     grid-area: region;
 }
 
-
 .player {
     grid-area: player;
-    font-family: sans-serif;
+    font-family: monospace;
     font-weight: 800;
     font-size: 1.0em;
 }
 
-.player2 {
-    grid-area: player2;
-    font-family: sans-serif;
-    font-weight: 800;
-    font-size: 1.0em;
-}
-
-/* 
-.dc-table-column {
-    font-weight: 400;
-    font-size: .9em;
-} */
 

@@ -3,7 +3,8 @@
 let playerDim;
 let playerStatsGroup;
 
-let playerTable;
+const LeftSideWidth = 340;
+let PlayerTableWidth = 520;
 
 let playerColors;
 
@@ -26,7 +27,9 @@ let filters = {
 
 
 d3.json('fwc/data/data.json').then(function (data)  {
-    title();
+    const leftMargin = 20
+    const screenWidth = LeftSideWidth + PlayerTableWidth - leftMargin;
+    let titleSvg = title(screenWidth);
     
     data.forEach(function (d) {
         d.rank = +d.rank;
@@ -35,6 +38,7 @@ d3.json('fwc/data/data.json').then(function (data)  {
     });
     facts = crossfilter(data);
     draw(facts);
+    helpButton(titleSvg, screenWidth);  // 730
 
     d3.select("#search-input").on('keyup', function (event) {
         // Regardless of what happens below, selected player needs to be cleared 
@@ -54,10 +58,10 @@ d3.json('fwc/data/data.json').then(function (data)  {
 });
 
 
-function title() {
+function title(width) {
     const div = d3.select(".title");
     const svg = div.append("svg")
-        .attr("width", "800px")
+        .attr("width", width + "px")
         .attr("height", "70px");
     
     svg.append("text")
@@ -67,13 +71,13 @@ function title() {
         .attr("font-size", "1.1em")
         .attr("fill", "black"); 
     
-    helpButton(svg);
+    return svg;
 }
 
-function helpButton(svg) {
+function helpButton(svg, screenWidth) {
     
     svg.append("circle")
-        .attr("cx", 730)
+        .attr("cx", screenWidth - 30)
         .attr("cy", 46)
         .attr("r", 22)
         .attr("fill", "green")
@@ -96,7 +100,7 @@ function helpButton(svg) {
         });
         
     svg.append("text")
-        .attr("x", 722)
+        .attr("x", screenWidth - 38)
         .attr("y", 61)
         .text("?")
         .attr("font-size", ".7em")
@@ -105,21 +109,36 @@ function helpButton(svg) {
 }
 
 
+// Makes the string that displayse number of players and filters  
 function updateCounts() {
     makePlayerStatsGroup(playerDim);
 
-    let filtersText = "";
+    let filterText = "";
+    
+    // if player is selected, just show player, otherwise show all the filters
     if (filters.player != "") {
-        filtersText = filters.player;
+        filterText = filters.player;
     } else {
-        // Add commas to number
-        const num = d3.format(",d");
-        filtersText = 
-            filters.week + " " + filters.region + " " + filters.search + " " + num(filters.playerCount) + " players";  
+        let filterParts = [];
+        
+        if (filters.region != "")
+            filterParts.push(filters.region);
+        if (filters.week != "")
+            filterParts.push(filters.week);
+        if (filters.search != "")
+            filterParts.push("'" + filters.search + '"'); 
+        
+        const num = d3.format(",d"); // Add commas
+        filterParts.push(num(filters.playerCount) + " players")
+
+        filterText = filterParts.join(" / ");
+        
+        //filtersText = 
+        //    filters.week + " " + filters.region + " " + filters.search + " " + num(filters.playerCount) + " players";  
     }
 
     d3.select("#count-box")
-        .text(filtersText);
+        .text(filterText);
 }
 
 function draw(facts) {
@@ -128,23 +147,6 @@ function draw(facts) {
 
     makePlayerStatsGroup(playerDim);
 
-    /* playerTable = dc.tableChart("#dc-chart-player", null, playerDim);
-    playerTable
-        .width(768)
-        .height(480)
-        .showSections(false)
-        .size(Infinity)
-        .dimension(playerStatsGroup)
-        .columns([function (d) { return d.key },
-            function (d) { return d.value.soloQual },
-            function (d) { return d.value.duoQual },
-            function (d) { return d.value.payout },
-            function (d) { return d.value.points },
-            function (d) { return d.value.wins },
-            function (d) { return d.value.elims }])
-        .sortBy(function (d) { return d })
-        .order(d3.descending);
- */
     const dim = facts.dimension(dc.pluck("region"));
     const group = dim.group().reduceSum(dc.pluck("payout"));
 
@@ -159,7 +161,7 @@ function draw(facts) {
         .dimension(dim)
         .group(group);
         
-    let players = playerChart("#dc-chart-player2")
+    let players = playerChart("#dc-chart-player")
         .dimension(playerStatsGroup); 
 
     //players._doRedraw();
@@ -181,7 +183,7 @@ function getColorForRegion(region) {
         case "NA West": return "purple"; break;
         case "NA East": return "green"; break;
         case "Europe": return "blue"; break;
-        case "Oceana": return "red2"; break;
+        case "Oceana": return "red"; break;
         case "Asia": return "brown"; break;
         case "Brazil": return "teal"; break;
     }  
