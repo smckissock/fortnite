@@ -16,6 +16,10 @@ let selectedPlayerNode;
 
 // Function that weekChart sets and personChart calls!! 
 let showPlayerOnWeekChart;
+// Function that playerChart sets and regionChart, weekChart and filter calls 
+let clearPlayer;
+
+
 
 let filters = {
     week: "",

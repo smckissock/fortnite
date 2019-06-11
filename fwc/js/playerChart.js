@@ -135,45 +135,61 @@ function playerChart(id) {
                     node.attr("stroke-width", "0");
                 })
                 .on('click', function (d) {
-                    clickPerson(this);
+                    setPlayer(this);
                 })
         });    
-
-        function clickPerson(node) {
-            const clickedNode = d3.select(node);
-            const clickedPlayer = playerRows[clickedNode.attr("data")].key;
-            // const rowNum = clickedNode.attr("data");
-                  
-            // 1) None were clicked
-            if (filters.player === "") {
-                filters.player = clickedPlayer;
-
-                clickedNode.attr("stroke-width", "8");
-                showPlayerOnWeekChart(clickedPlayer);
-                selectedRect = clickedNode;
-                return;
-            }
-
-            // 2 One is selected, so unselect it and select this
-            if (filters.player != "") {
-                selectedRect.attr("stroke", 0);
-                selectedRect = clickedNode;
-
-                filters.player = clickedPlayer;
-                clickedNode.attr("stroke-width", "8");
-                showPlayerOnWeekChart(clickedPlayer);
-                return;
-            }
-
-            // 3 This was selected, so unselect it - all will be selected
-            clickedNode.attr("stroke-width", "8");
-            filters.player = "";
-            selectedRect = null;
-
-            showPlayerOnWeekChart(clickedPlayer);
-        }
     }
-   
+
+    // Either the player node they clicked or null (they set player to null be because they reset the region, week, search or sort ) 
+    function setPlayer(node) {
+             
+        // 0) Clear the filter - called from elsewhere, e.g. a group filter was set
+        if (node === null) {
+            filters.player = "";
+            if (selectedRect != null) {
+                selectedRect.attr("stroke", 0);
+                selectedRect = null;
+            }
+
+            showPlayerOnWeekChart("");
+            console.log("CLEAR PLAYER");
+            return;
+        }
+
+        // Below are cases where they clicked a player row 
+        const clickedNode = d3.select(node);
+        const clickedPlayer = playerRows[clickedNode.attr("data")].key;
+
+        // 1) None were clicked
+        if (filters.player === "") {
+            filters.player = clickedPlayer;
+
+            clickedNode.attr("stroke-width", "8");
+            showPlayerOnWeekChart(clickedPlayer);
+            selectedRect = clickedNode;
+            return;
+        }
+
+        // 2 One is selected, so unselect it and select this
+        if (filters.player != "") {
+            selectedRect.attr("stroke", 0);
+            selectedRect = clickedNode;
+
+            filters.player = clickedPlayer;
+            clickedNode.attr("stroke-width", "8");
+            showPlayerOnWeekChart(clickedPlayer);
+            return;
+        }
+
+        // 3 This was selected, so unselect it - all will be selected
+        clickedNode.attr("stroke-width", "8");
+        filters.player = "";
+        selectedRect = null;
+
+        showPlayerOnWeekChart(clickedPlayer);
+    }
+
+       
     function renderRows (sections) {
 
         // https://stackoverflow.com/questions/32376651/javascript-filter-array-by-data-from-another  search for "O(n^2)""
@@ -241,6 +257,8 @@ function playerChart(id) {
     _chart._doRedraw = function () {
         return _chart._doRender();
     };
+
+    clearPlayer = setPlayer; 
 
     return _chart;
 }

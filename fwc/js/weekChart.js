@@ -187,8 +187,9 @@ function weekChart(id) {
         // 5) Update counts
 
         // Regardless of what happens below, selected player needs to be cleared 
-        filters.player = "";
-        showPlayerOnWeekChart();
+        //filters.player = "";
+        //showPlayerOnWeekChart();
+        clearPlayer(null);
 
         // 1 None were selected, this is the first selection
         if (filters.week === "") {
