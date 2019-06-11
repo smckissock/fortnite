@@ -130,7 +130,7 @@ function updateCounts() {
         if (filters.week != "")
             filterParts.push(filters.week);
         if (filters.search != "")
-            filterParts.push("'" + filters.search + '"'); 
+            filterParts.push('"' + filters.search + '"'); 
         
         const num = d3.format(",d"); // Add commas
         filterParts.push(num(filters.playerCount) + " players")

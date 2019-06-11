@@ -14,7 +14,7 @@ function playerChart(id) {
     ];
 
     
-    const headerPos = {left: 150, top: 0, height: 50, width: 80, gap: 7};
+    const headerPos = {left: 150, top: 0, height: 46, width: 80, gap: 7};
 
     const playerColWidth = 200;
     PlayerTableWidth = playerColWidth + (headerPos.width * (columns.length - 1));
@@ -92,7 +92,7 @@ function playerChart(id) {
     function columnHeaderText() {
         svg.selectAll("text").data(columns).enter().append("text")
             .attr("x", (d, i) => (i == 0) ? columns[i].x : playerColWidth + headerPos.gap + (headerPos.width * (i - 1)) + columns[i].x    )
-            .attr("y", (d, i) => (i == 0) ? 42 : 35)
+            .attr("y", (d, i) => (i == 0) ? 41 : 33)
             .text((d, i) => columns[i].name)
             .attr("font-family", "burbank")
             .attr("font-size", (d, i) => i ===0 ? "1.8em" : "1.3em")
@@ -227,6 +227,15 @@ function playerChart(id) {
 
         let rowNum = 0;
         playerRows.forEach(function(row)  {
+            if (!row) {
+                svg.select(".row" + rowNum)
+                .attr("fill", "none");
+
+                rowNum++;
+                return; 
+            }
+
+
             const textColor = row.color; 
             svg.selectAll(".row").data(columns).enter().append("text")
                 .attr("x", (d, i) => (i == 0) ? 10 : playerColWidth + headerPos.gap + 10 + (headerPos.width * (i - 1)))
