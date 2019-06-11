@@ -4,8 +4,8 @@ from db import cmd, cursor, conn, max_id
 
 
 def insert_placement(week, solo_or_duo, name, region, rank, payout, points):
-    cursor.execute("INSERT INTO Placement VALUES (?, ?, ?, ?, ?, ?, ?)", \
-        week, solo_or_duo, name, region, rank, payout, points)
+    cursor.execute("INSERT INTO Placement VALUES (?, ?, ?, ?, ?, ?, ?, ?)", \
+        week, solo_or_duo, name, region, rank, payout, points, False)
     conn.commit()
 
 
@@ -66,10 +66,19 @@ def save_places (json, week, region, solo_or_duo):
         
 
 #regions = ["NAE"]
-regions = ["NAE", "NAW", "EU", "OCE", "ASIA", "BR"]
-solo_weeks = ["Week1", "Week3", "Week5", "Week7"]
+#regions = ["NAE", "NAW", "EU", "OCE", "ASIA", "BR"]
+#solo_weeks = ["Week1", "Week3", "Week5", "Week7"]
 #duo_weeks = ["Week2"]
-duo_weeks = ["Week2", "Week4", "Week6", "Week8"]
+#duo_weeks = ["Week2", "Week4", "Week6", "Week8"]
+
+#regions = ["NAW"]
+#solo_weeks = []
+#duo_weeks = ["Week8"]
+
+regions = ["NAE", "NAW", "EU", "OCE", "ASIA", "BR"]
+solo_weeks = ["Week9"]
+duo_weeks = []
+
 
 event = "Event2"
 for region in regions:

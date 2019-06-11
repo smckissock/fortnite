@@ -76,13 +76,13 @@ RESTORE FILELISTONLY
 FROM DISK = N'd:\db\Senate_2019_04_25.bak'
 GO
 
-
+-- Jun 11, 2019
 BACKUP DATABASE Fortnite
-TO DISK = N'd:\db\Fortnite.bak' WITH NOFORMAT, NOINIT, NAME = N'Full Database Backup', SKIP, NOREWIND, NOUNLOAD, STATS = 10
+TO DISK = N'd:\db\FortniteJune11.bak' WITH NOFORMAT, NOINIT, NAME = N'Full Database Backup', SKIP, NOREWIND, NOUNLOAD, STATS = 10
 GO
 
 RESTORE FILELISTONLY
-FROM DISK = N'd:\db\Fortnite.bak'
+FROM DISK = N'd:\db\FortniteJune11.bak'
 GO
 
 
