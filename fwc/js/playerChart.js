@@ -5,8 +5,6 @@ function playerChart(id) {
 
     const columns = [
         {name: "Player", code: "player", x: 20},
-        //{name: "Solo Qual", code: "soloQual"},
-        //{name: "Duo Qual", code: "duoQual"},
         {name: "Payout", code: "payout", x: 9},
         {name: "Points", code: "points", x: 13},
         {name: "Wins", code: "wins", x: 17},
@@ -21,9 +19,13 @@ function playerChart(id) {
     
     const _chart = dc.baseMixin({});
 
-    const top = headerPos.height + 10;
+    const top = headerPos.height + 14;
     const rowHeight = 36; 
     const rowCount = 19;
+
+    const thinBorder = 3;
+    const thickBorder = 7;
+    
 
     let svgWidth = PlayerTableWidth; //640;
 
@@ -65,28 +67,51 @@ function playerChart(id) {
             .attr("fill", (d, i) => (i == 0) ? "none" : "lightblue")
             .attr("stroke", "black")
             .attr("stroke-width", 0)
+            .attr("data", d => d)
             .on('mouseover', function (d) {
-                // The are mousing over the selected item - don't shrink the border
-                //if ("Week " + num === filters.week)
-                //    return;
+                // The are mousing over the selected item - don't show a thin border, leave it thick
+                if (d.code === filters.sort)
+                    return;
                 
                 d3.select(this)
                     .transition()
                     .duration(100)
-                    .attr("stroke-width", 3);
+                    .attr("stroke-width", thinBorder);
             })
             .on('mouseout', function (d) {
-                // The are mousing over the selected item - don't shrink the border
-                //if ("Week " + num === filters.week)
-                //    return;
+                // The are leaving over the selected item - don't shrink the border
+                if (d.code === filters.sort)
+                    return;
                 
                 d3.select(this)
                     .transition()
                     .duration(100)
                     .attr("stroke-width", 0);
-            }); 
+            })
+            .on('click', function (d) {
+                // They clicked on the selected one, so just ignore
+                if (d.code === filters.sort)
+                    return;
 
+                // Unselect the old one    
+                drawColumnBorder(filters.sort, 0);
+                
+                filters.sort = d.code;                
+                d3.select(this)
+                    .transition()
+                    .duration(100)
+                    .attr("stroke-width", thickBorder);
+
+                if (filters.player != "")
+                    clearPlayer(null);
+                else {
+                    updateCounts();
+                    renderRows();
+                }
+            });
+        
         columnHeaderText();
+        drawColumnBorder("payout", thickBorder);
     }
 
     function columnHeaderText() {
@@ -99,6 +124,25 @@ function playerChart(id) {
             .attr("fill", "black")    
             .attr("pointer-events", "none");
     }
+
+    // Only works on start up - just selects first, does not unselect others!
+    function drawColumnBorder(sort, strokeWidth) {
+        if (!sort)
+            throw "You must sort by something";
+        
+            d3.selectAll('svg')
+                .selectAll('rect')
+                .each(function(d) {
+                    if (d) {
+                        if (d.code === sort)
+                            d3.select(this)
+                                .transition()
+                                .duration(100)
+                                .attr("stroke-width", strokeWidth);
+                    }
+                });
+    }
+
 
     function drawRows() {
         const gap = 6;
@@ -190,7 +234,7 @@ function playerChart(id) {
     }
 
        
-    function renderRows (sections) {
+    function renderRows() {
 
         // https://stackoverflow.com/questions/32376651/javascript-filter-array-by-data-from-another  search for "O(n^2)""
         function filterPlayersFast(data, dimVals) {
@@ -203,7 +247,7 @@ function playerChart(id) {
             return filteredData;
         }
 
-        const sortColumn = "payout";
+        const sortColumn = filters.sort;
 
         let values = d3.nest()
             .key(function(d) { return d.key; })

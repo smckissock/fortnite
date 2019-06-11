@@ -26,6 +26,7 @@ let filters = {
     region: "",
     search: "",
     player: "",
+    sort: "payout",
     playerCount: 0
 }
 
@@ -135,12 +136,11 @@ function updateCounts() {
         const num = d3.format(",d"); // Add commas
         filterParts.push(num(filters.playerCount) + " players")
 
-        filterText = filterParts.join(" / ");
-        
-        //filtersText = 
-        //    filters.week + " " + filters.region + " " + filters.search + " " + num(filters.playerCount) + " players";  
-    }
+        filterParts.push(" by " +  filters.sort.charAt(0).toUpperCase() + filters.sort.slice(1)); 
 
+        filterText = filterParts.join(" / ");
+    }
+        
     d3.select("#count-box")
         .text(filterText);
 }
