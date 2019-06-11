@@ -18,7 +18,7 @@ function regionChart(id) {
         {x:250, y:80, color: blue, name: "EUROPE", filter: "Europe", textOffset:30},
         {x:50, y:180, color: red, name: "OCEANA", filter: "Oceana", textOffset:32},
         {x:150, y:180, color: teal, name: "BRAZIL", filter: "Brazil", textOffset:26},
-        {x:250, y:180, color: brown, name: "ASIA", filter: "Asia", textOffset:20}
+        {x:250, y:180, color: brown, name: "ASIA", filter: "Asia", textOffset:19}
     ];
     
     let regionCircles = [];

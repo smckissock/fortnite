@@ -18,6 +18,7 @@ namespace FortniteJson {
         public int points;
         public int wins;
         public int elims;
+        public int placementPoints;
     }
 
     public class Fortnite {
@@ -39,6 +40,7 @@ namespace FortniteJson {
                 place.points = (System.Int32)reader["points"];
                 place.wins = (System.Int32)reader["wins"];
                 place.elims = (System.Int32)reader["elims"];
+                place.placementPoints = (System.Int32)reader["PlacementPoints"];
                 places.Add(place);
             }
             reader.Close();

@@ -4,7 +4,7 @@ let playerDim;
 let playerStatsGroup;
 
 const LeftSideWidth = 340;
-let PlayerTableWidth = 200 + (4 * 80); // Player + other cols
+let PlayerTableWidth = 200 + (5 * 80); // Player + other cols
 
 let playerColors;
 
@@ -200,30 +200,37 @@ function makePlayerStatsGroup() {
             p.soloQual = p.soloQual + v.soloQual;
             p.duoQual = p.duoQual + v.duoQual;
 
+            p.rank = p.rank + v.rank;
             p.payout = p.payout + v.payout;
             p.points = p.points + v.points;
             p.wins = p.wins + v.wins;
             p.elims = p.elims + v.elims;
+            p.placementPoints = p.placementPoints + v.placementPoints;
             return p;
         },
         function (p, v) {
             p.soloQual = p.soloQual - v.soloQual;
             p.duoQual = p.duoQual - v.duoQual;
 
+            p.rank = p.rank - v.rank;
             p.payout = p.payout - v.payout;
             p.points = p.points - v.points;
             p.wins = p.wins - v.wins;
             p.elims = p.elims - v.elims;
+            p.placementPoints = p.placementPoints - v.placementPoints;
             return p;
         },
         function (p) {
             return {   
                 soloQual:0
-                ,duoQual: 0 
-                ,payout: 0
+                , duoQual: 0 
+
+                , rank: 0
+                , payout: 0
                 , points: 0
                 , wins: 0
                 , elims: 0
+                , placementPoints: 0
             };
         }
     );

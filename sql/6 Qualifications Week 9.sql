@@ -46,7 +46,7 @@ SELECT
 	--c.Points PointsFromStats,
 	ISNULL(w.Points, 0) wins,
 	ISNULL(e.Points, 0) elims,
-	ISNULL(w.Points, 0) - ISNULL(e.Points, 0) placementPoints 
+	ISNULL(p.Points, 0) - ISNULL(e.Points, 0) placementPoints 
 FROM Placement p 
 JOIN Region r ON p.RegionCode = r.Code 		
 LEFT JOIN PointCalc c ON c.PlacementID = p.ID

@@ -4,15 +4,17 @@
 function playerChart(id) {
 
     const columns = [
-        {name: "Player", code: "player", x: 20},
+        {name: "Player", code: "player", x: 8}, 
+        {name: "Rank", code: "rank", x: 16},
         {name: "Payout", code: "payout", x: 9},
         {name: "Points", code: "points", x: 13},
         {name: "Wins", code: "wins", x: 17},
         {name: "Elims", code: "elims", x: 15}
+        //{name: "Placement", code: "placementPoints", x: 15}
     ];
 
     
-    const headerPos = {left: 150, top: 0, height: 46, width: 80, gap: 7};
+    const headerPos = {left: 150, top: 0, height: 65, width: 80, gap: 5};
 
     const playerColWidth = 200;
     PlayerTableWidth = playerColWidth + (headerPos.width * (columns.length - 1));
@@ -117,7 +119,7 @@ function playerChart(id) {
     function columnHeaderText() {
         svg.selectAll("text").data(columns).enter().append("text")
             .attr("x", (d, i) => (i == 0) ? columns[i].x : playerColWidth + headerPos.gap + (headerPos.width * (i - 1)) + columns[i].x    )
-            .attr("y", (d, i) => (i == 0) ? 41 : 33)
+            .attr("y", (d, i) => (i == 0) ? 50 : 42)
             .text((d, i) => columns[i].name)
             .attr("font-family", "burbank")
             .attr("font-size", (d, i) => i ===0 ? "1.8em" : "1.3em")
@@ -194,7 +196,6 @@ function playerChart(id) {
                 selectedRect.attr("stroke", 0);
                 selectedRect = null;
             }
-
             showPlayerOnWeekChart("");
             return;
         }
@@ -247,15 +248,18 @@ function playerChart(id) {
         }
 
         const sortColumn = filters.sort;
+        const sortOrder = (filters.sort !== "rank") ? d3.descending : d3.ascending;
 
         let values = d3.nest()
             .key(function(d) { return d.key; })
-            .sortKeys(d3.descending)
+            //.sortKeys(d3.descending)
+            .sortKeys(sortOrder)
             .entries(_chart.dimension().top(Infinity));
             //.slice(_beginSlice, _endSlice));
 
         let sortedValues = values.sort(function (a, b) {
-            return d3.descending(a.values[0].value[sortColumn], b.values[0].value[sortColumn]);
+            return sortOrder(a.values[0].value[sortColumn], b.values[0].value[sortColumn]);
+            //return d3.descending(a.values[0].value[sortColumn], b.values[0].value[sortColumn]);
         });
 
         let toShow = filterPlayersFast(sortedValues, playerDim.top(Infinity));
