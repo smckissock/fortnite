@@ -196,7 +196,6 @@ function playerChart(id) {
             }
 
             showPlayerOnWeekChart("");
-            console.log("CLEAR PLAYER");
             return;
         }
 
@@ -271,14 +270,24 @@ function playerChart(id) {
 
         let rowNum = 0;
         playerRows.forEach(function(row)  {
+            // Only one player, so simulate a click on him
+            if (toShow.length === 1 && rowNum == 0) {
+                console.log(toShow[0].key)
+
+                svg
+                    .select(".row0") 
+                    .each(function(d) {
+                        setPlayer(this);
+                    });
+            }
+            
+            // If there is no row (filters returned fewer queries than rows) make the row transarent
             if (!row) {
                 svg.select(".row" + rowNum)
-                .attr("fill", "none");
-
+                    .attr("fill", "none");
                 rowNum++;
                 return; 
             }
-
 
             const textColor = row.color; 
             svg.selectAll(".row").data(columns).enter().append("text")
@@ -296,6 +305,7 @@ function playerChart(id) {
                 
             rowNum++;    
         });
+        updateCounts();
     }
 
 

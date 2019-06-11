@@ -4,7 +4,7 @@ let playerDim;
 let playerStatsGroup;
 
 const LeftSideWidth = 340;
-let PlayerTableWidth = 520;
+let PlayerTableWidth = 200 + (4 * 80); ////520;
 
 let playerColors;
 
@@ -136,13 +136,12 @@ function updateCounts() {
         const num = d3.format(",d"); // Add commas
         filterParts.push(num(filters.playerCount) + " players")
 
-        filterParts.push(" by " +  filters.sort.charAt(0).toUpperCase() + filters.sort.slice(1)); 
-
         filterText = filterParts.join(" / ");
+        filterText += " by " +  filters.sort.charAt(0).toUpperCase() + filters.sort.slice(1); 
     }
         
     d3.select("#count-box")
-        .text(filterText);
+        .text(" " + filterText);
 }
 
 function draw(facts) {
@@ -157,15 +156,15 @@ function draw(facts) {
     const weekDim = facts.dimension(dc.pluck("week"));
     const weekPayoutGroup = weekDim.group().reduceSum(dc.pluck("payout"));
 
-    weekChart("#dc-chart-weeks")
+    weekChart("#chart-weeks")
         .dimension(weekDim)
         .group(weekPayoutGroup);      
         
-    regionChart("#dc-chart-region")
+    regionChart("#chart-region")
         .dimension(dim)
         .group(group);
         
-    let players = playerChart("#dc-chart-player")
+    let players = playerChart("#chart-player")
         .dimension(playerStatsGroup); 
 
     //players._doRedraw();
