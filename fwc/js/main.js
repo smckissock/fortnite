@@ -4,7 +4,7 @@ let playerDim;
 let playerStatsGroup;
 
 const LeftSideWidth = 340;
-let PlayerTableWidth = 200 + (5 * 80); // Player + other cols
+let PlayerTableWidth = 240 + (5 * 80); // Player + other cols
 
 let playerColors;
 
@@ -19,6 +19,14 @@ let showPlayerOnWeekChart;
 // Function that playerChart sets and regionChart, weekChart and filter calls 
 let clearPlayer;
 
+const green ='#319236';
+const purple = '#9D4DBB';
+const blue = '#4C51F7';
+const red = '#DB4441';
+const teal = '#3E93BC';
+const lime = '#3CFF3E';
+const grey = '#B3B3B3';
+const brown = '#8B4513';
 
 
 let filters = {

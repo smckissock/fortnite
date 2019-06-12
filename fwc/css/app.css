@@ -16,11 +16,11 @@ body {
 .grid {
     display: grid;
     grid-template-areas: 
-        "left-margin    title              title    title"
-        "left-margin    subtitle           search   search"
-        "left-margin    region             player   player"
-        "left-margin    weeks              player   player";
-    grid-template-columns: 10px var(--left-width) 520px 1000px;
+        "left-margin    title              title  "
+        "left-margin    subtitle           search "
+        "left-margin    region             player "
+        "left-margin    weeks              player ";
+    grid-template-columns: 10px var(--left-width) 1000px;
     grid-template-rows: 70px 1.7rem 14.2rem auto; 
     grid-gap: 15px;
     margin: 0px;
@@ -50,32 +50,6 @@ body {
     word-wrap: break-word;
     border: 0px;
 }
-
-.red2 {
-    color: #DB4441; 
-}
-.green {
-    color: #319236;
-}
-.purple { 
-    color: #9D4DBB;
-}
-.blue {
-    color: #4C51F7;
-}
-.teal { 
-    color: #3E93BC;
-}
-.lime {
-    color: #3CFF3E;
-}
-.grey {
-    color: #B3B3B3;
-}
-.brown {
-    color: #8B4513;
-}
-
 
 .title {
     grid-area: title;

@@ -13,17 +13,28 @@ function playerChart(id) {
         //{name: "Placement", code: "placementPoints", x: 15}
     ];
 
-    
-    const headerPos = {left: 150, top: 0, height: 65, width: 80, gap: 5};
 
-    const playerColWidth = 200;
+    const colors = { 
+        green: '#319236',
+        purple: '#9D4DBB',
+        blue : '#4C51F7',
+        red : '#DB4441',
+        teal: '#3E93BC',
+        lime: '#3CFF3E',
+        grey: '#B3B3B3',
+        brown: '#8B4513'
+    }
+    
+    const headerPos = {left: 150, top: 0, height: 69, width: 80, gap: 5};
+
+    const playerColWidth = 240;
     PlayerTableWidth = playerColWidth + (headerPos.width * (columns.length - 1));
     
     const _chart = dc.baseMixin({});
 
     const top = headerPos.height + 14;
-    const rowHeight = 36; 
-    const rowCount = 19;
+    const rowHeight = 34; 
+    const rowCount = 20;
 
     const thinBorder = 3;
     const thickBorder = 7;
@@ -159,7 +170,7 @@ function playerChart(id) {
                 .attr("fill", "none") 
                 .attr("class", "row" + row.num)
                 .attr("visible", "hidden")
-                .attr("fill", player.color) 
+                .attr("fill", colors[player.color]) 
                 .attr("stroke", "black")
                 .attr("stroke-width", 0) 
                 .on('mouseover', function (d) {
@@ -295,7 +306,7 @@ function playerChart(id) {
 
             const textColor = row.color; 
             svg.selectAll(".row").data(columns).enter().append("text")
-                .attr("x", (d, i) => (i == 0) ? 10 : playerColWidth + headerPos.gap + 10 + (headerPos.width * (i - 1)))
+                .attr("x", (d, i) => (i == 0) ? 50 : playerColWidth + headerPos.gap + 10 + (headerPos.width * (i - 1)))
                 .attr("y", top + (rowNum * rowHeight) + 21)
                 .text(function (d, i) {
                     return (i == 0) ? row.key : row.values[0].value[columns[i].code];
@@ -305,7 +316,7 @@ function playerChart(id) {
                 .attr("pointer-events", "none"); 
 
             svg.select(".row" + rowNum)
-                .attr("fill", row.color);     
+                .attr("fill", colors[row.color]);     
                 
             rowNum++;    
         });
