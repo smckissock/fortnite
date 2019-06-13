@@ -54,6 +54,9 @@ function playerChart(id) {
     // The data currently displayed, in order 
     let playerRows = [];
 
+    // The data that gets rendered in the table. It gets updated whenever anything changes. But paging does not update it - it just grabs a slice
+    let playerData;
+
     // Important!!
     // baseMixin has mandatory ['dimension', 'group'], but we don't have a group here. 
     _chart._mandatoryAttributes(['dimension']);
@@ -186,7 +189,7 @@ function playerChart(id) {
             .attr("pointer-events", "bounding-box")
             .attr("stroke", "black")
             .attr("stroke-width", 0)
-            //.attr("stroke-linejoin", "bevel")
+            //.attr("stroke-linejoin", "bevel") // it would be nice to have round corners, but this doesn't work
             .on('mouseover', function (d) {
                 d3.select(this)
                     .attr("stroke-width", 5)
@@ -341,7 +344,7 @@ function playerChart(id) {
     function renderRows() {
 
         // https://stackoverflow.com/questions/32376651/javascript-filter-array-by-data-from-another  search for "O(n^2)""
-        function filterPlayersFast(data, dimVals) {
+/*         function filterPlayersFast(data, dimVals) {
             let names = dimVals.map(x => x.player); 
             var index = names.reduce(function(a,b) {a[b] = 1; return a;}, {});
             let filteredData = data.filter(function(item) {
@@ -358,20 +361,21 @@ function playerChart(id) {
             .key(function(d) { return d.key; })
             .sortKeys(sortOrder)
             .entries(_chart.dimension().top(Infinity));
-            //.slice(first, last);  !!!
-
+        
         let sortedValues = values.sort(function (a, b) {
             return sortOrder(a.values[0].value[sortColumn], b.values[0].value[sortColumn]);
         });
 
         let results = filterPlayersFast(sortedValues, playerDim.top(Infinity));
-        filters.playerCount = results.length;
+        filters.playerCount = results.length; */
+
+        updatePlayerData();
 
         // Make a list of 20. Zero based page, zero based slices
         const pageSize = 20;
         const first = pageSize * filters.page;
         const last = (pageSize * (filters.page + 1));
-        const toShow = results.slice(first, last);
+        const toShow = playerData.slice(first, last);
 
         playerRows = [];
         for (let i = 0; i < rowCount; i++) 
@@ -390,7 +394,7 @@ function playerChart(id) {
                     });
             }
             
-            // If there is no row (filters returned fewer queries than rows) make the row transarent
+            // If there are no row (filters returned fewer queries than rows) make the row transarent
             if (!row) {
                 svg.select(".row" + rowNum)
                     .attr("fill", "none")
@@ -446,6 +450,36 @@ function playerChart(id) {
 
         setRowRankColumn();
         updateCounts();
+    }
+
+    // The data that gets rendered in the table. It gets updated whenever anything changes. But paging does not update it - it just grabs a slice
+    function updatePlayerData() {
+        
+        function filterPlayersFast(data, dimVals) {
+            let names = dimVals.map(x => x.player); 
+            var index = names.reduce(function(a,b) {a[b] = 1; return a;}, {});
+            let filteredData = data.filter(function(item) {
+                item.color = playerColors[item.key];
+                return index[item.key] === 1;
+            });
+            return filteredData;
+        }
+
+        const sortColumn = filters.sort;
+        const sortOrder = (filters.sort !== "rank") ? d3.descending : d3.ascending;
+
+        let values = d3.nest()
+            .key(function(d) { return d.key; })
+            .sortKeys(sortOrder)
+            .entries(_chart.dimension().top(Infinity));
+        
+        let sortedValues = values.sort(function (a, b) {
+            return sortOrder(a.values[0].value[sortColumn], b.values[0].value[sortColumn]);
+        });
+
+        // Set player data, which is what gets rendered (or a slice of it)
+        playerData = filterPlayersFast(sortedValues, playerDim.top(Infinity));
+        filters.playerCount = playerData.length;
     }
 
     function setRowRankColumn() {
