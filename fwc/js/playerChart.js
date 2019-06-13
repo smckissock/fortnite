@@ -162,13 +162,14 @@ function playerChart(id) {
                 .attr("stroke-width", (filters.week && (filters.sort === "rank")) ? thickBorder : 0);   
     }
 
+    // Draw triangles to change page 
     function pageArrows() {
         const width = 50;
         const height = headerPos.height / 2;
 
         upArrowPolygon = svg.append("polygon")
-            .attr("points", (playerColWidth - width) + "," + (height - 2) + " " + playerColWidth + "," + (height - 2) + " " + (playerColWidth - (width / 2)) + "," + 4)
-            .style("fill", "green")
+            .attr("points", (playerColWidth - width - 10) + "," + (height - 2) + " " + (playerColWidth - 10) + "," + (height - 2) + " " + (playerColWidth - (width / 2) - 10) + "," + 4)
+            .style("fill", "darkgrey")
             .attr("pointer-events", "bounding-box")
             .attr("stroke", "black")
             .attr("stroke-width", 0)
@@ -184,8 +185,8 @@ function playerChart(id) {
             });
 
         downArrowPolygon = svg.append("polygon")
-            .attr("points", (playerColWidth - width) + "," + (height + 5) + " " + playerColWidth + "," + (height + 5) + " " + (playerColWidth - (width / 2)) + "," + (height * 2))
-            .style("fill", "purple")
+            .attr("points", (playerColWidth - width - 10) + "," + (height + 5) + " " + (playerColWidth - 10)+ "," + (height + 5) + " " + (playerColWidth - (width / 2) - 10) + "," + (height * 2))
+            .style("fill", "darkgrey")
             .attr("pointer-events", "bounding-box")
             .attr("stroke", "black")
             .attr("stroke-width", 0)
@@ -204,9 +205,17 @@ function playerChart(id) {
     }
 
     function nextPage(direction) {
-        alert(direction);
+        if (direction === "down") 
+            filters.page += 1;
+        
+        if (direction === "up") 
+            filters.page -= 1;
+        
+        renderPlayerPage();
+        console.log(filters.page);
     }
 
+    
     // Only works on start up - just selects first, does not unselect others!
     function drawColumnBorder(sort, strokeWidth) {
         if (!sort)
@@ -342,9 +351,19 @@ function playerChart(id) {
     
     // Draws current players on top of already-existing rectangles
     function renderRows() {
+        // This should always be reset here - right?
+        filters.page = 0;
 
-        // https://stackoverflow.com/questions/32376651/javascript-filter-array-by-data-from-another  search for "O(n^2)""
-/*         function filterPlayersFast(data, dimVals) {
+        // Refresh playerData (crossfilter)
+        updatePlayerData();
+        // Render the slice of playerData based on filters.page 
+        renderPlayerPage();
+    }
+
+    // The data that gets rendered in the table. It gets updated whenever anything changes. But paging does not update it - it just grabs a slice
+    function updatePlayerData() {
+        
+        function filterPlayersFast(data, dimVals) {
             let names = dimVals.map(x => x.player); 
             var index = names.reduce(function(a,b) {a[b] = 1; return a;}, {});
             let filteredData = data.filter(function(item) {
@@ -366,10 +385,12 @@ function playerChart(id) {
             return sortOrder(a.values[0].value[sortColumn], b.values[0].value[sortColumn]);
         });
 
-        let results = filterPlayersFast(sortedValues, playerDim.top(Infinity));
-        filters.playerCount = results.length; */
+        // Set player data, which is what gets rendered (or a slice of it)
+        playerData = filterPlayersFast(sortedValues, playerDim.top(Infinity));
+        filters.playerCount = playerData.length;
+    }
 
-        updatePlayerData();
+    function renderPlayerPage() {
 
         // Make a list of 20. Zero based page, zero based slices
         const pageSize = 20;
@@ -416,14 +437,16 @@ function playerChart(id) {
                 .attr("x", (d, i) => (i == 0) ? 68 : playerColWidth + headerPos.gap + 10 + (headerPos.width * (i - 1)))
                 .attr("y", top + (rowNum * rowHeight) + 21)
                 .text(function (d, i) {
-                    //return (i == 0) ? row.key : row.values[0].value[columns[i].code];
+                    // Show player name
                     if (i == 0) 
                         return row.key;
 
+                    // Show the number, as ling as it isn't the first one - i.e rank/count    
                     if (i != 1) 
                         return row.values[0].value[columns[i].code];
                         
-                    return (filters.week === "") ? rowNum + 1 : row.values[0].value[columns[i].code];
+                    // First number column is wierd - is week is seleced, it should be the ranking for that week. Otherwise, it should just be the row number    
+                    return (filters.week === "") ? first + rowNum + 1 : row.values[0].value[columns[i].code];
                 })
                 .attr('fill', "black")
                 .attr("font-size", "1.3em")
@@ -449,37 +472,28 @@ function playerChart(id) {
         });
 
         setRowRankColumn();
+        showArrows(pageSize, first, last)
         updateCounts();
     }
 
-    // The data that gets rendered in the table. It gets updated whenever anything changes. But paging does not update it - it just grabs a slice
-    function updatePlayerData() {
-        
-        function filterPlayersFast(data, dimVals) {
-            let names = dimVals.map(x => x.player); 
-            var index = names.reduce(function(a,b) {a[b] = 1; return a;}, {});
-            let filteredData = data.filter(function(item) {
-                item.color = playerColors[item.key];
-                return index[item.key] === 1;
-            });
-            return filteredData;
+    // Hide or show arrows base on where the page is
+    function showArrows(pageSize, first, last) {
+
+        // Less than a full screen - so no paging
+        if (playerData.length < pageSize) {
+            upArrowPolygon.style("fill-opacity", 0);
+            downArrowPolygon.style("fill-opacity", 0);
         }
 
-        const sortColumn = filters.sort;
-        const sortOrder = (filters.sort !== "rank") ? d3.descending : d3.ascending;
+        if (filters.page === 0) 
+            upArrowPolygon.style("fill-opacity", 0);
 
-        let values = d3.nest()
-            .key(function(d) { return d.key; })
-            .sortKeys(sortOrder)
-            .entries(_chart.dimension().top(Infinity));
+        if (filters.page > 0) 
+            upArrowPolygon.style("fill-opacity", 1);
         
-        let sortedValues = values.sort(function (a, b) {
-            return sortOrder(a.values[0].value[sortColumn], b.values[0].value[sortColumn]);
-        });
+        if (last < playerData.length)
+            downArrowPolygon.style("fill-opacity", 1);
 
-        // Set player data, which is what gets rendered (or a slice of it)
-        playerData = filterPlayersFast(sortedValues, playerDim.top(Infinity));
-        filters.playerCount = playerData.length;
     }
 
     function setRowRankColumn() {
@@ -502,8 +516,7 @@ function playerChart(id) {
                 .attr("fill", "lightblue")
                 .attr("pointer-events", "auto")
                 //.attr("stroke-width", thickBorder)
-                //.attr("stroke-width", (numOrRankRect && filters.week) ? thickBorder : 0)
-                
+                //.attr("stroke-width", (numOrRankRect && filters.week) ? thickBorder : 0)                
         }   
     }
 
