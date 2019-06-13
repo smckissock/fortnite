@@ -41,6 +41,9 @@ function playerChart(id) {
 
     let numOrRankRect;
     let numOrRankText;
+
+    let upArrowPolygon;
+    let downArrowPolygon;
     
 
     let svgWidth = PlayerTableWidth; //640;
@@ -55,7 +58,7 @@ function playerChart(id) {
     // baseMixin has mandatory ['dimension', 'group'], but we don't have a group here. 
     _chart._mandatoryAttributes(['dimension']);
 
-    var _section = function () { return ''; }; // all in one section
+    //var _section = function () { return ''; }; // all in one section
 
 
     const div = d3.select(id);
@@ -132,6 +135,7 @@ function playerChart(id) {
             });
         
         columnHeaderText();
+        pageArrows();
         drawColumnBorder("payout", thickBorder);
     }
 
@@ -150,9 +154,54 @@ function playerChart(id) {
                 }
             });
 
-    if (numOrRankRect)
-        numOrRankRect
-            .attr("stroke-width", (filters.week && (filters.sort === "rank")) ? thickBorder : 0);   
+        if (numOrRankRect)
+            numOrRankRect
+                .attr("stroke-width", (filters.week && (filters.sort === "rank")) ? thickBorder : 0);   
+    }
+
+    function pageArrows() {
+        const width = 50;
+        const height = headerPos.height / 2;
+
+        upArrowPolygon = svg.append("polygon")
+            .attr("points", (playerColWidth - width) + "," + (height - 2) + " " + playerColWidth + "," + (height - 2) + " " + (playerColWidth - (width / 2)) + "," + 4)
+            .style("fill", "green")
+            .attr("pointer-events", "bounding-box")
+            .attr("stroke", "black")
+            .attr("stroke-width", 0)
+            .on('mouseover', function (d) {
+                d3.select(this)
+                    .attr("stroke-width", 5)
+            })
+            .on('mouseout', function (d) {
+                d3.select(this)
+                    .attr("stroke-width", 0)
+            }).on('click', function (d) {
+                nextPage("up");
+            });
+
+        downArrowPolygon = svg.append("polygon")
+            .attr("points", (playerColWidth - width) + "," + (height + 5) + " " + playerColWidth + "," + (height + 5) + " " + (playerColWidth - (width / 2)) + "," + (height * 2))
+            .style("fill", "purple")
+            .attr("pointer-events", "bounding-box")
+            .attr("stroke", "black")
+            .attr("stroke-width", 0)
+            //.attr("stroke-linejoin", "bevel")
+            .on('mouseover', function (d) {
+                d3.select(this)
+                    .attr("stroke-width", 5)
+            })
+            .on('mouseout', function (d) {
+                d3.select(this)
+                .attr("stroke-width", 0)
+            })
+            .on('click', function (d) {
+                nextPage("down");
+            });
+    }
+
+    function nextPage(direction) {
+        alert(direction);
     }
 
     // Only works on start up - just selects first, does not unselect others!
