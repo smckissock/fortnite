@@ -4,7 +4,7 @@
 function playerChart(id) {
 
     const columns = [
-        {name: "Players", code: "player", x: 8}, 
+        {name: "Player", code: "player", x: 8}, 
         {name: "Rank", code: "rank", x: 16},
         {name: "Payout", code: "payout", x: 9},
         {name: "Points", code: "points", x: 13},
@@ -51,6 +51,8 @@ function playerChart(id) {
     // Important!!
     // baseMixin has mandatory ['dimension', 'group'], but we don't have a group here. 
     _chart._mandatoryAttributes(['dimension']);
+
+    var _section = function () { return ''; }; // all in one section
 
 
     const div = d3.select(id);
@@ -193,6 +195,31 @@ function playerChart(id) {
                 .on('click', function (d) {
                     setPlayer(this);
                 })
+
+            svg.append("circle")
+                .attr("cx", 16)
+                .attr("cy", top + (row.num * rowHeight) + 14)
+                .attr("r", 10)
+                .attr("fill", "gold")
+                .attr("fill-opacity", 1.0)
+                .classed("s" + row.num, true);
+                
+            const g = svg.append("g")
+               .style("fill-opacity", 1.0)
+               .attr("pointer-events", "none")
+               .classed("d" + row.num, true);
+               
+            g.append("circle")
+                .attr("cx", 39)
+                .attr("cy", top + (row.num * rowHeight) + 11)
+                .attr("r", 7)
+                .attr("fill", "gold")
+
+            g.append("circle")
+                .attr("cx", 50)
+                .attr("cy", top + (row.num * rowHeight) + 18)
+                .attr("r", 7)
+                .attr("fill", "gold")
         });    
     }
 
@@ -243,7 +270,8 @@ function playerChart(id) {
         showPlayerOnWeekChart(clickedPlayer);
     }
 
-       
+    
+    // Draws current players on top of already-existing rectangles
     function renderRows() {
 
         // https://stackoverflow.com/questions/32376651/javascript-filter-array-by-data-from-another  search for "O(n^2)""
@@ -277,7 +305,6 @@ function playerChart(id) {
         const pageSize = 20;
         const first = pageSize * filters.page;
         const last = (pageSize * (filters.page + 1));
-        console.log(first, last);
         const toShow = results.slice(first, last);
 
         playerRows = [];
@@ -291,10 +318,7 @@ function playerChart(id) {
         playerRows.forEach(function(row)  {
             // Only one player, so simulate a click on him
             if (toShow.length === 1 && rowNum == 0) {
-                console.log(toShow[0].key)
-
-                svg
-                    .select(".row0") 
+                svg.select(".row0") 
                     .each(function(d) {
                         setPlayer(this);
                     });
@@ -308,9 +332,8 @@ function playerChart(id) {
                 return; 
             }
 
-            const textColor = row.color; 
             svg.selectAll(".row").data(columns).enter().append("text")
-                .attr("x", (d, i) => (i == 0) ? 50 : playerColWidth + headerPos.gap + 10 + (headerPos.width * (i - 1)))
+                .attr("x", (d, i) => (i == 0) ? 68 : playerColWidth + headerPos.gap + 10 + (headerPos.width * (i - 1)))
                 .attr("y", top + (rowNum * rowHeight) + 21)
                 .text(function (d, i) {
                     return (i == 0) ? row.key : row.values[0].value[columns[i].code];
@@ -319,8 +342,21 @@ function playerChart(id) {
                 .attr("font-size", "1.3em")
                 .attr("pointer-events", "none"); 
 
-            svg.select(".row" + rowNum)
-                .attr("fill", colors[row.color]);     
+            const rowSelection = svg.select(".row" + rowNum);
+
+            // Show/hide solo
+            rowSelection
+                .transition()
+                .attr("fill", colors[row.color]);
+                
+            // Show/hide solo circles    
+            svg.select(".s" + rowNum)
+                .transition()
+                .style("fill-opacity", (soloQualifications.indexOf(row.key) != -1) ? 1 : 0);
+            // Show/hide solo circle groups
+            svg.select(".d" + rowNum)
+                .transition()
+                .style("fill-opacity", (duoQualifications.indexOf(row.key) != -1) ? 1 : 0);
                 
             rowNum++;    
         });

@@ -19,6 +19,11 @@ let showPlayerOnWeekChart;
 // Function that playerChart sets and regionChart, weekChart and filter calls 
 let clearPlayer;
 
+
+let soloQualifications = [];
+let duoQualifications = [];
+
+
 const green ='#319236';
 const purple = '#9D4DBB';
 const blue = '#4C51F7';
@@ -48,8 +53,10 @@ d3.json('fwc/data/data.json').then(function (data)  {
     data.forEach(function (d) {
         d.rank = +d.rank;
         d.payout = +d.payout;
-        d.points = d.points;
+        d.points = +d.points;
     });
+    makeQualifications(data); 
+
     facts = crossfilter(data);
     draw(facts);
     helpButton(titleSvg, screenWidth);  // 730
@@ -70,6 +77,17 @@ d3.json('fwc/data/data.json').then(function (data)  {
         dc.redrawAll();
     });
 });
+
+
+function makeQualifications(data) {
+    data.forEach(function (placement) {
+        if (placement.soloQual != 0) 
+            soloQualifications.push(placement.player);
+
+        if (placement.duoQual != 0)
+            duoQualifications.push(placement.player);
+    });
+}
 
 
 function title(width) {
