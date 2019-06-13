@@ -127,8 +127,7 @@ function playerChart(id) {
             })
             .each(function (d, i) {
                 if (i === 1) {
-                    numOrRankRect = d3.select(this); 
-                    console.log(numOrRankRect);
+                    numOrRankRect = d3.select(this);
                 }
             });
         
@@ -147,8 +146,7 @@ function playerChart(id) {
             .attr("pointer-events", "none")
             .each(function (d, i) {
                 if (columns[i].name === "Rank") {
-                    numOrRankText = d3.select(this); 
-                    console.log(numOrRankText);
+                    numOrRankText = d3.select(this);
                 }
             });
 
@@ -336,11 +334,6 @@ function playerChart(id) {
         let rowNum = 0;
         playerRows.forEach(function(row)  {
             // Only one player, so simulate a click on him
-            //if (toShow.length === 1 && rowNum == 0) {
-            //    svg.select(".row0") 
-            //    .each(() => setPlayer(this));
-            //}
-
             if (toShow.length === 1 && rowNum == 0) {
                 svg.select(".row0") 
                     .each(function(d) {
@@ -351,7 +344,16 @@ function playerChart(id) {
             // If there is no row (filters returned fewer queries than rows) make the row transarent
             if (!row) {
                 svg.select(".row" + rowNum)
-                    .attr("fill", "none");
+                    .attr("fill", "none")
+                    .attr("stroke-width", 0);
+
+                // Also hide qualification circles from hidden rows     
+                svg.select(".s" + rowNum)
+                    .style("fill-opacity", 0);
+                svg.select(".d" + rowNum)
+                    .style("fill-opacity", 0);
+
+                // Don't do anything else for lower rows - just get out     
                 rowNum++;
                 return; 
             }
@@ -374,11 +376,9 @@ function playerChart(id) {
                 .attr("font-size", "1.3em")
                 .attr("pointer-events", "none"); 
 
-            //setRowRankColumn();
-
             const rowSelection = svg.select(".row" + rowNum);
 
-            // Show/hide solo
+            // color the row based on region
             rowSelection
                 .transition()
                 .attr("fill", colors[row.color]);
