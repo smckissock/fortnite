@@ -35,6 +35,7 @@ let filters = {
     search: "",
     player: "",
     sort: "payout",
+    page: 0,
     playerCount: 0
 }
 

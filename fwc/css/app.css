@@ -42,10 +42,6 @@ body {
 }
 
 
-#dc-chart-player {
-    table-layout: fixed;
-}
-
 .wrap {
     word-wrap: break-word;
     border: 0px;

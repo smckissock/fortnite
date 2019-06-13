@@ -4,7 +4,7 @@
 function playerChart(id) {
 
     const columns = [
-        {name: "Player", code: "player", x: 8}, 
+        {name: "Players", code: "player", x: 8}, 
         {name: "Rank", code: "rank", x: 16},
         {name: "Payout", code: "payout", x: 9},
         {name: "Points", code: "points", x: 13},
@@ -52,8 +52,6 @@ function playerChart(id) {
     // baseMixin has mandatory ['dimension', 'group'], but we don't have a group here. 
     _chart._mandatoryAttributes(['dimension']);
 
-    var _section = function () { return ''; }; // all in one section
-
 
     const div = d3.select(id);
 
@@ -71,7 +69,8 @@ function playerChart(id) {
     
     function drawHeaders() {
     
-         svg.selectAll("rect").data(columns).enter().append("rect")
+        // Rects for column headers 
+        svg.selectAll("rect").data(columns).enter().append("rect")
             .attr("x", (d, i) => (i == 0) ? 0 : playerColWidth + headerPos.gap + (headerPos.width * (i - 1)))
             .attr("y", headerPos.top + 4)
             .attr("width", (d, i) => (i == 0) ? playerColWidth : headerPos.width - headerPos.gap - 3) // -3 because right-most was having its right border cup off 
@@ -130,7 +129,7 @@ function playerChart(id) {
     function columnHeaderText() {
         svg.selectAll("text").data(columns).enter().append("text")
             .attr("x", (d, i) => (i == 0) ? columns[i].x : playerColWidth + headerPos.gap + (headerPos.width * (i - 1)) + columns[i].x    )
-            .attr("y", (d, i) => (i == 0) ? 50 : 42)
+            .attr("y", (d, i) => (i == 0) ? 58 : 46)
             .text((d, i) => columns[i].name)
             .attr("font-family", "burbank")
             .attr("font-size", (d, i) => i ===0 ? "1.8em" : "1.3em")
@@ -156,7 +155,7 @@ function playerChart(id) {
                 });
     }
 
-
+    // Draw rects for player rows. These stay, but the text on top of them changes whenever the query changes
     function drawRows() {
         const gap = 6;
         rows.forEach(function(row)  {
@@ -263,18 +262,23 @@ function playerChart(id) {
 
         let values = d3.nest()
             .key(function(d) { return d.key; })
-            //.sortKeys(d3.descending)
             .sortKeys(sortOrder)
             .entries(_chart.dimension().top(Infinity));
-            //.slice(_beginSlice, _endSlice));
+            //.slice(first, last);  !!!
 
         let sortedValues = values.sort(function (a, b) {
             return sortOrder(a.values[0].value[sortColumn], b.values[0].value[sortColumn]);
-            //return d3.descending(a.values[0].value[sortColumn], b.values[0].value[sortColumn]);
         });
 
-        let toShow = filterPlayersFast(sortedValues, playerDim.top(Infinity));
-        filters.playerCount = toShow.length;
+        let results = filterPlayersFast(sortedValues, playerDim.top(Infinity));
+        filters.playerCount = results.length;
+
+        // Make a list of 20. Zero based page, zero based slices
+        const pageSize = 20;
+        const first = pageSize * filters.page;
+        const last = (pageSize * (filters.page + 1));
+        console.log(first, last);
+        const toShow = results.slice(first, last);
 
         playerRows = [];
         for (let i = 0; i < rowCount; i++) 
@@ -325,8 +329,7 @@ function playerChart(id) {
 
 
 
-    //////////////////////////
-
+    // DC related stuff
     _chart._doRender = function () {
         renderRows();
         return _chart;

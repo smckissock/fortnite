@@ -160,11 +160,47 @@ function weekChart(id) {
     }
 
     function makeStar(svg, x, y, week) {
+
+        const g = 
+            svg.append("g")
+               .style("fill-opacity", 0)
+               .attr("pointer-events", "none");
+
+        // Solos       
+        if (week % 2 == 1) {
+            g.append("circle")
+                .attr("data", week)
+                .attr("cx", 28)
+                .attr("cy", 22)
+                .attr("r", 10)
+                .attr("fill", "gold")
+                .attr("transform", "translate(" + (x-13) + "," + (y-7) + ")")
+        // Duos
+        } else {
+           g.append("circle")
+                .attr("data", week)
+                .attr("cx", 26)
+                .attr("cy", 20)
+                .attr("r", 7)
+                .attr("fill", "gold")
+                .attr("transform", "translate(" + (x-13) + "," + (y-7) + ")")
+            
+            g.append("circle")
+                .attr("data", week)
+                .attr("cx", 36)
+                .attr("cy", 30)
+                .attr("r", 7)
+                .attr("fill", "gold")
+                .attr("transform", "translate(" + (x-13) + "," + (y-9) + ")")
+        }
+        return g;
+        
+        // Star (no used)
         return svg.append("polygon")
             .attr("data", week)
             .attr("points", "250,75 323,301 131,161 369,161 177,301")
             .style("fill", "gold")
-            .style("opacity", 0)
+            //.style("opacity", 0)
             .attr("transform", "translate(" + (x-13) + "," + (y-7) + ") scale(.12)")
             .attr("pointer-events", "none");
     }
@@ -265,7 +301,7 @@ function weekChart(id) {
             const qualified = ((matches.length != 0) &&(matches[0].soloQual + matches[0].duoQual) > 0); 
             stars[count]
                 .transition()
-                .style("opacity", qualified ? 1 : 0);
+                .style("fill-opacity", qualified ? 1 : 0);
 
             let place = "";
             let money = "";
