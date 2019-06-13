@@ -38,6 +38,9 @@ function playerChart(id) {
 
     const thinBorder = 3;
     const thickBorder = 7;
+
+    let numOrRankRect;
+    let numOrRankText;
     
 
     let svgWidth = PlayerTableWidth; //640;
@@ -77,7 +80,6 @@ function playerChart(id) {
             .attr("y", headerPos.top + 4)
             .attr("width", (d, i) => (i == 0) ? playerColWidth : headerPos.width - headerPos.gap - 3) // -3 because right-most was having its right border cup off 
             .attr("height", headerPos.height)
-            //.attr("fill", "yellow") 
             .attr("fill", (d, i) => (i == 0) ? "none" : "lightblue")
             .attr("stroke", "black")
             .attr("stroke-width", 0)
@@ -122,6 +124,12 @@ function playerChart(id) {
                     updateCounts();
                     renderRows();
                 }
+            })
+            .each(function (d, i) {
+                if (i === 1) {
+                    numOrRankRect = d3.select(this); 
+                    console.log(numOrRankRect);
+                }
             });
         
         columnHeaderText();
@@ -130,13 +138,23 @@ function playerChart(id) {
 
     function columnHeaderText() {
         svg.selectAll("text").data(columns).enter().append("text")
-            .attr("x", (d, i) => (i == 0) ? columns[i].x : playerColWidth + headerPos.gap + (headerPos.width * (i - 1)) + columns[i].x    )
+            .attr("x", (d, i) => (i == 0) ? columns[i].x : playerColWidth + headerPos.gap + (headerPos.width * (i - 1)) + columns[i].x)
             .attr("y", (d, i) => (i == 0) ? 58 : 46)
             .text((d, i) => columns[i].name)
             .attr("font-family", "burbank")
             .attr("font-size", (d, i) => i ===0 ? "1.8em" : "1.3em")
             .attr("fill", "black")    
-            .attr("pointer-events", "none");
+            .attr("pointer-events", "none")
+            .each(function (d, i) {
+                if (columns[i].name === "Rank") {
+                    numOrRankText = d3.select(this); 
+                    console.log(numOrRankText);
+                }
+            });
+
+    if (numOrRankRect)
+        numOrRankRect
+            .attr("stroke-width", (filters.week && (filters.sort === "rank")) ? thickBorder : 0);   
     }
 
     // Only works on start up - just selects first, does not unselect others!
@@ -201,11 +219,11 @@ function playerChart(id) {
                 .attr("cy", top + (row.num * rowHeight) + 14)
                 .attr("r", 10)
                 .attr("fill", "gold")
-                .attr("fill-opacity", 1.0)
+                .attr("fill-opacity", 0.0)
                 .classed("s" + row.num, true);
                 
             const g = svg.append("g")
-               .style("fill-opacity", 1.0)
+               .style("fill-opacity", 0.0)
                .attr("pointer-events", "none")
                .classed("d" + row.num, true);
                
@@ -245,7 +263,7 @@ function playerChart(id) {
         if (filters.player === "") {
             filters.player = clickedPlayer;
 
-            clickedNode.attr("stroke-width", "8");
+            clickedNode.attr("stroke-width", thickBorder);
             showPlayerOnWeekChart(clickedPlayer);
             selectedRect = clickedNode;
             return;
@@ -253,17 +271,18 @@ function playerChart(id) {
 
         // 2 One is selected, so unselect it and select this
         if (filters.player != "") {
-            selectedRect.attr("stroke", 0);
+            //selectedRect.attr("stroke", 0);
+            selectedRect.attr("stroke-width", 0);
             selectedRect = clickedNode;
 
             filters.player = clickedPlayer;
-            clickedNode.attr("stroke-width", "8");
+            clickedNode.attr("stroke-width", thickBorder);
             showPlayerOnWeekChart(clickedPlayer);
             return;
         }
 
         // 3 This was selected, so unselect it - all will be selected
-        clickedNode.attr("stroke-width", "8");
+        clickedNode.attr("stroke-width", thickBorder);
         filters.player = "";
         selectedRect = null;
 
@@ -317,6 +336,11 @@ function playerChart(id) {
         let rowNum = 0;
         playerRows.forEach(function(row)  {
             // Only one player, so simulate a click on him
+            //if (toShow.length === 1 && rowNum == 0) {
+            //    svg.select(".row0") 
+            //    .each(() => setPlayer(this));
+            //}
+
             if (toShow.length === 1 && rowNum == 0) {
                 svg.select(".row0") 
                     .each(function(d) {
@@ -332,15 +356,25 @@ function playerChart(id) {
                 return; 
             }
 
+            // Draw the text for the row, including the player name
             svg.selectAll(".row").data(columns).enter().append("text")
                 .attr("x", (d, i) => (i == 0) ? 68 : playerColWidth + headerPos.gap + 10 + (headerPos.width * (i - 1)))
                 .attr("y", top + (rowNum * rowHeight) + 21)
                 .text(function (d, i) {
-                    return (i == 0) ? row.key : row.values[0].value[columns[i].code];
+                    //return (i == 0) ? row.key : row.values[0].value[columns[i].code];
+                    if (i == 0) 
+                        return row.key;
+
+                    if (i != 1) 
+                        return row.values[0].value[columns[i].code];
+                        
+                    return (filters.week === "") ? rowNum + 1 : row.values[0].value[columns[i].code];
                 })
                 .attr('fill', "black")
                 .attr("font-size", "1.3em")
                 .attr("pointer-events", "none"); 
+
+            //setRowRankColumn();
 
             const rowSelection = svg.select(".row" + rowNum);
 
@@ -360,7 +394,34 @@ function playerChart(id) {
                 
             rowNum++;    
         });
+
+        setRowRankColumn();
         updateCounts();
+    }
+
+    function setRowRankColumn() {
+        if (filters.week === "") {
+            numOrRankText
+                .text("#")
+                .attr("x", playerColWidth + headerPos.gap + columns[1].x + 12)
+                .attr("y", 59)
+                .attr("font-size", "2.6em");
+            
+            numOrRankRect
+                .attr("fill", "none")
+                .attr("pointer-events", "none")
+                .attr("stroke-width", 0);
+
+            // Need to shift move sord away from rank when it doesn't make any sense.    
+        } else {
+            numOrRankText.text("Rank");
+            numOrRankRect
+                .attr("fill", "lightblue")
+                .attr("pointer-events", "auto")
+                //.attr("stroke-width", thickBorder)
+                //.attr("stroke-width", (numOrRankRect && filters.week) ? thickBorder : 0)
+                
+        }   
     }
 
 
