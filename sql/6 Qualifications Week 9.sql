@@ -59,31 +59,35 @@ SELECT * FROM Placement
 
 DECLARE @week nvarchar(10)
 SET @week = 'Week9' 
-SELECT top 12 * FROM Placement WHERE WeekNumber = @week AND RegionCode = 'NAE' ORDER BY Payout DESC
-SELECT top 12 *  FROM Placement WHERE WeekNumber = @week AND RegionCode = 'NAW' ORDER BY Payout DESC
-SELECT top 14 *  FROM Placement WHERE WeekNumber = @week AND RegionCode = 'EU' ORDER BY Payout DESC
-SELECT top 8 *  FROM Placement WHERE WeekNumber = @week AND RegionCode = 'OCE' ORDER BY Payout DESC
-SELECT top 8 *  FROM Placement WHERE WeekNumber = @week AND RegionCode = 'ASIA' ORDER BY Payout DESC
+--SELECT top 12 * FROM Placement WHERE WeekNumber = @week AND RegionCode = 'NAE' ORDER BY Payout DESC
+--SELECT top 12 *  FROM Placement WHERE WeekNumber = @week AND RegionCode = 'NAW' ORDER BY Payout DESC
+--SELECT top 14 *  FROM Placement WHERE WeekNumber = @week AND RegionCode = 'EU' ORDER BY Payout DESC
+--SELECT top 8 *  FROM Placement WHERE WeekNumber = @week AND RegionCode = 'OCE' ORDER BY Payout DESC
+--SELECT top 8 *  FROM Placement WHERE WeekNumber = @week AND RegionCode = 'ASIA' ORDER BY Payout DESC
 SELECT top 8 *  FROM Placement WHERE WeekNumber = @week AND RegionCode = 'BR' ORDER BY Payout DESC
 
 -- Week9
-UPDATE Placement SET Qualification = 1 WHERE ID =
-UPDATE Placement SET Qualification = 1 WHERE ID =
-UPDATE Placement SET Qualification = 1 WHERE ID =
-UPDATE Placement SET Qualification = 1 WHERE ID =
-UPDATE Placement SET Qualification = 1 WHERE ID =
-UPDATE Placement SET Qualification = 1 WHERE ID =
-UPDATE Placement SET Qualification = 1 WHERE ID =
-UPDATE Placement SET Qualification = 1 WHERE ID =
-UPDATE Placement SET Qualification = 1 WHERE ID =
-UPDATE Placement SET Qualification = 1 WHERE ID =
-UPDATE Placement SET Qualification = 1 WHERE ID =
-UPDATE Placement SET Qualification = 1 WHERE ID =
-UPDATE Placement SET Qualification = 1 WHERE ID =
-UPDATE Placement SET Qualification = 1 WHERE ID =
-UPDATE Placement SET Qualification = 1 WHERE ID =
-UPDATE Placement SET Qualification = 1 WHERE ID =
-UPDATE Placement SET Qualification = 1 WHERE ID = 
+UPDATE Placement SET Qualification = 1 WHERE ID = 31404
+UPDATE Placement SET Qualification = 1 WHERE ID = 31405
+UPDATE Placement SET Qualification = 1 WHERE ID = 31406
+UPDATE Placement SET Qualification = 1 WHERE ID = 31407
+UPDATE Placement SET Qualification = 1 WHERE ID = 31408
+UPDATE Placement SET Qualification = 1 WHERE ID = 31409
+
+UPDATE Placement SET Qualification = 1 WHERE ID = 31501
+UPDATE Placement SET Qualification = 1 WHERE ID = 31503
+
+UPDATE Placement SET Qualification = 1 WHERE ID = 31601
+UPDATE Placement SET Qualification = 1 WHERE ID = 31602
+UPDATE Placement SET Qualification = 1 WHERE ID = 31603
+UPDATE Placement SET Qualification = 1 WHERE ID = 31604
+UPDATE Placement SET Qualification = 1 WHERE ID = 31605
+UPDATE Placement SET Qualification = 1 WHERE ID = 31606
+UPDATE Placement SET Qualification = 1 WHERE ID = 31607
+UPDATE Placement SET Qualification = 1 WHERE ID = 31608
+UPDATE Placement SET Qualification = 1 WHERE ID = 31701
+UPDATE Placement SET Qualification = 1 WHERE ID = 31801
+UPDATE Placement SET Qualification = 1 WHERE ID = 31901
 
 
 

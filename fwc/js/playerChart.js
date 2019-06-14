@@ -13,6 +13,9 @@ const columns = [
     {name: "Payout", code: "payout", x: 9, format: commaFormat},
     {name: "Points", code: "points", x: 13, format: noFormat},
     {name: "Wins", code: "wins", x: 17, format: noFormat},
+    
+    {name: "Earned Quals", code: "earnedQualifications", x: 0, format: noFormat},
+
     {name: "Elims", code: "elims", x: 15, format: noFormat},
     {name: "Elim %", code: "elimPercentage", x: 16, format: pctFormat},
     {name: "Placement", code: "placementPoints", x: 0, format: noFormat},
@@ -158,6 +161,28 @@ const columns = [
 
             const smallFontSize = "1.0em";
             const mediumFontSize = "1.2em";
+
+            // Earned Quals
+            if (text === "Earned Quals") {
+                svg.append("text")
+                    .attr("x", x + 12)
+                    .attr("y", 34)
+                    .text("Earned")
+                    .attr("font-family", "burbank")
+                    .attr("font-size", mediumFontSize)
+                    .attr("fill", "black")    
+                    .attr("pointer-events", "none");
+
+                svg.append("text")
+                    .attr("x", x  + 16)
+                    .attr("y", 58)
+                    .text("Quals")
+                    .attr("font-family", "burbank")
+                    .attr("font-size", mediumFontSize)
+                    .attr("fill", "black")    
+                    .attr("pointer-events", "none");
+                return;
+            }
 
             // Elim Points
             if (text === "Elims") {
