@@ -13,9 +13,7 @@ const columns = [
     {name: "Payout", code: "payout", x: 9, format: commaFormat},
     {name: "Points", code: "points", x: 13, format: noFormat},
     {name: "Wins", code: "wins", x: 17, format: noFormat},
-    
     {name: "Earned Quals", code: "earnedQualifications", x: 0, format: noFormat},
-
     {name: "Elims", code: "elims", x: 15, format: noFormat},
     {name: "Elim %", code: "elimPercentage", x: 16, format: pctFormat},
     {name: "Placement", code: "placementPoints", x: 0, format: noFormat},
@@ -156,6 +154,16 @@ const columns = [
                     numOrRankRect = d3.select(this);
                 }
             });
+
+        // Maybe a box that surrounds the column...
+/*         svg.append("rect")
+            .attr("x", playerColWidth + headerPos.gap + headerPos.width - 2)
+            .attr("y", headerPos.height)
+            .attr("width", headerPos.width - 3) 
+            .attr("height", 700)
+            .attr("stroke-width", 2)
+            .attr("stroke", "black")
+            .attr("fill", "none") */
         
         columnHeaderText();
         pageArrows();
@@ -618,13 +626,14 @@ const columns = [
 
                     return playerColWidth + moveRight + headerPos.gap + 10 + (headerPos.width * (i - 1))
                 })
-                .attr("y", top + (rowNum * rowHeight) + 21)
+                .attr("y", top + (rowNum * rowHeight) + 20)
                 .text(function (d, i) {
                     return cellText(row, i, rowNum);
                 })
                 .attr('fill', "black")
                 .attr("font-size", "1.3em")
-                .attr("pointer-events", "none"); 
+                .attr("pointer-events", "none")
+                .attr("font-weight", d => (d.code === filters.sort) ? 1000 : 400); 
 
             const rowSelection = svg.select(".row" + rowNum);
 

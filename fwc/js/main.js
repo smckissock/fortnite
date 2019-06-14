@@ -49,6 +49,7 @@ d3.json('fwc/data/data.json').then(function (data)  {
     const leftMargin = 20
     const screenWidth = LeftSideWidth + PlayerTableWidth - leftMargin;
     let titleSvg = title(screenWidth);
+    disclaimer(titleSvg);
     
     data.forEach(function (d) {
         d.rank = +d.rank;
@@ -104,6 +105,16 @@ function title(width) {
         .attr("fill", "black"); 
     
     return svg;
+}
+
+function disclaimer(svg) {
+    svg.append("text")
+        .attr("x", 866)
+        .attr("y", 53)
+        .text("Includes top 100 in each region for each week")
+        .attr("font-size", "1.3rem")
+        .attr("fill", "black")
+        .attr("font-weight", 400)
 }
 
 function helpButton(svg, screenWidth) {
