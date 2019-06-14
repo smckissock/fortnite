@@ -22,9 +22,9 @@ const columns = [
     {name: "Placement %", code: "placementPercentage", x: 0, format: pctFormat}
 ];
 
-
+    // Ugh - almost the same code in regionChart 
     const colors = { 
-        green: '#319236',
+        green: '#319236', 
         purple: '#9D4DBB',
         blue : '#4C51F7',
         red : '#DB4441',
@@ -33,6 +33,17 @@ const columns = [
         grey: '#B3B3B3',
         brown: '#8B4513'
     }
+
+    // Also almost the same code in regionChart
+    const regions = [
+        {color: green, filter: "NA East"},
+        {color: purple, filter: "NA West"},
+        {color: blue, filter: "Europe"},
+        {color: red, filter: "Oceana"},
+        {color: teal, filter: "Brazil"},
+        {color: brown, filter: "Asia"}
+    ];
+    
     
     const headerPos = {left: 150, top: 0, height: 69, width: 80, gap: 5};
 
@@ -375,6 +386,11 @@ const columns = [
         const gap = 6;
         rows.forEach(function(row)  {
             const player = row;
+
+            //let color = colors[player.color];
+            //if (filters.region)
+            //    color =  
+
             svg.append("rect")
                 .attr("data", player.num)
                 .attr("x", 0)
@@ -384,7 +400,6 @@ const columns = [
                 .attr("fill", "none") 
                 .attr("class", "row" + row.num)
                 .attr("visible", "hidden")
-                .attr("fill", colors[player.color]) 
                 .attr("stroke", "black")
                 .attr("stroke-width", 0) 
                 .on('mouseover', function (d) {
@@ -613,10 +628,20 @@ const columns = [
 
             const rowSelection = svg.select(".row" + rowNum);
 
-            // color the row based on region
+            // Ugh - override whatever color the person has if a region is selected
+            let fillColor = colors[row.color];
+            if (filters.region) {
+                if (filters.region === "NA East") fillColor = '#319236';
+                if (filters.region === "NA West") fillColor = '#9D4DBB';
+                if (filters.region === "Europe") fillColor = '#4C51F7';
+                if (filters.region === "Oceana") fillColor = '#DB4441';
+                if (filters.region === "Brazil") fillColor = '#3E93BC';
+                if (filters.region === "Asia") fillColor = '#8B4513';                
+            }
+
             rowSelection
                 .transition()
-                .attr("fill", colors[row.color]);
+                .attr("fill", fillColor);
                 
             // Show/hide solo circles    
             svg.select(".s" + rowNum)
