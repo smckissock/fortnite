@@ -4,7 +4,7 @@ let playerDim;
 let playerStatsGroup;
 
 const LeftSideWidth = 340;
-let PlayerTableWidth = 240 + (6 * 80); // Player + other cols
+let PlayerTableWidth = 240 + (8 * 80); // Player + other cols
 
 let playerColors;
 
@@ -232,7 +232,9 @@ function makePlayerStatsGroup() {
             p.points = p.points + v.points;
             p.wins = p.wins + v.wins;
             p.elims = p.elims + v.elims;
+            p.elimPercentage = p.elims / p.points;
             p.placementPoints = p.placementPoints + v.placementPoints;
+            p.placementPercentage = p.placementPoints / p.points;
             return p;
         },
         function (p, v) {
@@ -244,7 +246,9 @@ function makePlayerStatsGroup() {
             p.points = p.points - v.points;
             p.wins = p.wins - v.wins;
             p.elims = p.elims - v.elims;
+            p.elimPercentage = p.elims / p.points;
             p.placementPoints = p.placementPoints - v.placementPoints;
+            p.placementPercentage = p.placementPoints / p.points;
             return p;
         },
         function (p) {
@@ -257,7 +261,9 @@ function makePlayerStatsGroup() {
                 , points: 0
                 , wins: 0
                 , elims: 0
+                , elimPercentage: 0
                 , placementPoints: 0
+                , placementPercentage: 0
             };
         }
     );

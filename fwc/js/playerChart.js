@@ -3,16 +3,20 @@
 
 function playerChart(id) {
 
+const noFormat = function(d) { return d;}    
+const pctFormat = d3.format(",.1%")
+
 const columns = [
-    {name: "Player", code: "player", x: 8}, 
-    {name: "Rank", code: "rank", x: 16},
-    {name: "Payout", code: "payout", x: 9},
-    {name: "Points", code: "points", x: 13},
-    {name: "Wins", code: "wins", x: 17},
-    {name: "Elims", code: "elims", x: 15},
-    // if x == 0, dray the column header "manually" 
-    {name: "Placement", code: "placementPoints", x: 0}
-    ];
+    {name: "Player", code: "player", x: 8, format: noFormat}, 
+    {name: "Rank", code: "rank", x: 16, format: noFormat},
+    {name: "Payout", code: "payout", x: 9, format: noFormat},
+    {name: "Points", code: "points", x: 13, format: noFormat},
+    {name: "Wins", code: "wins", x: 17, format: noFormat},
+    {name: "Elims", code: "elims", x: 15, format: noFormat},
+    {name: "Elim %", code: "elimPercentage", x: 16, format: pctFormat},
+    {name: "Placement", code: "placementPoints", x: 0, format: noFormat},
+    {name: "Placement %", code: "placementPercentage", x: 0, format: pctFormat}
+];
 
 
     const colors = { 
@@ -152,32 +156,57 @@ const columns = [
             const x =  (i === 0) ? columns[i].x : playerColWidth + headerPos.gap + (headerPos.width * (i - 1)) + columns[i].x;
 
             const smallFontSize = "1.0em";
+            const mediumFontSize = "1.2em";
+
+            // Elim Points
             if (text === "Elims") {
                 svg.append("text")
                     .attr("x", x + 8)
-                    .attr("y", 36)
+                    .attr("y", 34)
                     .text("Elim")
                     .attr("font-family", "burbank")
-                    .attr("font-size", smallFontSize)
+                    .attr("font-size", mediumFontSize)
                     .attr("fill", "black")    
                     .attr("pointer-events", "none");
 
                 svg.append("text")
-                    .attr("x", x + 2)
-                    .attr("y", 55)
+                    .attr("x", x)
+                    .attr("y", 58)
                     .text("Points")
                     .attr("font-family", "burbank")
-                    .attr("font-size", smallFontSize)
+                    .attr("font-size", mediumFontSize)
                     .attr("fill", "black")    
                     .attr("pointer-events", "none");
                 return;
             }
 
-            
+            // Elim %
+            if (text === "Elim %") {
+                svg.append("text")
+                    .attr("x", x + 5)
+                    .attr("y", 35)
+                    .text("Elim")
+                    .attr("font-family", "burbank")
+                    .attr("font-size", mediumFontSize)
+                    .attr("fill", "black")    
+                    .attr("pointer-events", "none");
+
+                svg.append("text")
+                    .attr("x", x + 10)
+                    .attr("y", 62)
+                    .text("%")
+                    .attr("font-family", "burbank")
+                    .attr("font-size", "1.5em")
+                    .attr("fill", "black")    
+                    .attr("pointer-events", "none");
+                return;
+            }
+
+            // Placement Points
             if (text === "Placement") {
                 svg.append("text")
                     .attr("x", x + 5)
-                    .attr("y", 36)
+                    .attr("y", 34)
                     .text("Placement")
                     .attr("font-family", "burbank")
                     .attr("font-size", smallFontSize)
@@ -194,7 +223,31 @@ const columns = [
                     .attr("pointer-events", "none");
                 return;
             }
+
+            // Placement %
+            if (text === "Placement %") {
+                svg.append("text")
+                    .attr("x", x + 5)
+                    .attr("y", 34)
+                    .text("Placement")
+                    .attr("font-family", "burbank")
+                    .attr("font-size", smallFontSize)
+                    .attr("fill", "black")    
+                    .attr("pointer-events", "none");
+
+                svg.append("text")
+                    .attr("x", x + 25)
+                    .attr("y", 62)
+                    .text("%")
+                    .attr("font-family", "burbank")
+                    .attr("font-size", "1.5em")
+                    .attr("fill", "black")    
+                    .attr("pointer-events", "none");
+                return;
+            }
                 
+
+            // Default case
             const y = (i === 0) ? 58 : 46;
             const node = svg.append("text")
                 .attr("x", x)
@@ -527,12 +580,17 @@ const columns = [
                     if (i == 0) 
                         return row.key;
 
-                    // Show the number, as ling as it isn't the first one - i.e rank/count    
-                    if (i != 1) 
-                        return row.values[0].value[columns[i].code];
-                        
-                    // First number column is wierd - is week is seleced, it should be the ranking for that week. Otherwise, it should just be the row number    
-                    return (filters.week === "") ? first + rowNum + 1 : row.values[0].value[columns[i].code];
+                    const value = row.values[0].value[columns[i].code];
+
+                    // Show the number, as long as it isn't the first one - i.e rank/count    
+                    if (i != 1) {
+                        console.log(columns[i].format)
+                        return columns[i].format(value);
+                        return columns[i].format(value);
+                    }
+
+                    // First number column is wierd - is week is selected, it should be the ranking for that week. Otherwise, it should just be the row number    
+                    return (filters.week === "") ? first + rowNum + 1 : value;
                 })
                 .attr('fill', "black")
                 .attr("font-size", "1.3em")
@@ -565,21 +623,25 @@ const columns = [
     // Hide or show arrows base on where the page is
     function showArrows(pageSize, first, last) {
 
+        function onOff(arrow, on) {
+            arrow.style("fill-opacity", on ? 1 : 0);
+            arrow.attr("pointer-events", on ? "auto" : "none");
+        }
+
         // Less than a full screen - so no paging
         if (playerData.length < pageSize) {
-            upArrowPolygon.style("fill-opacity", 0);
-            downArrowPolygon.style("fill-opacity", 0);
+            onOff(upArrowPolygon, false); 
+            onOff(downArrowPolygon, false); 
         }
 
         if (filters.page === 0) 
-            upArrowPolygon.style("fill-opacity", 0);
+            onOff(upArrowPolygon, false);
 
         if (filters.page > 0) 
-            upArrowPolygon.style("fill-opacity", 1);
-        
-        if (last < playerData.length)
-            downArrowPolygon.style("fill-opacity", 1);
+            onOff(upArrowPolygon, true);
 
+        if (last < playerData.length)
+            onOff(downArrowPolygon, true);
     }
 
     function setRowRankColumn() {
