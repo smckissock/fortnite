@@ -3,13 +3,14 @@
 
 function playerChart(id) {
 
-const noFormat = function(d) { return d;}    
+const noFormat = function(d) { return d;} 
+const commaFormat = d3.format(",");   
 const pctFormat = d3.format(",.1%")
 
 const columns = [
     {name: "Player", code: "player", x: 8, format: noFormat}, 
     {name: "Rank", code: "rank", x: 16, format: noFormat},
-    {name: "Payout", code: "payout", x: 9, format: noFormat},
+    {name: "Payout", code: "payout", x: 9, format: commaFormat},
     {name: "Points", code: "points", x: 13, format: noFormat},
     {name: "Wins", code: "wins", x: 17, format: noFormat},
     {name: "Elims", code: "elims", x: 15, format: noFormat},
@@ -526,6 +527,15 @@ const columns = [
 
         // Set player data, which is what gets rendered (or a slice of it)
         playerData = filterPlayersFast(sortedValues, playerDim.top(Infinity));
+
+        //let sortedValues2 = playerData.sort(function (a, b) {
+        //    return sortOrder(a.values[0].value[sortColumn], b.values[0].value[sortColumn]);
+        //});
+
+        playerData.sort(function (a, b) {
+            return sortOrder(a.values[0].value[sortColumn], b.values[0].value[sortColumn]);
+        });
+
         filters.playerCount = playerData.length;
     }
 
