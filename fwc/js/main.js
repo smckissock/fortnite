@@ -162,9 +162,17 @@ function updateCounts() {
         
         const num = d3.format(",d"); // Add commas
         filterParts.push(num(filters.playerCount) + " players")
-
         filterText = filterParts.join(" / ");
-        filterText += " by " +  filters.sort.charAt(0).toUpperCase() + filters.sort.slice(1); 
+
+        let sort = filters.sort.charAt(0).toUpperCase() + filters.sort.slice(1);
+        switch(filters.sort) {
+            case "earnedQualifications": sort = "Earned Quals"; break; 
+            case "elims": sort = "Elim Points"; break;
+            case "elimPercentage": sort = "Elim %"; break;
+            case "placementPoints": sort = "Placement Points"; break;
+            case "placementPercentage": sort = "Placement %"; break;
+        }
+        filterText += " by " + sort; 
     }
         
     d3.select("#count-box")
