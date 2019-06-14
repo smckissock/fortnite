@@ -3,14 +3,15 @@
 
 function playerChart(id) {
 
-    const columns = [
-        {name: "Player", code: "player", x: 8}, 
-        {name: "Rank", code: "rank", x: 16},
-        {name: "Payout", code: "payout", x: 9},
-        {name: "Points", code: "points", x: 13},
-        {name: "Wins", code: "wins", x: 17},
-        {name: "Elims", code: "elims", x: 15}
-        //{name: "Placement", code: "placementPoints", x: 15}
+const columns = [
+    {name: "Player", code: "player", x: 8}, 
+    {name: "Rank", code: "rank", x: 16},
+    {name: "Payout", code: "payout", x: 9},
+    {name: "Points", code: "points", x: 13},
+    {name: "Wins", code: "wins", x: 17},
+    {name: "Elims", code: "elims", x: 15},
+    // if x == 0, dray the column header "manually" 
+    {name: "Placement", code: "placementPoints", x: 0}
     ];
 
 
@@ -143,7 +144,78 @@ function playerChart(id) {
     }
 
     function columnHeaderText() {
-        svg.selectAll("text").data(columns).enter().append("text")
+
+        function  addText(i) {
+
+            const text = columns[i].name;
+            const fontSize = (i === 0) ? "1.8em" : "1.3em";
+            const x =  (i === 0) ? columns[i].x : playerColWidth + headerPos.gap + (headerPos.width * (i - 1)) + columns[i].x;
+
+            const smallFontSize = "1.0em";
+            if (text === "Elims") {
+                svg.append("text")
+                    .attr("x", x + 8)
+                    .attr("y", 36)
+                    .text("Elim")
+                    .attr("font-family", "burbank")
+                    .attr("font-size", smallFontSize)
+                    .attr("fill", "black")    
+                    .attr("pointer-events", "none");
+
+                svg.append("text")
+                    .attr("x", x + 2)
+                    .attr("y", 55)
+                    .text("Points")
+                    .attr("font-family", "burbank")
+                    .attr("font-size", smallFontSize)
+                    .attr("fill", "black")    
+                    .attr("pointer-events", "none");
+                return;
+            }
+
+            
+            if (text === "Placement") {
+                svg.append("text")
+                    .attr("x", x + 5)
+                    .attr("y", 36)
+                    .text("Placement")
+                    .attr("font-family", "burbank")
+                    .attr("font-size", smallFontSize)
+                    .attr("fill", "black")    
+                    .attr("pointer-events", "none");
+
+                svg.append("text")
+                    .attr("x", x + 15 )
+                    .attr("y", 55)
+                    .text("Points")
+                    .attr("font-family", "burbank")
+                    .attr("font-size", smallFontSize)
+                    .attr("fill", "black")    
+                    .attr("pointer-events", "none");
+                return;
+            }
+                
+            const y = (i === 0) ? 58 : 46;
+            const node = svg.append("text")
+                .attr("x", x)
+                .attr("y", y)
+                .text(text)
+                .attr("font-family", "burbank")
+                .attr("font-size", fontSize)
+                .attr("fill", "black")    
+                .attr("pointer-events", "none");
+
+            if (text === "Rank") 
+                numOrRankText = node;   
+        }
+
+        let i = 0;
+        columns.forEach(function() {
+            addText(i);
+            i++;
+        });
+
+/*         svg.selectAll("text").data(columns).enter().append("text")
             .attr("x", (d, i) => (i == 0) ? columns[i].x : playerColWidth + headerPos.gap + (headerPos.width * (i - 1)) + columns[i].x)
             .attr("y", (d, i) => (i == 0) ? 58 : 46)
             .text((d, i) => columns[i].name)
@@ -155,7 +227,21 @@ function playerChart(id) {
                 if (columns[i].name === "Rank") {
                     numOrRankText = d3.select(this);
                 }
-            });
+            });  */
+
+/*         svg.selectAll("text").data(columns).enter().append("text")
+            .attr("x", (d, i) => (i == 0) ? columns[i].x : playerColWidth + headerPos.gap + (headerPos.width * (i - 1)) + columns[i].x)
+            .attr("y", (d, i) => (i == 0) ? 58 : 46)
+            .text((d, i) => columns[i].name)
+            .attr("font-family", "burbank")
+            .attr("font-size", (d, i) => i ===0 ? "1.8em" : "1.3em")
+            .attr("fill", "black")    
+            .attr("pointer-events", "none")
+            .each(function (d, i) {
+                if (columns[i].name === "Rank") {
+                    numOrRankText = d3.select(this);
+                }
+            });  */
 
         if (numOrRankRect)
             numOrRankRect

@@ -4,7 +4,7 @@ let playerDim;
 let playerStatsGroup;
 
 const LeftSideWidth = 340;
-let PlayerTableWidth = 240 + (5 * 80); // Player + other cols
+let PlayerTableWidth = 240 + (6 * 80); // Player + other cols
 
 let playerColors;
 
