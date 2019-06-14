@@ -269,34 +269,6 @@ const columns = [
             i++;
         });
 
-/*         svg.selectAll("text").data(columns).enter().append("text")
-            .attr("x", (d, i) => (i == 0) ? columns[i].x : playerColWidth + headerPos.gap + (headerPos.width * (i - 1)) + columns[i].x)
-            .attr("y", (d, i) => (i == 0) ? 58 : 46)
-            .text((d, i) => columns[i].name)
-            .attr("font-family", "burbank")
-            .attr("font-size", (d, i) => i ===0 ? "1.8em" : "1.3em")
-            .attr("fill", "black")    
-            .attr("pointer-events", "none")
-            .each(function (d, i) {
-                if (columns[i].name === "Rank") {
-                    numOrRankText = d3.select(this);
-                }
-            });  */
-
-/*         svg.selectAll("text").data(columns).enter().append("text")
-            .attr("x", (d, i) => (i == 0) ? columns[i].x : playerColWidth + headerPos.gap + (headerPos.width * (i - 1)) + columns[i].x)
-            .attr("y", (d, i) => (i == 0) ? 58 : 46)
-            .text((d, i) => columns[i].name)
-            .attr("font-family", "burbank")
-            .attr("font-size", (d, i) => i ===0 ? "1.8em" : "1.3em")
-            .attr("fill", "black")    
-            .attr("pointer-events", "none")
-            .each(function (d, i) {
-                if (columns[i].name === "Rank") {
-                    numOrRankText = d3.select(this);
-                }
-            });  */
-
         if (numOrRankRect)
             numOrRankRect
                 .attr("stroke-width", (filters.week && (filters.sort === "rank")) ? thickBorder : 0);   
@@ -352,7 +324,6 @@ const columns = [
             filters.page -= 1;
         
         renderPlayerPage();
-        console.log(filters.page);
     }
 
     
@@ -526,12 +497,7 @@ const columns = [
         });
 
         // Set player data, which is what gets rendered (or a slice of it)
-        playerData = filterPlayersFast(sortedValues, playerDim.top(Infinity));
-
-        //let sortedValues2 = playerData.sort(function (a, b) {
-        //    return sortOrder(a.values[0].value[sortColumn], b.values[0].value[sortColumn]);
-        //});
-
+        playerData = filterPlayersFast(values, playerDim.top(Infinity));
         playerData.sort(function (a, b) {
             return sortOrder(a.values[0].value[sortColumn], b.values[0].value[sortColumn]);
         });
@@ -540,6 +506,19 @@ const columns = [
     }
 
     function renderPlayerPage() {
+
+        function cellText(row, i, rowNum) {
+            if (i == 0) 
+                return row.key;
+            
+            const value = row.values[0].value[columns[i].code];
+            // Show the number, as long as it isn't the first one - i.e rank/count    
+            if (i != 1) 
+                return columns[i].format(value);
+
+            // First number column is weird - if week is selected, it should be the ranking for that week. Otherwise, it should just be the row number    
+            return (filters.week === "") ? first + rowNum + 1 : value;
+        }
 
         // Make a list of 20. Zero based page, zero based slices
         const pageSize = 20;
@@ -583,24 +562,25 @@ const columns = [
 
             // Draw the text for the row, including the player name
             svg.selectAll(".row").data(columns).enter().append("text")
-                .attr("x", (d, i) => (i == 0) ? 68 : playerColWidth + headerPos.gap + 10 + (headerPos.width * (i - 1)))
+                .attr("x", function (d, i) {
+                    if (i === 0)
+                        return 68; // width for player name 
+
+                    // Need to right justify numbers
+                    const chars = (cellText(row, i, rowNum).toString()).length;
+                    const charWidth = 10;
+
+                    let moveRight = (6 - chars) * charWidth;
+                    
+                    // Center the first column a little more
+                    if (i === 1)
+                        moveRight -= 18; 
+
+                    return playerColWidth + moveRight + headerPos.gap + 10 + (headerPos.width * (i - 1))
+                })
                 .attr("y", top + (rowNum * rowHeight) + 21)
                 .text(function (d, i) {
-                    // Show player name
-                    if (i == 0) 
-                        return row.key;
-
-                    const value = row.values[0].value[columns[i].code];
-
-                    // Show the number, as long as it isn't the first one - i.e rank/count    
-                    if (i != 1) {
-                        console.log(columns[i].format)
-                        return columns[i].format(value);
-                        return columns[i].format(value);
-                    }
-
-                    // First number column is wierd - is week is selected, it should be the ranking for that week. Otherwise, it should just be the row number    
-                    return (filters.week === "") ? first + rowNum + 1 : value;
+                    return cellText(row, i, rowNum);
                 })
                 .attr('fill', "black")
                 .attr("font-size", "1.3em")
@@ -644,14 +624,21 @@ const columns = [
             onOff(downArrowPolygon, false); 
         }
 
+        // On first page, so no going back
         if (filters.page === 0) 
             onOff(upArrowPolygon, false);
 
+        // Not on first page, so you can go up    
         if (filters.page > 0) 
             onOff(upArrowPolygon, true);
 
+        // There are more pages, so you can go down    
         if (last < playerData.length)
             onOff(downArrowPolygon, true);
+
+        // There are no more pages, so you can't go down    
+        if (last >= playerData.length)
+            onOff(downArrowPolygon, false);
     }
 
     function setRowRankColumn() {
