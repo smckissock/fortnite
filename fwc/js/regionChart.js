@@ -22,12 +22,17 @@ function regionChart(id) {
     ];
     
     let regionCircles = [];
-    const radius = 45; 
+    const radius = 45;
+    const strokeWidthThick = 11;
+    const strokeWidthThin = 4; 
     
     const width = 135;
     const height = 80;
     
     const div = d3.select(id);
+
+    let cursor;
+    let cursorVisible = false;
     
     // Include this, and add a dimension and group
     // Later call these on a click to filter: 
@@ -50,6 +55,7 @@ function regionChart(id) {
         .attr("font-size", "1.6em")
         .attr("fill", "black"); 
 
+    
     regions.forEach(function(region) {
         let circle = svg.append("circle")
             .attr("cx", region.x)
@@ -67,7 +73,7 @@ function regionChart(id) {
                 d3.select(this)
                     .transition()
                     .duration(100)
-                    .attr("stroke-width", 5)
+                    .attr("stroke-width", strokeWidthThin)
             })
             .on('mouseout', function (d) {
                 let dom = d3.select(this);
@@ -80,6 +86,7 @@ function regionChart(id) {
             .on('click', function (d) {
                 clickCircle(d3.select(this));
             });
+
             regionCircles.push(circle);    
                     
             svg.append("text")
@@ -90,6 +97,44 @@ function regionChart(id) {
                 .attr("fill", "black")
                 .attr("pointer-events", "none");
     });
+
+    cursor = svg.append("circle")
+            .attr("cx", 50)
+            .attr("cy", 80)
+            .attr("r", radius)
+            .attr("fill", "none")
+            .attr("stroke", "black")
+            .attr("stroke-width", 0)
+    
+    function moveCursor(hide) {
+        if (hide) {
+            cursorVisible = false;
+            cursor
+                .transition()
+                .duration(400)
+                .attr("stroke-width", 0);
+            return;    
+        }
+
+        const newRegion = regions.find(d => d.filter === filters.region);
+        if (!cursorVisible) {
+            cursorVisible = true;
+            cursor
+                .attr("cx", newRegion.x)
+                .attr("cy", newRegion.y) 
+            cursor
+                .transition()
+                .duration(100)
+                .attr("stroke-width", strokeWidthThick);
+        } else {
+            cursor
+                .transition()
+                .duration(200)
+                .attr("cx", newRegion.x)
+                .attr("cy", newRegion.y) 
+        }
+        console.log(region);
+    }
 
 
     const clickCircle = function(d3Circle) {
@@ -113,11 +158,13 @@ function regionChart(id) {
             d3Circle
                 .transition()
                 .duration(100)
-                .attr("stroke-width", 11);
+                .attr("stroke-width", strokeWidthThick);
 
             _chart.redrawGroup();   
             updateCounts();
-           return;
+
+            moveCursor(false);
+            return;
         }
 
         // 2 One is selected, so unselect it and select this
@@ -127,7 +174,7 @@ function regionChart(id) {
             // Uncircle old one
             regionCircles.forEach(function(circle) {
                 let dom = d3.select(circle._groups[0][0]);
-                if (dom.attr("data") == oldFilter) {
+                if (dom.attr("data")  == oldFilter) {
                     // This will toggle it off
                     _chart.filter(oldFilter);
                     dom
@@ -142,10 +189,12 @@ function regionChart(id) {
             d3Circle
                 .transition()
                 .duration(100)
-                .attr("stroke-width", 11);
+                .attr("stroke-width", 0);
 
             _chart.redrawGroup();   
             updateCounts();
+
+            moveCursor(false);
             return;
         }   
         
@@ -159,6 +208,7 @@ function regionChart(id) {
         
         _chart.redrawGroup();   
         updateCounts();
+        moveCursor(true);
     }
 
 
