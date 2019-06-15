@@ -197,7 +197,8 @@ const columns = [
         console.log(rect);
         cursor
             .transition()
-            .duration(350)
+            .ease(d3.easeBack)
+            .duration(400)
             .attr("x", x)
             .attr("y", y); 
     }
@@ -270,7 +271,7 @@ const columns = [
 
                 svg.append("text")
                     .attr("x", x + 10)
-                    .attr("y", 62)
+                    .attr("y", 60)
                     .text("%")
                     .attr("font-family", "burbank")
                     .attr("font-size", "1.5em")
@@ -314,7 +315,7 @@ const columns = [
 
                 svg.append("text")
                     .attr("x", x + 25)
-                    .attr("y", 62)
+                    .attr("y", 59)
                     .text("%")
                     .attr("font-family", "burbank")
                     .attr("font-size", "1.5em")
@@ -433,22 +434,24 @@ const columns = [
 
             svg.append("rect")
                 .attr("data", player.num)
-                .attr("x", 0)
+                .attr("x", 2)
                 .attr("y", top + (row.num * rowHeight))
-                .attr("width", svgWidth)
+                .attr("width", svgWidth - 4)
                 .attr("height", rowHeight - gap)
                 .attr("fill", "none") 
                 .attr("class", "row" + row.num)
                 .attr("visible", "hidden")
                 .attr("stroke", "black")
                 .attr("stroke-width", 0) 
+                .attr("rx", cornerRadius)
+                .attr("ry", cornerRadius)
                 .on('mouseover', function (d) {
                     const node = d3.select(this);
                     const player = playerRows[node.attr("data")].key;
                     if (filters.player === player)
                         return;
 
-                    node.attr("stroke-width", "4");
+                    node.attr("stroke-width", "3");
                 })
                 .on('mouseout', function (d) {
                     const node = d3.select(this);
@@ -465,7 +468,7 @@ const columns = [
                 })
 
             svg.append("circle")
-                .attr("cx", 16)
+                .attr("cx", 17)
                 .attr("cy", top + (row.num * rowHeight) + 14)
                 .attr("r", 10)
                 .attr("fill", "gold")
@@ -478,13 +481,13 @@ const columns = [
                .classed("d" + row.num, true);
                
             g.append("circle")
-                .attr("cx", 39)
+                .attr("cx", 40)
                 .attr("cy", top + (row.num * rowHeight) + 11)
                 .attr("r", 7)
                 .attr("fill", "gold")
 
             g.append("circle")
-                .attr("cx", 50)
+                .attr("cx", 51)
                 .attr("cy", top + (row.num * rowHeight) + 18)
                 .attr("r", 7)
                 .attr("fill", "gold")
@@ -513,7 +516,7 @@ const columns = [
         if (filters.player === "") {
             filters.player = clickedPlayer;
 
-            clickedNode.attr("stroke-width", thickBorder);
+            clickedNode.attr("stroke-width", thickBorder - 2);
             showPlayerOnWeekChart(clickedPlayer);
             selectedRect = clickedNode;
             return;
@@ -526,13 +529,13 @@ const columns = [
             selectedRect = clickedNode;
 
             filters.player = clickedPlayer;
-            clickedNode.attr("stroke-width", thickBorder);
+            clickedNode.attr("stroke-width", thickBorder - 2);
             showPlayerOnWeekChart(clickedPlayer);
             return;
         }
 
         // 3 This was selected, so unselect it - all will be selected
-        clickedNode.attr("stroke-width", thickBorder);
+        clickedNode.attr("stroke-width", thickBorder - 2);
         filters.player = "";
         selectedRect = null;
 

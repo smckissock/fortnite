@@ -25,3 +25,11 @@ output_format=json
 &code_url=https%3A%2F%2Ffortnitewc.netlify.com%2Ffwc%2Fjs%2FweekChart.js
 &code_url=https%3A%2F%2Ffortnitewc.netlify.com%2Ffwc%2Fjs%2Fapp.js
 &js_code=
+
+
+
+    
+    <script type="text/javascript" src="fwc/js/playerChart.js"></script>
+    <script type="text/javascript" src="fwc/js/regionChart.js"></script>
+    <script type="text/javascript" src="fwc/js/weekChart.js"></script>
+    <script type="text/javascript" src="fwc/js/main.js"></script> 

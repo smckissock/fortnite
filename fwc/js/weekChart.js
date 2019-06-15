@@ -59,7 +59,7 @@ function weekChart(id) {
 
     const svg = div.append("svg")
         .attr("width", 300)
-        .attr("height", (height * 5) + 30);
+        .attr("height", (height * 5) + 50);
     
     svg.append("text")
         .attr("x", 60)
@@ -174,12 +174,14 @@ function weekChart(id) {
             cursorVisible = false;
             cursor
                 .transition()
-                .duration(400)
+                .duration(100)
+                .attr("stroke-width", strokeWidthThick + 2)
+                .transition()
+                .duration(300)
                 .attr("stroke-width", 0);
             return;    
         }
-        const newWeek = weeks.find(d => d.name === filters.week);
-
+        
         // Bet there is a better way to do this...
         const x = selectedRect._groups[0][0].x.baseVal.value
         const y = selectedRect._groups[0][0].y.baseVal.value
@@ -188,7 +190,7 @@ function weekChart(id) {
             cursorVisible = true;
             cursor
                 .attr("x", x)
-                .attr("y", y) 
+                .attr("y", y); 
             cursor
                 .transition()
                 .duration(100)
@@ -196,9 +198,12 @@ function weekChart(id) {
         } else {
             cursor
                 .transition()
-                .duration(300)
+                .ease(d3.easeBack)
+                .duration(350)
                 .attr("x", x)
                 .attr("y", y) 
+
+            cursorVisible = true;     
         }
     } 
 
@@ -294,7 +299,7 @@ function weekChart(id) {
             updateCounts();
 
             selectedRect = d3Rect;
-            moveCursor(true);
+            moveCursor(false);
             return;
         }
 

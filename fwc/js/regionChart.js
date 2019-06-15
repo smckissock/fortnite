@@ -13,12 +13,12 @@ function regionChart(id) {
     const brown = '#8B4513';
    
     const regions = [
-        {x:50, y:80, color: green, name: "NA EAST", filter: "NA East", textOffset:33},
-        {x:150, y:80, color: purple, name: "NA WEST", filter: "NA West", textOffset:35},
-        {x:250, y:80, color: blue, name: "EUROPE", filter: "Europe", textOffset:30},
-        {x:50, y:180, color: red, name: "OCEANA", filter: "Oceana", textOffset:32},
-        {x:150, y:180, color: teal, name: "BRAZIL", filter: "Brazil", textOffset:26},
-        {x:250, y:180, color: brown, name: "ASIA", filter: "Asia", textOffset:19}
+        {x:53, y:80, color: green, name: "NA EAST", filter: "NA East", textOffset:33},
+        {x:153, y:80, color: purple, name: "NA WEST", filter: "NA West", textOffset:35},
+        {x:253, y:80, color: blue, name: "EUROPE", filter: "Europe", textOffset:30},
+        {x:53, y:180, color: red, name: "OCEANA", filter: "Oceana", textOffset:32},
+        {x:153, y:180, color: teal, name: "BRAZIL", filter: "Brazil", textOffset:26},
+        {x:253, y:180, color: brown, name: "ASIA", filter: "Asia", textOffset:19}
     ];
     
     let regionCircles = [];
@@ -46,7 +46,7 @@ function regionChart(id) {
     // Also - make sure to return _chart; at the end of the function, or chaining won't work! 
 
     const svg = div.append("svg")
-        .attr("width", 300)
+        .attr("width", 310)
         .attr("height", (height * 5) + 30);
     
     svg.append("text")
@@ -114,7 +114,10 @@ function regionChart(id) {
             cursorVisible = false;
             cursor
                 .transition()
-                .duration(400)
+                .duration(80)
+                .attr("stroke-width", strokeWidthThick + 2)
+                .transition()
+                .duration(350)
                 .attr("stroke-width", 0);
             return;    
         }
@@ -132,7 +135,8 @@ function regionChart(id) {
         } else {
             cursor
                 .transition()
-                .duration(250)
+                .ease(d3.easeBack) 
+                .duration(300)
                 .attr("cx", newRegion.x)
                 .attr("cy", newRegion.y) 
         }
