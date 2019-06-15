@@ -2,8 +2,8 @@ https://closure-compiler.appspot.com/
 
 // ==ClosureCompiler==
 // @compilation_level SIMPLE_OPTIMIZATIONS
-// @output_file_name default.js
-// @code_url https://fortnitewc.netlify.com/fwc/js/tableChart.js
+// @output_file_name app.js
+// @code_url https://fortnitewc.netlify.com/fwc/js/playerChart.js
 // @code_url https://fortnitewc.netlify.com/fwc/js/regionChart.js
 // @code_url https://fortnitewc.netlify.com/fwc/js/weekChart.js
 // @code_url https://fortnitewc.netlify.com/fwc/js/main.js

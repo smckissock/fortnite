@@ -251,13 +251,13 @@ function weekChart(id) {
         return g;
         
         // Star (no used)
-        return svg.append("polygon")
+        /* return svg.append("polygon")
             .attr("data", week)
             .attr("points", "250,75 323,301 131,161 369,161 177,301")
             .style("fill", "gold")
             //.style("opacity", 0)
             .attr("transform", "translate(" + (x-13) + "," + (y-7) + ") scale(.12)")
-            .attr("pointer-events", "none");
+            .attr("pointer-events", "none"); */
     }
 
     const clickRect = function(d3Rect) {

@@ -325,7 +325,7 @@ const columns = [
                 
 
             // Default case
-            const y = (i === 0) ? 58 : 46;
+            const y = (i === 0) ? 58 : 44;
             const node = svg.append("text")
                 .attr("x", x)
                 .attr("y", y)
