@@ -23,6 +23,8 @@ let clearPlayer;
 let soloQualifications = [];
 let duoQualifications = [];
 
+const cornerRadius = 8;
+
 
 const green ='#319236';
 const purple = '#9D4DBB';

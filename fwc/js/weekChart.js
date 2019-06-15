@@ -101,6 +101,8 @@ function weekChart(id) {
             .attr("fill", color)
             .attr("stroke", "black")
             .attr("stroke-width", 0)
+            .attr("rx", cornerRadius)
+            .attr("ry", cornerRadius)
             
             .on('mouseover', function (d) {
                 const num = d3.select(this).attr("data");
@@ -164,6 +166,8 @@ function weekChart(id) {
         .attr("stroke", "black")
         .attr("stroke-width", 0)
         .attr("pointer-events", "none")
+        .attr("rx", cornerRadius)
+        .attr("ry", cornerRadius);
     
     function moveCursor(hideIt) {
         if (hideIt) {
@@ -330,9 +334,6 @@ function weekChart(id) {
         filters.week = "";
         _chart.filter(null);
         d3Rect
-            //.transition()
-            //.duration(10)
-            //.attr("stroke-width", strokeWidthThick)
             .transition()
             .duration(100)
             .attr("stroke-width", 0);
@@ -340,7 +341,7 @@ function weekChart(id) {
         _chart.redrawGroup();  
 
         selectedRect = d3Rect;
-        //moveCursor(false); 
+        moveCursor(true); 
         updateCounts();
     }
 

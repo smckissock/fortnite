@@ -55,7 +55,7 @@ const columns = [
     const rowCount = 20;
 
     const thinBorder = 3;
-    const thickBorder = 7;
+    const thickBorder = 9;
 
     let numOrRankRect;
     let numOrRankText;
@@ -84,6 +84,9 @@ const columns = [
 
     const div = d3.select(id);
 
+    // The selection rect what moves around when the current sort column changes
+    let cursor;
+
 
     let rows = [];
     for(let i = 0; i < rowCount; i++) 
@@ -97,7 +100,7 @@ const columns = [
     drawRows(svg)
     
     function drawHeaders() {
-    
+            
         // Rects for column headers 
         svg.selectAll("rect").data(columns).enter().append("rect")
             .attr("x", (d, i) => (i == 0) ? 0 : playerColWidth + headerPos.gap + (headerPos.width * (i - 1)))
@@ -108,6 +111,8 @@ const columns = [
             .attr("stroke", "black")
             .attr("stroke-width", 0)
             .attr("data", d => d)
+            .attr("rx", cornerRadius)
+            .attr("ry", cornerRadius)
             .on('mouseover', function (d) {
                 // The are mousing over the selected item - don't show a thin border, leave it thick
                 if (d.code === filters.sort)
@@ -119,7 +124,7 @@ const columns = [
                     .attr("stroke-width", thinBorder);
             })
             .on('mouseout', function (d) {
-                // The are leaving over the selected item - don't shrink the border
+                // The are leaving the selected item - don't shrink the border
                 if (d.code === filters.sort)
                     return;
                 
@@ -140,7 +145,7 @@ const columns = [
                 d3.select(this)
                     .transition()
                     .duration(100)
-                    .attr("stroke-width", thickBorder);
+                    .attr("stroke-width", 0);
 
                 if (filters.player != "")
                     clearPlayer(null);
@@ -148,6 +153,7 @@ const columns = [
                     updateCounts();
                     renderRows();
                 }
+                moveCursor(this); 
             })
             .each(function (d, i) {
                 if (i === 1) {
@@ -168,6 +174,32 @@ const columns = [
         columnHeaderText();
         pageArrows();
         drawColumnBorder("payout", thickBorder);
+
+        // Make this after the region circles so that always appears "on top"
+        cursor = svg.append("rect")
+            .attr("x", playerColWidth + headerPos.gap + headerPos.width)
+            .attr("y", headerPos.top + 4)
+            .attr("width", headerPos.width - headerPos.gap - 3)
+            .attr("height", headerPos.height)
+            .attr("fill", "none")
+            .attr("stroke", "black")
+            .attr("stroke-width", thickBorder)
+            .attr("pointer-events", "none")
+            .attr("rx", cornerRadius)
+            .attr("ry", cornerRadius)
+
+    }
+
+    function moveCursor(rect) {
+        const x = rect.x.baseVal.value;
+        const y = rect.y.baseVal.value;
+
+        console.log(rect);
+        cursor
+            .transition()
+            .duration(350)
+            .attr("x", x)
+            .attr("y", y); 
     }
 
     function columnHeaderText() {

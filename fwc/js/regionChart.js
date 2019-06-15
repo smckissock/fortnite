@@ -132,7 +132,7 @@ function regionChart(id) {
         } else {
             cursor
                 .transition()
-                .duration(150)
+                .duration(250)
                 .attr("cx", newRegion.x)
                 .attr("cy", newRegion.y) 
         }
