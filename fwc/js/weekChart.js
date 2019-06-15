@@ -24,6 +24,8 @@ function weekChart(id) {
 
     const width = 135;
     const height = 97; //87
+    const strokeWidthThick = 11;
+    const strokeWidthThin = 4; 
 
     const bigLabel = {x: 25, y: 54, size: "2em" };  //49
     const smallLabel = {x: 40, y: 25, size: "1.2em" }; // 20
@@ -37,9 +39,13 @@ function weekChart(id) {
     const pointsLabelPos = {x: col2, y: 45, size: ".9em" };
     const elimsLabelPos = {x: col2, y: 62, size: ".9em" };
     //const winsLabelPos = {x: 6, y: 67, size: ".8em" };
-
     
     const div = d3.select(id);
+
+    // The celection rectangle what moves around when the current week changes
+    let cursor;
+    let cursorVisible = false;
+    let selectedRect;
     
     // Include this, and add a dimension and group
     // Later call these on a click to filter: 
@@ -110,7 +116,7 @@ function weekChart(id) {
                 d3.select(this)
                     .transition()
                     .duration(100)
-                    .attr("stroke-width", 5)
+                    .attr("stroke-width", strokeWidthThin)
             })
             .on('mouseout', function (d) {
                 let dom = d3.select(this);
@@ -147,6 +153,51 @@ function weekChart(id) {
 
         count++;    
     });
+
+    // Make this after the region circles so that always appears "on top"
+    cursor = svg.append("rect")
+        .attr("x", 0)
+        .attr("y", 0)
+        .attr("width", width)
+        .attr("height", height - 10)
+        .attr("fill", "none")
+        .attr("stroke", "black")
+        .attr("stroke-width", 0)
+        .attr("pointer-events", "none")
+    
+    function moveCursor(hideIt) {
+        if (hideIt) {
+            cursorVisible = false;
+            cursor
+                .transition()
+                .duration(400)
+                .attr("stroke-width", 0);
+            return;    
+        }
+        const newWeek = weeks.find(d => d.name === filters.week);
+
+        // Bet there is a better way to do this...
+        const x = selectedRect._groups[0][0].x.baseVal.value
+        const y = selectedRect._groups[0][0].y.baseVal.value
+
+        if (!cursorVisible) {
+            cursorVisible = true;
+            cursor
+                .attr("x", x)
+                .attr("y", y) 
+            cursor
+                .transition()
+                .duration(100)
+                .attr("stroke-width", strokeWidthThick);
+        } else {
+            cursor
+                .transition()
+                .duration(300)
+                .attr("x", x)
+                .attr("y", y) 
+        }
+    } 
+
 
     function makeLabel(svg, x, y, labelPos) {
         return svg.append("text")
@@ -233,11 +284,14 @@ function weekChart(id) {
             d3Rect
                 .transition()
                 .duration(100)
-                .attr("stroke-width", 10);
+                .attr("stroke-width", strokeWidthThick);
 
             _chart.redrawGroup();   
             updateCounts();
-           return;
+
+            selectedRect = d3Rect;
+            moveCursor(true);
+            return;
         }
 
         // 2 One is selected, so unselect it and select this
@@ -262,11 +316,13 @@ function weekChart(id) {
             d3Rect
                 .transition()
                 .duration(100)
-                .attr("stroke-width", 10);
+                .attr("stroke-width", 0);
 
             _chart.redrawGroup();   
             updateCounts();
 
+            selectedRect = d3Rect;
+            moveCursor(false);
             return;
         }   
 
@@ -274,11 +330,17 @@ function weekChart(id) {
         filters.week = "";
         _chart.filter(null);
         d3Rect
+            //.transition()
+            //.duration(10)
+            //.attr("stroke-width", strokeWidthThick)
             .transition()
             .duration(100)
             .attr("stroke-width", 0);
         
-        _chart.redrawGroup();   
+        _chart.redrawGroup();  
+
+        selectedRect = d3Rect;
+        //moveCursor(false); 
         updateCounts();
     }
 

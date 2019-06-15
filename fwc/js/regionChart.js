@@ -31,6 +31,7 @@ function regionChart(id) {
     
     const div = d3.select(id);
 
+    // The selection circle what moves around when the current week changes
     let cursor;
     let cursorVisible = false;
     
@@ -98,6 +99,7 @@ function regionChart(id) {
                 .attr("pointer-events", "none");
     });
 
+    // Make this after the region circles so that always appears "on top"
     cursor = svg.append("circle")
             .attr("cx", 50)
             .attr("cy", 80)
@@ -105,6 +107,7 @@ function regionChart(id) {
             .attr("fill", "none")
             .attr("stroke", "black")
             .attr("stroke-width", 0)
+            .attr("pointer-events", "none");
     
     function moveCursor(hide) {
         if (hide) {
@@ -129,11 +132,10 @@ function regionChart(id) {
         } else {
             cursor
                 .transition()
-                .duration(200)
+                .duration(150)
                 .attr("cx", newRegion.x)
                 .attr("cy", newRegion.y) 
         }
-        console.log(region);
     }
 
 
