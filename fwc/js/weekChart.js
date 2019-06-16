@@ -23,28 +23,29 @@ function weekChart(id) {
     const duoX = 155; 
 
     const width = 135;
-    const height = 97; //87
+    const height = 105;
     const strokeWidthThick = 11;
     const strokeWidthThin = 4; 
 
-    const bigLabel = {x: 25, y: 54, size: "2em" };  //49
-    const smallLabel = {x: 40, y: 25, size: "1.2em" }; // 20
+    const bigLabel = {x: 25, y: 59, size: "2em" };  //49
+    const smallLabel = {x: 40, y: 24, size: "1.2em" }; // 20
 
-    const col1 = 8; 
-    //const placeLabelPos = {x: col1, y: 45, size: "1.0em" }; // 35
-    const placeLabelPos = {x: col1, y: 45, size: "1.0em" }; // 35
+    const col1 = 9; 
+    const placeLabelPos = {x: col1, y: 41, size: ".9em" }; 
+    const moneyLabelPos = {x: col1, y: 55, size: ".7em" }; 
+    const elimsLabelPos = {x: col1, y: 70, size: ".7em" };    
+    const placementLabelPos = {x: col1, y: 85, size: ".7em" };
+    
+    const col2 = 65;
+    const pointsLabelPos = {x: col2, y: 41, size: ".7em" };
+    const winsLabelPos = {x: col2, y: 55, size: ".7em" };  
+    const elimPercentLabelPos = {x: col2, y: 70, size: ".7em" };
+    const placementPercentLabelPos = {x: col2, y: 85, size: ".7em" };
 
-    const moneyLabelPos = {x: col1, y: 62, size: ".7em" }; // 51
-    const winsLabelPos = {x: col1, y: 79, size: ".7em" };  // 67
-
-    const col2 = 72;
-    const pointsLabelPos = {x: col2, y: 45, size: ".7em" };
-    const elimsLabelPos = {x: col2, y: 62, size: ".7em" };
-    //const winsLabelPos = {x: 6, y: 67, size: ".8em" };
     
     const div = d3.select(id);
 
-    // The celection rectangle what moves around when the current week changes
+    // The selection rectangle what moves around when the current week changes
     let cursor;
     let cursorVisible = false;
     let selectedRect;
@@ -154,6 +155,11 @@ function weekChart(id) {
 
         weekSelection.pointsLabel = makeLabel(svg, x, y, pointsLabelPos);
         weekSelection.elimsLabel = makeLabel(svg, x, y, elimsLabelPos);
+        weekSelection.elimPercentLabel = makeLabel(svg, x, y, elimPercentLabelPos);
+
+        weekSelection.placementLabel = makeLabel(svg, x, y, placementLabelPos);
+        weekSelection.placementPercentLabel = makeLabel(svg, x, y, placementPercentLabelPos);
+        
 
         weekSelections.push(weekSelection);
 
@@ -375,17 +381,24 @@ function weekChart(id) {
                 .transition()
                 .style("fill-opacity", qualified ? 1 : 0);
 
+            const pctFormat = d3.format(",.1%")
             let place = "";
             let money = "";
             let wins = "";
             let points = "";
             let elims = "";
+            let elimPercent = "";
+            let placement = "";
+            let placementPercent = "";
             if (showPlace) {
-                place = "# " +matches[0].rank;
-                money = "$ " + num(matches[0].payout);
+                place = "# " + matches[0].rank;
+                money = "$" + num(matches[0].payout);
                 wins = matches[0].wins.toString() + (wins === 1 ? " win" : " wins")
                 points = matches[0].points + " points";
                 elims = matches[0].elims.toString() + (elims === 1 ? " elim" : " elims")
+                elimPercent = pctFormat(matches[0].elims / matches[0].points) + " elim";   
+                placement = matches[0].placementPoints.toString() + " place";
+                placementPercent = pctFormat(matches[0].placementPoints / matches[0].points) + " place";    
             }
                 
             // Copied from above!!
@@ -420,6 +433,21 @@ function weekChart(id) {
             
             weekSelections[count].elimsLabel
                 .text(elims) 
+                .transition()
+                .attr("fill-opacity", opacity);
+
+            weekSelections[count].elimPercentLabel
+                .text(elimPercent) 
+                .transition()
+                .attr("fill-opacity", opacity);
+                
+             weekSelections[count].placementLabel
+                .text(placement) 
+                .transition()
+                .attr("fill-opacity", opacity);
+
+             weekSelections[count].placementPercentLabel
+                .text(placementPercent) 
                 .transition()
                 .attr("fill-opacity", opacity);
             

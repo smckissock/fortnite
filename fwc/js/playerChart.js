@@ -51,7 +51,7 @@ const columns = [
     const _chart = dc.baseMixin({});
 
     const top = headerPos.height + 14;
-    const rowHeight = 34; 
+    const rowHeight = 36; 
     const rowCount = 20;
 
     const thinBorder = 3;
@@ -661,7 +661,7 @@ const columns = [
 
                     return playerColWidth + moveRight + headerPos.gap + 10 + (headerPos.width * (i - 1))
                 })
-                .attr("y", top + (rowNum * rowHeight) + 20)
+                .attr("y", top + (rowNum * rowHeight) + 21)
                 .text(function (d, i) {
                     return cellText(row, i, rowNum);
                 })
