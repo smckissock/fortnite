@@ -26,6 +26,10 @@ let duoQualifications = [];
 const cornerRadius = 8;
 
 
+let titleSvg;
+
+
+
 const green ='#319236';
 const purple = '#9D4DBB';
 const blue = '#4C51F7';
@@ -50,7 +54,8 @@ let filters = {
 d3.json('fwc/data/data.json').then(function (data)  {
     const leftMargin = 20
     const screenWidth = LeftSideWidth + PlayerTableWidth - leftMargin;
-    let titleSvg = title(screenWidth);
+    titleSvg = title(screenWidth);
+    searchLabel(titleSvg);
     disclaimer(titleSvg);
     
     data.forEach(function (d) {
@@ -63,6 +68,7 @@ d3.json('fwc/data/data.json').then(function (data)  {
     facts = crossfilter(data);
     draw(facts);
     helpButton(titleSvg, screenWidth);  // 730
+    filtersAndCount(titleSvg, screenWidth);
 
     d3.select("#search-input").on('keyup', function (event) {
         // Regardless of what happens below, selected player needs to be cleared 
@@ -75,10 +81,10 @@ d3.json('fwc/data/data.json').then(function (data)  {
         playerDim.filter(function (d) { 
             return d.toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1;
         });
-        
-        updateCounts();
+                
         dc.redrawAll();
     });
+    updateCounts();
 });
 
 
@@ -92,7 +98,7 @@ function makeQualifications(data) {
     });
 }
 
-
+//Big Fortnite title
 function title(width) {
     const div = d3.select(".title");
     const svg = div.append("svg")
@@ -109,14 +115,36 @@ function title(width) {
     return svg;
 }
 
-function disclaimer(svg) {
+function searchLabel(svg) {
     svg.append("text")
-        .attr("x", 866)
-        .attr("y", 53)
-        .text("Includes top 100 in each region for each week")
-        .attr("font-size", "1.3rem")
+        .attr("x", 565)
+        .attr("y", 64)
+        .text("Search")
+        .attr("font-size", "1.4rem")
         .attr("fill", "black")
         .attr("font-weight", 400)
+}
+
+function disclaimer(svg) {
+    svg.append("text")
+        .attr("x", 952)
+        .attr("y", 30)
+        .text("Includes top 100 in each region for each week")
+        .attr("font-size", ".8rem")
+        .attr("fill", "#606060")
+        .style("font-family", "Helvetica, Arial, sans-serif")
+        .attr("font-weight", 400) 
+}
+
+function filtersAndCount(svg, screenWidth) {
+    svg.append("text")
+        .attr("x", screenWidth - 540)
+        .attr("y", 65)
+        .text("")
+        .attr("font-size", "1.6rem")
+        .attr("fill", "black")
+        .attr("pointer-events", "none")
+        .attr("id", "filterText"); 
 }
 
 function helpButton(svg, screenWidth) {
@@ -187,9 +215,9 @@ function updateCounts() {
         }
         filterText += " by " + sort; 
     }
-        
-    d3.select("#count-box")
-        .text(" " + filterText);
+
+    titleSvg.select("#filterText")
+        .text(filterText);
 }
 
 function draw(facts) {
