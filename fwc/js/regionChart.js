@@ -50,10 +50,10 @@ function regionChart(id) {
         .attr("height", (height * 5) + 30);
     
     svg.append("text")
-        .attr("x", 10)
+        .attr("x", 14)
         .attr("y", 20)
         .text("Regions")
-        .attr("font-size", "1.6em")
+        .attr("font-size", "1.8em")
         .attr("fill", "black"); 
 
     

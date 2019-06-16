@@ -8,7 +8,7 @@ const commaFormat = d3.format(",");
 const pctFormat = d3.format(",.1%")
 
 const columns = [
-    {name: "Player", code: "player", x: 8, format: noFormat}, 
+    {name: "Players", code: "player", x: 12, format: noFormat}, 
     {name: "Rank", code: "rank", x: 16, format: noFormat},
     {name: "Payout", code: "payout", x: 9, format: commaFormat},
     {name: "Points", code: "points", x: 13, format: noFormat},
@@ -46,7 +46,7 @@ const columns = [
     const headerPos = {left: 150, top: 0, height: 69, width: 80, gap: 5};
 
     const playerColWidth = 240;
-    PlayerTableWidth = playerColWidth + (headerPos.width * (columns.length - 1));
+    PlayerTableWidth = playerColWidth + (headerPos.width * (columns.length - 1) + 4 );
     
     const _chart = dc.baseMixin({});
 
@@ -93,7 +93,7 @@ const columns = [
         rows.push({num: i});
 
     const svg = div.append("svg")
-        .attr("width", svgWidth)
+        .attr("width", svgWidth + 4)
         .attr("height", 1000);
 
     drawHeaders(svg);
@@ -434,7 +434,7 @@ const columns = [
 
             svg.append("rect")
                 .attr("data", player.num)
-                .attr("x", 2)
+                .attr("x", 4)
                 .attr("y", top + (row.num * rowHeight))
                 .attr("width", svgWidth - 4)
                 .attr("height", rowHeight - gap)
@@ -468,7 +468,7 @@ const columns = [
                 })
 
             svg.append("circle")
-                .attr("cx", 17)
+                .attr("cx", 18)
                 .attr("cy", top + (row.num * rowHeight) + 14)
                 .attr("r", 10)
                 .attr("fill", "gold")
@@ -481,13 +481,13 @@ const columns = [
                .classed("d" + row.num, true);
                
             g.append("circle")
-                .attr("cx", 40)
+                .attr("cx", 41)
                 .attr("cy", top + (row.num * rowHeight) + 11)
                 .attr("r", 7)
                 .attr("fill", "gold")
 
             g.append("circle")
-                .attr("cx", 51)
+                .attr("cx", 52)
                 .attr("cy", top + (row.num * rowHeight) + 18)
                 .attr("r", 7)
                 .attr("fill", "gold")

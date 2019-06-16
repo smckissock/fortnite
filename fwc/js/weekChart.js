@@ -31,13 +31,15 @@ function weekChart(id) {
     const smallLabel = {x: 40, y: 25, size: "1.2em" }; // 20
 
     const col1 = 8; 
+    //const placeLabelPos = {x: col1, y: 45, size: "1.0em" }; // 35
     const placeLabelPos = {x: col1, y: 45, size: "1.0em" }; // 35
-    const moneyLabelPos = {x: col1, y: 62, size: ".9em" }; // 51
-    const winsLabelPos = {x: col1, y: 79, size: ".9em" };  // 67
+
+    const moneyLabelPos = {x: col1, y: 62, size: ".7em" }; // 51
+    const winsLabelPos = {x: col1, y: 79, size: ".7em" };  // 67
 
     const col2 = 72;
-    const pointsLabelPos = {x: col2, y: 45, size: ".9em" };
-    const elimsLabelPos = {x: col2, y: 62, size: ".9em" };
+    const pointsLabelPos = {x: col2, y: 45, size: ".7em" };
+    const elimsLabelPos = {x: col2, y: 62, size: ".7em" };
     //const winsLabelPos = {x: 6, y: 67, size: ".8em" };
     
     const div = d3.select(id);
@@ -62,17 +64,17 @@ function weekChart(id) {
         .attr("height", (height * 5) + 50);
     
     svg.append("text")
-        .attr("x", 60)
-        .attr("y", 25)
-        .text("Solo")
-        .attr("font-size", "1.6em")
+        .attr("x", 55)
+        .attr("y", 28)
+        .text("Solos")
+        .attr("font-size", "1.9em")
         .attr("fill", "black"); 
 
     svg.append("text")
         .attr("x", duoX + 45)
-        .attr("y", 25)
-        .text("Duo")
-        .attr("font-size", "1.8em")
+        .attr("y", 28)
+        .text("Duos")
+        .attr("font-size", "1.9em")
         .attr("fill", "black");
 
     const top = 40;
@@ -85,10 +87,12 @@ function weekChart(id) {
         const y = Math.round((count-1)/2) * height + top;
 
         const yellowGreen = "#9ACD32"
-        const red = "Red";
-        const grey = '#B3B3B3';
+        const red = "lightgrey";
+        //const grey = '#B3B3B3';
+        const grey = '#606060';
 
-        let color = (week.type === "Duo") ? yellowGreen : red;
+        //let color = (week.type === "Duo") ? yellowGreen : red;
+        let color = (week.type === "Duo") ? "lightblue" : "lightblue";
         if (!week.done)
             color = grey;
 
@@ -212,7 +216,7 @@ function weekChart(id) {
         return svg.append("text")
             .attr("x", x + labelPos.x)
             .attr("y", y + labelPos.y)
-            .text("Wins")
+            .style("font-family", "Helvetica, Arial, sans-serif")
             .attr("font-size", labelPos.size)
             .attr("fill", "black")    
             .attr("pointer-events", "none")
