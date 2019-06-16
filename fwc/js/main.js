@@ -174,7 +174,7 @@ function helpButton(svg, screenWidth) {
         
     svg.append("text")
         .attr("x", screenWidth - 38)
-        .attr("y", 61)
+        .attr("y", 64)
         .text("?")
         .attr("font-size", ".7em")
         .attr("fill", "black")
@@ -262,7 +262,7 @@ function getColorForRegion(region) {
         case "NA West": return "purple"; break;
         case "NA East": return "green"; break;
         case "Europe": return "blue"; break;
-        case "Oceana": return "red"; break;
+        case "Oceania": return "red"; break;
         case "Asia": return "brown"; break;
         case "Brazil": return "teal"; break;
     }  

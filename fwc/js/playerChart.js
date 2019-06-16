@@ -37,7 +37,7 @@ const columns = [
         {color: green, filter: "NA East"},
         {color: purple, filter: "NA West"},
         {color: blue, filter: "Europe"},
-        {color: red, filter: "Oceana"},
+        {color: red, filter: "Oceania"},
         {color: teal, filter: "Brazil"},
         {color: brown, filter: "Asia"}
     ];

@@ -33,3 +33,15 @@ output_format=json
     <script type="text/javascript" src="fwc/js/regionChart.js"></script>
     <script type="text/javascript" src="fwc/js/weekChart.js"></script>
     <script type="text/javascript" src="fwc/js/main.js"></script> 
+
+
+Hello - I'm Paul McKissock's dad (Posick).  I was in Los Angeles but I'd don't think we met. I've been working on site that gives you a quick picture of how people have done in the Fortnite World cup. Do you mind taking a look? Any feedback appreciated. 
+
+
+Hello - I've been working on site that gives you a quick picture of how people have done in the Fortnite World cup. Do you mind taking a look? Any feedback appreciated.
+
+
+@erwil9
+@markrein
+
+

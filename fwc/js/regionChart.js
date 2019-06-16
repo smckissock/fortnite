@@ -16,7 +16,7 @@ function regionChart(id) {
         {x:53, y:80, color: green, name: "NA EAST", filter: "NA East", textOffset:33},
         {x:153, y:80, color: purple, name: "NA WEST", filter: "NA West", textOffset:35},
         {x:253, y:80, color: blue, name: "EUROPE", filter: "Europe", textOffset:30},
-        {x:53, y:180, color: red, name: "OCEANA", filter: "Oceana", textOffset:32},
+        {x:53, y:180, color: red, name: "OCEANIA", filter: "Oceania", textOffset:34},
         {x:153, y:180, color: teal, name: "BRAZIL", filter: "Brazil", textOffset:26},
         {x:253, y:180, color: brown, name: "ASIA", filter: "Asia", textOffset:19}
     ];
