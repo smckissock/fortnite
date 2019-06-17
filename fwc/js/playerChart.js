@@ -74,7 +74,7 @@ const columns = [
 
     // The data that gets rendered in the table. It gets updated whenever anything changes. But paging does not update it - it just grabs a slice
     let playerData;
-
+    
     // Important!!
     // baseMixin has mandatory ['dimension', 'group'], but we don't have a group here. 
     _chart._mandatoryAttributes(['dimension']);
@@ -87,6 +87,9 @@ const columns = [
     // The selection rect what moves around when the current sort column changes
     let cursor;
 
+    // The selection rect what moves around when the current player changes
+    let playerCursor;
+    let playerCursorVisible = false;
 
     let rows = [];
     for(let i = 0; i < rowCount; i++) 
@@ -175,7 +178,7 @@ const columns = [
         pageArrows();
         drawColumnBorder("payout", thickBorder);
 
-        // Make this after the region circles so that always appears "on top"
+        // Make this after the the player rects so that always appears "on top"
         cursor = svg.append("rect")
             .attr("x", playerColWidth + headerPos.gap + headerPos.width)
             .attr("y", headerPos.top + 4)
@@ -187,7 +190,6 @@ const columns = [
             .attr("pointer-events", "none")
             .attr("rx", cornerRadius)
             .attr("ry", cornerRadius)
-
     }
 
     function moveCursor(rect) {
@@ -424,7 +426,7 @@ const columns = [
 
     // Draw rects for player rows. These stay, but the text on top of them changes whenever the query changes
     function drawRows() {
-        const gap = 6;
+        const gap = 7;
         rows.forEach(function(row)  {
             const player = row;
 
@@ -492,6 +494,57 @@ const columns = [
                 .attr("r", 7)
                 .attr("fill", "gold")
         });    
+
+        // Make this after the the player rects so that always appears "on top"
+        playerCursor = svg.append("rect")
+            .attr("x", 4)
+            .attr("y", headerPos.top + 4)
+            .attr("width", svgWidth - 4)
+            .attr("height", rowHeight - gap)
+            .attr("fill", "none")
+            .attr("stroke", "black")
+            .attr("stroke-width", 0)
+            .attr("pointer-events", "none")
+            .attr("rx", cornerRadius)
+            .attr("ry", cornerRadius)
+    }
+
+
+    function movePlayerCursor(hide) {
+        if (hide) {
+            playerCursorVisible = false;
+            playerCursor
+                .transition()
+                .duration(200)
+                .attr("stroke-width", 0)
+            return;    
+        }
+
+        console.log(selectedRect)
+
+        playerCursorVisible = true;
+        
+        // Bet there is a better way to do this...
+        const x = selectedRect._groups[0][0].x.baseVal.value;
+        const y = selectedRect._groups[0][0].y.baseVal.value;
+        if (!playerCursorVisible) {
+            playerCursor
+                .attr("x", x)
+                .attr("y", y); 
+            
+            playerCursor
+                .transition()
+                .duration(100)
+                .attr("stroke-width", thickBorder);
+        } else {
+            playerCursor
+                .attr("stroke-width", thickBorder)
+                .transition()
+                .ease(d3.easeBack) 
+                .duration(300)
+                .attr("x", x)
+                .attr("y", y) 
+        } 
     }
 
     // Either the player node they clicked or null (they set player to null be because they reset the region, week, search or sort ) 
@@ -505,6 +558,8 @@ const columns = [
                 selectedRect = null;
             }
             showPlayerOnWeekChart("");
+            
+            movePlayerCursor(true);
             return;
         }
 
@@ -519,27 +574,31 @@ const columns = [
             clickedNode.attr("stroke-width", thickBorder - 2);
             showPlayerOnWeekChart(clickedPlayer);
             selectedRect = clickedNode;
+            
+            movePlayerCursor(false);
             return;
         }
 
-        // 2 One is selected, so unselect it and select this
-        if (filters.player != "") {
-            //selectedRect.attr("stroke", 0);
+        // 2 One is already selected, so unselect it and select this
+        if (node !== selectedRect.node()) {
             selectedRect.attr("stroke-width", 0);
             selectedRect = clickedNode;
 
             filters.player = clickedPlayer;
             clickedNode.attr("stroke-width", thickBorder - 2);
             showPlayerOnWeekChart(clickedPlayer);
+            
+            movePlayerCursor(false);
             return;
         }
 
         // 3 This was selected, so unselect it - all will be selected
-        clickedNode.attr("stroke-width", thickBorder - 2);
+        clickedNode.attr("stroke-width", 0);
         filters.player = "";
         selectedRect = null;
 
-        showPlayerOnWeekChart(clickedPlayer);
+        movePlayerCursor(true);
+        showPlayerOnWeekChart("");
     }
 
     
