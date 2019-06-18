@@ -87,9 +87,6 @@ function weekChart(id) {
         const x = week.type === "Solo" ? soloX : duoX;
         const y = Math.round((count-1)/2) * height + top;
 
-        const yellowGreen = "#9ACD32"
-        const red = "lightgrey";
-        //const grey = '#B3B3B3';
         const grey = '#606060';
 
         //let color = (week.type === "Duo") ? yellowGreen : red;
@@ -306,7 +303,6 @@ function weekChart(id) {
                 .attr("stroke-width", strokeWidthThick);
 
             _chart.redrawGroup();   
-            updateCounts();
 
             selectedRect = d3Rect;
             moveCursor(false);
@@ -338,7 +334,6 @@ function weekChart(id) {
                 .attr("stroke-width", 0);
 
             _chart.redrawGroup();   
-            updateCounts();
 
             selectedRect = d3Rect;
             moveCursor(false);
@@ -357,7 +352,6 @@ function weekChart(id) {
 
         selectedRect = d3Rect;
         moveCursor(true); 
-        updateCounts();
     }
 
     const showSinglePlayer = function(player) {
@@ -453,13 +447,10 @@ function weekChart(id) {
             
             count++;
         });
-
-        updateCounts();
     };
 
     // Assign this function to global variable so the player can call it when a plyer is clicked!! 
     showPlayerOnWeekChart = showSinglePlayer; 
-
 
     return _chart;
 }

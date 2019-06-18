@@ -28,6 +28,8 @@ const cornerRadius = 8;
 
 let titleSvg;
 
+let filterTextDisplayed;
+
 
 
 const green ='#319236';
@@ -37,7 +39,8 @@ const red = '#DB4441';
 const teal = '#3E93BC';
 const lime = '#3CFF3E';
 const grey = '#B3B3B3';
-const brown = '#8B4513';
+//const brown = '#8B4513';
+const brown = '#987654';
 
 
 let filters = {
@@ -88,6 +91,10 @@ d3.json('fwc/data/data.json').then(function (data)  {
 });
 
 
+d3.csv('fwc/data/data.csv').then(function (data)  {
+});
+
+
 function makeQualifications(data) {
     data.forEach(function (placement) {
         if (placement.soloQual != 0) 
@@ -103,7 +110,7 @@ function title(width) {
     const div = d3.select(".title");
     const svg = div.append("svg")
         .attr("width", width + "px")
-        .attr("height", "70px");
+        .attr("height", "80px");
     
     svg.append("text")
         .attr("x", 0)
@@ -144,7 +151,16 @@ function filtersAndCount(svg, screenWidth) {
         .attr("font-size", "1.6rem")
         .attr("fill", "black")
         .attr("pointer-events", "none")
-        .attr("id", "filterText"); 
+        .attr("id", "filterText1"); 
+
+    svg.append("text")
+        .attr("x", screenWidth - 540)
+        .attr("y", 65)
+        .text("")
+        .attr("font-size", "1.6rem")
+        .attr("fill", "black")
+        .attr("pointer-events", "none")
+        .attr("id", "filterText2"); 
 }
 
 function helpButton(svg, screenWidth) {
@@ -173,8 +189,8 @@ function helpButton(svg, screenWidth) {
         });
         
     svg.append("text")
-        .attr("x", screenWidth - 38)
-        .attr("y", 64)
+        .attr("x", screenWidth - 37)
+        .attr("y", 59)
         .text("?")
         .attr("font-size", ".7em")
         .attr("fill", "black")
@@ -216,8 +232,17 @@ function updateCounts() {
         filterText += " by " + sort; 
     }
 
-    titleSvg.select("#filterText")
-        .text(filterText);
+    // Toggle the filter to display, then fade it in and fade the old one out
+    filterTextDisplayed = (filterTextDisplayed === "#filterText1") ? "#filterText2" : "#filterText1";
+    titleSvg.select(filterTextDisplayed)
+        .transition()
+        .duration(300)
+        .text(filterText)
+        .attr("fill-opacity", 1.0);
+    titleSvg.select((filterTextDisplayed === "#filterText2") ? "#filterText1" : "#filterText2")
+        .transition()
+        .duration(400)
+        .attr("fill-opacity", 0);
 }
 
 function draw(facts) {
@@ -243,11 +268,10 @@ function draw(facts) {
     let players = playerChart("#chart-player")
         .dimension(playerStatsGroup); 
 
-    //players._doRedraw();
     dc.registerChart(players, null);
 
     dc.renderAll();
-    updateCounts();
+    //updateCounts();
 }
 
 function makePlayerColors() {

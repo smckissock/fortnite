@@ -10,7 +10,8 @@ function regionChart(id) {
     const teal = '#3E93BC';
     const lime = '#3CFF3E';
     const grey = '#B3B3B3';
-    const brown = '#8B4513';
+    //const brown = '#8B4513';
+    const brown = '#987654';
    
     const regions = [
         {x:53, y:80, color: green, name: "NA EAST", filter: "NA East", textOffset:33},
@@ -167,7 +168,6 @@ function regionChart(id) {
                 .attr("stroke-width", strokeWidthThick);
 
             _chart.redrawGroup();   
-            updateCounts();
 
             moveCursor(false);
             return;
@@ -198,7 +198,6 @@ function regionChart(id) {
                 .attr("stroke-width", 0);
 
             _chart.redrawGroup();   
-            updateCounts();
 
             moveCursor(false);
             return;
@@ -213,10 +212,8 @@ function regionChart(id) {
             .attr("stroke-width", 0);
         
         _chart.redrawGroup();   
-        updateCounts();
         moveCursor(true);
     }
-
 
     return _chart;
 }

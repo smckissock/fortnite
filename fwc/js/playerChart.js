@@ -29,7 +29,8 @@ const columns = [
         teal: '#3E93BC',
         lime: '#3CFF3E',
         grey: '#B3B3B3',
-        brown: '#8B4513'
+        //brown: '#8B4513'
+        brown: '#987654'
     }
 
     // Also almost the same code in regionChart
@@ -151,11 +152,9 @@ const columns = [
                     .attr("stroke-width", 0);
 
                 if (filters.player != "")
-                    clearPlayer(null);
-                else {
-                    updateCounts();
-                    renderRows();
-                }
+                    setPlayer(null);
+                
+                renderRows();
                 moveCursor(this); 
             })
             .each(function (d, i) {
@@ -196,7 +195,6 @@ const columns = [
         const x = rect.x.baseVal.value;
         const y = rect.y.baseVal.value;
 
-        console.log(rect);
         cursor
             .transition()
             .ease(d3.easeBack)
@@ -372,6 +370,7 @@ const columns = [
                 d3.select(this)
                     .attr("stroke-width", 0)
             }).on('click', function (d) {
+                setPlayer(null);
                 nextPage("up");
             });
 
@@ -391,6 +390,7 @@ const columns = [
                 .attr("stroke-width", 0)
             })
             .on('click', function (d) {
+                setPlayer(null);
                 nextPage("down");
             });
     }
@@ -429,10 +429,6 @@ const columns = [
         const gap = 7;
         rows.forEach(function(row)  {
             const player = row;
-
-            //let color = colors[player.color];
-            //if (filters.region)
-            //    color =  
 
             svg.append("rect")
                 .attr("data", player.num)
@@ -522,8 +518,6 @@ const columns = [
 
         console.log(selectedRect)
 
-        playerCursorVisible = true;
-        
         // Bet there is a better way to do this...
         const x = selectedRect._groups[0][0].x.baseVal.value;
         const y = selectedRect._groups[0][0].y.baseVal.value;
@@ -545,6 +539,7 @@ const columns = [
                 .attr("x", x)
                 .attr("y", y) 
         } 
+        playerCursorVisible = true;
     }
 
     // Either the player node they clicked or null (they set player to null be because they reset the region, week, search or sort ) 
@@ -559,6 +554,7 @@ const columns = [
             }
             showPlayerOnWeekChart("");
             
+            playerCursorVisible = false;
             movePlayerCursor(true);
             return;
         }
@@ -567,7 +563,7 @@ const columns = [
         const clickedNode = d3.select(node);
         const clickedPlayer = playerRows[clickedNode.attr("data")].key;
 
-        // 1) None were clicked
+        // 1) None were clicked before
         if (filters.player === "") {
             filters.player = clickedPlayer;
 
@@ -575,7 +571,9 @@ const columns = [
             showPlayerOnWeekChart(clickedPlayer);
             selectedRect = clickedNode;
             
+            playerCursorVisible = false;
             movePlayerCursor(false);
+            updateCounts();
             return;
         }
 
@@ -589,6 +587,7 @@ const columns = [
             showPlayerOnWeekChart(clickedPlayer);
             
             movePlayerCursor(false);
+            updateCounts();
             return;
         }
 
@@ -598,6 +597,7 @@ const columns = [
         selectedRect = null;
 
         movePlayerCursor(true);
+        updateCounts();
         showPlayerOnWeekChart("");
     }
 
@@ -739,7 +739,8 @@ const columns = [
                 if (filters.region === "Europe") fillColor = '#4C51F7';
                 if (filters.region === "Oceana") fillColor = '#DB4441';
                 if (filters.region === "Brazil") fillColor = '#3E93BC';
-                if (filters.region === "Asia") fillColor = '#8B4513';                
+                //if (filters.region === "Asia") fillColor = '#8B4513';
+                if (filters.region === "Asia") fillColor = '#987654';                
             }
 
             rowSelection

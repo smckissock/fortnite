@@ -26,6 +26,16 @@ namespace FortniteJson {
 
         public static void MakeJson() {
 
+            var places = GetPlaces();
+            
+            string fileName = @"c:\fortnite\fwc\data\data.json";
+
+            string json = JsonConvert.SerializeObject(places);
+            var niceJson = Newtonsoft.Json.Linq.JToken.Parse(json).ToString();
+            File.WriteAllText(fileName, niceJson);
+        }
+
+        private static List<Place> GetPlaces() {
             var places = new List<Place>();
             var reader = SqlUtil.Query("SELECT * FROM StatView");
             while (reader.Read()) {
@@ -48,11 +58,41 @@ namespace FortniteJson {
             }
             reader.Close();
 
-            string fileName = @"c:\fortnite\fwc\data\data.json";
+            return places;
+        }
 
-            string json = JsonConvert.SerializeObject(places);
-            var niceJson = Newtonsoft.Json.Linq.JToken.Parse(json).ToString();
-            File.WriteAllText(fileName, niceJson);
+
+        public static void MakeCsv() {
+
+            var lines = new List<string>();
+            var header = "week,soloWeek,duoWeek,soloOrDuo,player,region,rank,payout,points,wins,elims,placementPoints,earnedQualification";
+            lines.Add(header);
+
+
+            var reader = SqlUtil.Query("SELECT * FROM StatView");
+            
+            while (reader.Read()) {
+                var fields = new List<string>();
+
+                fields.Add(reader["week"].ToString());
+                fields.Add(reader["soloWeek"].ToString());
+                fields.Add(reader["duoWeek"].ToString());
+                fields.Add(reader["soloOrDuo"].ToString());
+                fields.Add(reader["player"].ToString());
+                fields.Add(reader["region"].ToString());
+                fields.Add(reader["rank"].ToString());
+                fields.Add(reader["payout"].ToString());
+                fields.Add(reader["points"].ToString());
+                fields.Add(reader["wins"].ToString());
+                fields.Add(reader["elims"].ToString());
+                fields.Add(reader["PlacementPoints"].ToString());
+                fields.Add(reader["EarnedQualification"].ToString());
+
+                lines.Add(string.Join(",", fields));
+            }
+            string fileName = @"c:\fortnite\fwc\data\data.csv";
+
+            File.WriteAllText(fileName, string.Join("\n", lines));
         }
     }
 }
