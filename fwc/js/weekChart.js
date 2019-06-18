@@ -27,8 +27,9 @@ function weekChart(id) {
     const strokeWidthThick = 11;
     const strokeWidthThin = 4; 
 
-    const bigLabel = {x: 25, y: 59, size: "2em" };  //49
-    const smallLabel = {x: 40, y: 24, size: "1.2em" }; // 20
+    const bigLabel = {x: 25, y: 59, size: "2em" };  
+    const mediumLabel = {x: 32, y: 45, size: "1.6em"}
+    const smallLabel = {x: 40, y: 24, size: "1.2em" }; 
 
     const col1 = 9; 
     const placeLabelPos = {x: col1, y: 41, size: ".9em" }; 
@@ -144,7 +145,18 @@ function weekChart(id) {
             .attr("font-size", bigLabel.size)
             .attr("fill", "black")    
             .attr("pointer-events", "none");
+
+        const noPlaceLabel = svg.append("text")
+            .attr("x", x + 8)
+            .attr("y", y + bigLabel.y + 8)
+            .text("Placed outside top 100")
+            .attr("font-size", ".9em")
+            .attr("fill", "black")
+            .attr("fill-opacity", 0)    
+            .attr("pointer-events", "none");
+
         weekSelection.label = label;
+        weekSelection.noPlaceLabel = noPlaceLabel;
 
         weekSelection.placeLabel = makeLabel(svg, x, y, placeLabelPos);
         weekSelection.moneyLabel = makeLabel(svg, x, y, moneyLabelPos);
@@ -156,10 +168,8 @@ function weekChart(id) {
 
         weekSelection.placementLabel = makeLabel(svg, x, y, placementLabelPos);
         weekSelection.placementPercentLabel = makeLabel(svg, x, y, placementPercentLabelPos);
-        
 
         weekSelections.push(weekSelection);
-
         count++;    
     });
 
@@ -365,9 +375,18 @@ function weekChart(id) {
             const num = d3.format(",d");	
             
             const matches = recs.filter(x => week.name === x.week);
+            
             const showPlace = (matches.length != 0) && (!neverShowPlace);
-            const labelSize = showPlace ? smallLabel : bigLabel;
+            //const labelSize = showPlace ? smallLabel : bigLabel;
+            let labelSize = showPlace ? smallLabel : mediumLabel;
+            if (neverShowPlace)
+                labelSize = bigLabel;
+
             const opacity = showPlace ? "1.0" : "0.0";  
+            
+            let noPlaceOpacity = (opacity == "1.0") ? "0" : "1";
+            if (neverShowPlace) 
+                noPlaceOpacity = "0";
 
             // Show the star if they qualified, otherwise hide
             const qualified = ((matches.length != 0) &&(matches[0].soloQual + matches[0].duoQual) > 0); 
@@ -397,13 +416,19 @@ function weekChart(id) {
                 
             // Copied from above!!
             const x = week.type === "Solo" ? soloX : duoX;
-            const y = Math.round((count-1)/2) * height + top;
+            const y = Math.round((count - 1) / 2) * height + top;
 
+            // Shrink/grow Week label and move it  
             weekSelections[count].label
                 .transition()
                 .attr("x", x + labelSize.x)
                 .attr("y", y + labelSize.y)
                 .attr("font-size", labelSize.size);
+
+            // Show/Hide no place label
+            weekSelections[count].noPlaceLabel
+                .transition()
+                .attr("fill-opacity", noPlaceOpacity);
 
             weekSelections[count].placeLabel
                 .text(place)
