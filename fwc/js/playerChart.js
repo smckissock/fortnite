@@ -734,12 +734,11 @@ const columns = [
             // Ugh - override whatever color the person has if a region is selected
             let fillColor = colors[row.color];
             if (filters.region) {
-                if (filters.region === "NA East") fillColor = '#319236';
-                if (filters.region === "NA West") fillColor = '#9D4DBB';
+                if (filters.region === "NA East") fillColor = '#56af5a';
+                if (filters.region === "NA West") fillColor = '#ad76c1';
                 if (filters.region === "Europe") fillColor = '#4C51F7';
-                if (filters.region === "Oceana") fillColor = '#DB4441';
+                if (filters.region === "Oceania") fillColor = '#e25856'; 
                 if (filters.region === "Brazil") fillColor = '#3E93BC';
-                //if (filters.region === "Asia") fillColor = '#8B4513';
                 if (filters.region === "Asia") fillColor = '#987654';                
             }
 

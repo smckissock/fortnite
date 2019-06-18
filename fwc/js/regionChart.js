@@ -3,14 +3,13 @@
 
 function regionChart(id) {
 
-    const green ='#319236';
-    const purple = '#9D4DBB';
+    const green ='#56af5a';
+    const purple = '#ad76c1';
     const blue = '#4C51F7';
-    const red = '#DB4441';
+    const red = '#e25856';
     const teal = '#3E93BC';
     const lime = '#3CFF3E';
     const grey = '#B3B3B3';
-    //const brown = '#8B4513';
     const brown = '#987654';
    
     const regions = [
