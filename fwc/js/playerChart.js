@@ -466,10 +466,10 @@ const columns = [
                 })
 
             svg.append("circle")
-                .attr("cx", 18)
+                .attr("cx", 19)
                 .attr("cy", top + (row.num * rowHeight) + 14)
-                .attr("r", 10)
-                .attr("fill", "gold")
+                .attr("r", 9)
+                .attr("fill", "#FFAC08")
                 .attr("fill-opacity", 0.0)
                 .classed("s" + row.num, true);
                 
@@ -479,16 +479,16 @@ const columns = [
                .classed("d" + row.num, true);
                
             g.append("circle")
-                .attr("cx", 41)
+                .attr("cx", 42)
                 .attr("cy", top + (row.num * rowHeight) + 11)
                 .attr("r", 7)
-                .attr("fill", "gold")
+                .attr("fill", "#FFAC08")
 
             g.append("circle")
-                .attr("cx", 52)
+                .attr("cx", 51)
                 .attr("cy", top + (row.num * rowHeight) + 18)
                 .attr("r", 7)
-                .attr("fill", "gold")
+                .attr("fill", "#FFAC08")
         });    
 
         // Make this after the the player rects so that always appears "on top"
