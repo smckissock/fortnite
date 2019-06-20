@@ -43,7 +43,9 @@ function weekChart(id) {
     const elimPercentLabelPos = {x: col2, y: 70, size: ".7em" };
     const placementPercentLabelPos = {x: col2, y: 85, size: ".7em" };
 
-    
+    let checkBoxSolos;
+    let checkBoxDuos;
+
     const div = d3.select(id);
 
     // The selection rectangle what moves around when the current week changes
@@ -67,49 +69,78 @@ function weekChart(id) {
     
     svg.append("text")
         .attr("x", 25)
-        .attr("y", 28)
+        .attr("y", 24)
         .text("Solos")
         .attr("font-size", "1.9em")
         .attr("fill", "black"); 
 
     svg.append("text")
         .attr("x", duoX + 15)
-        .attr("y", 28)
+        .attr("y", 24)
         .text("Duos")
         .attr("font-size", "1.9em")
         .attr("fill", "black");
 
     const corner = 6; 
-    let checkBoxSolo = new d3CheckBox(svg);
-    checkBoxSolo
+    checkBoxSolos = new d3CheckBox("Solos");
+    checkBoxSolos
         .size(27)
         .x(100)
-        .y(4)
+        .y(3)
         .rx(corner)
         .ry(corner)
         .markStrokeWidth(6)
         .boxStrokeWidth(2)
-        .checked(true)
+        .checked(false)
         .clickEvent(function () {
-            //alert("CLICK");
+            checkEvent(checkBoxSolos)
         });
-    svg.call(checkBoxSolo);
+    svg.call(checkBoxSolos);
 
 
-    let checkBoxDuo = new d3CheckBox(svg);
-    checkBoxDuo
+    checkBoxDuos = new d3CheckBox("Duos");
+    checkBoxDuos
         .size(27)
         .x(duoX + 100)
-        .y(4)
+        .y(3)
         .rx(corner)
         .ry(corner)
         .markStrokeWidth(6)
         .boxStrokeWidth(2)
-        .checked(true)
+        .checked(false)
         .clickEvent(function () {
-            //alert("CLICK");
+            checkEvent(checkBoxDuos)
         });
-    svg.call(checkBoxDuo);
+    svg.call(checkBoxDuos);
+
+
+    function checkEvent(checkBox) {
+        if (checkBox.getName() === "Solos") {
+            checkBoxDuos.checked(false);
+
+            if (checkBox.checked()) {
+                filters.week = "";              
+                
+                filters.soloOrDuo = "Solos";
+            } else {
+                filters.week = "";
+                filters.soloOrDuo = "";
+            }
+        } else {
+            checkBoxSolos.checked(false);
+            if (checkBox.checked()) {
+                filters.week = "";
+                
+                filters.soloOrDuo = "Duos";
+            } else {
+                filters.week = "";
+                filters.soloOrDuo = "";
+            }
+        }
+        updateCounts();
+        console.log("SOLO " + checkBoxSolos.checked() +  " DUO " +  checkBoxDuos.checked());
+    } 
+
 
     const top = 40;
     let count = 0;      
@@ -205,7 +236,7 @@ function weekChart(id) {
         count++;    
     });
 
-    // Make this after the region circles so that always appears "on top"
+    // Make this after the region circles so that always appears on top
     cursor = svg.append("rect")
         .attr("x", 0)
         .attr("y", 0)
@@ -515,22 +546,65 @@ function weekChart(id) {
 
 
 // https://bl.ocks.org/Lulkafe/c77a36d5efb603e788b03eb749a4a714
-function d3CheckBox (svg) {
+function d3CheckBox (checkBoxName) {
 
-    var size = 20,
+    let theName = checkBoxName,
+        size = 20,
         x = 0,
         y = 0,
         rx = 0,
         ry = 0,
-        markStrokeWidth = 3,
+        markStrokeWidth = 1,
         boxStrokeWidth = 3,
         checked = false,
+        mark = null,
         clickEvent;
 
-    function checkBox (selection) {
+    function checkBox(selection) {
 
-        var g = selection.append("g"),
-            box = g.append("rect")
+        const g = selection.append("g");
+
+        // Checkmark
+        const coordinates = [
+            {x: x + (size / 4), y: y + (size / 2)},
+            {x: x + (size / 2.2), y: (y + size) - (size / 3.5)},
+            {x: (x + size) - (size / 4), y: (y + (size / 4))}
+        ];
+
+        const line = d3.line()
+                .x(function(d){ return d.x; })
+                .y(function(d){ return d.y; })
+
+        mark = g.append("path")
+            .attr("d", line(coordinates))
+            .style("stroke-width", markStrokeWidth)
+            .style("stroke-linecap", "round")
+            
+            .style("fill", "none")
+            .style("opacity", 1)
+            .style("stroke", (checked)? "black" : "lightgrey")
+                        
+            .attr("pointer-events", "none");
+
+        g.on("click", function () {
+            checked = !checked;
+            //mark.style("opacity", (checked)? 1 : 0);
+
+            mark
+                .style("stroke", (checked)? "black" : "lightgrey")
+
+            /* mark
+                .transition()
+                .duration(100)
+                .style("stroke", (checked)? "black" : "lightgrey") */
+
+            if (clickEvent)
+                clickEvent();
+
+            d3.event.stopPropagation();
+        });
+
+        const box = g.append("rect")
             .attr("width", size)
             .attr("height", size)
             .attr("x", x)
@@ -539,43 +613,29 @@ function d3CheckBox (svg) {
             .attr("ry", ry)
             .style("fill-opacity", 0)
             .style("stroke-width", boxStrokeWidth)
-            .style("stroke", "black");
-
-        //Data to represent the check mark
-        var coordinates = [
-            {x: x + (size / 4), y: y + (size / 2)},
-            {x: x + (size / 2.2), y: (y + size) - (size / 3.5)},
-            {x: (x + size) - (size / 4), y: (y + (size / 5))}
-
-/*          {x: x + (size / 8), y: y + (size / 3)},
-            {x: x + (size / 2.2), y: (y + size) - (size / 4)},
-            {x: (x + size) - (size / 8), y: (y + (size / 10))} */
-        ];
-
-        //var line = d3.svg.line()
-        var line = d3.line()
-                .x(function(d){ return d.x; })
-                .y(function(d){ return d.y; })
-                //.interpolate("basic");
-
-        var mark = g.append("path")
-            .attr("d", line(coordinates))
-            .style("stroke-width", markStrokeWidth)
-            .style("stroke-linecap", "round")
             .style("stroke", "black")
-            .style("fill", "none")
-            .style("opacity", (checked)? 1 : 0);
+            .on("mouseover", function () {
+                d3.select(this)
+                    .transition()
+                    .duration(20)
+                    .style("stroke-width", boxStrokeWidth + 3)
+                
+                d3.event.stopPropagation();
+            })
+            .on("mouseout", function () {
+                d3.select(this)
+                    .transition()
+                    .duration(50)
+                    .style("stroke-width", boxStrokeWidth)
 
-        g.on("click", function () {
-            checked = !checked;
-            mark.style("opacity", (checked)? 1 : 0);
+                d3.event.stopPropagation();
+            });
+    }
 
-            if(clickEvent)
-                clickEvent();
 
-            d3.event.stopPropagation();
-        });
-
+    // "theName" because you cannot reassign the "name" value of a function
+    checkBox.getName = function () {
+        return theName;
     }
 
     checkBox.size = function (val) {
@@ -615,12 +675,22 @@ function d3CheckBox (svg) {
 
     checkBox.checked = function (val) {
 
-        if(val === undefined) {
+        if (val === undefined) {
             return checked;
         } else {
             checked = val;
+            if (mark) {
+                mark
+                    .transition()
+                    .duration(100)
+                    .style("stroke", (mark.checked)? "black" : "lightgrey")
+            }
             return checkBox;
         }
+    }
+
+    checkBox.mark = function() {
+
     }
 
     checkBox.clickEvent = function (val) {

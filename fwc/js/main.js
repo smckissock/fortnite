@@ -49,6 +49,7 @@ let filters = {
     search: "",
     player: "",
     sort: "payout",
+    soloOrDuo: "",
     page: 0,
     playerCount: 0
 }
@@ -105,7 +106,7 @@ function makeQualifications(data) {
     });
 }
 
-//Big Fortnite title
+// Big Fortnite title
 function title(width) {
     const div = d3.select(".title");
     const svg = div.append("svg")
@@ -212,8 +213,15 @@ function updateCounts() {
         
         if (filters.region != "")
             filterParts.push(filters.region);
-        if (filters.week != "")
-            filterParts.push(filters.week);
+
+        //if (filters.week != "")
+        //    filterParts.push(filters.week);
+        if (filters.soloOrDuo != "")
+            filterParts.push(filters.soloOrDuo);
+        else
+            if (filters.week != "")
+                filterParts.push(filters.week);
+
         if (filters.search != "")
             filterParts.push('"' + filters.search + '"'); 
         
