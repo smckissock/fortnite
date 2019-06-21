@@ -13,7 +13,7 @@ function weekChart(id) {
         {num: 7, name: "Week 7", type:"Solo", done: true},
         {num: 8, name: "Week 8", type:"Duo", done: true},
         {num: 9, name: "Week 9", type:"Solo", done: true},
-        {num: 10, name: "Week 10", type:"Duo", done: false},
+        {num: 10, name: "Week 10", type:"Duo", done: true},
     ];
 
     let weekSelections = [];
@@ -23,8 +23,8 @@ function weekChart(id) {
     const duoX = 155; 
 
     const width = 135;
-    const height = 105;
-    const strokeWidthThick = 11;
+    const height = 103;
+    const strokeWidthThick = 8;
     const strokeWidthThin = 4; 
 
     const bigLabel = {x: 25, y: 59, size: "2em" };  
@@ -49,8 +49,8 @@ function weekChart(id) {
     const div = d3.select(id);
 
     // The selection rectangle what moves around when the current week changes
-    let cursor;
-    let cursorVisible = false;
+    //let cursor;
+    //let cursorVisible = false;
     let selectedRect;
     
     // Include this, and add a dimension and group
@@ -115,17 +115,62 @@ function weekChart(id) {
 
 
     function checkEvent(checkBox) {
-        checkBox.getName() === "Solos" ? checkBoxDuos.checked(false) : checkBoxSolos.checked(false) 
+        const isSolo = (checkBox.getName() === "Solos");
+
+        isSolo ? checkBoxDuos.checked(false) : checkBoxSolos.checked(false) 
         filters.week = "";
 
-        if (checkBox.checked()) 
-            filters.soloOrDuo = (checkBox.getName() === "Solos") ? "Solos" : "Duos";
-        else 
-            filters.soloOrDuo = "";
-        
+        if (checkBox.checked()) {
+            filters.soloOrDuo = isSolo ? "Solos" : "Duos";
+            
+            _chart.filter(null);
+            if (isSolo) {
+                _chart.filter("Week 1");
+                _chart.filter("Week 3");
+                _chart.filter("Week 5");
+                _chart.filter("Week 7");
+                _chart.filter("Week 9");
+            } else {
+                _chart.filter("Week 2");
+                _chart.filter("Week 4");
+                _chart.filter("Week 6");
+                _chart.filter("Week 8");
+                _chart.filter("Week 10");
+            }
+        }
+        else { 
+            filters.soloOrDuo = null;
+        }
+        _chart.redrawGroup();
+
         updateCounts();
         //console.log("SOLO " + checkBoxSolos.checked() +  " DUO " +  checkBoxDuos.checked());
-    } 
+        updateSquares() ;
+    }
+    
+    
+    function updateSquares() {
+
+        weekSelections.forEach(function(week) {
+            const solosPicked = (filters.soloOrDuo === "Solos");
+            const duosPicked = (filters.soloOrDuo === "Duos");
+
+            let strokeWidth;
+            if (week.week.num % 2 == 1)
+                strokeWidth = solosPicked ? strokeWidthThick : 0;
+            else
+                strokeWidth = duosPicked ? strokeWidthThick : 0;
+
+            if ("Week " + week.week.num === filters.week)
+                strokeWidth = strokeWidthThick;
+
+            weekSelections[week.week.num - 1].rect
+                .transition()
+                .delay(week.week.num * 10) 
+                .duration(300)
+                .attr("stroke-width", strokeWidth)
+        })
+    }
 
     const top = 40;
     let count = 0;      
@@ -158,7 +203,7 @@ function weekChart(id) {
             .on('mouseover', function (d) {
                 const num = d3.select(this).attr("data");
 
-                // The are mousing over the selected item - don't shrink the border
+                // They are mousing over the selected item - don't shrink the border
                 if ("Week " + num === filters.week)
                     return;
 
@@ -173,6 +218,25 @@ function weekChart(id) {
             })
             .on('mouseout', function (d) {
                 let dom = d3.select(this);
+
+                // Solos are selected and this is a solo week, so ignore     
+                if ((dom.attr("data") % 2 === 1) && (filters.soloOrDuo === "Solos")) {
+                    dom
+                        .transition()
+                        .duration(100)
+                        .attr("stroke-width", strokeWidthThick); 
+                    return;      
+                }
+            
+                // Duos are selected and this is a solo week, so ignore     
+                if ((dom.attr("data") % 2 === 0) && (filters.soloOrDuo === "Duos")) {
+                    dom
+                        .transition()
+                        .duration(100)
+                        .attr("stroke-width", strokeWidthThick);
+                    return;
+                }
+
                 if ("Week " + dom.attr("data") != filters.week)
                     dom
                         .transition()
@@ -203,6 +267,8 @@ function weekChart(id) {
             .attr("fill-opacity", 0)    
             .attr("pointer-events", "none");
 
+        weekSelection.week = week; 
+
         weekSelection.label = label;
         weekSelection.noPlaceLabel = noPlaceLabel;
 
@@ -221,8 +287,8 @@ function weekChart(id) {
         count++;    
     });
 
-    // Make this after the region circles so that always appears on top
-    cursor = svg.append("rect")
+    // Make this after the week squares so that it always appears on top
+    /* cursor = svg.append("rect")
         .attr("x", 0)
         .attr("y", 0)
         .attr("width", width)
@@ -232,9 +298,9 @@ function weekChart(id) {
         .attr("stroke-width", 0)
         .attr("pointer-events", "none")
         .attr("rx", cornerRadius)
-        .attr("ry", cornerRadius);
+        .attr("ry", cornerRadius); */
     
-    function moveCursor(hideIt) {
+/*     function moveCursor(hideIt) {
         if (hideIt) {
             cursorVisible = false;
             cursor
@@ -271,7 +337,7 @@ function weekChart(id) {
             cursorVisible = true;     
         }
     } 
-
+ */
 
     function makeLabel(svg, x, y, labelPos) {
         return svg.append("text")
@@ -366,7 +432,8 @@ function weekChart(id) {
             _chart.redrawGroup();   
 
             selectedRect = d3Rect;
-            moveCursor(false);
+            //moveCursor(false);
+            updateSquares();
             return;
         }
 
@@ -397,7 +464,8 @@ function weekChart(id) {
             _chart.redrawGroup();   
 
             selectedRect = d3Rect;
-            moveCursor(false);
+            //moveCursor(false);
+            updateSquares();
             return;
         }   
 
@@ -412,7 +480,8 @@ function weekChart(id) {
         _chart.redrawGroup();  
 
         selectedRect = d3Rect;
-        moveCursor(true); 
+        //moveCursor(true); 
+        updateSquares();
     }
 
     const showSinglePlayer = function(player) {
