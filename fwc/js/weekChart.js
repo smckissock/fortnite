@@ -115,32 +115,17 @@ function weekChart(id) {
 
 
     function checkEvent(checkBox) {
-        if (checkBox.getName() === "Solos") {
-            checkBoxDuos.checked(false);
+        checkBox.getName() === "Solos" ? checkBoxDuos.checked(false) : checkBoxSolos.checked(false) 
+        filters.week = "";
 
-            if (checkBox.checked()) {
-                filters.week = "";              
-                
-                filters.soloOrDuo = "Solos";
-            } else {
-                filters.week = "";
-                filters.soloOrDuo = "";
-            }
-        } else {
-            checkBoxSolos.checked(false);
-            if (checkBox.checked()) {
-                filters.week = "";
-                
-                filters.soloOrDuo = "Duos";
-            } else {
-                filters.week = "";
-                filters.soloOrDuo = "";
-            }
-        }
+        if (checkBox.checked()) 
+            filters.soloOrDuo = (checkBox.getName() === "Solos") ? "Solos" : "Duos";
+        else 
+            filters.soloOrDuo = "";
+        
         updateCounts();
-        console.log("SOLO " + checkBoxSolos.checked() +  " DUO " +  checkBoxDuos.checked());
+        //console.log("SOLO " + checkBoxSolos.checked() +  " DUO " +  checkBoxDuos.checked());
     } 
-
 
     const top = 40;
     let count = 0;      
@@ -352,6 +337,8 @@ function weekChart(id) {
         // Don't do anything for weeks that aren't done     
         if (!weeks.filter(x => x.num == num)[0].done)
             return;   
+
+        filters.soloOrDuo = "";    
 
         const newFilter = "Week " + num;
         
