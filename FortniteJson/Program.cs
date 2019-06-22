@@ -9,8 +9,8 @@ namespace FortniteJson {
     class Program {
 
         static void Main(string[] args) {
-            //Fortnite.MakeJson();
-            Fortnite.MakeCsv();
+            Fortnite.MakeJson();
+            //Fortnite.MakeCsv();
         }
     }
 }

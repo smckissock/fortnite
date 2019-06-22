@@ -171,6 +171,7 @@ function weekChart(id) {
                 .attr("stroke-width", strokeWidth)
         })
     }
+    
 
     const top = 40;
     let count = 0;      
@@ -395,7 +396,14 @@ function weekChart(id) {
             //.style("opacity", 0)
             .attr("transform", "translate(" + (x-13) + "," + (y-7) + ") scale(.12)")
             .attr("pointer-events", "none"); */
- }
+    }
+
+    function clearSoloAndDuo() {
+        filters.soloOrDuo = "";  
+        checkBoxSolos.checked(false);
+        checkBoxDuos.checked(false);  
+
+    }
 
     const clickRect = function(d3Rect) {
         const num = d3Rect.attr("data");
@@ -405,6 +413,7 @@ function weekChart(id) {
             return;   
 
         filters.soloOrDuo = "";    
+        clearSoloAndDuo();    
 
         const newFilter = "Week " + num;
         
