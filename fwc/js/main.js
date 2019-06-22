@@ -60,6 +60,7 @@ d3.json('fwc/data/data.json').then(function (data)  {
     const screenWidth = LeftSideWidth + PlayerTableWidth - leftMargin;
     titleSvg = title(screenWidth);
     searchLabel(titleSvg);
+    posickLabel(titleSvg)
     disclaimer(titleSvg);
     
     data.forEach(function (d) {
@@ -124,10 +125,23 @@ function title(width) {
     return svg;
 }
 
+
+
+function posickLabel(svg) {
+    svg.append("text")
+        .attr("x", 565)
+        .attr("y", 33)
+        .text('Support this using creator code "Posick" !')
+        .attr("font-size", ".9rem")
+        .attr("fill", "black")
+        .style("font-family", "Helvetica, Arial, sans-serif")
+        .attr("font-weight", 800) 
+}
+
 function searchLabel(svg) {
     svg.append("text")
         .attr("x", 565)
-        .attr("y", 64)
+        .attr("y", 72)
         .text("Search")
         .attr("font-size", "1.4rem")
         .attr("fill", "black")
@@ -148,7 +162,7 @@ function disclaimer(svg) {
 function filtersAndCount(svg, screenWidth) {
     svg.append("text")
         .attr("x", screenWidth - 540)
-        .attr("y", 65)
+        .attr("y", 73)
         .text("")
         .attr("font-size", "1.6rem")
         .attr("fill", "black")
@@ -157,7 +171,7 @@ function filtersAndCount(svg, screenWidth) {
 
     svg.append("text")
         .attr("x", screenWidth - 540)
-        .attr("y", 65)
+        .attr("y", 73)
         .text("")
         .attr("font-size", "1.6rem")
         .attr("fill", "black")
