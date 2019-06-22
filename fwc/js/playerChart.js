@@ -465,24 +465,39 @@ const columns = [
                     setPlayer(this);
                 })
 
+            // Make this after the the player rects but before the circles, so circles are on top
+            if (row.num === 0)
+                playerCursor = svg.append("rect")
+                    .attr("x", 4)
+                    .attr("y", headerPos.top + 4)
+                    .attr("width", svgWidth - 4)
+                    .attr("height", rowHeight - gap)
+                    .attr("fill", "none")
+                    .attr("stroke", "black")
+                    .attr("stroke-width", 0)
+                    .attr("pointer-events", "none")
+                    .attr("rx", cornerRadius)
+                    .attr("ry", cornerRadius) 
+    
+
             svg.append("circle")
-                .attr("cx", 19)
+                .attr("cx", 21)
                 .attr("cy", top + (row.num * rowHeight) + 14)
-                .attr("r", 9)
+                .attr("r", 12)
                 .attr("fill", "#FFAC08")
                 .attr("fill-opacity", 0.0)
                 .classed("s" + row.num, true);
 
-           /*  svg.append("text")
-                .attr("x", 19)
-                .attr("y",  top + (row.num * rowHeight) + 14)
-            .text(function (d, i) {
-                "1"})
-            .attr('fill', "black")
-            .attr("font-size", "1.0em")
-            .attr("pointer-events", "none")
-            .attr("font-weight", 400);
- */
+            svg.append("text")
+                .attr("x", 18)
+                .attr("y",  top + (row.num * rowHeight) + 18)
+                .text("9")
+                .attr('fill', "black")
+                .attr("font-size", "1.0em")
+                .attr("pointer-events", "none")
+                .attr("font-weight", 400)
+                .classed("sweek" + row.num, true);
+
                 
             const g = svg.append("g")
                .style("fill-opacity", 0.0)
@@ -490,32 +505,28 @@ const columns = [
                .classed("d" + row.num, true);
                
             g.append("circle")
-                .attr("cx", 42)
+                .attr("cx", 44)
                 .attr("cy", top + (row.num * rowHeight) + 11)
-                .attr("r", 7)
+                .attr("r", 9)
                 .attr("fill", "#FFAC08")
 
             g.append("circle")
-                .attr("cx", 51)
+                .attr("cx", 54)
                 .attr("cy", top + (row.num * rowHeight) + 18)
-                .attr("r", 7)
+                .attr("r", 9)
                 .attr("fill", "#FFAC08")
+
+            g.append("text")
+                .attr("x", 45)
+                .attr("y",  top + (row.num * rowHeight) + 18)
+                .text("1")
+                .attr('fill', "black")
+                .attr("font-size", "1.0em")
+                .attr("pointer-events", "none")
+                .attr("font-weight", 400)
+                .classed("dweek" + row.num, true);;
         });    
-
-        // Make this after the the player rects so that always appears "on top"
-        playerCursor = svg.append("rect")
-            .attr("x", 4)
-            .attr("y", headerPos.top + 4)
-            .attr("width", svgWidth - 4)
-            .attr("height", rowHeight - gap)
-            .attr("fill", "none")
-            .attr("stroke", "black")
-            .attr("stroke-width", 0)
-            .attr("pointer-events", "none")
-            .attr("rx", cornerRadius)
-            .attr("ry", cornerRadius)
     }
-
 
     function movePlayerCursor(hide) {
         if (hide) {
@@ -683,7 +694,7 @@ const columns = [
         for (let i = 0; i < rowCount; i++) 
             playerRows.push(toShow[i]);
         
-        let x = svg.selectAll("text").remove();
+        //let x = svg.selectAll("text").remove();
         columnHeaderText();
 
         let rowNum = 0;
@@ -756,20 +767,9 @@ const columns = [
             rowSelection
                 .transition()
                 .attr("fill", fillColor);
-                
-            // Show/hide solo circles    
-            svg.select(".s" + rowNum)
-                .transition()
-                .style("fill-opacity", (soloQualifications.find(function(d) {
-                    return d.player === row.key;
-                })) ? 1 : 0);
 
-            // Show/hide solo circle groups
-            svg.select(".d" + rowNum)
-                .transition()
-                .style("fill-opacity", (duoQualifications.find(function(d) {
-                    return d.player === row.key;
-                })) ? 1 : 0);
+            showHideCircles(soloQualifications, "s", row.key, rowNum);
+            showHideCircles(duoQualifications, "d", row.key, rowNum);
                 
             rowNum++;    
         });
@@ -777,6 +777,28 @@ const columns = [
         setRowRankColumn();
         showArrows(pageSize, first, last)
         updateCounts();
+    }
+
+
+    // Show/hide circles
+    function showHideCircles(list, code, player, rowNum) {
+        const qual = list.find( d => (d.player === player));
+        const qualWeek = qual ? qual.week : 0; 
+
+        console.log(qualWeek);
+
+        // Show/hide circles    
+        svg.select("." + code + rowNum)
+            .transition()
+            .style("fill-opacity", (qualWeek == 0) ? 0 : 1);
+
+        // Show/hide week number
+        const text = svg.select("." + code + "week" + rowNum)    
+        text
+            .transition()
+            //.attr("x", (qualWeek == "10") ? 40 : 45)
+            .text((qualWeek == 0) ? "": qualWeek);
+
     }
 
     // Hide or show arrows base on where the page is
