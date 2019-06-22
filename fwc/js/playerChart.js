@@ -477,8 +477,7 @@ const columns = [
                     .attr("stroke-width", 0)
                     .attr("pointer-events", "none")
                     .attr("rx", cornerRadius)
-                    .attr("ry", cornerRadius) 
-    
+                    .attr("ry", cornerRadius); 
 
             svg.append("circle")
                 .attr("cx", 21)
@@ -539,8 +538,6 @@ const columns = [
                 .attr("stroke-width", 0)
             return;    
         }
-
-        console.log(selectedRect)
 
         // Bet there is a better way to do this...
         const x = selectedRect._groups[0][0].x.baseVal.value;
@@ -793,8 +790,6 @@ const columns = [
         const qual = list.find( d => (d.player === player));
         const qualWeek = qual ? qual.week : 0; 
 
-        //console.log(qualWeek);
-
         // Show/hide circles    
         svg.select("." + code + rowNum)
             .transition()
@@ -811,6 +806,7 @@ const columns = [
         text
             .transition()
             .attr("x", (qualWeek == "10") ? 40 : 45)
+    }
             
 
     // Hide or show arrows base on where the page is
