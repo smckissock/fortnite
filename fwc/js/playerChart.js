@@ -496,7 +496,8 @@ const columns = [
                 .attr("font-size", "1.0em")
                 .attr("pointer-events", "none")
                 .attr("font-weight", 400)
-                .classed("sweek" + row.num, true);
+                .classed("sweek" + row.num, true)
+                .data("w");
 
                 
             const g = svg.append("g")
@@ -524,7 +525,8 @@ const columns = [
                 .attr("font-size", "1.0em")
                 .attr("pointer-events", "none")
                 .attr("font-weight", 400)
-                .classed("dweek" + row.num, true);;
+                .classed("dweek" + row.num, true)
+                .data("w");
         });    
     }
 
@@ -694,7 +696,13 @@ const columns = [
         for (let i = 0; i < rowCount; i++) 
             playerRows.push(toShow[i]);
         
-        //let x = svg.selectAll("text").remove();
+        // Not awesome!    
+        let x = svg.selectAll("text")
+            .each(function(d) { 
+                if (d != "w")
+                    d3.select(this).remove();
+            });
+        
         columnHeaderText();
 
         let rowNum = 0;
@@ -785,7 +793,7 @@ const columns = [
         const qual = list.find( d => (d.player === player));
         const qualWeek = qual ? qual.week : 0; 
 
-        console.log(qualWeek);
+        //console.log(qualWeek);
 
         // Show/hide circles    
         svg.select("." + code + rowNum)
@@ -796,10 +804,14 @@ const columns = [
         const text = svg.select("." + code + "week" + rowNum)    
         text
             .transition()
-            //.attr("x", (qualWeek == "10") ? 40 : 45)
             .text((qualWeek == 0) ? "": qualWeek);
 
-    }
+        // Ugh - 10 is wider, so center it    
+        if (code === "d")
+        text
+            .transition()
+            .attr("x", (qualWeek == "10") ? 40 : 45)
+            
 
     // Hide or show arrows base on where the page is
     function showArrows(pageSize, first, last) {
