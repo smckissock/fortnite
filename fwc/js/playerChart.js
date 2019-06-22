@@ -472,6 +472,17 @@ const columns = [
                 .attr("fill", "#FFAC08")
                 .attr("fill-opacity", 0.0)
                 .classed("s" + row.num, true);
+
+           /*  svg.append("text")
+                .attr("x", 19)
+                .attr("y",  top + (row.num * rowHeight) + 14)
+            .text(function (d, i) {
+                "1"})
+            .attr('fill', "black")
+            .attr("font-size", "1.0em")
+            .attr("pointer-events", "none")
+            .attr("font-weight", 400);
+ */
                 
             const g = svg.append("g")
                .style("fill-opacity", 0.0)
@@ -749,11 +760,16 @@ const columns = [
             // Show/hide solo circles    
             svg.select(".s" + rowNum)
                 .transition()
-                .style("fill-opacity", (soloQualifications.indexOf(row.key) != -1) ? 1 : 0);
+                .style("fill-opacity", (soloQualifications.find(function(d) {
+                    return d.player === row.key;
+                })) ? 1 : 0);
+
             // Show/hide solo circle groups
             svg.select(".d" + rowNum)
                 .transition()
-                .style("fill-opacity", (duoQualifications.indexOf(row.key) != -1) ? 1 : 0);
+                .style("fill-opacity", (duoQualifications.find(function(d) {
+                    return d.player === row.key;
+                })) ? 1 : 0);
                 
             rowNum++;    
         });
@@ -817,7 +833,6 @@ const columns = [
                 //.attr("stroke-width", (numOrRankRect && filters.week) ? thickBorder : 0)                
         }   
     }
-
 
 
     // DC related stuff

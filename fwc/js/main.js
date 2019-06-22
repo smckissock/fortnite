@@ -99,10 +99,11 @@ d3.csv('fwc/data/data.csv').then(function (data)  {
 function makeQualifications(data) {
     data.forEach(function (placement) {
         if (placement.soloQual != 0) 
-            soloQualifications.push(placement.player);
+            soloQualifications.push({player: placement.player, week: placement.week.replace("Week ", "")});
 
         if (placement.duoQual != 0)
-            duoQualifications.push(placement.player);
+            //duoQualifications.push(placement.player);
+            duoQualifications.push({player: placement.player, week: placement.week.replace("Week ", "")});
     });
 }
 
