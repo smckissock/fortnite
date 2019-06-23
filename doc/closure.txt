@@ -27,7 +27,7 @@ output_format=json
 &js_code=
 
 
-
+    <script script type="text/javascript" src="fwc/js/app.js"></script>
     
     <script type="text/javascript" src="fwc/js/playerChart.js"></script>
     <script type="text/javascript" src="fwc/js/regionChart.js"></script>

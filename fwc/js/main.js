@@ -162,18 +162,18 @@ function disclaimer(svg) {
 function filtersAndCount(svg, screenWidth) {
     svg.append("text")
         .attr("x", screenWidth - 540)
-        .attr("y", 73)
+        .attr("y", 70)
         .text("")
-        .attr("font-size", "1.6rem")
+        .attr("font-size", "1.0rem")
         .attr("fill", "black")
         .attr("pointer-events", "none")
         .attr("id", "filterText1"); 
 
     svg.append("text")
         .attr("x", screenWidth - 540)
-        .attr("y", 73)
+        .attr("y", 70)
         .text("")
-        .attr("font-size", "1.6rem")
+        .attr("font-size", "1.1rem")
         .attr("fill", "black")
         .attr("pointer-events", "none")
         .attr("id", "filterText2"); 

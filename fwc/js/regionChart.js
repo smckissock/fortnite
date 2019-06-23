@@ -32,8 +32,8 @@ function regionChart(id) {
     const div = d3.select(id);
 
     // The selection circle what moves around when the current week changes
-    let cursor;
-    let cursorVisible = false;
+    //let cursor;
+    //let cursorVisible = false;
     
     // Include this, and add a dimension and group
     // Later call these on a click to filter: 
@@ -100,7 +100,7 @@ function regionChart(id) {
     });
 
     // Make this after the region circles so that always appears "on top"
-    cursor = svg.append("circle")
+    /* cursor = svg.append("circle")
             .attr("cx", 50)
             .attr("cy", 80)
             .attr("r", radius)
@@ -141,7 +141,7 @@ function regionChart(id) {
                 .attr("cy", newRegion.y) 
         }
     }
-
+ */
 
     const clickCircle = function(d3Circle) {
         const newFilter = d3Circle.attr("data");
@@ -168,7 +168,7 @@ function regionChart(id) {
 
             _chart.redrawGroup();   
 
-            moveCursor(false);
+            //moveCursor(false);
             return;
         }
 
@@ -190,15 +190,15 @@ function regionChart(id) {
             });
 
             filters.region = newFilter;
-            _chart.filter(filters.region);
+            _chart.filter([[filters.region, "Europe"]]);
             d3Circle
                 .transition()
                 .duration(100)
-                .attr("stroke-width", 0);
+                .attr("stroke-width", strokeWidthThick);
 
             _chart.redrawGroup();   
 
-            moveCursor(false);
+            //moveCursor(false);
             return;
         }   
         
@@ -211,7 +211,7 @@ function regionChart(id) {
             .attr("stroke-width", 0);
         
         _chart.redrawGroup();   
-        moveCursor(true);
+        //moveCursor(true);
     }
 
     return _chart;
