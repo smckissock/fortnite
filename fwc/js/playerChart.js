@@ -506,13 +506,13 @@ const columns = [
                
             g.append("circle")
                 .attr("cx", 44)
-                .attr("cy", top + (row.num * rowHeight) + 11)
+                .attr("cy", top + (row.num * rowHeight) + 10)
                 .attr("r", 9)
                 .attr("fill", "#FFAC08")
 
             g.append("circle")
                 .attr("cx", 54)
-                .attr("cy", top + (row.num * rowHeight) + 18)
+                .attr("cy", top + (row.num * rowHeight) + 19)
                 .attr("r", 9)
                 .attr("fill", "#FFAC08")
 
@@ -760,14 +760,14 @@ const columns = [
 
             // Ugh - override whatever color the person has if a region is selected
             let fillColor = colors[row.color];
-            if (filters.region) {
+/*             if (filters.region) {
                 if (filters.region === "NA East") fillColor = '#56af5a';
                 if (filters.region === "NA West") fillColor = '#ad76c1';
                 if (filters.region === "Europe") fillColor = '#4C51F7';
                 if (filters.region === "Oceania") fillColor = '#e25856'; 
                 if (filters.region === "Brazil") fillColor = '#3E93BC';
                 if (filters.region === "Asia") fillColor = '#987654';                
-            }
+            } */
 
             rowSelection
                 .transition()

@@ -45,7 +45,7 @@ const brown = '#987654';
 
 let filters = {
     week: "",
-    region: "",
+    regions: [],
     search: "",
     player: "",
     sort: "payout",
@@ -226,8 +226,11 @@ function updateCounts() {
     } else {
         let filterParts = [];
         
-        if (filters.region != "")
-            filterParts.push(filters.region);
+        //if (filters.region != "")
+        //    filterParts.push(filters.region);
+
+        if (filters.regions.length != 0)
+            filterParts.push(filters.regions.join(", "));
 
         //if (filters.week != "")
         //    filterParts.push(filters.week);

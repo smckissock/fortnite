@@ -23,7 +23,7 @@ function regionChart(id) {
     
     let regionCircles = [];
     const radius = 45;
-    const strokeWidthThick = 11;
+    const strokeWidthThick = 8;
     const strokeWidthThin = 4; 
     
     const width = 135;
@@ -78,11 +78,11 @@ function regionChart(id) {
             })
             .on('mouseout', function (d) {
                 let dom = d3.select(this);
-                if (dom.attr("data") != filters.region)
+                //if (filters.regions.indexOf(dom.attr("data")) != -1)
                     dom
                         .transition()
                         .duration(100)
-                        .attr("stroke-width", 0); 
+                        .attr("stroke-width", (filters.regions.indexOf(dom.attr("data")) == -1) ? 0 : strokeWidthThick); 
             })
             .on('click', function (d) {
                 clickCircle(d3.select(this));
@@ -148,7 +148,7 @@ function regionChart(id) {
         
         // 5 things need to happen:
 
-        // 1) Update filters.region
+        // 1) Update filters.regions[]
         // 2) Set/unset crossfilter filter
         // 3) Draw correct outlines
         // 4) DC Redraw
@@ -158,9 +158,10 @@ function regionChart(id) {
         clearPlayer(null);
 
         // 1 None were selected, this is the first selection
-        if (filters.region === "") {
-            filters.region = newFilter;
-            _chart.filter(filters.region);
+        //if (filters.region === "") {
+        if (filters.regions.length === 0) {    
+            filters.regions.push( newFilter);
+            _chart.filter(filters.regions[0]);
             d3Circle
                 .transition()
                 .duration(100)
@@ -173,7 +174,9 @@ function regionChart(id) {
         }
 
         // 2 One is selected, so unselect it and select this
-        if (filters.region != newFilter) {
+        // One is selected other than what was clicked, so add it
+        //if (filters.region != newFilter) {
+        if (filters.regions.indexOf(newFilter) == -1) {
             const oldFilter = filters.region;
 
             // Uncircle old one
@@ -185,12 +188,12 @@ function regionChart(id) {
                     dom
                         .transition()
                         .duration(100)
-                        .attr("stroke-width", 0)
+                        .attr("stroke-width", strokeWidthThick)
                 }
             });
 
-            filters.region = newFilter;
-            _chart.filter([[filters.region, "Europe"]]);
+            filters.regions.push(newFilter);
+            _chart.filter([[newFilter]]);
             d3Circle
                 .transition()
                 .duration(100)
@@ -202,9 +205,9 @@ function regionChart(id) {
             return;
         }   
         
-        // 3 This was selected, so unselect it - all will be selected
-        filters.region = "";
-        _chart.filter(null);
+        // 3 This was already selected, so toggle it off 
+        filters.regions = filters.regions.filter(d => d !== newFilter)
+        _chart.filter([[newFilter]]);
         d3Circle
             .transition()
             .duration(100)
