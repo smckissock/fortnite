@@ -40,7 +40,6 @@ body {
     text-align: right;
 }
 
-
 .wrap {
     word-wrap: break-word;
     border: 0px;
@@ -80,6 +79,12 @@ body {
     grid-area: search;
     font-weight: 400;
     font-size: 1.2em;
+}
+
+.download-arrow {
+    stroke: black;  
+    stroke-width: 5;
+    pointer-events: none;
 }
 
 .table {

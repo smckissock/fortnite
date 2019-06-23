@@ -72,6 +72,7 @@ d3.json('fwc/data/data.json').then(function (data)  {
 
     facts = crossfilter(data);
     draw(facts);
+    downloadButton(titleSvg, screenWidth);  // 730
     helpButton(titleSvg, screenWidth);  // 730
     filtersAndCount(titleSvg, screenWidth);
 
@@ -150,9 +151,9 @@ function searchLabel(svg) {
 
 function disclaimer(svg) {
     svg.append("text")
-        .attr("x", 952)
-        .attr("y", 30)
-        .text("Includes top 100 in each region for each week")
+        .attr("x", 956)
+        .attr("y", 34)
+        .text("Top 100 in each region for each week")
         .attr("font-size", ".8rem")
         .attr("fill", "#606060")
         .style("font-family", "Helvetica, Arial, sans-serif")
@@ -185,7 +186,7 @@ function helpButton(svg, screenWidth) {
         .attr("cx", screenWidth - 30)
         .attr("cy", 46)
         .attr("r", 22)
-        .attr("fill", "green")
+        .attr("fill", "lightblue")
         .attr("stroke", "black")
         .attr("stroke-width", 0)
         .on('mouseover', function (d) {
@@ -211,6 +212,56 @@ function helpButton(svg, screenWidth) {
         .attr("font-size", ".7em")
         .attr("fill", "black")
         .attr("pointer-events", "none");     
+}
+
+function downloadButton(svg, screenWidth) {
+    const helpButtonWidth = 82;
+    svg.append("circle")
+        .attr("cx", screenWidth - helpButtonWidth)
+        .attr("cy", 46)
+        .attr("r", 22)
+        .attr("fill", "lightblue")
+        .attr("stroke", "black")
+        .attr("stroke-width", 0)
+        .on('mouseover', function (d) {
+            d3.select(this)
+                .transition()
+                .duration(50)
+                .attr("stroke-width", 4)
+        })
+        .on('mouseout', function (d) {
+            d3.select(this)
+                .transition()
+                .duration(50)
+                .attr("stroke-width", 0); 
+        })
+        .on('click', function (d) {
+            window.open('help.html', '_blank');    
+        });
+
+        // Arrow: center line 
+        var line = svg.append("line")
+             .attr("x1",screenWidth - helpButtonWidth + 0)  
+             .attr("y1", 35)  
+             .attr("x2",screenWidth - helpButtonWidth + 0)  
+             .attr("y2", 57)  
+             .classed("download-arrow", true);
+
+        // Arrow: left line      
+        var line = svg.append("line")
+             .attr("x1",screenWidth - helpButtonWidth - 10)  
+             .attr("y1", 48)  
+             .attr("x2",screenWidth - helpButtonWidth + 2)  
+             .attr("y2", 58)  
+             .classed("download-arrow", true);
+
+        // Arrow: right line      
+        var line = svg.append("line")
+             .attr("x1",screenWidth - helpButtonWidth + 10)  
+             .attr("y1", 48)  
+             .attr("x2",screenWidth - helpButtonWidth - 2)  
+             .attr("y2", 58)  
+             .classed("download-arrow", true);
 }
 
 
