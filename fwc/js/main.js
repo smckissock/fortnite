@@ -30,6 +30,8 @@ let titleSvg;
 
 let filterTextDisplayed;
 
+let playerData;
+
 
 
 const green ='#319236';
@@ -125,8 +127,6 @@ function title(width) {
     
     return svg;
 }
-
-
 
 function posickLabel(svg) {
     svg.append("text")
@@ -236,11 +236,12 @@ function downloadButton(svg, screenWidth) {
                 .attr("stroke-width", 0); 
         })
         .on('click', function (d) {
-            window.open('help.html', '_blank');    
+            downloadCsv();
+            //window.open('help.html', '_blank');    
         });
 
         // Arrow: center line 
-        var line = svg.append("line")
+        svg.append("line")
              .attr("x1",screenWidth - helpButtonWidth + 0)  
              .attr("y1", 35)  
              .attr("x2",screenWidth - helpButtonWidth + 0)  
@@ -248,7 +249,7 @@ function downloadButton(svg, screenWidth) {
              .classed("download-arrow", true);
 
         // Arrow: left line      
-        var line = svg.append("line")
+        svg.append("line")
              .attr("x1",screenWidth - helpButtonWidth - 10)  
              .attr("y1", 48)  
              .attr("x2",screenWidth - helpButtonWidth + 2)  
@@ -256,7 +257,7 @@ function downloadButton(svg, screenWidth) {
              .classed("download-arrow", true);
 
         // Arrow: right line      
-        var line = svg.append("line")
+        svg.append("line")
              .attr("x1",screenWidth - helpButtonWidth + 10)  
              .attr("y1", 48)  
              .attr("x2",screenWidth - helpButtonWidth - 2)  
@@ -271,20 +272,15 @@ function updateCounts() {
 
     let filterText = "";
     
-    // if player is selected, just show player, otherwise show all the filters
+    // If player is selected, just show player, otherwise show all the filters
     if (filters.player != "") {
         filterText = filters.player;
     } else {
         let filterParts = [];
-        
-        //if (filters.region != "")
-        //    filterParts.push(filters.region);
 
         if (filters.regions.length != 0)
             filterParts.push(filters.regions.join(", "));
 
-        //if (filters.week != "")
-        //    filterParts.push(filters.week);
         if (filters.soloOrDuo != "")
             filterParts.push(filters.soloOrDuo);
         else
@@ -298,15 +294,15 @@ function updateCounts() {
         filterParts.push(num(filters.playerCount) + " players")
         filterText = filterParts.join(" / ");
 
-        let sort = filters.sort.charAt(0).toUpperCase() + filters.sort.slice(1);
+/*         let sort = filters.sort.charAt(0).toUpperCase() + filters.sort.slice(1);
         switch(filters.sort) {
             case "earnedQualifications": sort = "Earned Quals"; break; 
             case "elims": sort = "Elim Points"; break;
             case "elimPercentage": sort = "Elim %"; break;
             case "placementPoints": sort = "Placement Points"; break;
             case "placementPercentage": sort = "Placement %"; break;
-        }
-        filterText += " by " + sort; 
+        } */
+        filterText += " by " + niceSortName(); 
     }
 
     // Toggle the filter to display, then fade it in and fade the old one out
@@ -321,6 +317,20 @@ function updateCounts() {
         .duration(400)
         .attr("fill-opacity", 0);
 }
+
+function niceSortName () {
+    let sort = filters.sort.charAt(0).toUpperCase() + filters.sort.slice(1);
+    switch(filters.sort) {
+        case "earnedQualifications": sort = "Earned Quals"; break; 
+        case "elims": sort = "Elim Points"; break;
+        case "elimPercentage": sort = "Elim %"; break;
+        case "placementPoints": sort = "Placement Points"; break;
+        case "placementPercentage": sort = "Placement %"; break;
+    }
+    return sort;
+}
+
+
 
 function draw(facts) {
     playerDim = facts.dimension(dc.pluck("player"));
@@ -422,3 +432,93 @@ function makePlayerStatsGroup() {
         }
     );
 }
+
+
+
+function makeCsv() {
+    const data = playerData;
+
+    const columnDelimiter = ',';
+    const lineDelimiter = '\n';
+    
+    const columns = [
+        {name: "Player", field: "key"},
+        
+        {name: "Payout", field: "payout"},
+        {name: "Points", field: "points"},
+        {name: "Rank", field: "rank"}, 
+        {name: "Wins", field: "Wins"},
+        {name: "Earned Quals", field: "earnedQualifications"},
+        {name: "Elimination Points", field: "elims"},
+        {name: "Elim %", field: "elimPercentage"},
+        {name: "Placement Points", field: "placementPoints"},
+        {name: "Placement %", field: "placementPercentage"},
+        {name: "Solo Qualification Week", field: "soloQual"},
+        {name: "Duo Qualification Week", field: "duoQual"}, 
+    ];
+
+    const colHeaders = columns.map(x => x.name);
+    const headerRow = colHeaders.join(columnDelimiter);
+    
+    let rows = [];
+    rows.push(headerRow);
+
+    data.forEach(function(row) {
+        let line = [];
+        
+        // Add player name
+        line.push(row.key);
+
+        // Add regular fields
+/*         columns.slice(1).forEach(function(field) {
+            line.push(row.values[0].value[field.field]);    
+        }); */
+        columns.slice(1).forEach(field => line.push(row.values[0].value[field.field]));
+        
+
+        rows.push(line.join(columnDelimiter));
+    });
+
+    return rows.join(lineDelimiter); 
+}
+
+
+function downloadCsv() {
+
+    function fileName() {
+        let parts = [];
+        
+        parts.push("Fortnite World Cup");
+        
+        if (filters.regions.length > 0)
+            parts.push(filters.regions.join(" "));
+    
+        if (filters.soloOrDuo != "")
+            parts.push(filters.soloOrDuo);
+        else
+            if (filters.week != "")
+                parts.push(filters.week);
+
+        if (filters.search != "")
+            parts.push('"' + filters.search + '"');
+
+        parts.push("by " + niceSortName());    
+
+        return parts.join(" ") + ".csv";     
+    }
+
+    let csv = makeCsv();
+     
+    if (!csv.match(/^data:text\/csv/i)) 
+        csv = 'data:text/csv;charset=utf-8,' + csv;
+    
+    const data = encodeURI(csv);
+
+    const link = document.createElement('a');
+    link.setAttribute('href', data);
+    link.setAttribute('download', fileName());
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
+

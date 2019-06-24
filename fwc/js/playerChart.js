@@ -7,6 +7,8 @@ const noFormat = function(d) { return d;}
 const commaFormat = d3.format(",");   
 const pctFormat = d3.format(",.1%")
 
+//let playerData;
+
 const columns = [
     {name: "Players", code: "player", x: 12, format: noFormat}, 
     {name: "Rank", code: "rank", x: 16, format: noFormat},
@@ -74,7 +76,7 @@ const columns = [
     let playerRows = [];
 
     // The data that gets rendered in the table. It gets updated whenever anything changes. But paging does not update it - it just grabs a slice
-    let playerData;
+    //let playerData;
     
     // Important!!
     // baseMixin has mandatory ['dimension', 'group'], but we don't have a group here. 
@@ -488,13 +490,13 @@ const columns = [
                 .classed("s" + row.num, true);
 
             svg.append("text")
-                .attr("x", 18)
-                .attr("y",  top + (row.num * rowHeight) + 18)
+                .attr("x", 17)
+                .attr("y",  top + (row.num * rowHeight) + 20)
                 .text("9")
                 .attr('fill', "black")
-                .attr("font-size", "1.0em")
+                .attr("font-size", "1.2em")
                 .attr("pointer-events", "none")
-                .attr("font-weight", 400)
+                .attr("font-weight", 600)
                 .classed("sweek" + row.num, true)
                 .data("w");
 
@@ -517,13 +519,13 @@ const columns = [
                 .attr("fill", "#FFAC08")
 
             g.append("text")
-                .attr("x", 45)
-                .attr("y",  top + (row.num * rowHeight) + 18)
+                .attr("x", 44)
+                .attr("y",  top + (row.num * rowHeight) + 20)
                 .text("1")
                 .attr('fill', "black")
-                .attr("font-size", "1.0em")
+                .attr("font-size", "1.2em")
                 .attr("pointer-events", "none")
-                .attr("font-weight", 400)
+                .attr("font-weight", 600)
                 .classed("dweek" + row.num, true)
                 .data("w");
         });    
@@ -760,14 +762,14 @@ const columns = [
 
             // Ugh - override whatever color the person has if a region is selected
             let fillColor = colors[row.color];
-/*             if (filters.region) {
+            if (filters.regions.length === 1) {
                 if (filters.region === "NA East") fillColor = '#56af5a';
                 if (filters.region === "NA West") fillColor = '#ad76c1';
                 if (filters.region === "Europe") fillColor = '#4C51F7';
                 if (filters.region === "Oceania") fillColor = '#e25856'; 
                 if (filters.region === "Brazil") fillColor = '#3E93BC';
                 if (filters.region === "Asia") fillColor = '#987654';                
-            } */
+            }
 
             rowSelection
                 .transition()
