@@ -294,14 +294,6 @@ function updateCounts() {
         filterParts.push(num(filters.playerCount) + " players")
         filterText = filterParts.join(" / ");
 
-/*         let sort = filters.sort.charAt(0).toUpperCase() + filters.sort.slice(1);
-        switch(filters.sort) {
-            case "earnedQualifications": sort = "Earned Quals"; break; 
-            case "elims": sort = "Elim Points"; break;
-            case "elimPercentage": sort = "Elim %"; break;
-            case "placementPoints": sort = "Placement Points"; break;
-            case "placementPercentage": sort = "Placement %"; break;
-        } */
         filterText += " by " + niceSortName(); 
     }
 
@@ -470,11 +462,7 @@ function makeCsv() {
         line.push(row.key);
 
         // Add regular fields
-/*         columns.slice(1).forEach(function(field) {
-            line.push(row.values[0].value[field.field]);    
-        }); */
         columns.slice(1).forEach(field => line.push(row.values[0].value[field.field]));
-        
 
         rows.push(line.join(columnDelimiter));
     });

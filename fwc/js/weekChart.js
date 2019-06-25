@@ -120,10 +120,15 @@ function weekChart(id) {
         isSolo ? checkBoxDuos.checked(false) : checkBoxSolos.checked(false) 
         filters.week = "";
 
-        if (checkBox.checked()) {
+        if (checkBox.checked()) 
             filters.soloOrDuo = isSolo ? "Solos" : "Duos";
-            
-            _chart.filter(null);
+        else
+            filters.soloOrDuo = "";
+        
+                        
+        _chart.filter(null);
+
+        if (checkBox.checked()) {
             if (isSolo) {
                 _chart.filter("Week 1");
                 _chart.filter("Week 3");
@@ -136,11 +141,9 @@ function weekChart(id) {
                 _chart.filter("Week 6");
                 _chart.filter("Week 8");
                 _chart.filter("Week 10");
-            }
+            } 
         }
-        else { 
-            filters.soloOrDuo = null;
-        }
+
         _chart.redrawGroup();
 
         updateCounts();
@@ -400,6 +403,7 @@ function weekChart(id) {
 
     function clearSoloAndDuo() {
         filters.soloOrDuo = "";  
+        _chart.filter(null);
         checkBoxSolos.checked(false);
         checkBoxDuos.checked(false);  
 
@@ -443,6 +447,7 @@ function weekChart(id) {
             selectedRect = d3Rect;
             //moveCursor(false);
             updateSquares();
+
             return;
         }
 
@@ -464,6 +469,8 @@ function weekChart(id) {
             });
 
             filters.week = newFilter;
+
+            _chart.filter(null);
             _chart.filter(filters.week);
             d3Rect
                 .transition()
@@ -475,6 +482,7 @@ function weekChart(id) {
             selectedRect = d3Rect;
             //moveCursor(false);
             updateSquares();
+
             return;
         }   
 
