@@ -1,37 +1,41 @@
-'use strict';
+import {playerChart, playerData, PlayerTableWidth} from "./playerChart.js";
+import {weekChart} from "./weekChart.js";
+import {regionChart} from "./regionChart.js";
 
-let playerDim;
+export const cornerRadius = 8;
+
+// Function that weekChart sets and personChart calls!! 
+//export let showPlayerOnWeekChart;
+
+export let playerColors;
+
+export let playerDim;
+//export let playerData;
+
+export let soloQualifications = [];
+export let duoQualifications = [];
+
+export let facts;
+
 let playerStatsGroup;
 
 const LeftSideWidth = 340;
-let PlayerTableWidth = 240 + (9 * 80); // Player + other cols
+//let PlayerTableWidth = 240 + (9 * 80); // Player + other cols
 
-let playerColors;
 
 let theWeekChart; 
 
-let facts;
+
 
 let selectedPlayerNode;
 
-// Function that weekChart sets and personChart calls!! 
-let showPlayerOnWeekChart;
+
 // Function that playerChart sets and regionChart, weekChart and filter calls 
 let clearPlayer;
-
-
-let soloQualifications = [];
-let duoQualifications = [];
-
-const cornerRadius = 8;
-
 
 let titleSvg;
 
 let filterTextDisplayed;
-
-let playerData;
-
 
 
 const green ='#319236';
@@ -45,7 +49,7 @@ const grey = '#B3B3B3';
 const brown = '#987654';
 
 
-let filters = {
+export let filters = {
     week: "",
     regions: [],
     search: "",
@@ -59,7 +63,11 @@ let filters = {
 
 d3.json('fwc/data/data.json').then(function (data)  {
     const leftMargin = 20
-    const screenWidth = LeftSideWidth + PlayerTableWidth - leftMargin;
+    
+    // From playerChart!!!
+    const playerTableWidth = 964;
+    
+    const screenWidth = LeftSideWidth + playerTableWidth - leftMargin;
     titleSvg = title(screenWidth);
     searchLabel(titleSvg);
     posickLabel(titleSvg)
@@ -96,8 +104,8 @@ d3.json('fwc/data/data.json').then(function (data)  {
 });
 
 
-d3.csv('fwc/data/data.csv').then(function (data)  {
-});
+//d3.csv('fwc/data/data.csv').then(function (data)  {
+//});
 
 
 function makeQualifications(data) {
@@ -267,7 +275,8 @@ function downloadButton(svg, screenWidth) {
 
 
 // Makes the string that displayse number of players and filters  
-function updateCounts() {
+export function updateCounts() {
+    
     makePlayerStatsGroup(playerDim);
 
     let filterText = "";

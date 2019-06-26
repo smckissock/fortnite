@@ -1,7 +1,8 @@
-"use strict"
+import {cornerRadius, filters} from "./main.js";
+import {clearPlayer} from "./playerChart.js";
 
 
-function regionChart(id) {
+export function regionChart(id) {
 
     const green ='#56af5a';
     const purple = '#ad76c1';

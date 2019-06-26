@@ -1,7 +1,12 @@
-"use strict"
+import {cornerRadius, filters, facts, updateCounts} from "./main.js";
+import {clearPlayer} from "./playerChart.js";
 
 
-function weekChart(id) {
+export let showPlayerOnWeekChart;
+
+
+export function weekChart(id) {
+
 
     const weeks = [
         {num: 1, name: "Week 1", type:"Solo", done: true},

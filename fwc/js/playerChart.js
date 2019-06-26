@@ -1,7 +1,14 @@
-"use strict"
+import {colors} from "./shared.js";
+import {cornerRadius, filters, playerDim, playerColors, soloQualifications, duoQualifications, updateCounts} from "./main.js";
+import {showPlayerOnWeekChart} from "./weekChart.js";
 
 
-function playerChart(id) {
+export let clearPlayer
+export let PlayerTableWidth;
+
+export let playerData;
+
+export function playerChart(id) {
 
 const noFormat = function(d) { return d;} 
 const commaFormat = d3.format(",");   
@@ -37,12 +44,12 @@ const columns = [
 
     // Also almost the same code in regionChart
     const regions = [
-        {color: green, filter: "NA East"},
-        {color: purple, filter: "NA West"},
-        {color: blue, filter: "Europe"},
-        {color: red, filter: "Oceania"},
-        {color: teal, filter: "Brazil"},
-        {color: brown, filter: "Asia"}
+        {color: colors.green, filter: "NA East"},
+        {color: colors.purple, filter: "NA West"},
+        {color: colors.blue, filter: "Europe"},
+        {color: colors.red, filter: "Oceania"},
+        {color: colors.teal, filter: "Brazil"},
+        {color: colors.brown, filter: "Asia"}
     ];
     
     
@@ -878,6 +885,8 @@ const columns = [
     };
 
     clearPlayer = setPlayer; 
+
+    //export let clearPlayer = setPlayer;
 
     return _chart;
 }
