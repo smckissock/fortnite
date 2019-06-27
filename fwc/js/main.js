@@ -5,40 +5,15 @@ import {weekChart} from "./weekChart.js";
 import {regionChart} from "./regionChart.js";
 
 export const cornerRadius = 8;
-
-// Function that weekChart sets and personChart calls!! 
-//export let showPlayerOnWeekChart;
-
 export let playerColors;
-
 export let playerDim;
-//export let playerData;
 
 export let soloQualifications = [];
 export let duoQualifications = [];
+export let soloEarnedQualifications = [];
+export let duoEarnedQualifications = [];
 
 export let facts;
-
-let playerStatsGroup;
-
-const LeftSideWidth = 340;
-//let PlayerTableWidth = 240 + (9 * 80); // Player + other cols
-
-
-let theWeekChart; 
-
-
-
-let selectedPlayerNode;
-
-
-// Function that playerChart sets and regionChart, weekChart and filter calls 
-let clearPlayer;
-
-let titleSvg;
-
-let filterTextDisplayed;
-
 
 export let filters = {
     week: "",
@@ -50,6 +25,16 @@ export let filters = {
     page: 0,
     playerCount: 0
 }
+
+
+let playerStatsGroup;
+
+const LeftSideWidth = 340;
+//let PlayerTableWidth = 240 + (9 * 80); // Player + other cols
+
+let titleSvg;
+let filterTextDisplayed;
+
 
 
 d3.json('fwc/data/data.json').then(function (data)  {
@@ -101,12 +86,21 @@ d3.json('fwc/data/data.json').then(function (data)  {
 
 function makeQualifications(data) {
     data.forEach(function (placement) {
-        if (placement.soloQual != 0) 
-            soloQualifications.push({player: placement.player, week: placement.week.replace("Week ", "")});
 
-        if (placement.duoQual != 0)
-            //duoQualifications.push(placement.player);
+        if (placement.soloQual != 0) {
+            soloQualifications.push({player: placement.player, week: placement.week.replace("Week ", "")});
+            return;
+        }
+        if (placement.duoQual != 0) {
             duoQualifications.push({player: placement.player, week: placement.week.replace("Week ", "")});
+            return;
+        }
+
+        if (placement.earnedQualifications)
+            if (placement.soloOrDuo === "Solo")
+                soloEarnedQualifications.push({player: placement.player, week: placement.week.replace("Week ", "")}) 
+            else       
+                duoEarnedQualifications.push({player: placement.player, week: placement.week.replace("Week ", "")}) 
     });
 }
 

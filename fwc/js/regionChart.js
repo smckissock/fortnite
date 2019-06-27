@@ -1,20 +1,11 @@
 import {colors} from "./shared.js";
 
-import {cornerRadius, filters} from "./main.js";
+import {filters} from "./main.js";
 import {clearPlayer} from "./playerChart.js";
 
 
 export function regionChart(id) {
 
-/*     const green ='#56af5a';
-    const purple = '#ad76c1';
-    const blue = '#4C51F7';
-    const red = '#e25856';
-    const teal = '#3E93BC';
-    const lime = '#3CFF3E';
-    const grey = '#B3B3B3';
-    const brown = '#987654'; */
-   
     const regions = [
         {x:53, y:80, color: colors.green, name: "NA EAST", filter: "NA East", textOffset:33},
         {x:153, y:80, color: colors.purple, name: "NA WEST", filter: "NA West", textOffset:35},

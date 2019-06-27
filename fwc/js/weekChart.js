@@ -1,12 +1,9 @@
 import {cornerRadius, filters, facts, updateCounts} from "./main.js";
 import {clearPlayer} from "./playerChart.js";
 
-
 export let showPlayerOnWeekChart;
 
-
 export function weekChart(id) {
-
 
     const weeks = [
         {num: 1, name: "Week 1", type:"Solo", done: true},
@@ -20,6 +17,9 @@ export function weekChart(id) {
         {num: 9, name: "Week 9", type:"Solo", done: true},
         {num: 10, name: "Week 10", type:"Duo", done: true},
     ];
+
+    const fnGold =  "#FFAC08";
+    const fnDarkGrey = "#778899";
 
     let weekSelections = [];
     let stars = [];
@@ -373,8 +373,6 @@ export function weekChart(id) {
                 .attr("cx", 29)
                 .attr("cy", 23)
                 .attr("r", 10)
-                .attr("fill", "gold")
-                .attr("fill", "#FFAC08")
                 .attr("transform", "translate(" + (x-13) + "," + (y-7) + ")")
         // Duos
         } else {
@@ -383,7 +381,6 @@ export function weekChart(id) {
                 .attr("cx", 26)
                 .attr("cy", 20)
                 .attr("r", 7)
-                .attr("fill", "#FFAC08")
                 .attr("transform", "translate(" + (x-13) + "," + (y-7) + ")")
             
             g.append("circle")
@@ -391,7 +388,6 @@ export function weekChart(id) {
                 .attr("cx", 36)
                 .attr("cy", 30)
                 .attr("r", 7)
-                .attr("fill", "#FFAC08")
                 .attr("transform", "translate(" + (x-13) + "," + (y-9) + ")")
         }
         return g;
@@ -531,11 +527,13 @@ export function weekChart(id) {
                 noPlaceOpacity = "0";
 
             // Show the star if they qualified, otherwise hide
-            const qualified = ((matches.length != 0) &&(matches[0].soloQual + matches[0].duoQual) > 0); 
+            const qualified = ((matches.length != 0) && (matches[0].soloQual + matches[0].duoQual) > 0); 
             stars[count]
                 .transition()
-                .style("fill-opacity", qualified ? 1 : 0);
+                .style("fill-opacity", qualified ? 1 : 0); 
+            showQualificationCircles(matches, count);
 
+          
             const pctFormat = d3.format(",.1%")
             let place = "";
             let money = "";
@@ -615,6 +613,26 @@ export function weekChart(id) {
             count++;
         });
     };
+
+    function showQualificationCircles(matches, count) {
+        // Show the star if they qualified, otherwise hide
+        const qualified = ((matches.length != 0) && (matches[0].soloQual + matches[0].duoQual) > 0); 
+        stars[count]
+            .transition()
+            .style("fill", fnGold)
+            .style("fill-opacity", qualified ? 1 : 0);
+        
+        
+        if (qualified)
+            return;    
+
+        if ((matches.length != 0) && matches[0].earnedQualifications > 0)    
+            stars[count] 
+                .style("fill", fnDarkGrey)
+                .transition()
+                .style("fill-opacity", 1); 
+    
+    }
 
     // Assign this function to global variable so the player can call it when a plyer is clicked!! 
     showPlayerOnWeekChart = showSinglePlayer; 

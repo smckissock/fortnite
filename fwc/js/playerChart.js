@@ -3,33 +3,30 @@ import {colors} from "./shared.js";
 import {cornerRadius, filters, playerDim, playerColors, soloQualifications, duoQualifications, updateCounts} from "./main.js";
 import {showPlayerOnWeekChart} from "./weekChart.js";
 
-
 export let clearPlayer
 export let PlayerTableWidth;
-
 export let playerData;
+
 
 export function playerChart(id) {
 
-const noFormat = function(d) { return d;} 
-const commaFormat = d3.format(",");   
-const pctFormat = d3.format(",.1%")
 
-//let playerData;
+    const noFormat = function(d) { return d;} 
+    const commaFormat = d3.format(",");   
+    const pctFormat = d3.format(",.1%")
 
-const columns = [
-    {name: "Players", code: "player", x: 12, format: noFormat}, 
-    {name: "Rank", code: "rank", x: 16, format: noFormat},
-    {name: "Payout", code: "payout", x: 9, format: commaFormat},
-    {name: "Points", code: "points", x: 13, format: noFormat},
-    {name: "Wins", code: "wins", x: 17, format: noFormat},
-    {name: "Earned Quals", code: "earnedQualifications", x: 0, format: noFormat},
-    {name: "Elims", code: "elims", x: 15, format: noFormat},
-    {name: "Elim %", code: "elimPercentage", x: 16, format: pctFormat},
-    {name: "Placement", code: "placementPoints", x: 0, format: noFormat},
-    {name: "Placement %", code: "placementPercentage", x: 0, format: pctFormat}
-];
-
+    const columns = [
+        {name: "Players", code: "player", x: 12, format: noFormat}, 
+        {name: "Rank", code: "rank", x: 16, format: noFormat},
+        {name: "Payout", code: "payout", x: 9, format: commaFormat},
+        {name: "Points", code: "points", x: 13, format: noFormat},
+        {name: "Wins", code: "wins", x: 17, format: noFormat},
+        {name: "Earned Quals", code: "earnedQualifications", x: 0, format: noFormat},
+        {name: "Elims", code: "elims", x: 15, format: noFormat},
+        {name: "Elim %", code: "elimPercentage", x: 16, format: pctFormat},
+        {name: "Placement", code: "placementPoints", x: 0, format: noFormat},
+        {name: "Placement %", code: "placementPercentage", x: 0, format: pctFormat}
+    ];
 
     const regions = [
         {color: colors.green, filter: "NA East"},
