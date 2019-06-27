@@ -1,25 +1,27 @@
+import {colors} from "./shared.js";
+
 import {cornerRadius, filters} from "./main.js";
 import {clearPlayer} from "./playerChart.js";
 
 
 export function regionChart(id) {
 
-    const green ='#56af5a';
+/*     const green ='#56af5a';
     const purple = '#ad76c1';
     const blue = '#4C51F7';
     const red = '#e25856';
     const teal = '#3E93BC';
     const lime = '#3CFF3E';
     const grey = '#B3B3B3';
-    const brown = '#987654';
+    const brown = '#987654'; */
    
     const regions = [
-        {x:53, y:80, color: green, name: "NA EAST", filter: "NA East", textOffset:33},
-        {x:153, y:80, color: purple, name: "NA WEST", filter: "NA West", textOffset:35},
-        {x:253, y:80, color: blue, name: "EUROPE", filter: "Europe", textOffset:30},
-        {x:53, y:180, color: red, name: "OCEANIA", filter: "Oceania", textOffset:34},
-        {x:153, y:180, color: teal, name: "BRAZIL", filter: "Brazil", textOffset:26},
-        {x:253, y:180, color: brown, name: "ASIA", filter: "Asia", textOffset:19}
+        {x:53, y:80, color: colors.green, name: "NA EAST", filter: "NA East", textOffset:33},
+        {x:153, y:80, color: colors.purple, name: "NA WEST", filter: "NA West", textOffset:35},
+        {x:253, y:80, color: colors.blue, name: "EUROPE", filter: "Europe", textOffset:30},
+        {x:53, y:180, color: colors.red, name: "OCEANIA", filter: "Oceania", textOffset:34},
+        {x:153, y:180, color: colors.teal, name: "BRAZIL", filter: "Brazil", textOffset:26},
+        {x:253, y:180, color: colors.brown, name: "ASIA", filter: "Asia", textOffset:19}
     ];
     
     let regionCircles = [];

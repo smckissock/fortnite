@@ -1,3 +1,5 @@
+import {colors} from "./shared.js";
+
 import {playerChart, playerData, PlayerTableWidth} from "./playerChart.js";
 import {weekChart} from "./weekChart.js";
 import {regionChart} from "./regionChart.js";
@@ -36,17 +38,6 @@ let clearPlayer;
 let titleSvg;
 
 let filterTextDisplayed;
-
-
-const green ='#319236';
-const purple = '#9D4DBB';
-const blue = '#4C51F7';
-const red = '#DB4441';
-const teal = '#3E93BC';
-const lime = '#3CFF3E';
-const grey = '#B3B3B3';
-//const brown = '#8B4513';
-const brown = '#987654';
 
 
 export let filters = {
@@ -371,12 +362,12 @@ function makePlayerColors() {
 
 function getColorForRegion(region) {
     switch (region) {
-        case "NA West": return "purple"; break;
-        case "NA East": return "green"; break;
-        case "Europe": return "blue"; break;
-        case "Oceania": return "red"; break;
-        case "Asia": return "brown"; break;
-        case "Brazil": return "teal"; break;
+        case "NA West": return colors.purple; break;
+        case "NA East": return colors.green; break;
+        case "Europe": return colors.blue; break;
+        case "Oceania": return colors.red; break;
+        case "Asia": return colors.brown; break;
+        case "Brazil": return colors.teal; break;
     }  
 }
 

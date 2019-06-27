@@ -1,4 +1,5 @@
 import {colors} from "./shared.js";
+
 import {cornerRadius, filters, playerDim, playerColors, soloQualifications, duoQualifications, updateCounts} from "./main.js";
 import {showPlayerOnWeekChart} from "./weekChart.js";
 
@@ -29,20 +30,7 @@ const columns = [
     {name: "Placement %", code: "placementPercentage", x: 0, format: pctFormat}
 ];
 
-    // Ugh - almost the same code in regionChart 
-    const colors = { 
-        green: '#319236', 
-        purple: '#9D4DBB',
-        blue : '#4C51F7',
-        red : '#DB4441',
-        teal: '#3E93BC',
-        lime: '#3CFF3E',
-        grey: '#B3B3B3',
-        //brown: '#8B4513'
-        brown: '#987654'
-    }
 
-    // Also almost the same code in regionChart
     const regions = [
         {color: colors.green, filter: "NA East"},
         {color: colors.purple, filter: "NA West"},
@@ -677,6 +665,7 @@ const columns = [
         filters.playerCount = playerData.length;
     }
 
+    // 
     function renderPlayerPage() {
 
         function cellText(row, i, rowNum) {
@@ -768,7 +757,8 @@ const columns = [
             const rowSelection = svg.select(".row" + rowNum);
 
             // Ugh - override whatever color the person has if a region is selected
-            let fillColor = colors[row.color];
+            //let fillColor = colors[row.color];
+            let fillColor = row.color;
             if (filters.regions.length === 1) {
                 if (filters.region === "NA East") fillColor = '#56af5a';
                 if (filters.region === "NA West") fillColor = '#ad76c1';
