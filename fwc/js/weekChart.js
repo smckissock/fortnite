@@ -33,7 +33,7 @@ export function weekChart(id) {
     const strokeWidthThin = 4; 
 
     const bigLabel = {x: 25, y: 59, size: "2em" };  
-    const mediumLabel = {x: 32, y: 45, size: "1.6em"}
+    const mediumLabel = {x: 39, y: 43, size: "1.2em"}
     const smallLabel = {x: 40, y: 24, size: "1.2em" }; 
 
     const col1 = 9; 
@@ -268,10 +268,10 @@ export function weekChart(id) {
             .attr("pointer-events", "none");
 
         const noPlaceLabel = svg.append("text")
-            .attr("x", x + 8)
-            .attr("y", y + bigLabel.y + 8)
+            .attr("x", x + 14)
+            .attr("y", y + bigLabel.y + 6)
             .text("Placed outside top 100")
-            .attr("font-size", ".9em")
+            .attr("font-size", ".8em")
             .attr("fill", "black")
             .attr("fill-opacity", 0)    
             .attr("pointer-events", "none");
