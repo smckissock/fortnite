@@ -20,7 +20,6 @@ export function regionChart(id) {
     const strokeWidthThick = 8;
     const strokeWidthThin = 4; 
     
-    const width = 135;
     const height = 80;
     
     const div = d3.select(id);

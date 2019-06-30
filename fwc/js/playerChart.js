@@ -1,6 +1,6 @@
 import {colors} from "./shared.js";
 
-import {cornerRadius, filters, playerDim, playerColors, soloQualifications, duoQualifications, updateCounts} from "./main.js";
+import {cornerRadius, filters, playerDim, playerColors, soloQualifications, duoQualifications, updateCounts, showPlayerProfile} from "./main.js";
 import {showPlayerOnWeekChart} from "./weekChart.js";
 
 export let clearPlayer
@@ -586,6 +586,8 @@ export function playerChart(id) {
             showPlayerOnWeekChart(clickedPlayer);
             selectedRect = clickedNode;
             
+            showPlayerProfile(clickedPlayer);
+
             playerCursorVisible = false;
             movePlayerCursor(false);
             updateCounts();
@@ -601,6 +603,8 @@ export function playerChart(id) {
             clickedNode.attr("stroke-width", thickBorder - 2);
             showPlayerOnWeekChart(clickedPlayer);
             
+            showPlayerProfile(clickedPlayer);
+
             movePlayerCursor(false);
             updateCounts();
             return;

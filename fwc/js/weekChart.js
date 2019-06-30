@@ -503,6 +503,8 @@ export function weekChart(id) {
     }
 
     const showSinglePlayer = function(player) {
+        //showPlayerProfile(player);
+
         const neverShowPlace = player === "";
         const recs = facts.all().filter(x => x.player === player);
 

@@ -3,6 +3,7 @@ import {colors} from "./shared.js";
 import {playerChart, playerData, PlayerTableWidth} from "./playerChart.js";
 import {weekChart} from "./weekChart.js";
 import {regionChart} from "./regionChart.js";
+import {playerProfile} from './playerProfile.js';
 
 export const cornerRadius = 8;
 export let playerColors;
@@ -10,8 +11,6 @@ export let playerDim;
 
 export let soloQualifications = [];
 export let duoQualifications = [];
-export let soloEarnedQualifications = [];
-export let duoEarnedQualifications = [];
 
 export let facts;
 
@@ -25,6 +24,8 @@ export let filters = {
     page: 0,
     playerCount: 0
 }
+
+export let showPlayerProfile;
 
 
 let playerStatsGroup;
@@ -53,14 +54,17 @@ d3.json('fwc/data/data.json').then(function (data)  {
         d.rank = +d.rank;
         d.payout = +d.payout;
         d.points = +d.points;
+        d.wins = +d.wins;
     });
     makeQualifications(data); 
 
     facts = crossfilter(data);
     draw(facts);
-    downloadButton(titleSvg, screenWidth);  // 730
-    helpButton(titleSvg, screenWidth);  // 730
+
+    downloadButton(titleSvg, screenWidth);  
+    helpButton(titleSvg, screenWidth);  
     filtersAndCount(titleSvg, screenWidth);
+    
 
     d3.select("#search-input").on('keyup', function (event) {
         // Regardless of what happens below, selected player needs to be cleared 
@@ -77,16 +81,13 @@ d3.json('fwc/data/data.json').then(function (data)  {
         dc.redrawAll();
     });
     updateCounts();
+    
+    showPlayerProfile = playerProfile();
 });
-
-
-//d3.csv('fwc/data/data.csv').then(function (data)  {
-//});
 
 
 function makeQualifications(data) {
     data.forEach(function (placement) {
-
         if (placement.soloQual != 0) {
             soloQualifications.push({player: placement.player, week: placement.week.replace("Week ", "")});
             return;
@@ -95,12 +96,6 @@ function makeQualifications(data) {
             duoQualifications.push({player: placement.player, week: placement.week.replace("Week ", "")});
             return;
         }
-
-        if (placement.earnedQualifications)
-            if (placement.soloOrDuo === "Solo")
-                soloEarnedQualifications.push({player: placement.player, week: placement.week.replace("Week ", "")}) 
-            else       
-                duoEarnedQualifications.push({player: placement.player, week: placement.week.replace("Week ", "")}) 
     });
 }
 
