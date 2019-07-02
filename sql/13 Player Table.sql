@@ -21,3 +21,9 @@ CREATE TABLE Player (
 	, Age nvarchar(2) NOT NULL DEFAULT ''
 	, Solo bit NOT NULL
 ) ON [PRIMARY] 
+
+
+
+--SELECT * FROM Player
+
+
