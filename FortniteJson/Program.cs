@@ -9,7 +9,13 @@ namespace FortniteJson {
     class Program {
 
         static void Main(string[] args) {
-            Fortnite.MakeJson();
+
+            PlayersFromCsv.Import();
+
+            //Fortnite.MakeJson();
+            
+            
+            // Not needed - make it in browser.
             //Fortnite.MakeCsv();
         }
     }

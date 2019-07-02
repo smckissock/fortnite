@@ -586,7 +586,7 @@ export function playerChart(id) {
             showPlayerOnWeekChart(clickedPlayer);
             selectedRect = clickedNode;
             
-            showPlayerProfile(clickedPlayer);
+            //showPlayerProfile(clickedPlayer);
 
             playerCursorVisible = false;
             movePlayerCursor(false);
@@ -603,7 +603,7 @@ export function playerChart(id) {
             clickedNode.attr("stroke-width", thickBorder - 2);
             showPlayerOnWeekChart(clickedPlayer);
             
-            showPlayerProfile(clickedPlayer);
+            //showPlayerProfile(clickedPlayer);
 
             movePlayerCursor(false);
             updateCounts();

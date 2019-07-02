@@ -80,7 +80,7 @@ export function playerProfile() {
             .attr("font-size", "1.8em")
             .attr("fill", "black")
             .attr("pointer-events", "none"); 
-    }
+        }
 
     let drawPlayer = function(player) {
         div.style("display", "block");
