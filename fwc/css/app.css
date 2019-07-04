@@ -1,5 +1,6 @@
 :root {
     --left-width: 300px;
+    --team-width: 180px;
 }
 
 @font-face {
@@ -16,10 +17,10 @@ body {
 .grid {
     display: grid;
     grid-template-areas: 
-        "left-margin    title              title     search-box  right"
-        "left-margin    region             player    player      player"
-        "left-margin    weeks              player    player      player";
-    grid-template-columns: 10px var(--left-width) 300px 150px 550px;
+        "left-margin    title       title     title     search-box  right"
+        "left-margin    region      team      player    player      player"
+        "left-margin    weeks       team      player    player      player";
+    grid-template-columns: 10px var(--left-width) var(--team-width) 300px 150px 550px;
     grid-template-rows: 80px 14.2rem auto; 
     grid-gap: 15px;
     margin: 0px;
@@ -102,6 +103,10 @@ body {
 
 .region {
     grid-area: region;
+}
+
+.team {
+    grid-area: team;
 }
 
 .player {

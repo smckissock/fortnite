@@ -1,12 +1,6 @@
 USE [Fortnite]
 GO
 
-/****** Object:  View [dbo].[StatView]    Script Date: 7/2/2019 2:18:45 PM ******/
-SET ANSI_NULLS ON
-GO
-
-SET QUOTED_IDENTIFIER ON
-GO
 
 
 CREATE VIEW [dbo].[StatView] 
@@ -61,7 +55,28 @@ LEFT JOIN Elim e ON e.PlacementID = p.ID
 GO
 
 
+EXEC DropView 'StatView2'
+GO
+
+
+SELECT Distinct Region, Player FROM PlayerInfo WHERE Player NOT IN (SELECT DISTINCT Player FROM StatView ) ORDER BY Region, PLayer
+
+
+SELECT Player FROM StatView WHERE Player Like '%Stom%' 
+
+
+SELECT PLAyer FROM StatView
+
+SELECT Team, Len(Team) FROM PlayerInfo ORDER BY Len(TEAM) DESC
+
+SELECT Player, Len(Player) FROM Placement ORDER BY Len(Player) DESC
+
+
+SELECT * FROM StatView
+LEFT JOIN Player ON 
 
 
 
-SELECT Count(*) FROM StatView -- 9000
+SELECT DISTINCT Player FROM Player
+
+

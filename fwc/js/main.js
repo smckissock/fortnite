@@ -3,6 +3,8 @@ import {colors} from "./shared.js";
 import {playerChart, playerData, PlayerTableWidth} from "./playerChart.js";
 import {weekChart} from "./weekChart.js";
 import {regionChart} from "./regionChart.js";
+import {teamChart} from "./teamChart.js";
+
 import {playerProfile} from './playerProfile.js';
 
 export const cornerRadius = 8;
@@ -332,6 +334,8 @@ function draw(facts) {
     regionChart("#chart-region")
         .dimension(dim)
         .group(group);
+
+    teamChart("#chart-team")
         
     let players = playerChart("#chart-player")
         .dimension(playerStatsGroup); 

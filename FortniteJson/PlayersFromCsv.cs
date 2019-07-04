@@ -59,7 +59,7 @@ namespace FortniteJson {
                 vals.Add(fields[col]);
 
             var sqlFields = String.Join("', '", vals);
-            SqlUtil.Command("INSERT INTO PlayerInfo VALUES (1, '" + sqlFields + "', " + soloOrDuo + ")");
+            SqlUtil.Command("INSERT INTO PlayerInfo VALUES ('" + sqlFields + "', " + soloOrDuo + ")");
         }
 
         private static TextFieldParser GetCsvParser(string csvFile) {

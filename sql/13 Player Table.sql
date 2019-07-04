@@ -2,24 +2,42 @@ USE [Fortnite]
 GO
 
 
---CREATE TABLE [dbo].[Tracker](
---	[json] [nvarchar](max) NULL
---) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
---GO
-
-
+EXEC DropTable 'PlayerInfo'
+GO
 
 EXEC DropTable 'Player'
 GO
 
 CREATE TABLE Player (
-	Region nvarchar(100) NOT NULL DEFAULT '' 
+	ID INT IDENTITY(1,1) NOT NULL
+	, CsvName nvarchar(100) NOT NULL DEFAULT ''
+	, EpicName nvarchar(100) NOT NULL DEFAULT ''
+PRIMARY KEY CLUSTERED 
+(
+	[ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] 
+
+INSERT INTO Player VALUES ('TBD', 'TBD')
+
+
+
+EXEC DropTable 'PlayerInfo'
+GO
+
+CREATE TABLE PlayerInfo (
+	ID int IDENTITY(1,1) NOT NULL
+	, Region nvarchar(100) NOT NULL DEFAULT '' 
 	, Team nvarchar(100) NOT NULL DEFAULT '' 
 	, Player nvarchar(100) NOT NULL DEFAULT ''
 	, Nationality nvarchar(100) NOT NULL DEFAULT '' 
 	, KbmOrController varchar(10) NOT NULL DEFAULT 0
 	, Age nvarchar(2) NOT NULL DEFAULT ''
-	, Solo bit NOT NULL
+	, Solo bit NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY] 
 
 
