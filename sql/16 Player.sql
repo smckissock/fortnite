@@ -46,8 +46,9 @@ ALTER TABLE Placement ADD PlayerID INT NOT NULL DEFAULT 1 REFERENCES Player(ID)
 
 --SELECT DISTINCT PLayer FROM Placement WHERE Player IN (SELECT Name FROM Player)
 
+UPDATE Placement SET PlayerID = 1
 
-UPDATE Placement SET PlayerID = (SELECT ID FROM Player WHERE Name = 'Clipnode') WHERE Player = 'Clipnode' 
+ 
 UPDATE Placement SET PlayerID = (SELECT ID FROM Player WHERE Name = 'CoverH') WHERE Player = 'CoverH'
 UPDATE Placement SET PlayerID = (SELECT ID FROM Player WHERE Name = 'Eclipsae') WHERE Player = 'Eclipsae'
 UPDATE Placement SET PlayerID = (SELECT ID FROM Player WHERE Name = 'Erouce') WHERE Player = 'Erouce'
@@ -69,3 +70,6 @@ UPDATE Placement SET PlayerID = (SELECT ID FROM Player WHERE Name = 'Tfue') WHER
 UPDATE Placement SET PlayerID = (SELECT ID FROM Player WHERE Name = 'Touzii') WHERE Player = 'Touzii'
 UPDATE Placement SET PlayerID = (SELECT ID FROM Player WHERE Name = 'wisheydp') WHERE Player = 'wisheydp'
 UPDATE Placement SET PlayerID = (SELECT ID FROM Player WHERE Name = 'XXiF') WHERE Player = 'XXiF'
+
+
+

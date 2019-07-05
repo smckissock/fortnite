@@ -13,6 +13,8 @@ namespace FortniteJson {
         public string soloOrDuo;
         public string player;
         public string region;
+        public string nationality;
+        public string team;
         public int rank;
         public int payout;
         public int points;
@@ -37,7 +39,7 @@ namespace FortniteJson {
 
         private static List<Place> GetPlaces() {
             var places = new List<Place>();
-            var reader = SqlUtil.Query("SELECT * FROM StatView");
+            var reader = SqlUtil.Query("SELECT * FROM StatsWithPlayerInfoView");
             while (reader.Read()) {
                 var place = new Place();
                 place.week = reader["week"].ToString();
@@ -46,6 +48,8 @@ namespace FortniteJson {
                 place.soloOrDuo = reader["soloOrDuo"].ToString();
                 place.player = reader["player"].ToString();
                 place.region = reader["region"].ToString();
+                place.nationality = reader["nationality"].ToString();
+                place.team = reader["team"].ToString();
                 place.rank = (System.Int32)reader["rank"];
                 place.payout = (System.Int32)reader["payout"];
                 place.points = (System.Int32)reader["points"];
@@ -62,13 +66,13 @@ namespace FortniteJson {
         }
 
 
+        // Out of date & not used (browser makes csv)
         public static void MakeCsv() {
 
             var lines = new List<string>();
             var header = "week,soloWeek,duoWeek,soloOrDuo,player,region,rank,payout,points,wins,elims,placementPoints,earnedQualification";
             lines.Add(header);
-
-
+            
             var reader = SqlUtil.Query("SELECT * FROM StatView");
             
             while (reader.Read()) {
