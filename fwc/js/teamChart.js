@@ -3,6 +3,7 @@ import {colors} from "./shared.js";
 import {filters} from "./main.js";
 import {clearPlayer} from "./playerChart.js";
 
+export let clearTeam;
 export let updateTeamBars; 
 
 
@@ -22,7 +23,16 @@ export function teamChart(id, teamDim, teamGroup) {
     const barHeight = 26;
     const teamCount = group.all().length;
 
-    console.log(teamCount);
+    const strokeWidthThin = 2;
+    const strokeWidthThick = 4;
+
+    let groups;
+
+    let selectedTeam = {
+        name: "", 
+        rect: null, 
+        n: -1
+    };
 
     const svg = div.append("svg")
         .attr("width", chartWidth)
@@ -61,7 +71,7 @@ export function teamChart(id, teamDim, teamGroup) {
         let n = 0;
         group.all().forEach(function(d) {
             svg.append("rect")
-                .attr("data", n)
+                //.attr("data", d)
                 .attr("x", leftMargin)
                 .attr("y", titleHeight + (n * barHeight))
                 .attr("width", 0)
@@ -72,26 +82,134 @@ export function teamChart(id, teamDim, teamGroup) {
                 .attr("rx", 5)
                 .attr("ry", 5)
                 .classed("teamRect" + n, true)
+                .on("mouseover", function () {
+                    const node = d3.select(this);
+                    const team = node.attr("data");
+                    
+                    // This is selected, so keep the thick border
+                    if (filters.team == team)
+                        return;   
+                        
+                    node
+                        .transition()
+                        .duration(20)
+                        .style("stroke-width", strokeWidthThin)
+                })
+                .on("mouseout", function () {
+                    const node = d3.select(this);
+                    const team = node.attr("data");
+                    
+                    // This is selected, so keep the thick border
+                    if (filters.team === team)
+                        return;
+                  
+                    node
+                        .transition()
+                        .duration(50)
+                        .style("stroke-width", 0) 
+                })
+                .on('click', function (d) {
+                    clickRect(d3.select(this));
+                });
 
             svg.append("text")
-                .attr("x", 14)
+                .attr("x", 16)
                 .attr("y", titleHeight + (n * barHeight) + 15)
                 .text("")
                 //.text(d.key)
                 .style("font-family", "Helvetica, Arial, sans-serif")
                 .attr("font-size", ".8em")
                 .attr("fill", "black")
+                .attr("pointer-events", "none")
                 .classed("teamText" + n, true); 
             n++;
-            //console.log(d.key + '' + d.value);
         });
     }
 
+
+    function clickRect(rect) {
+        const team = rect.attr("data");
+        console.log(JSON.stringify(team));
+        
+        const oldTeam = selectedTeam;
+        selectedTeam = {
+            name: team,
+            rect: rect
+        } 
+
+        // 5 things need to happen:
+
+        // 1) Update filters.team
+        // 2) Set/unset crossfilter filter
+        // 3) Draw correct outlines
+        // 4) DC Redraw
+        // 5) Update counts
+
+        // Regardless of what happens below, selected player needs to be cleared 
+        clearPlayer(null);
+
+        // 1 None were selected, this is the first selection
+        if (filters.team === "") {
+            filters.team = selectedTeam.name;
+            
+            rect
+                .transition()
+                .duration(100)
+                .style("stroke-width", strokeWidthThick);
+
+            console.log("THICK " + JSON.stringify(team));
+            
+            //_chart.filter(filters.team);
+            //_chart.redrawGroup();   
+
+            //moveCursor(false);
+
+            return;
+        }
+
+        // 2 One is selected, so unselect it and select this
+        if (filters.team != selectedTeam.name) {
+            
+            // Un-border old one
+            //_chart.filter(oldFilter);
+            oldTeam.rect
+                .transition()
+                .duration(100)
+                .style("stroke-width", 0)
+
+            rect
+                .transition()
+                .duration(100)
+                .style("stroke-width", strokeWidthThick);
+
+            filters.team = selectedTeam.name;
+            //_chart.filter(null);
+            //_chart.filter(filters.week);
+
+            //_chart.redrawGroup();   
+
+            //moveCursor(false); 
+            return;
+        }   
+
+        // 3 This was selected, so unselect it - none will be selected
+        rect
+            .transition()
+            .duration(100)
+            .style("stroke-width", 0); 
+
+        filters.team = "";    
+    }
+
+
+    // When data changes, rezise bars and change text 
     function updateBars() {
 
         const commaFormat = d3.format(","); 
 
-        const groups = group.all()
+        // Must clone groups. If you reorder them in place, crossfilter will give the wrong answers 
+        const groupsClone = [...group.all()];
+        groups = groupsClone
             .sort((a, b) => b.value - a.value)
             .filter(team => team.key != "Free Agent"); 
 
@@ -102,15 +220,20 @@ export function teamChart(id, teamDim, teamGroup) {
         let n = 0;
         groups.forEach(function(d) {
             d3.select(".teamRect" + n)
+                .attr("data", d.key)
                 .transition()
                 .duration(400)
                 .attr("width", scale(d.value));
 
             d3.select(".teamText" + n)
-                .text(d.key + ' ' + commaFormat(d.value));    
+                .text(d.key + ' $' + commaFormat(d.value));    
  
             n++;
         });
+    }
+
+    function clearTeam() {
+
     }
 }
 

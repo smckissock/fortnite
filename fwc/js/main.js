@@ -19,6 +19,7 @@ export let facts;
 export let filters = {
     week: "",
     regions: [],
+    team: "",
     search: "",
     player: "",
     sort: "payout",
@@ -63,10 +64,10 @@ d3.json('fwc/data/data.json').then(function (data)  {
 
     facts = crossfilter(data);
     draw(facts);
-
+/* 
     downloadButton(titleSvg, screenWidth);  
     helpButton(titleSvg, screenWidth);  
-    filtersAndCount(titleSvg, screenWidth);
+    filtersAndCount(titleSvg, screenWidth); */
     
 
     d3.select("#search-input").on('keyup', function (event) {
@@ -156,7 +157,7 @@ function filtersAndCount(svg, screenWidth) {
         .attr("x", screenWidth - 530)
         .attr("y", 70)
         .text("")
-        .attr("font-size", "1.0rem")
+        .attr("font-size", "1.1rem")
         .attr("fill", "black")
         .attr("pointer-events", "none")
         .attr("id", "filterText1"); 
@@ -165,7 +166,7 @@ function filtersAndCount(svg, screenWidth) {
         .attr("x", screenWidth - 530)
         .attr("y", 70)
         .text("")
-        .attr("font-size", "1.1rem")
+        .attr("font-size", "1.0rem")
         .attr("fill", "black")
         .attr("pointer-events", "none")
         .attr("id", "filterText2"); 
@@ -351,6 +352,11 @@ function draw(facts) {
         
     let players = playerChart("#chart-player")
         .dimension(playerStatsGroup); 
+
+    const width = 1464;    
+    downloadButton(titleSvg, width);  
+    helpButton(titleSvg, width);  
+    filtersAndCount(titleSvg, width);
 
     dc.registerChart(players, null);
     dc.registerChart(team, null);
