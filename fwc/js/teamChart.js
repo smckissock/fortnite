@@ -1,6 +1,6 @@
 import {colors} from "./shared.js";
 
-import {filters} from "./main.js";
+import {filters, facts, updateCounts} from "./main.js";
 import {clearPlayer} from "./playerChart.js";
 
 export let clearTeam;
@@ -23,8 +23,10 @@ export function teamChart(id, teamDim, teamGroup) {
     const barHeight = 26;
     const teamCount = group.all().length;
 
-    const strokeWidthThin = 2;
-    const strokeWidthThick = 4;
+    const duration = 10;
+
+    const strokeWidthThin = 3;
+    const strokeWidthThick = 5;
 
     let groups;
 
@@ -78,7 +80,7 @@ export function teamChart(id, teamDim, teamGroup) {
                 .attr("height", barHeight - 5)
                 .attr("fill", "lightblue")
                 .attr("stroke", "black")
-                .attr("stroke-width", 0)
+                .style("stroke-width", 0)
                 .attr("rx", 5)
                 .attr("ry", 5)
                 .classed("teamRect" + n, true)
@@ -92,7 +94,7 @@ export function teamChart(id, teamDim, teamGroup) {
                         
                     node
                         .transition()
-                        .duration(20)
+                        .duration(duration)
                         .style("stroke-width", strokeWidthThin)
                 })
                 .on("mouseout", function () {
@@ -105,7 +107,7 @@ export function teamChart(id, teamDim, teamGroup) {
                   
                     node
                         .transition()
-                        .duration(50)
+                        .duration(duration)
                         .style("stroke-width", 0) 
                 })
                 .on('click', function (d) {
@@ -154,13 +156,13 @@ export function teamChart(id, teamDim, teamGroup) {
             
             rect
                 .transition()
-                .duration(100)
+                .duration(duration)
                 .style("stroke-width", strokeWidthThick);
 
-            console.log("THICK " + JSON.stringify(team));
+            _chart.filter(filters.team);
+            _chart.redrawGroup();  
             
-            //_chart.filter(filters.team);
-            //_chart.redrawGroup();   
+            updateCounts();
 
             //moveCursor(false);
 
@@ -171,10 +173,9 @@ export function teamChart(id, teamDim, teamGroup) {
         if (filters.team != selectedTeam.name) {
             
             // Un-border old one
-            //_chart.filter(oldFilter);
             oldTeam.rect
                 .transition()
-                .duration(100)
+                .duration(duration)
                 .style("stroke-width", 0)
 
             rect
@@ -183,10 +184,10 @@ export function teamChart(id, teamDim, teamGroup) {
                 .style("stroke-width", strokeWidthThick);
 
             filters.team = selectedTeam.name;
-            //_chart.filter(null);
-            //_chart.filter(filters.week);
-
-            //_chart.redrawGroup();   
+            
+            _chart.filter(null);
+            _chart.filter(filters.team);
+            _chart.redrawGroup();   
 
             //moveCursor(false); 
             return;
@@ -195,10 +196,17 @@ export function teamChart(id, teamDim, teamGroup) {
         // 3 This was selected, so unselect it - none will be selected
         rect
             .transition()
-            .duration(100)
+            .duration(duration)
             .style("stroke-width", 0); 
 
+        _chart.filter(null);
+        _chart.redrawGroup();
         filters.team = "";    
+
+        selectedTeam = {
+            name: '',
+            rect: null
+        } 
     }
 
 

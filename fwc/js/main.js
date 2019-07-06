@@ -347,7 +347,7 @@ function draw(facts) {
     //    .height(1000)
       
     let team = teamChart("#chart-team", teamDim, teamGroup)
-        //.dimension(teamDim)
+        .dimension(teamDim)
         .group(teamGroup); 
         
     let players = playerChart("#chart-player")

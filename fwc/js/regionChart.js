@@ -151,7 +151,6 @@ export function regionChart(id) {
         clearPlayer(null);
 
         // 1 None were selected, this is the first selection
-        //if (filters.region === "") {
         if (filters.regions.length === 0) {    
             filters.regions.push( newFilter);
             _chart.filter(filters.regions[0]);

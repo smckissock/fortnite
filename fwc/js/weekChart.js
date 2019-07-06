@@ -152,8 +152,7 @@ export function weekChart(id) {
         _chart.redrawGroup();
 
         updateCounts();
-        //console.log("SOLO " + checkBoxSolos.checked() +  " DUO " +  checkBoxDuos.checked());
-        updateSquares() ;
+        updateSquares();
     }
     
     
