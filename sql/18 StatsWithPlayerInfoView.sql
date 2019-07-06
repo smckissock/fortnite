@@ -73,11 +73,14 @@ SELECT
 	pv.Team,
 	pv.Nationality   
 FROM Placement p 
+JOIN PlayerView pv ON pv.ID = p.PlayerID 
 JOIN Region r ON p.RegionCode = r.Code 		
 LEFT JOIN PointCalc c ON c.PlacementID = p.ID
 LEFT JOIN Wins w ON w.PlacementID = p.ID 
 LEFT JOIN Elim e ON e.PlacementID = p.ID 
-LEFT JOIN PlayerView pv ON pv.ID = p.PlayerID  		
+ 		
 GO
 
 
+
+SELECT * FROM Team

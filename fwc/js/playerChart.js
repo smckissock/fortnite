@@ -10,7 +10,6 @@ export let playerData;
 
 export function playerChart(id) {
 
-
     const noFormat = function(d) { return d;} 
     const commaFormat = d3.format(",");   
     const pctFormat = d3.format(",.1%")
@@ -666,7 +665,7 @@ export function playerChart(id) {
         filters.playerCount = playerData.length;
     }
 
-    // 
+     
     function renderPlayerPage() {
 
         function cellText(row, i, rowNum) {
@@ -711,7 +710,7 @@ export function playerChart(id) {
                     });
             }
             
-            // If there are no row (filters returned fewer queries than rows) make the row transarent
+            // If there is no row (filters returned fewer queries than rows) make the row transarent
             if (!row) {
                 svg.select(".row" + rowNum)
                     .attr("fill", "none")
@@ -722,6 +721,10 @@ export function playerChart(id) {
                     .style("fill-opacity", 0);
                 svg.select(".d" + rowNum)
                     .style("fill-opacity", 0);
+
+                svg.select(".s" + "week" + rowNum)    
+                    .transition()
+                    .text(""); 
 
                 // Don't do anything else for lower rows - just get out     
                 rowNum++;

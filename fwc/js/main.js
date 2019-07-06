@@ -1,7 +1,7 @@
 import {colors} from "./shared.js";
 
 import {playerChart, playerData, PlayerTableWidth} from "./playerChart.js";
-import {weekChart} from "./weekChart.js";
+import {weekChart, showPlayerOnWeekChart} from "./weekChart.js";
 import {regionChart} from "./regionChart.js";
 import {teamChart} from "./teamChart.js";
 
@@ -45,8 +45,9 @@ d3.json('fwc/data/data.json').then(function (data)  {
     
     // From playerChart!!!
     const playerTableWidth = 964;
+    const teamWidth = 180;
     
-    const screenWidth = LeftSideWidth + playerTableWidth - leftMargin;
+    const screenWidth = LeftSideWidth + teamWidth + playerTableWidth - leftMargin;
     titleSvg = title(screenWidth);
     searchLabel(titleSvg);
     posickLabel(titleSvg)
@@ -120,7 +121,7 @@ function title(width) {
 
 function posickLabel(svg) {
     svg.append("text")
-        .attr("x", 565)
+        .attr("x", 760)
         .attr("y", 33)
         .text('Support this using creator code "Posick" !')
         .attr("font-size", ".9rem")
@@ -131,7 +132,7 @@ function posickLabel(svg) {
 
 function searchLabel(svg) {
     svg.append("text")
-        .attr("x", 565)
+        .attr("x", 762)
         .attr("y", 72)
         .text("Search")
         .attr("font-size", "1.4rem")
@@ -141,7 +142,7 @@ function searchLabel(svg) {
 
 function disclaimer(svg) {
     svg.append("text")
-        .attr("x", 956)
+        .attr("x", 1136)
         .attr("y", 34)
         .text("Top 100 in each region for each week")
         .attr("font-size", ".8rem")
@@ -152,7 +153,7 @@ function disclaimer(svg) {
 
 function filtersAndCount(svg, screenWidth) {
     svg.append("text")
-        .attr("x", screenWidth - 540)
+        .attr("x", screenWidth - 530)
         .attr("y", 70)
         .text("")
         .attr("font-size", "1.0rem")
@@ -161,7 +162,7 @@ function filtersAndCount(svg, screenWidth) {
         .attr("id", "filterText1"); 
 
     svg.append("text")
-        .attr("x", screenWidth - 540)
+        .attr("x", screenWidth - 530)
         .attr("y", 70)
         .text("")
         .attr("font-size", "1.1rem")
@@ -314,7 +315,6 @@ function niceSortName () {
 }
 
 
-
 function draw(facts) {
     playerDim = facts.dimension(dc.pluck("player"));
     makePlayerColors();
@@ -335,15 +335,27 @@ function draw(facts) {
         .dimension(dim)
         .group(group);
 
-    teamChart("#chart-team")
+
+    var teamDim = facts.dimension(dc.pluck("team"));
+    var teamGroup = teamDim.group().reduceSum(dc.pluck("payout"));
+
+    //dc.rowChart("#chart-team")
+    //    .dimension(teamDim)
+    //    .group(teamGroup)
+    //    .width(200)
+    //    .height(1000)
+      
+    let team = teamChart("#chart-team", teamDim, teamGroup)
+        //.dimension(teamDim)
+        .group(teamGroup); 
         
     let players = playerChart("#chart-player")
         .dimension(playerStatsGroup); 
 
     dc.registerChart(players, null);
+    dc.registerChart(team, null);
 
     dc.renderAll();
-    //updateCounts();
 }
 
 function makePlayerColors() {
@@ -440,6 +452,9 @@ function makeCsv() {
         {name: "Placement %", field: "placementPercentage"},
         {name: "Solo Qualification Week", field: "soloQual"},
         {name: "Duo Qualification Week", field: "duoQual"}, 
+        // These aren't included in data...
+        /* {name: "Team", field: "team"},
+        {name: "Nationality", field: "nationality"}, */
     ];
 
     const colHeaders = columns.map(x => x.name);
