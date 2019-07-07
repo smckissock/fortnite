@@ -6,6 +6,9 @@ https://closure-compiler.appspot.com/
 // @code_url https://fortnitewc.netlify.com/fwc/js/playerChart.js
 // @code_url https://fortnitewc.netlify.com/fwc/js/regionChart.js
 // @code_url https://fortnitewc.netlify.com/fwc/js/weekChart.js
+// @code_url https://fortnitewc.netlify.com/fwc/js/teamChart.js
+// @code_url https://fortnitewc.netlify.com/fwc/js/playerProfile.js
+// @code_url https://fortnitewc.netlify.com/fwc/js/shared.js
 // @code_url https://fortnitewc.netlify.com/fwc/js/main.js
 // ==/ClosureCompiler==
 

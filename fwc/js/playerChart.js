@@ -193,7 +193,7 @@ export function playerChart(id) {
         cursor
             .transition()
             .ease(d3.easeBack)
-            .duration(400)
+            .duration(600)
             .attr("x", x)
             .attr("y", y); 
     }
