@@ -2,6 +2,7 @@ import {colors} from "./shared.js";
 
 import {filters} from "./main.js";
 import {clearPlayer} from "./playerChart.js";
+import {clearTeam} from "./teamChart.js";
 
 
 export function regionChart(id) {
@@ -149,6 +150,7 @@ export function regionChart(id) {
 
         // Regardless of what happens below, selected player needs to be cleared 
         clearPlayer(null);
+        clearTeam();
 
         // 1 None were selected, this is the first selection
         if (filters.regions.length === 0) {    

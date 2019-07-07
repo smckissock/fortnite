@@ -16,7 +16,7 @@ export function teamChart(id, teamDim, teamGroup) {
 
     const _chart = dc.baseMixin({});
     
-    const leftMargin = 10; 
+    const leftMargin = 4; 
     const chartWidth = 180;
 
     const titleHeight = 34;
@@ -57,11 +57,13 @@ export function teamChart(id, teamDim, teamGroup) {
         return _chart._doRender();
     };
 
+    clearTeam = resetTeam;
+
     return _chart;
     
     function drawTitle() {
         svg.append("text")
-            .attr("x", 14)
+            .attr("x", 10)
             .attr("y", 20)
             .text("Teams")
             .attr("font-size", "1.8em")
@@ -115,10 +117,10 @@ export function teamChart(id, teamDim, teamGroup) {
                 });
 
             svg.append("text")
-                .attr("x", 16)
+                .attr("x", 8)
                 .attr("y", titleHeight + (n * barHeight) + 15)
                 .text("")
-                //.text(d.key)
+                .attr("font-weight", 600)
                 .style("font-family", "Helvetica, Arial, sans-serif")
                 .attr("font-size", ".8em")
                 .attr("fill", "black")
@@ -180,7 +182,7 @@ export function teamChart(id, teamDim, teamGroup) {
 
             rect
                 .transition()
-                .duration(100)
+                .duration(duration)
                 .style("stroke-width", strokeWidthThick);
 
             filters.team = selectedTeam.name;
@@ -230,22 +232,42 @@ export function teamChart(id, teamDim, teamGroup) {
             d3.select(".teamRect" + n)
                 .attr("data", d.key)
                 .transition()
-                .duration(400)
-                .attr("width", scale(d.value));
+                .duration(200)
+                .attr("width", d.value == 0 ? 0 : scale(d.value));
 
-            d3.select(".teamText" + n)
-                .text(d.key + ' $' + commaFormat(d.value));    
+            const txt = d3.select(".teamText" + n);    
+            const oldText = txt.text();
+            const newText = d.value == 0 ? "" : d.key + ' $' + commaFormat(d.value); 
+            console.log(oldText);
+
+            txt.text(newText);
+
+            //if (oldText != "" && newText == "")
+            //    txt.Text(newText);
+                
+                
+            //d3.select(".teamText" + n)
+            //    .text(d.key + ' $' + commaFormat(d.value));    
  
             n++;
         });
     }
 
-    function clearTeam() {
-
+    function resetTeam() {
+        if (selectedTeam.rect !== null)
+            selectedTeam.rect
+                .transition()
+                .duration(duration)
+                .style("stroke-width", 0)
+                
+        selectedTeam = {
+            name: "", 
+            rect: null, 
+            n: -1
+        };
+        
+        filters.team = "";
+        _chart.filter(null);
+        //_chart.redrawGroup();
     }
 }
-
-
-
-
-

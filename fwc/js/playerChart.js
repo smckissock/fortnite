@@ -880,7 +880,5 @@ export function playerChart(id) {
 
     clearPlayer = setPlayer; 
 
-    //export let clearPlayer = setPlayer;
-
     return _chart;
 }
