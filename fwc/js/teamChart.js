@@ -222,7 +222,7 @@ export function teamChart(id, teamDim, teamGroup) {
         const groupsClone = [...group.all()];
         groups = groupsClone
             .sort((a, b) => b.value - a.value)
-            .filter(team => team.key != "Free Agent"); 
+            .filter(team => (team.key != "Free Agent") && (team.key != "")); 
 
         const scale = d3.scaleLinear()
             .domain([0, groups[0].value])

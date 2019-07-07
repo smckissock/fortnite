@@ -98,3 +98,4 @@ SELECT Team FROM AirtablePLayer WHERE Team NOT IN (SELECT Name FROM Team)
 
 SELECT * FROM Team WHERe Name Like '%ex%'
 
+SELECT * FROM AirTablePlayerView
