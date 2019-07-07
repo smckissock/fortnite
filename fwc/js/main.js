@@ -271,6 +271,9 @@ export function updateCounts() {
     } else {
         let filterParts = [];
 
+        if (filters.team != "")
+            filterParts.push(filters.team);
+
         if (filters.regions.length != 0)
             filterParts.push(filters.regions.join(", "));
 
@@ -340,12 +343,6 @@ function draw(facts) {
     var teamDim = facts.dimension(dc.pluck("team"));
     var teamGroup = teamDim.group().reduceSum(dc.pluck("payout"));
 
-    //dc.rowChart("#chart-team")
-    //    .dimension(teamDim)
-    //    .group(teamGroup)
-    //    .width(200)
-    //    .height(1000)
-      
     let team = teamChart("#chart-team", teamDim, teamGroup)
         .dimension(teamDim)
         .group(teamGroup); 
