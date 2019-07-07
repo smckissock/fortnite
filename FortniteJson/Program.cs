@@ -10,6 +10,10 @@ namespace FortniteJson {
 
         static void Main(string[] args) {
 
+
+            //PlayersFromAirtableCsv.Import();
+
+
             //PlayersFromCsv.Import();
 
             Fortnite.MakeJson();

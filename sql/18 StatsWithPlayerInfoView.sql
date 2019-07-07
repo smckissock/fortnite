@@ -19,8 +19,6 @@ JOIN Team t ON p.TeamID = t.ID
 JOIN Nationality n ON p.NationalityID = n.ID
 JOIN KbmOrController k ON p.KbmOrControllerID = k.ID
 
-SELECT * FROM PlayerView
-
 
 SELECT * FROM StatsWithPlayerInfoView -- 9000
 
