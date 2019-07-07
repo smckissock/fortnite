@@ -3,7 +3,7 @@ import {colors} from "./shared.js";
 import {playerChart, playerData, PlayerTableWidth} from "./playerChart.js";
 import {weekChart, showPlayerOnWeekChart} from "./weekChart.js";
 import {regionChart} from "./regionChart.js";
-import {teamChart} from "./teamChart.js";
+import {teamChart, clearTeam} from "./teamChart.js";
 
 import {playerProfile} from './playerProfile.js';
 
@@ -74,6 +74,7 @@ d3.json('fwc/data/data.json').then(function (data)  {
         // Regardless of what happens below, selected player needs to be cleared 
         filters.player = "";
         showPlayerOnWeekChart();
+        clearTeam();
 
         const searchTerm = document.getElementById("search-input").value;
         
