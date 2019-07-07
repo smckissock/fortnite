@@ -1,4 +1,4 @@
-// @language_out ecmascript5
+//@language ECMASCRIPT5
 
 import {colors} from "./shared.js";
 
