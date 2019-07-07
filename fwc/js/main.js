@@ -1,3 +1,5 @@
+// @language_out ecmascript5
+
 import {colors} from "./shared.js";
 
 import {playerChart, playerData, PlayerTableWidth} from "./playerChart.js";

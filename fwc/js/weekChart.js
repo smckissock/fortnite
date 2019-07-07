@@ -1,3 +1,5 @@
+// @language_out ecmascript5
+
 import {cornerRadius, filters, facts, updateCounts} from "./main.js";
 import {clearPlayer} from "./playerChart.js";
 

@@ -1,3 +1,5 @@
+// @language_out ecmascript5
+
 import {cornerRadius} from "./main.js";
 
 

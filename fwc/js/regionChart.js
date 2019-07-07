@@ -1,3 +1,5 @@
+// @language_out ecmascript5
+
 import {colors} from "./shared.js";
 
 import {filters} from "./main.js";

@@ -1,4 +1,4 @@
-
+// @language_out ecmascript5
 
 export const colors = { 
     green: '#56af5a', 

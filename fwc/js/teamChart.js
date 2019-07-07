@@ -1,3 +1,5 @@
+// @language_out ecmascript5
+
 import {colors} from "./shared.js";
 
 import {filters, facts, updateCounts} from "./main.js";
@@ -133,7 +135,6 @@ export function teamChart(id, teamDim, teamGroup) {
 
     function clickRect(rect) {
         const team = rect.attr("data");
-        console.log(JSON.stringify(team));
         
         const oldTeam = selectedTeam;
         selectedTeam = {
@@ -238,7 +239,6 @@ export function teamChart(id, teamDim, teamGroup) {
             const txt = d3.select(".teamText" + n);    
             const oldText = txt.text();
             const newText = d.value == 0 ? "" : d.key + ' $' + commaFormat(d.value); 
-            console.log(oldText);
 
             txt.text(newText);
 
