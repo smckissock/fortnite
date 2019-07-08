@@ -51,7 +51,7 @@ export function playerChart(id) {
     const rowCount = 20;
 
     const thinBorder = 3;
-    const thickBorder = 9;
+    const thickBorder = 7;
 
     let numOrRankRect;
     let numOrRankText;
