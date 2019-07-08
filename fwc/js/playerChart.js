@@ -58,6 +58,9 @@ export function playerChart(id) {
 
     let upArrowPolygon;
     let downArrowPolygon;
+
+    // Whether the chart button is clicked, and we see a scatterplot instead of a table
+    let showingChart = false;
     
 
     let svgWidth = PlayerTableWidth; //640;
@@ -170,6 +173,7 @@ export function playerChart(id) {
         
         columnHeaderText();
         pageArrows();
+        //graphButtons();
         drawColumnBorder("payout", thickBorder);
 
         // Make this after the the player rects so that always appears "on top"
@@ -400,6 +404,107 @@ export function playerChart(id) {
         renderPlayerPage();
     }
 
+    function graphButtons() {
+
+        svg.append("rect")
+            .attr("x", playerColWidth - 130)
+            .attr("y", headerPos.top + 4 + 25)
+            .attr("width", 40) 
+            .attr("height", headerPos.height - 30)
+            .attr("fill", "lightblue")
+            .attr("stroke", "black")
+            .attr("stroke-width", 0)
+            .attr("rx", cornerRadius)
+            .attr("ry", cornerRadius)
+            .on('mouseover', function (d) {
+                d3.select(this)
+                    .transition()
+                    .duration(100)
+                    .attr("stroke-width", thinBorder);
+            })
+            .on('mouseout', function (d) {
+                d3.select(this)
+                    .transition()
+                    .duration(100)
+                    .attr("stroke-width", 0);
+            }) 
+            .on('click', function (d) {
+                //drawChart(this);
+                showingChart = !showingChart;
+                drawChart(this);
+            });
+    }
+
+    function drawChart(x) {
+        showTableOrChart();
+
+        // Change x and y based on selected 
+        const data = playerData.map(function (d) {
+            return {
+                player: d.key,
+                color: d.color,
+                xVal: d.values[0].value["elimPercentage"],
+                yVal: d.values[0].value["payout"]
+            }; 
+        });
+
+        console.table(data);
+
+        const top = 200; 
+        const yScale = d3.scaleLinear()
+            .domain([0, d3.max(data, d => d.yVal)])
+            .range([top, 1900]); 
+
+        const xScale = d3.scaleLinear()
+            .domain([0, d3.max(data, d => d.xVal)])
+            .range([100, 700]); 
+
+
+        svg.selectAll("circle").data(data).enter().append("circle")
+            .attr("cx", d => xScale(d.xVal))
+            .attr("cy", d => yScale(d.yVal))
+            .attr("r", 4)
+            .attr("fill", "red")
+            .attr("stroke", "black")
+            .attr("stroke-width", 1)
+            .classed("scatter", true)
+            .each(d => console.log(xScale(d.xVal) + ", " + yScale(d.yVal)));
+    }
+
+    function showTableOrChart() {
+        if (!showingChart) {
+            renderPlayerPage();
+            return;
+        }
+
+        for (let row = 0; row < rowCount; row++) {
+            // Hide rows
+            svg.select(".row" + row)
+                .attr("fill", "none")
+                .attr("stroke-width", 0);
+
+            // Hide qualification circles from hidden rows     
+            svg.select(".s" + row)
+                .style("fill-opacity", 0);
+            svg.select(".d" + row)
+                .style("fill-opacity", 0);
+
+            svg.select(".s" + "week" + row)    
+                .transition()
+                .text("");
+        }
+
+        // Not awesome!    
+        svg.selectAll("text")
+            .each(function(d) { 
+                if (d != "w")
+                    d3.select(this).remove();
+            });
+
+        // Great - put back text we just deleted  
+        columnHeaderText();
+    }
+
     
     // Only works on start up - just selects first, does not unselect others!
     function drawColumnBorder(sort, strokeWidth) {
@@ -492,7 +597,6 @@ export function playerChart(id) {
                 .attr("font-weight", 600)
                 .classed("sweek" + row.num, true)
                 .data("w");
-
                 
             const g = svg.append("g")
                .style("fill-opacity", 0.0)
@@ -668,7 +772,16 @@ export function playerChart(id) {
     }
 
      
+    // Render the slice of playerData generated in updatePlayerData() based on filters.page 
     function renderPlayerPage() {
+
+        if (showingChart) {
+            svg.selectAll(".scatter")
+                .remove();
+            
+            drawChart();
+            return;
+        }
 
         function cellText(row, i, rowNum) {
             if (i == 0) 
@@ -739,7 +852,6 @@ export function playerChart(id) {
                     if (i === 0)
                         return 68; // width for player name 
 
-                    // Need to right justify numbers
                     const chars = (cellText(row, i, rowNum).toString()).length;
                     const charWidth = 10;
 
