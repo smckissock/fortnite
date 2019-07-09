@@ -71,8 +71,11 @@ export function playerChart(id) {
     // The data currently displayed, in order 
     let playerRows = [];
 
-    // The data that gets rendered in the table. It gets updated whenever anything changes. But paging does not update it - it just grabs a slice
-    //let playerData;
+    let xScale = null;
+    let yScale = null;
+    let xAxis = null;
+    let yAxis = null;
+    
     
     // Important!!
     // baseMixin has mandatory ['dimension', 'group'], but we don't have a group here. 
@@ -438,7 +441,7 @@ export function playerChart(id) {
             });
     }
 
-    function getChartData() {
+    /* function getChartData() {
         // Change x and y based on selected 
         return playerData.map(function (d) {
             return {
@@ -448,28 +451,72 @@ export function playerChart(id) {
                 yVal: d.values[0].value["payout"]
             }; 
         });
-    }
+    } */
 
     function updateScatterplot(x) {
         showTableOrChart();
 
+        function getChartData() {
+            // Change x and y based on selected 
+            return playerData.map(function (d) {
+                return {
+                    player: d.key,
+                    color: d.color,
+                    xVal: d.values[0].value["elimPercentage"],
+                    yVal: d.values[0].value["payout"]
+                }; 
+            });
+        }
+
+        function updateScalesAndAxes(data, t) {
+            // First time in, create scales and axes
+            if (xAxis == null) {    
+                xScale = d3.scaleLinear()
+                    .domain([0, d3.max(data, d => d.xVal)])
+                    .range([100, 800]);
+    
+                yScale = d3.scaleLinear()
+                    .domain(d3.extent(data, d => d.yVal))
+                    .range([720, 100]);
+    
+                xAxis = d3.axisBottom(xScale);
+                svg.append("g")
+                    .classed("x axis", true)
+                    .attr("transform", "translate(0, 740)")
+                    .call(xAxis);
+    
+                yAxis = d3.axisLeft(yScale);
+                svg.append("g")
+                    .classed("y axis", true)
+                    .attr("transform", "translate(100, 20)")
+                    .call(yAxis);
+    
+            // Scales and axes already there; update domain on scale and redraw axes        
+            } else {
+                xScale.domain(d3.extent(data, d => d.xVal))
+                yScale.domain(d3.extent(data, d => d.yVal))
+    
+                svg.select(".x")
+                    .transition(t)
+                    .call(xAxis);
+                svg.select(".y")
+                    .transition(t)
+                    .call(yAxis);
+            }
+        }
+        
+        
         const data = getChartData();
 
         const t = d3.transition()
-            .duration(600);
-       
-        const yScale = d3.scaleLinear()
-            .domain(d3.extent(data, d => d.yVal))
-            .range([720, 100]); 
+            .duration(500);
 
-        const xScale = d3.scaleLinear()
-            .domain([0, d3.max(data, d => d.xVal)])
-            .range([100, 800]); 
- 
+        updateScalesAndAxes(data, t);
+       
         var circles = svg.selectAll(".scatter")
             .data(data, function(d) { return d.player; });
-        
-            circles.attr("r", 9);     
+       
+        circles.attr("r", 9);     
 
         // Enter    
         circles
@@ -500,6 +547,43 @@ export function playerChart(id) {
             .attr("stroke-width", 0)
             .remove();    
     }
+
+    /* function updateScalesAndAxes(data, t) {
+        // First time in, create scales and axes
+        if (xAxis == null) {    
+            xScale = d3.scaleLinear()
+                .domain([0, d3.max(data, d => d.xVal)])
+                .range([100, 800]);
+
+            yScale = d3.scaleLinear()
+                .domain(d3.extent(data, d => d.yVal))
+                .range([720, 100]);
+
+            xAxis = d3.axisBottom(xScale);
+            svg.append("g")
+                .classed("x axis", true)
+                .attr("transform", "translate(0, 740)")
+                .call(xAxis);
+
+            yAxis = d3.axisLeft(yScale);
+            svg.append("g")
+                .classed("y axis", true)
+                .attr("transform", "translate(100, 20)")
+                .call(yAxis);
+
+        // Scales and axes already there; update domain on scale and redraw axes        
+        } else {
+            xScale.domain(d3.extent(data, d => d.xVal))
+            yScale.domain(d3.extent(data, d => d.yVal))
+
+            svg.select(".x")
+                .transition(t)
+                .call(xAxis);
+            svg.select(".y")
+                .transition(t)
+                .call(yAxis);
+        }
+    } */
 
     // Show or hides scaterplot or table elements based on showingChart
     function showTableOrChart() {
@@ -533,9 +617,9 @@ export function playerChart(id) {
         // Not awesome!    
         svg.selectAll("text")
             .each(function(d) { 
-                if (d != "w")
-                    d3.select(this).remove();
-            });
+                //if (d != "w")
+                //    d3.select(this).remove();
+            }); 
 
         // Great - put back text we just deleted  
         columnHeaderText();
