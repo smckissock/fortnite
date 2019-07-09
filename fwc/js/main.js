@@ -232,7 +232,6 @@ function downloadButton(svg, screenWidth) {
         })
         .on('click', function (d) {
             downloadCsv();
-            //window.open('help.html', '_blank');    
         });
 
         // Arrow: center line 

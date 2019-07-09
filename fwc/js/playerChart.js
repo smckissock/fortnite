@@ -173,7 +173,7 @@ export function playerChart(id) {
         
         columnHeaderText();
         pageArrows();
-        //graphButtons();
+        graphButtons();
         drawColumnBorder("payout", thickBorder);
 
         // Make this after the the player rects so that always appears "on top"
@@ -435,11 +435,10 @@ export function playerChart(id) {
             });
     }
 
-    function drawChart(x) {
-        showTableOrChart();
 
+    function getChartData() {
         // Change x and y based on selected 
-        const data = playerData.map(function (d) {
+        return playerData.map(function (d) {
             return {
                 player: d.key,
                 color: d.color,
@@ -447,28 +446,47 @@ export function playerChart(id) {
                 yVal: d.values[0].value["payout"]
             }; 
         });
+    }
 
-        console.table(data);
+    function drawChart(x) {
+        showTableOrChart();
+
+        const data = getChartData();
+       
+        //console.table(data);
 
         const top = 200; 
         const yScale = d3.scaleLinear()
-            .domain([0, d3.max(data, d => d.yVal)])
-            .range([top, 1900]); 
+            .domain(d3.extent(data, d => d.yVal))
+            .range([720, 100]); 
 
         const xScale = d3.scaleLinear()
             .domain([0, d3.max(data, d => d.xVal)])
-            .range([100, 700]); 
+            .range([100, 800]); 
 
 
-        svg.selectAll("circle").data(data).enter().append("circle")
+        let num = 0;    
+
+        svg.selectAll("circle")
+            .remove();    
+
+        svg.selectAll("circle")
+            .data(data, d => d.player)
+            .enter()
+            .append("circle")
             .attr("cx", d => xScale(d.xVal))
             .attr("cy", d => yScale(d.yVal))
-            .attr("r", 4)
-            .attr("fill", "red")
+            .attr("r", 9)
+            .attr("fill", d => d.color)
             .attr("stroke", "black")
             .attr("stroke-width", 1)
             .classed("scatter", true)
-            .each(d => console.log(xScale(d.xVal) + ", " + yScale(d.yVal)));
+            .each(function (d) { 
+                num++;
+                console.log(num + " " + xScale(d.xVal) + ", " + yScale(d.yVal) + "   " + d.player + " " + d.yVal)
+            });
+
+        console.log(num + " " + data.length)    
     }
 
     function showTableOrChart() {
