@@ -17,7 +17,7 @@ export function playerChart(id) {
     const pctFormat = d3.format(",.1%")
 
     const columns = [
-        {name: "Players", code: "player", x: 12, format: noFormat}, 
+        {name: "Players", code: "player", x: 82, format: noFormat}, 
         {name: "Rank", code: "rank", x: 16, format: noFormat},
         {name: "Payout", code: "payout", x: 9, format: commaFormat},
         {name: "Points", code: "points", x: 13, format: noFormat},
@@ -173,7 +173,9 @@ export function playerChart(id) {
         
         columnHeaderText();
         pageArrows();
-        graphButtons();
+        
+        scatterplotButton();
+        
         drawColumnBorder("payout", thickBorder);
 
         // Make this after the the player rects so that always appears "on top"
@@ -207,7 +209,7 @@ export function playerChart(id) {
         function  addText(i) {
 
             const text = columns[i].name;
-            const fontSize = (i === 0) ? "1.8em" : "1.3em";
+            const fontSize = (i === 0) ? "2.2em" : "1.3em";
             const x =  (i === 0) ? columns[i].x : playerColWidth + headerPos.gap + (headerPos.width * (i - 1)) + columns[i].x;
 
             const smallFontSize = "1.0em";
@@ -356,7 +358,7 @@ export function playerChart(id) {
         const height = headerPos.height / 2;
 
         upArrowPolygon = svg.append("polygon")
-            .attr("points", (playerColWidth - width - 10) + "," + (height - 2) + " " + (playerColWidth - 10) + "," + (height - 2) + " " + (playerColWidth - (width / 2) - 10) + "," + 4)
+            .attr("points", (playerColWidth - width) + "," + (height - 2) + " " + playerColWidth + "," + (height - 2) + " " + (playerColWidth - (width / 2)) + "," + 4)
             .style("fill", "darkgrey")
             .attr("pointer-events", "bounding-box")
             .attr("stroke", "black")
@@ -374,7 +376,7 @@ export function playerChart(id) {
             });
 
         downArrowPolygon = svg.append("polygon")
-            .attr("points", (playerColWidth - width - 10) + "," + (height + 5) + " " + (playerColWidth - 10)+ "," + (height + 5) + " " + (playerColWidth - (width / 2) - 10) + "," + (height * 2))
+            .attr("points", (playerColWidth - width) + "," + (height + 5) + " " + playerColWidth + "," + (height + 5) + " " + (playerColWidth - (width / 2)) + "," + (height * 2))
             .style("fill", "darkgrey")
             .attr("pointer-events", "bounding-box")
             .attr("stroke", "black")
@@ -404,13 +406,14 @@ export function playerChart(id) {
         renderPlayerPage();
     }
 
-    function graphButtons() {
+
+    function scatterplotButton() {
 
         svg.append("rect")
-            .attr("x", playerColWidth - 130)
-            .attr("y", headerPos.top + 4 + 25)
-            .attr("width", 40) 
-            .attr("height", headerPos.height - 30)
+            .attr("x", playerColWidth - 236)
+            .attr("y", headerPos.top + 17)
+            .attr("width", 60) 
+            .attr("height", headerPos.height - 14)
             .attr("fill", "lightblue")
             .attr("stroke", "black")
             .attr("stroke-width", 0)
@@ -431,10 +434,9 @@ export function playerChart(id) {
             .on('click', function (d) {
                 //drawChart(this);
                 showingChart = !showingChart;
-                drawChart(this);
+                updateScatterplot();
             });
     }
-
 
     function getChartData() {
         // Change x and y based on selected 
@@ -448,14 +450,14 @@ export function playerChart(id) {
         });
     }
 
-    function drawChart(x) {
+    function updateScatterplot(x) {
         showTableOrChart();
 
         const data = getChartData();
-       
-        //console.table(data);
 
-        const top = 200; 
+        const t = d3.transition()
+            .duration(600);
+       
         const yScale = d3.scaleLinear()
             .domain(d3.extent(data, d => d.yVal))
             .range([720, 100]); 
@@ -463,38 +465,54 @@ export function playerChart(id) {
         const xScale = d3.scaleLinear()
             .domain([0, d3.max(data, d => d.xVal)])
             .range([100, 800]); 
+ 
+        var circles = svg.selectAll(".scatter")
+            .data(data, function(d) { return d.player; });
+        
+            circles.attr("r", 9);     
 
-
-        let num = 0;    
-
-        svg.selectAll("circle")
-            .remove();    
-
-        svg.selectAll("circle")
-            .data(data, d => d.player)
+        // Enter    
+        circles
             .enter()
             .append("circle")
             .attr("cx", d => xScale(d.xVal))
             .attr("cy", d => yScale(d.yVal))
-            .attr("r", 9)
             .attr("fill", d => d.color)
             .attr("stroke", "black")
             .attr("stroke-width", 1)
+            .attr("r", 0)
             .classed("scatter", true)
-            .each(function (d) { 
-                num++;
-                console.log(num + " " + xScale(d.xVal) + ", " + yScale(d.yVal) + "   " + d.player + " " + d.yVal)
-            });
+          .transition(t)
+            .attr("r", 9)
 
-        console.log(num + " " + data.length)    
+        // Update    
+        circles
+          .transition(t)
+            .attr("cy", d => yScale(d.yVal))
+            .attr("cx", d => xScale(d.xVal))    
+            .style("fill-opacity", 1)
+
+        // Exit    
+        circles.exit()
+            .attr("class", "exit")
+          .transition(t)
+            .attr("r", 0)
+            .attr("stroke-width", 0)
+            .remove();    
     }
 
+    // Show or hides scaterplot or table elements based on showingChart
     function showTableOrChart() {
         if (!showingChart) {
+            let circles = svg.selectAll(".scatter") 
+            circles
+                .attr("r", 0)
+            
             renderPlayerPage();
             return;
         }
 
+        // Hide table stuff
         for (let row = 0; row < rowCount; row++) {
             // Hide rows
             svg.select(".row" + row)
@@ -794,10 +812,10 @@ export function playerChart(id) {
     function renderPlayerPage() {
 
         if (showingChart) {
-            svg.selectAll(".scatter")
-                .remove();
+            //svg.selectAll(".scatter")
+            //    .remove();
             
-            drawChart();
+            updateScatterplot();
             return;
         }
 
@@ -1010,7 +1028,8 @@ export function playerChart(id) {
         return _chart._doRender();
     };
 
-    clearPlayer = setPlayer; 
+    clearPlayer = setPlayer;
+    //playerChart_InitializeScatterplot = initializeScatterplot; 
 
     return _chart;
 }

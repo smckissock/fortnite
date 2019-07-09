@@ -65,6 +65,7 @@ d3.json('fwc/data/data.json').then(function (data)  {
     makeQualifications(data); 
 
     facts = crossfilter(data);
+    
     draw(facts);
 /* 
     downloadButton(titleSvg, screenWidth);  
@@ -88,7 +89,7 @@ d3.json('fwc/data/data.json').then(function (data)  {
         dc.redrawAll();
     });
     updateCounts();
-    
+        
     showPlayerProfile = playerProfile();
 });
 
