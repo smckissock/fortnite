@@ -38,7 +38,6 @@ export function playerChart(id) {
         {color: colors.brown, filter: "Asia"}
     ];
     
-    
     const headerPos = {left: 150, top: 0, height: 69, width: 80, gap: 5};
 
     const playerColWidth = 240;
@@ -59,8 +58,8 @@ export function playerChart(id) {
     let upArrowPolygon;
     let downArrowPolygon;
 
-    // Whether the chart button is clicked, and we see a scatterplot instead of a table
-    let showingChart = false;
+    // Whether the scatterplot button is clicked, and we see a scatterplot instead of a table
+    let showingScatterplot = false;
     
 
     let svgWidth = PlayerTableWidth; //640;
@@ -81,9 +80,7 @@ export function playerChart(id) {
     // baseMixin has mandatory ['dimension', 'group'], but we don't have a group here. 
     _chart._mandatoryAttributes(['dimension']);
 
-    //var _section = function () { return ''; }; // all in one section
-
-
+    
     const div = d3.select(id);
 
     // The selection rect what moves around when the current sort column changes
@@ -99,7 +96,14 @@ export function playerChart(id) {
 
     const svg = div.append("svg")
         .attr("width", svgWidth + 4)
-        .attr("height", 1000);
+        .attr("height", 1000)
+        //.style("display", "none");
+
+    const scatterplotSvg = div.append("svg")
+        .attr("width", svgWidth + 4)
+        .attr("height", 1000)
+        //.style("display", "none");   
+
 
     drawHeaders(svg);
     drawRows(svg)
@@ -435,26 +439,16 @@ export function playerChart(id) {
                     .attr("stroke-width", 0);
             }) 
             .on('click', function (d) {
-                //drawChart(this);
-                showingChart = !showingChart;
-                updateScatterplot();
+                
+                toggleTableAndScatterplot();
+                //showingChart = !showingChart;
+                //updateScatterplot();
             });
     }
 
-    /* function getChartData() {
-        // Change x and y based on selected 
-        return playerData.map(function (d) {
-            return {
-                player: d.key,
-                color: d.color,
-                xVal: d.values[0].value["elimPercentage"],
-                yVal: d.values[0].value["payout"]
-            }; 
-        });
-    } */
 
-    function updateScatterplot(x) {
-        showTableOrChart();
+    function updateScatterplot() {
+        //showTableOrChart();
 
         function getChartData() {
             // Change x and y based on selected 
@@ -480,13 +474,15 @@ export function playerChart(id) {
                     .range([720, 100]);
     
                 xAxis = d3.axisBottom(xScale);
-                svg.append("g")
+                scatterplotSvg.append("g")
+                //svg.append("g")
                     .classed("x axis", true)
                     .attr("transform", "translate(0, 740)")
                     .call(xAxis);
     
                 yAxis = d3.axisLeft(yScale);
-                svg.append("g")
+                scatterplotSvg.append("g")
+                //svg.append("g")
                     .classed("y axis", true)
                     .attr("transform", "translate(100, 20)")
                     .call(yAxis);
@@ -504,7 +500,6 @@ export function playerChart(id) {
                     .call(yAxis);
             }
         }
-        
         
         const data = getChartData();
 
@@ -548,56 +543,33 @@ export function playerChart(id) {
             .remove();    
     }
 
-    /* function updateScalesAndAxes(data, t) {
-        // First time in, create scales and axes
-        if (xAxis == null) {    
-            xScale = d3.scaleLinear()
-                .domain([0, d3.max(data, d => d.xVal)])
-                .range([100, 800]);
-
-            yScale = d3.scaleLinear()
-                .domain(d3.extent(data, d => d.yVal))
-                .range([720, 100]);
-
-            xAxis = d3.axisBottom(xScale);
-            svg.append("g")
-                .classed("x axis", true)
-                .attr("transform", "translate(0, 740)")
-                .call(xAxis);
-
-            yAxis = d3.axisLeft(yScale);
-            svg.append("g")
-                .classed("y axis", true)
-                .attr("transform", "translate(100, 20)")
-                .call(yAxis);
-
-        // Scales and axes already there; update domain on scale and redraw axes        
-        } else {
-            xScale.domain(d3.extent(data, d => d.xVal))
-            yScale.domain(d3.extent(data, d => d.yVal))
-
-            svg.select(".x")
-                .transition(t)
-                .call(xAxis);
-            svg.select(".y")
-                .transition(t)
-                .call(yAxis);
-        }
-    } */
 
     // Show or hides scaterplot or table elements based on showingChart
-    function showTableOrChart() {
-        if (!showingChart) {
+    function toggleTableAndScatterplot() {
+
+        showingScatterplot = !showingScatterplot;
+
+        if (!showingScatterplot) {
             let circles = svg.selectAll(".scatter") 
             circles
                 .attr("r", 0)
-            
+
+            scatterplotSvg.style("display", "none");
+            svg.style("display", "yes");
+
+
+
             renderPlayerPage();
             return;
         }
 
         // Hide table stuff
         for (let row = 0; row < rowCount; row++) {
+
+            scatterplotSvg.style("display", "yes");
+            svg.style("display", "none");
+
+
             // Hide rows
             svg.select(".row" + row)
                 .attr("fill", "none")
@@ -623,6 +595,8 @@ export function playerChart(id) {
 
         // Great - put back text we just deleted  
         columnHeaderText();
+
+        updateScatterplot();
     }
 
     
@@ -895,11 +869,11 @@ export function playerChart(id) {
     // Render the slice of playerData generated in updatePlayerData() based on filters.page 
     function renderPlayerPage() {
 
-        if (showingChart) {
+        if (showingScatterplot) {
             //svg.selectAll(".scatter")
             //    .remove();
             
-            updateScatterplot();
+            //updateScatterplot();
             return;
         }
 
