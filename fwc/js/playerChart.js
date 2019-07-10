@@ -99,14 +99,7 @@ export function playerChart(id) {
     const svg = div.append("svg")
         .attr("width", svgWidth + 4)
         .attr("height", 1000)
-        //.style("display", "none");
-
-   /*  const scatterplotSvg = div.append("svg")
-        .attr("width", svgWidth + 4)
-        .attr("height", 1000) */
-        //.style("display", "none");   
-
-
+      
     drawHeaders(svg);
     drawRows(svg)
     
@@ -476,14 +469,12 @@ export function playerChart(id) {
                     .range([720, 100]);
     
                 xAxis = d3.axisBottom(xScale);
-                //scatterplotSvg.append("g")
                 svg.append("g")
                     .classed("x axis", true)
                     .attr("transform", "translate(0, 740)")
                     .call(xAxis);
     
                 yAxis = d3.axisLeft(yScale);
-                // scatterplotSvg.append("g")
                 svg.append("g")
                     .classed("y axis", true)
                     .attr("transform", "translate(100, 20)")
@@ -551,28 +542,30 @@ export function playerChart(id) {
 
         showingScatterplot = !showingScatterplot;
 
+        // GOING TO SHOW THE TABLE
         if (!showingScatterplot) {
             let circles = svg.selectAll(".scatter") 
             circles
                 .attr("r", 0)
 
-           // scatterplotSvg.style("display", "none");
-            svg.style("display", "yes");
-
             scatterPlotButton.attr("stroke-width", 1)
+
+            d3.select(".y").attr("stroke-opacity", 0)
+            d3.select(".x").attr("stroke-opacity", 0)
 
             renderPlayerPage();
             return;
         }
 
+        // GOING TO SHOW THE SCATTERPLOT
+
         // Hide table stuff
         for (let row = 0; row < rowCount; row++) {
 
-            scatterPlotButton.attr("stroke-width", 12)
+            scatterPlotButton.attr("stroke-width", 12);
 
-            //scatterplotSvg.style("display", "yes");
-            svg.style("display", "yes");
-
+            d3.select(".y").attr("stroke-opacity", 1)
+            d3.select(".x").attr("stroke-opacity", 1)
 
             // Hide rows
             svg.select(".row" + row)
@@ -592,9 +585,12 @@ export function playerChart(id) {
 
         // Not awesome!    
         svg.selectAll("text")
-            .each(function(d) { 
+            .each(function(d) {
+                //d3.select(this).style("stroke", 0);
+
                 //if (d != "w")
-                //    d3.select(this).remove();
+                if ((d != "w") && (d3.select(this).style("fill") != "currentColor"))
+                    d3.select(this).remove();
             }); 
 
         // Great - put back text we just deleted  
