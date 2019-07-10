@@ -58,7 +58,7 @@ export function playerChart(id) {
     let upArrowPolygon;
     let downArrowPolygon;
 
-    let scatterPlotButton;
+    let scatterplotButton;
 
     // Whether the scatterplot button is clicked, and we see a scatterplot instead of a table
     let showingScatterplot = false;
@@ -99,9 +99,26 @@ export function playerChart(id) {
     const svg = div.append("svg")
         .attr("width", svgWidth + 4)
         .attr("height", 1000)
-      
+
     drawHeaders(svg);
-    drawRows(svg)
+    drawRows(svg);
+
+    const scatterplotBox = svg.append("g");
+    const scatterplotRect = scatterplotBox.append("svg")
+        .attr("width", svgWidth + 4)
+        .attr("height", 800)
+        .attr("transform", "translate(0,200)")
+      .append("rect")
+        .attr("x", 3)
+        .attr("y", 84)
+        .attr("width", svgWidth - 6)  
+        .attr("height", 707)
+        .attr("fill", "#F0F8FF")
+        .attr("stroke", "black")
+        .attr("stroke-width", 8)
+        .attr("rx", cornerRadius)
+        .attr("ry", cornerRadius)
+        .attr("opacity", "0")
     
     function drawHeaders() {
             
@@ -176,7 +193,7 @@ export function playerChart(id) {
         columnHeaderText();
         pageArrows();
         
-        scatterplotButton();
+        makeScatterplotButton();
         
         drawColumnBorder("payout", thickBorder);
 
@@ -409,9 +426,9 @@ export function playerChart(id) {
     }
 
 
-    function scatterplotButton() {
+    function makeScatterplotButton() {
 
-        scatterPlotButton = svg.append("rect")
+        scatterplotButton = svg.append("rect")
             .attr("x", playerColWidth - 236)
             .attr("y", headerPos.top + 17)
             .attr("width", 60) 
@@ -548,7 +565,12 @@ export function playerChart(id) {
             circles
                 .attr("r", 0)
 
-            scatterPlotButton.attr("stroke-width", 1)
+            scatterplotRect
+                .transition()
+                .duration(250)
+                .style("opacity", 0);
+
+            scatterplotButton.attr("stroke-width", 1)
 
             d3.select(".y").attr("stroke-opacity", 0)
             d3.select(".x").attr("stroke-opacity", 0)
@@ -562,7 +584,12 @@ export function playerChart(id) {
         // Hide table stuff
         for (let row = 0; row < rowCount; row++) {
 
-            scatterPlotButton.attr("stroke-width", 12);
+            scatterplotButton.attr("stroke-width", 12);
+            
+            scatterplotRect
+                .transition()
+                .duration(450)
+                .style("opacity", 1);
 
             d3.select(".y").attr("stroke-opacity", 1)
             d3.select(".x").attr("stroke-opacity", 1)

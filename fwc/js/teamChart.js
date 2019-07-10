@@ -167,8 +167,6 @@ export function teamChart(id, teamDim, teamGroup) {
             
             updateCounts();
 
-            //moveCursor(false);
-
             return;
         }
 
@@ -192,7 +190,6 @@ export function teamChart(id, teamDim, teamGroup) {
             _chart.filter(filters.team);
             _chart.redrawGroup();   
 
-            //moveCursor(false); 
             return;
         }   
 
@@ -205,6 +202,8 @@ export function teamChart(id, teamDim, teamGroup) {
         _chart.filter(null);
         _chart.redrawGroup();
         filters.team = "";    
+
+        updateCounts();
 
         selectedTeam = {
             name: '',
