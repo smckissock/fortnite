@@ -9,7 +9,7 @@ namespace FortniteJson {
 
     class PlayersUpdatedFromAirtable {
         static string path = "c:\\fortnite\\airtable\\";
-        static string date = "2019 07 10 2";
+        static string date = "2019 07 10 3";
 
         static List<string> teams;
 

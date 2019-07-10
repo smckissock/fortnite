@@ -12,6 +12,8 @@ export let playerData;
 
 export function playerChart(id) {
 
+    const showScatterplotButton = true;
+
     const noFormat = function(d) { return d;} 
     const commaFormat = d3.format(",");   
     const pctFormat = d3.format(",.1%")
@@ -194,7 +196,8 @@ export function playerChart(id) {
         columnHeaderText();
         pageArrows();
         
-        //makeScatterplotButton();
+        if (showScatterplotButton)
+            makeScatterplotButton();
         
         drawColumnBorder("payout", thickBorder);
 
@@ -454,7 +457,6 @@ export function playerChart(id) {
             .on('click', function (d) {
                 
                 toggleTableAndScatterplot();
-                //showingChart = !showingChart;
                 //updateScatterplot();
             });
     }
@@ -487,8 +489,10 @@ export function playerChart(id) {
                     .range([720, 140]);
     
                 xAxis = d3.axisBottom(xScale);
-                svg.append("g")
+                //svg.append("g")
+                scatterplotBox.append("g")
                     .classed("x axis", true)
+                    //attr("transform", "translate(0, 740)")
                     .attr("transform", "translate(0, 740)")
                     .call(xAxis);
     
@@ -582,20 +586,19 @@ export function playerChart(id) {
 
         // GOING TO SHOW THE SCATTERPLOT
 
-        // Hide table stuff
-        for (let row = 0; row < rowCount; row++) {
-
-            scatterplotButton.attr("stroke-width", 12);
+        // Hide table rows and things on top
+        scatterplotButton.attr("stroke-width", 12);
             
-            scatterplotRect
-                .transition()
-                .duration(450)
-                .style("opacity", 1);
+        scatterplotRect
+            .transition()
+            .duration(450)
+            .style("opacity", 1);
 
-            d3.select(".y").attr("stroke-opacity", 1)
-            d3.select(".x").attr("stroke-opacity", 1)
+        d3.select(".y").attr("stroke-opacity", 1)
+        d3.select(".x").attr("stroke-opacity", 1)
 
-            // Hide rows
+        // Hide each row 
+        for (let row = 0; row < rowCount; row++) {
             svg.select(".row" + row)
                 .attr("fill", "none")
                 .attr("stroke-width", 0);
