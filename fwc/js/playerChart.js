@@ -58,6 +58,8 @@ export function playerChart(id) {
     let upArrowPolygon;
     let downArrowPolygon;
 
+    let scatterPlotButton;
+
     // Whether the scatterplot button is clicked, and we see a scatterplot instead of a table
     let showingScatterplot = false;
     
@@ -99,9 +101,9 @@ export function playerChart(id) {
         .attr("height", 1000)
         //.style("display", "none");
 
-    const scatterplotSvg = div.append("svg")
+   /*  const scatterplotSvg = div.append("svg")
         .attr("width", svgWidth + 4)
-        .attr("height", 1000)
+        .attr("height", 1000) */
         //.style("display", "none");   
 
 
@@ -416,14 +418,14 @@ export function playerChart(id) {
 
     function scatterplotButton() {
 
-        svg.append("rect")
+        scatterPlotButton = svg.append("rect")
             .attr("x", playerColWidth - 236)
             .attr("y", headerPos.top + 17)
             .attr("width", 60) 
             .attr("height", headerPos.height - 14)
             .attr("fill", "lightblue")
             .attr("stroke", "black")
-            .attr("stroke-width", 0)
+            .attr("stroke-width", 1)
             .attr("rx", cornerRadius)
             .attr("ry", cornerRadius)
             .on('mouseover', function (d) {
@@ -474,15 +476,15 @@ export function playerChart(id) {
                     .range([720, 100]);
     
                 xAxis = d3.axisBottom(xScale);
-                scatterplotSvg.append("g")
-                //svg.append("g")
+                //scatterplotSvg.append("g")
+                svg.append("g")
                     .classed("x axis", true)
                     .attr("transform", "translate(0, 740)")
                     .call(xAxis);
     
                 yAxis = d3.axisLeft(yScale);
-                scatterplotSvg.append("g")
-                //svg.append("g")
+                // scatterplotSvg.append("g")
+                svg.append("g")
                     .classed("y axis", true)
                     .attr("transform", "translate(100, 20)")
                     .call(yAxis);
@@ -554,10 +556,10 @@ export function playerChart(id) {
             circles
                 .attr("r", 0)
 
-            scatterplotSvg.style("display", "none");
+           // scatterplotSvg.style("display", "none");
             svg.style("display", "yes");
 
-
+            scatterPlotButton.attr("stroke-width", 1)
 
             renderPlayerPage();
             return;
@@ -566,8 +568,10 @@ export function playerChart(id) {
         // Hide table stuff
         for (let row = 0; row < rowCount; row++) {
 
-            scatterplotSvg.style("display", "yes");
-            svg.style("display", "none");
+            scatterPlotButton.attr("stroke-width", 12)
+
+            //scatterplotSvg.style("display", "yes");
+            svg.style("display", "yes");
 
 
             // Hide rows
@@ -873,7 +877,7 @@ export function playerChart(id) {
             //svg.selectAll(".scatter")
             //    .remove();
             
-            //updateScatterplot();
+            updateScatterplot();
             return;
         }
 
