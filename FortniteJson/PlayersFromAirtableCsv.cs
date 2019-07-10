@@ -15,6 +15,8 @@ namespace FortniteJson {
         public static void Import() {
             SqlUtil.Command("TRUNCATE TABLE AirtablePlayer");
 
+            Console.Write("Running..");
+
             ImportCsv();
 
             Console.Write("DONE");

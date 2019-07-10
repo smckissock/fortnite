@@ -9,7 +9,7 @@ namespace FortniteJson {
 
     class PlayersUpdatedFromAirtable {
         static string path = "c:\\fortnite\\airtable\\";
-        static string date = "2019 07 10";
+        static string date = "2019 07 10 2";
 
         static List<string> teams;
 
@@ -19,9 +19,6 @@ namespace FortniteJson {
             teams = GetTeams();
             ImportCsv();
             LinkPlacementsToPlayers();
-
-            Console.Write("DONE");
-            Console.Read();
         }
 
         private static void ImportCsv() {
