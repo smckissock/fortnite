@@ -462,11 +462,11 @@ export function playerChart(id) {
             if (xAxis == null) {    
                 xScale = d3.scaleLinear()
                     .domain([0, d3.max(data, d => d.xVal)])
-                    .range([100, 800]);
+                    .range([60, 930]);
     
                 yScale = d3.scaleLinear()
                     .domain(d3.extent(data, d => d.yVal))
-                    .range([720, 100]);
+                    .range([720, 140]);
     
                 xAxis = d3.axisBottom(xScale);
                 svg.append("g")
@@ -477,7 +477,7 @@ export function playerChart(id) {
                 yAxis = d3.axisLeft(yScale);
                 svg.append("g")
                     .classed("y axis", true)
-                    .attr("transform", "translate(100, 20)")
+                    .attr("transform", "translate(60, 20)")
                     .call(yAxis);
     
             // Scales and axes already there; update domain on scale and redraw axes        
