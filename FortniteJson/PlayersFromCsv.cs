@@ -21,9 +21,6 @@ namespace FortniteJson {
 
             ImportSolos();
             ImportDuos();
-
-            Console.Write("DONE");
-            Console.Read();
         }
 
         private static void ImportSolos() {

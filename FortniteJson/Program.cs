@@ -13,12 +13,17 @@ namespace FortniteJson {
             //PlayersFromAirtableCsv.Import();
             //PlayersFromCsv.Import();
 
+            Console.Write("Running..");
+
             //PlayersUpdatedFromAirtable.Import();
 
-
             Fortnite.MakeJson();
-            
-            
+
+
+            Console.Write("DONE");
+            Console.Read();
+
+
             // Not needed - make it in browser.
             //Fortnite.MakeCsv();
         }

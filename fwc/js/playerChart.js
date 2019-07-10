@@ -119,6 +119,7 @@ export function playerChart(id) {
         .attr("rx", cornerRadius)
         .attr("ry", cornerRadius)
         .attr("opacity", "0")
+        .attr("pointer-events", "none");
     
     function drawHeaders() {
             
@@ -193,7 +194,7 @@ export function playerChart(id) {
         columnHeaderText();
         pageArrows();
         
-        makeScatterplotButton();
+        //makeScatterplotButton();
         
         drawColumnBorder("payout", thickBorder);
 
