@@ -155,6 +155,13 @@ export function playerChart(id) {
             svg.select(".scatterplotButton-Listing").text("");
             svg.select(".scatterplotButton-Chart").text("Chart");
         }
+
+        // Temporary - only while chart is turned on 
+        if (!showScatterplotButton) {
+            svg.select(".scatterplotButton-Show").text("");
+            svg.select(".scatterplotButton-Listing").text("");
+            svg.select(".scatterplotButton-Chart").text("");
+        }
     }
     
     function drawHeaders() {
