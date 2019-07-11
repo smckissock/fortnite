@@ -596,7 +596,7 @@ export function playerChart(id) {
                 label.text(text);
             } else {
                 scatterplotSvg.append("text")
-                    .attr("x", 60)
+                    .attr("x", 30)
                     .attr("y", 135)
                     .text(text)
                     .attr("font-family", "burbank")
@@ -707,18 +707,24 @@ export function playerChart(id) {
             .attr("r", 0)
             .on('mouseover', function (d) {
 
-                let left = d3.event.pageX - 520;
+                let left = d3.event.pageX - 510;
                 if (d3.event.pageX > 1300)
                     left = d3.event.pageX - 760;
+                
+                const top = d3.event.pageY - 120;
+                const height = 74;
 
                 svg.append("rect")
-                    .attr("x", left - 10)
-                    .attr("y", d3.event.pageY - 116)
+                    .attr("x", left - 12)
+                    //.attr("y", d3.event.pageY - 116)
+                    .attr("y", top)
+
                     .attr("width", 206)
-                    .attr("height", 66)
+                    .attr("height", height)
                     .attr("fill", "white")
                     .attr("stroke", "black")
-                    .attr("stroke-width", 2) 
+                    .attr("stroke", d.color)
+                    .attr("stroke-width", 8) 
                     .attr("rx", cornerRadius)
                     .attr("ry", cornerRadius)
                     .attr("font-size", "1.4em")
@@ -749,7 +755,7 @@ export function playerChart(id) {
                     .attr("stroke-width", 4)
             })
             .on('mouseout', function (d) {
-                d3.select(this).attr("stroke-width", 0)
+                d3.select(this).attr("stroke-width", 1)
                 d3.selectAll(".tooltip").remove();
             })
             .classed("scatter", true)
