@@ -12,7 +12,7 @@ export let playerData;
 
 export function playerChart(id) {
 
-    const showScatterplotButton = false;
+    const showScatterplotButton = true;
 
     const noFormat = function(d) { return d;} 
     const commaFormat = d3.format(",");   
@@ -162,13 +162,69 @@ export function playerChart(id) {
 
         function scatterplotHeaderClick(d, elm) {
 
-            // pick a new one! 
+            // Replaces closest previously-selected column with the newly-selected column 
+            function setSelectedColumn(newSelectedIndex) {
+                let space = 1;
+                let done = false;
+                while (!done) {
+                    // Check to the right 
+                    let idx = newSelectedIndex + space;
+                    if ((idx < columns.length) && (idx > 0)) {
+                        if (columns[idx].code == filters.xMeasure.code) {
+                            filters.xMeasure = columns[newSelectedIndex];    
+                            break
+                            //done = true;
+                        }
+                        if (columns[idx].code == filters.yMeasure.code) {
+                            filters.yMeasure = columns[newSelectedIndex];    
+                            break
+                            //done = true;
+                        }
+                    }
+                    // Check to the left
+                    idx = newSelectedIndex - space;
+                    if ((idx < columns.length) && (idx > 0)) {
+                        if (columns[idx].code == filters.xMeasure.code) {
+                            filters.xMeasure = columns[newSelectedIndex];    
+                            break
+                            //done = true;
+                        }
+                        if (columns[idx].code == filters.yMeasure.code) {
+                            filters.yMeasure = columns[newSelectedIndex];    
+                            break
+                            //done = true;
+                        }
+                    }
+                    space++;         
+                }
+            }
 
+            // They clicked on one that was already selected
+            if ((d.code === filters.xMeasure.code) || (d.code === filters.yMeasure.code))
+                return;
+
+            // Set the new filter. Unselect the selected filter which is nearer to it
+            // One way to find index of item in columns 
+            let newSelectedIndex = 0;
+            let i = 0;
+            columns.forEach(function (x) {
+                if (x.code === d.code)
+                    newSelectedIndex = i;
+                i++;
+            });
+            console.log("BEFORE: " + filters.xMeasure.code + " " + filters.yMeasure.code);
+            setSelectedColumn(newSelectedIndex);
+            console.log("AFTER: " + filters.xMeasure.code + " " + filters.yMeasure.code);
+            console.log("");
+            
+            // Remove borders on unselected, add borders on selected
             columns.forEach(function (d) {
                 d.elm
-                    .transition()
-                    .style("stroke-width", ((d.code === filters.xMeasure.code) || (d.code === filters.xMeasure.code)) ? thickBorder : 0);  
+                    //.transition()
+                    .style("stroke-width", ((d.code === filters.xMeasure.code) || (d.code === filters.yMeasure.code)) ? thickBorder : 0);  
             })
+
+            updateScatterplot();
         }
             
         // Rects for column headers 
@@ -208,25 +264,6 @@ export function playerChart(id) {
                     scatterplotHeaderClick(d, this);
                 else 
                     tableHeaderClick(d, this);
-
-               /*  // They clicked on the selected one, so just ignore
-                if (d.code === filters.sort)
-                    return;
-
-                // Unselect the old one    
-                drawColumnBorder(filters.sort, 0);
-                
-                filters.sort = d.code;                
-                d3.select(this)
-                    .transition()
-                    .duration(100)
-                    .attr("stroke-width", 0);
-
-                if (filters.player != "")
-                    setPlayer(null);
-                
-                renderRows();
-                moveCursor(this);  */
             })
             .each(function (d, i) {
 
@@ -257,7 +294,7 @@ export function playerChart(id) {
         drawColumnBorder("payout", thickBorder);
 
         // Make this after the the player rects so that always appears "on top"
-        cursor = svg.append("rect")
+/*         cursor = svg.append("rect")
             .attr("x", playerColWidth + headerPos.gap + headerPos.width)
             .attr("y", headerPos.top + 4)
             .attr("width", headerPos.width - headerPos.gap - 3)
@@ -267,7 +304,7 @@ export function playerChart(id) {
             .attr("stroke-width", thickBorder)
             .attr("pointer-events", "none")
             .attr("rx", cornerRadius)
-            .attr("ry", cornerRadius)
+            .attr("ry", cornerRadius) */
     }
 
     function moveCursor(rect) {
@@ -526,14 +563,32 @@ export function playerChart(id) {
                 return {
                     player: d.key,
                     color: d.color,
-                    
-                    //xVal: d.values[0].value["elimPercentage"],
                     xVal: d.values[0].value[filters.xMeasure.code],
-                    //yVal: d.values[0].value["payout"]
                     yVal: d.values[0].value[filters.yMeasure.code]
                 }; 
             });
         }
+
+        function scatterplotMeasuresLabel() {
+            const text = filters.yMeasure.name + " vs " +  filters.xMeasure.name;
+            
+            const label = scatterplotSvg.select(".scatterplotMeasuresLabel");
+            if (!label.empty()) {
+                label.text(text);
+                return;
+            }
+
+            // Update labels in the corner of the chart
+            scatterplotSvg.append("text")
+                .attr("x", 60)
+                .attr("y", 135)
+                .text(text)
+                .attr("font-family", "burbank")
+                .attr("font-size", "2.6em")
+                .attr("fill", "black")    
+                .attr("pointer-events", "none")
+                .classed("scatterplotMeasuresLabel", true);
+        } 
 
         function updateScalesAndAxes(data, t) {
             // First time in, create scales and axes
@@ -572,8 +627,8 @@ export function playerChart(id) {
             }
         }
 
-        //const yCol = columns.filter(d => d.code === filters.sort)[0];
-        
+        scatterplotMeasuresLabel();
+
         const data = getChartData();
         updateScalesAndAxes(data, t);
        
@@ -631,7 +686,7 @@ export function playerChart(id) {
                     .duration(100)
                     .attr("stroke-width", thickBorder);    
             
-            // Update labels in the corner of the chart
+            /* // Update labels in the corner of the chart
             scatterplotSvg.append("text")
                 .attr("x", 60)
                 .attr("y", 135)
@@ -639,7 +694,7 @@ export function playerChart(id) {
                 .attr("font-family", "burbank")
                 .attr("font-size", "2.6em")
                 .attr("fill", "black")    
-                .attr("pointer-events", "none");
+                .attr("pointer-events", "none"); */
         }
 
         showingScatterplot = !showingScatterplot;
