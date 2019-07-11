@@ -12,7 +12,7 @@ export let playerData;
 
 export function playerChart(id) {
 
-    const showScatterplotButton = false;
+    const showScatterplotButton = true;
 
     const noFormat = function(d) { return d;} 
     const commaFormat = d3.format(",");   
@@ -331,7 +331,7 @@ export function playerChart(id) {
                     numOrRankRect = d3.select(this);
                 }
             });
-
+            
         columnHeaderText();
         pageArrows();
         
@@ -705,16 +705,66 @@ export function playerChart(id) {
             .attr("stroke", "black")
             .attr("stroke-width", 1)
             .attr("r", 0)
+            .on('mouseover', function (d) {
+
+                let left = d3.event.pageX - 520;
+                if (d3.event.pageX > 1300)
+                    left = d3.event.pageX - 760;
+
+                svg.append("rect")
+                    .attr("x", left - 10)
+                    .attr("y", d3.event.pageY - 116)
+                    .attr("width", 206)
+                    .attr("height", 66)
+                    .attr("fill", "white")
+                    .attr("stroke", "black")
+                    .attr("stroke-width", 2) 
+                    .attr("rx", cornerRadius)
+                    .attr("ry", cornerRadius)
+                    .attr("font-size", "1.4em")
+                    .classed("tooltip", true);
+
+                svg.append("text")
+                    .attr("x", left)
+                    .attr("y", d3.event.pageY - 96)
+                    .attr("font-size", "1.4em")
+                    .text(d.player)
+                    .classed("tooltip", true);
+
+                svg.append("text")
+                    .attr("x", left)
+                    .attr("y", d3.event.pageY - 76)
+                    .attr("font-size", "1.2em")
+                    .text(filters.yMeasure.name + " " + filters.yMeasure.axisFormat(d.yVal))
+                    .classed("tooltip", true);
+
+                svg.append("text")
+                    .attr("x", left)
+                    .attr("y", d3.event.pageY - 58)
+                    .attr("font-size", "1.2em")
+                    .text(filters.xMeasure.name + " " + filters.xMeasure.axisFormat(d.xVal))
+                    .classed("tooltip", true);
+                
+                d3.select(this)
+                    .attr("stroke-width", 4)
+            })
+            .on('mouseout', function (d) {
+                d3.select(this).attr("stroke-width", 0)
+                d3.selectAll(".tooltip").remove();
+            })
             .classed("scatter", true)
           .transition(t)
             .attr("r", 9)
-
+            
+        circles
+        
         // Update    
         circles
           .transition(t)
             .attr("cy", d => yScale(d.yVal))
             .attr("cx", d => xScale(d.xVal))    
             .style("fill-opacity", 1)
+            
 
         // Exit    
         circles.exit()
