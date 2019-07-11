@@ -12,7 +12,7 @@ export let playerData;
 
 export function playerChart(id) {
 
-    const showScatterplotButton = true;
+    const showScatterplotButton = false;
 
     const noFormat = function(d) { return d;} 
     const commaFormat = d3.format(",");   
@@ -78,6 +78,9 @@ export function playerChart(id) {
     let yScale = null;
     let xAxis = null;
     let yAxis = null;
+
+    filters.yMeasure = columns[2] // payout
+    filters.xMeasure = columns[7] // elimPercentage
     
     
     // Important!!
@@ -106,11 +109,12 @@ export function playerChart(id) {
     drawRows(svg);
 
     const scatterplotBox = svg.append("g");
-    const scatterplotRect = scatterplotBox.append("svg")
+    const scatterplotSvg =scatterplotBox.append("svg")
         .attr("width", svgWidth + 4)
         .attr("height", 800)
         .attr("transform", "translate(0,200)")
-      .append("rect")
+
+    const scatterplotRect = scatterplotSvg.append("rect")
         .attr("x", 3)
         .attr("y", 84)
         .attr("width", svgWidth - 6)  
@@ -122,8 +126,50 @@ export function playerChart(id) {
         .attr("ry", cornerRadius)
         .attr("opacity", "0")
         .attr("pointer-events", "none");
+
+   /*  scatterplotSvg.append("text")
+        .attr("x", 400)
+        .attr("y", 400)
+        .text("Earned")
+        .attr("font-family", "burbank")
+        .attr("font-size", "1.2em")
+        .attr("fill", "black")    
+        .attr("pointer-events", "none"); */
     
     function drawHeaders() {
+
+        function tableHeaderClick(d, elm) {
+            
+            // They clicked on the selected one, so just ignore
+            if (d.code === filters.sort)
+                return;
+
+            // Unselect the old one    
+            drawColumnBorder(filters.sort, 0);
+         
+            filters.sort = d.code;                
+            d3.select(elm)
+                .transition()
+                .duration(100)
+                .attr("stroke-width", 0);
+
+            if (filters.player != "")
+                setPlayer(null);
+         
+            renderRows();
+            moveCursor(elm);
+        }
+
+        function scatterplotHeaderClick(d, elm) {
+
+            // pick a new one! 
+
+            columns.forEach(function (d) {
+                d.elm
+                    .transition()
+                    .style("stroke-width", ((d.code === filters.xMeasure.code) || (d.code === filters.xMeasure.code)) ? thickBorder : 0);  
+            })
+        }
             
         // Rects for column headers 
         svg.selectAll("rect").data(columns).enter().append("rect")
@@ -158,7 +204,12 @@ export function playerChart(id) {
                     .attr("stroke-width", 0);
             })
             .on('click', function (d) {
-                // They clicked on the selected one, so just ignore
+                if (showingScatterplot) 
+                    scatterplotHeaderClick(d, this);
+                else 
+                    tableHeaderClick(d, this);
+
+               /*  // They clicked on the selected one, so just ignore
                 if (d.code === filters.sort)
                     return;
 
@@ -175,9 +226,13 @@ export function playerChart(id) {
                     setPlayer(null);
                 
                 renderRows();
-                moveCursor(this); 
+                moveCursor(this);  */
             })
             .each(function (d, i) {
+
+                // Link elm back to data for later use
+                d.elm = d3.select(this);
+
                 if (i === 1) {
                     numOrRankRect = d3.select(this);
                 }
@@ -382,7 +437,7 @@ export function playerChart(id) {
 
         upArrowPolygon = svg.append("polygon")
             .attr("points", (playerColWidth - width) + "," + (height - 2) + " " + playerColWidth + "," + (height - 2) + " " + (playerColWidth - (width / 2)) + "," + 4)
-            .style("fill", "darkgrey")
+            .style("fill", "#F0F8FF")
             .attr("pointer-events", "bounding-box")
             .attr("stroke", "black")
             .attr("stroke-width", 0)
@@ -400,7 +455,7 @@ export function playerChart(id) {
 
         downArrowPolygon = svg.append("polygon")
             .attr("points", (playerColWidth - width) + "," + (height + 5) + " " + playerColWidth + "," + (height + 5) + " " + (playerColWidth - (width / 2)) + "," + (height * 2))
-            .style("fill", "darkgrey")
+            .style("fill", "#F0F8FF")
             .attr("pointer-events", "bounding-box")
             .attr("stroke", "black")
             .attr("stroke-width", 0)
@@ -455,15 +510,15 @@ export function playerChart(id) {
                     .attr("stroke-width", 0);
             }) 
             .on('click', function (d) {
-                
                 toggleTableAndScatterplot();
-                //updateScatterplot();
             });
     }
 
 
     function updateScatterplot() {
-        //showTableOrChart();
+        
+        const t = d3.transition()
+            .duration(500);
 
         function getChartData() {
             // Change x and y based on selected 
@@ -471,8 +526,11 @@ export function playerChart(id) {
                 return {
                     player: d.key,
                     color: d.color,
-                    xVal: d.values[0].value["elimPercentage"],
-                    yVal: d.values[0].value["payout"]
+                    
+                    //xVal: d.values[0].value["elimPercentage"],
+                    xVal: d.values[0].value[filters.xMeasure.code],
+                    //yVal: d.values[0].value["payout"]
+                    yVal: d.values[0].value[filters.yMeasure.code]
                 }; 
             });
         }
@@ -489,10 +547,8 @@ export function playerChart(id) {
                     .range([720, 140]);
     
                 xAxis = d3.axisBottom(xScale);
-                //svg.append("g")
                 scatterplotBox.append("g")
                     .classed("x axis", true)
-                    //attr("transform", "translate(0, 740)")
                     .attr("transform", "translate(0, 740)")
                     .call(xAxis);
     
@@ -515,12 +571,10 @@ export function playerChart(id) {
                     .call(yAxis);
             }
         }
+
+        //const yCol = columns.filter(d => d.code === filters.sort)[0];
         
         const data = getChartData();
-
-        const t = d3.transition()
-            .duration(500);
-
         updateScalesAndAxes(data, t);
        
         var circles = svg.selectAll(".scatter")
@@ -562,6 +616,32 @@ export function playerChart(id) {
     // Show or hides scaterplot or table elements based on showingChart
     function toggleTableAndScatterplot() {
 
+        function setMeasures() {
+            
+            // Draw column header outlines
+            const xHeader = columns.filter(x => x.code === filters.xMeasure.code)[0].elm;
+            xHeader
+                .transition()
+                .duration(100)
+                .attr("stroke-width", thickBorder);
+
+            const yHeader = columns.filter(x => x.code === filters.yMeasure.code)[0].elm;
+                yHeader
+                    .transition()
+                    .duration(100)
+                    .attr("stroke-width", thickBorder);    
+            
+            // Update labels in the corner of the chart
+            scatterplotSvg.append("text")
+                .attr("x", 60)
+                .attr("y", 135)
+                .text(filters.yMeasure.name + " vs " +  filters.xMeasure.name)
+                .attr("font-family", "burbank")
+                .attr("font-size", "2.6em")
+                .attr("fill", "black")    
+                .attr("pointer-events", "none");
+        }
+
         showingScatterplot = !showingScatterplot;
 
         // GOING TO SHOW THE TABLE
@@ -579,7 +659,8 @@ export function playerChart(id) {
 
             d3.select(".y").attr("stroke-opacity", 0)
             d3.select(".x").attr("stroke-opacity", 0)
-
+            
+            // TO DO - Border on Sort, no border on xMeasureand yMeasure
             renderPlayerPage();
             return;
         }
@@ -589,13 +670,13 @@ export function playerChart(id) {
         // Hide table rows and things on top
         scatterplotButton.attr("stroke-width", 12);
             
-        scatterplotRect
+        /* scatterplotRect
             .transition()
             .duration(450)
             .style("opacity", 1);
 
         d3.select(".y").attr("stroke-opacity", 1)
-        d3.select(".x").attr("stroke-opacity", 1)
+        d3.select(".x").attr("stroke-opacity", 1) */
 
         // Hide each row 
         for (let row = 0; row < rowCount; row++) {
@@ -627,6 +708,17 @@ export function playerChart(id) {
         // Great - put back text we just deleted  
         columnHeaderText();
 
+        
+        // Make scatter plot visible
+        scatterplotRect
+            .transition()
+            .duration(450)
+            .style("opacity", 1);
+
+        d3.select(".y").attr("stroke-opacity", 1)
+        d3.select(".x").attr("stroke-opacity", 1)
+
+        setMeasures();
         updateScatterplot();
     }
 

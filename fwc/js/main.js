@@ -18,6 +18,7 @@ export let duoQualifications = [];
 
 export let facts;
 
+
 export let filters = {
     week: "",
     regions: [],
@@ -27,7 +28,10 @@ export let filters = {
     sort: "payout",
     soloOrDuo: "",
     page: 0,
-    playerCount: 0
+    playerCount: 0,
+    // For scatter plots
+    xMeasure: {},
+    yMeasure: {}
 }
 
 export let showPlayerProfile;
