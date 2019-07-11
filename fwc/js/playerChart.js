@@ -12,7 +12,7 @@ export let playerData;
 
 export function playerChart(id) {
 
-    const showScatterplotButton = true;
+    const showScatterplotButton = false;
 
     const noFormat = function(d) { return d;} 
     const commaFormat = d3.format(",");   
@@ -21,7 +21,7 @@ export function playerChart(id) {
     const moneyFormat = function(d) { return "$" + d3.format(",")(d); };
 
     const columns = [
-        {name: "Players", code: "player", x: 82, format: noFormat, axisFormat: noFormat}, 
+        {name: "Players", code: "player", x: 86, format: noFormat, axisFormat: noFormat}, 
         {name: "Rank", code: "rank", x: 16, format: noFormat, axisFormat: noFormat},
         {name: "Payout", code: "payout", x: 9, format: commaFormat, format: commaFormat, axisFormat: moneyFormat},
         {name: "Points", code: "points", x: 13, format: noFormat, axisFormat: noFormat},
@@ -128,6 +128,34 @@ export function playerChart(id) {
         .attr("ry", cornerRadius)
         .attr("opacity", "0")
         .attr("pointer-events", "none");
+
+    function scatterplotButtonText() {
+
+        function addText(x, y, text) {
+            svg.append("text")
+                .attr("x", x)
+                .attr("y", y)
+                .attr("fill", "black")
+                .attr("stroke", "black")
+                .text(text)
+                //.attr("font-family", "burbank")
+                .attr("font-size", "1.2em")
+                .attr("pointer-events", "none")
+                .attr("font-weight", 300)
+                .classed("scatterplotButton-" + text, true)
+        }
+        addText(playerColWidth - 217, headerPos.top + 32, "Show");
+        addText(playerColWidth - 230, headerPos.top + 54, "Listing");
+        addText(playerColWidth - 220, headerPos.top + 54, "Chart");
+
+        if (showingScatterplot) {
+            svg.select(".scatterplotButton-Listing").text("Listing");
+            svg.select(".scatterplotButton-Chart").text("");
+        } else {
+            svg.select(".scatterplotButton-Listing").text("");
+            svg.select(".scatterplotButton-Chart").text("Chart");
+        }
+    }
     
     function drawHeaders() {
 
@@ -215,6 +243,39 @@ export function playerChart(id) {
 
             updateScatterplot();
         }
+
+
+        // Button on top left to switch between table and scatterplot
+        function makeScatterplotButton() {
+
+            scatterplotButton = svg.append("rect")
+                .attr("x", playerColWidth - 236)
+                .attr("y", headerPos.top + 4)
+                .attr("width", headerPos.width - headerPos.gap - 3) 
+                .attr("height", headerPos.height)
+                .attr("fill", "lightblue")
+                .attr("stroke", "black")
+                .attr("stroke-width", 1)
+                .attr("rx", cornerRadius)
+                .attr("ry", cornerRadius)
+                .on('mouseover', function (d) {
+                    d3.select(this)
+                        .transition()
+                        .duration(100)
+                        .attr("stroke-width", thinBorder);
+                })
+                .on('mouseout', function (d) {
+                    d3.select(this)
+                        .transition()
+                        .duration(100)
+                        .attr("stroke-width", 0);
+                }) 
+                .on('click', function (d) {
+                    toggleTableAndScatterplot();
+                });
+
+            scatterplotButtonText();
+        }
             
         // Rects for column headers 
         svg.selectAll("rect").data(columns).enter().append("rect")
@@ -297,6 +358,7 @@ export function playerChart(id) {
             .attr("x", x)
             .attr("y", y); 
     }
+
 
     function columnHeaderText() {
 
@@ -498,36 +560,6 @@ export function playerChart(id) {
             filters.page -= 1;
         
         renderPlayerPage();
-    }
-
-
-    function makeScatterplotButton() {
-
-        scatterplotButton = svg.append("rect")
-            .attr("x", playerColWidth - 236)
-            .attr("y", headerPos.top + 17)
-            .attr("width", 60) 
-            .attr("height", headerPos.height - 14)
-            .attr("fill", "lightblue")
-            .attr("stroke", "black")
-            .attr("stroke-width", 1)
-            .attr("rx", cornerRadius)
-            .attr("ry", cornerRadius)
-            .on('mouseover', function (d) {
-                d3.select(this)
-                    .transition()
-                    .duration(100)
-                    .attr("stroke-width", thinBorder);
-            })
-            .on('mouseout', function (d) {
-                d3.select(this)
-                    .transition()
-                    .duration(100)
-                    .attr("stroke-width", 0);
-            }) 
-            .on('click', function (d) {
-                toggleTableAndScatterplot();
-            });
     }
 
 
@@ -739,7 +771,6 @@ export function playerChart(id) {
         // GOING TO SHOW THE SCATTERPLOT
 
         // Hide table rows and things on top
-        scatterplotButton.attr("stroke-width", 12);
             
         // Hide each row 
         for (let row = 0; row < rowCount; row++) {
@@ -767,6 +798,7 @@ export function playerChart(id) {
 
         // Great - put back text we just deleted  
         columnHeaderText();
+        scatterplotButtonText();
         
         // Make scatter plot visible
         scatterplotRect
@@ -1100,6 +1132,7 @@ export function playerChart(id) {
             });
         
         columnHeaderText();
+        scatterplotButtonText();
 
         let rowNum = 0;
         playerRows.forEach(function(row)  {

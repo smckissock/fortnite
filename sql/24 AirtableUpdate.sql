@@ -23,8 +23,7 @@ GO
 
 CREATE VIEW AirtableUpdateView
 AS
-
-SELECT GetDate() UploadTime,  SUM(players) Players, SUM(teams) Teams, SUM(nationalities) Nationalties
+SELECT GetDate(), UploadTime,  SUM(players) Players, SUM(teams) Teams, SUM(nationalities) Nationalties
 FROM ( 
 SELECT COUNT(*) players , 0 teams, 0 nationalities FROM Player WHERE TeamID NOT IN (1, 17)
 UNION ALL
@@ -35,6 +34,7 @@ SELECT 0, 0, COUNT(*) Nationalities FROM Nationality
 
 
 
+--INSERT INTO AirtableUpdate
+--SELECT * FROM AirtableUpdateView
 
-SELECT * fROM Player
-
+SELECT * FROM AirTableUpdateView
