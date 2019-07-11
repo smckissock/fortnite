@@ -120,7 +120,7 @@ export function playerChart(id) {
         .attr("x", 3)
         .attr("y", 84)
         .attr("width", svgWidth - 6)  
-        .attr("height", 707)
+        .attr("height", 746)
         .attr("fill", "#F0F8FF")
         .attr("stroke", "black")
         .attr("stroke-width", 8)
@@ -128,6 +128,7 @@ export function playerChart(id) {
         .attr("ry", cornerRadius)
         .attr("opacity", "0")
         .attr("pointer-events", "none");
+
 
     function scatterplotButtonText() {
 
@@ -144,9 +145,9 @@ export function playerChart(id) {
                 .attr("font-weight", 300)
                 .classed("scatterplotButton-" + text, true)
         }
-        addText(playerColWidth - 217, headerPos.top + 32, "Show");
+        addText(playerColWidth - 218, headerPos.top + 32, "Show");
         addText(playerColWidth - 230, headerPos.top + 54, "Listing");
-        addText(playerColWidth - 220, headerPos.top + 54, "Chart");
+        addText(playerColWidth - 221, headerPos.top + 54, "Chart");
 
         if (showingScatterplot) {
             svg.select(".scatterplotButton-Listing").text("Listing");
@@ -712,7 +713,7 @@ export function playerChart(id) {
                     left = d3.event.pageX - 760;
                 
                 const top = d3.event.pageY - 120;
-                const height = 74;
+                const height = 80;
 
                 svg.append("rect")
                     .attr("x", left - 12)
@@ -732,21 +733,21 @@ export function playerChart(id) {
 
                 svg.append("text")
                     .attr("x", left)
-                    .attr("y", d3.event.pageY - 96)
-                    .attr("font-size", "1.4em")
+                    .attr("y", d3.event.pageY - 94)
+                    .attr("font-size", "1.7em")
                     .text(d.player)
                     .classed("tooltip", true);
 
                 svg.append("text")
                     .attr("x", left)
-                    .attr("y", d3.event.pageY - 76)
+                    .attr("y", d3.event.pageY - 72)
                     .attr("font-size", "1.2em")
                     .text(filters.yMeasure.name + " " + filters.yMeasure.axisFormat(d.yVal))
                     .classed("tooltip", true);
 
                 svg.append("text")
                     .attr("x", left)
-                    .attr("y", d3.event.pageY - 58)
+                    .attr("y", d3.event.pageY - 52)
                     .attr("font-size", "1.2em")
                     .text(filters.xMeasure.name + " " + filters.xMeasure.axisFormat(d.xVal))
                     .classed("tooltip", true);
