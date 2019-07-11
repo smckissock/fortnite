@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace FortniteJson {
 
@@ -13,6 +10,9 @@ namespace FortniteJson {
             //PlayersFromAirtableCsv.Import();
             //PlayersFromCsv.Import();
 
+
+
+
             Console.WriteLine("Running..");
 
             PlayersUpdatedFromAirtable.Import();
@@ -20,6 +20,9 @@ namespace FortniteJson {
 
             Console.Write("DONE");
             Console.Read();
+
+
+
 
 
             // Not needed - make it in browser.

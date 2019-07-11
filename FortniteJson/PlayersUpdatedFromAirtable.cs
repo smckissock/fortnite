@@ -9,7 +9,7 @@ namespace FortniteJson {
 
     class PlayersUpdatedFromAirtable {
         static string path = "c:\\fortnite\\airtable\\";
-        static string date = "2019 07 10 3";
+        static string date = "2019 07 11";
 
         static List<string> teams;
 
@@ -30,6 +30,8 @@ namespace FortniteJson {
                 string[] fields = csv.ReadFields();
                 UpdatePlayer(fields);
             }
+
+            SqlUtil.Command("INSERT INTO AirtableUpdate SELECT * FROM AirtableUpdateView");
         }
 
         private static void UpdatePlayer(string[] fields) {

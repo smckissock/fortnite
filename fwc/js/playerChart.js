@@ -12,7 +12,7 @@ export let playerData;
 
 export function playerChart(id) {
 
-    const showScatterplotButton = true;
+    const showScatterplotButton = false;
 
     const noFormat = function(d) { return d;} 
     const commaFormat = d3.format(",");   
