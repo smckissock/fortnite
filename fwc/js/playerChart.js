@@ -12,7 +12,7 @@ export let playerData;
 
 export function playerChart(id) {
 
-    const showScatterplotButton = false;
+    const showScatterplotButton = true;
 
     const noFormat = function(d) { return d;} 
     const commaFormat = d3.format(",");   
@@ -548,25 +548,57 @@ export function playerChart(id) {
             });
         }
 
-        function scatterplotMeasuresLabel() {
-            const text = filters.yMeasure.name + " vs " +  filters.xMeasure.name;
+        function scatterplotMeasuresLabels() {
             
+            // Update labels in the corner of the chart
+            const text = filters.yMeasure.name + " vs " +  filters.xMeasure.name;
             const label = scatterplotSvg.select(".scatterplotMeasuresLabel");
             if (!label.empty()) {
                 label.text(text);
-                return;
+            } else {
+                scatterplotSvg.append("text")
+                    .attr("x", 60)
+                    .attr("y", 135)
+                    .text(text)
+                    .attr("font-family", "burbank")
+                    .attr("font-size", "2.6em")
+                    .attr("fill", "black")    
+                    .attr("pointer-events", "none")
+                    .classed("scatterplotMeasuresLabel", true)
             }
 
-            // Update labels in the corner of the chart
-            scatterplotSvg.append("text")
-                .attr("x", 60)
-                .attr("y", 135)
-                .text(text)
-                .attr("font-family", "burbank")
-                .attr("font-size", "2.6em")
-                .attr("fill", "black")    
-                .attr("pointer-events", "none")
-                .classed("scatterplotMeasuresLabel", true);
+            // X axis label
+            const xLabel = scatterplotSvg.select(".scatterplotXAxisLabel");
+            if (xLabel.empty()) {
+                scatterplotSvg.append("text")
+                    .attr("x", 460)
+                    .attr("y", 778)
+                    .text(filters.xMeasure.name)
+                    .attr("font-family", "burbank")
+                    .attr("font-size", "1.2em")
+                    .attr("fill", "black")    
+                    .attr("pointer-events", "none")
+                    .classed("scatterplotXAxisLabel", true);
+            } else {
+                xLabel.text(filters.xMeasure.name);
+            }
+
+            // Y axis label
+            const yLabel = scatterplotSvg.select(".scatterplotYAxisLabel");
+            if (yLabel.empty()) {
+                scatterplotSvg.append("text")
+                    .attr("x", 0)
+                    .attr("y", 0)
+                    .text(filters.yMeasure.name)
+                    .attr("font-family", "burbank")
+                    .attr("font-size", "1.2em")
+                    .attr("fill", "black")    
+                    .attr("pointer-events", "none")
+                    .classed("scatterplotYAxisLabel", true)
+                    .attr("transform", "translate(24,430) rotate(-90)");
+            } else {
+                yLabel.text(filters.yMeasure.name);
+            }
         } 
 
         function updateScalesAndAxes(data, t) {
@@ -580,7 +612,7 @@ export function playerChart(id) {
             if (xAxis == null) {    
                 xScale = d3.scaleLinear()
                     .domain([0, d3.max(data, d => d.xVal)])
-                    .range([60, 930]);
+                    .range([80, 930]);
     
                 yScale = d3.scaleLinear()
                     .domain(d3.extent(data, d => d.yVal))
@@ -596,7 +628,7 @@ export function playerChart(id) {
                 setAxisFormats();
                 svg.append("g")
                     .classed("y axis", true)
-                    .attr("transform", "translate(60, 20)")
+                    .attr("transform", "translate(80, 20)")
                     .call(yAxis);
     
             // Scales and axes already there; update domain on scale and redraw axes        
@@ -614,7 +646,7 @@ export function playerChart(id) {
             }
         }
 
-        scatterplotMeasuresLabel();
+        scatterplotMeasuresLabels();
 
         const data = getChartData();
         updateScalesAndAxes(data, t);
