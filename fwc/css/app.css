@@ -118,6 +118,14 @@ body {
     font-size: 1.0em;
 }
 
+
+.scatterplotYAxisLabel, .scatterplotXAxisLabel {
+    font-family: sans-serif;
+    font-size: 1.6em;
+    fill: "black";
+}
+
+
 .player-profile-div {
     position: fixed; 
     z-index: 1; 

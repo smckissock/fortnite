@@ -19,11 +19,12 @@ export function playerChart(id) {
     const pctFormat = d3.format(",.1%");
     const pctAxisFormat = d3.format(",.0%");
     const moneyFormat = function(d) { return "$" + d3.format(",")(d); };
+    const moneyKFormat = d3.format(".2s");
 
     const columns = [
         {name: "Players", code: "player", x: 86, format: noFormat, axisFormat: noFormat}, 
         {name: "Rank", code: "rank", x: 16, format: noFormat, axisFormat: noFormat},
-        {name: "Payout", code: "payout", x: 9, format: commaFormat, format: commaFormat, axisFormat: moneyFormat},
+        {name: "Payout", code: "payout", x: 9, format: commaFormat, format: commaFormat, axisFormat: moneyKFormat},
         {name: "Points", code: "points", x: 13, format: noFormat, axisFormat: noFormat},
         {name: "Wins", code: "wins", x: 17, format: noFormat, axisFormat: noFormat},
         {name: "Earned Quals", code: "earnedQualifications", x: 0, format: noFormat, axisFormat: noFormat},
@@ -611,12 +612,9 @@ export function playerChart(id) {
             const xLabel = scatterplotSvg.select(".scatterplotXAxisLabel");
             if (xLabel.empty()) {
                 scatterplotSvg.append("text")
-                    .attr("x", 460)
-                    .attr("y", 778)
+                    .attr("x", 450)
+                    .attr("y", 788)
                     .text(filters.xMeasure.name)
-                    .attr("font-family", "burbank")
-                    .attr("font-size", "1.2em")
-                    .attr("fill", "black")    
                     .attr("pointer-events", "none")
                     .classed("scatterplotXAxisLabel", true);
             } else {
@@ -630,12 +628,9 @@ export function playerChart(id) {
                     .attr("x", 0)
                     .attr("y", 0)
                     .text(filters.yMeasure.name)
-                    .attr("font-family", "burbank")
-                    .attr("font-size", "1.2em")
-                    .attr("fill", "black")    
                     .attr("pointer-events", "none")
                     .classed("scatterplotYAxisLabel", true)
-                    .attr("transform", "translate(24,430) rotate(-90)");
+                    .attr("transform", "translate(34, 490) rotate(-90)");
             } else {
                 yLabel.text(filters.yMeasure.name);
             }
