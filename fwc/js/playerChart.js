@@ -591,7 +591,7 @@ export function playerChart(id) {
 
         function scatterplotMeasuresLabels() {
             
-            // Update labels in the corner of the chart
+            // Update label in the left corner of the chart - measures
             const text = filters.yMeasure.name + " vs " +  filters.xMeasure.name;
             const label = scatterplotSvg.select(".scatterplotMeasuresLabel");
             if (!label.empty()) {
@@ -599,20 +599,64 @@ export function playerChart(id) {
             } else {
                 scatterplotSvg.append("text")
                     .attr("x", 30)
-                    .attr("y", 135)
+                    .attr("y", 138)
                     .text(text)
                     .attr("font-family", "burbank")
-                    .attr("font-size", "2.6em")
+                    .attr("font-size", "3.0em")
                     .attr("fill", "black")    
                     .attr("pointer-events", "none")
                     .classed("scatterplotMeasuresLabel", true)
+            }
+
+            // Update label in the right corner of the chart - filters
+            let filtersText = "";
+            // Similar to something in main.js 
+            if (filters.player != "") {
+                filtersText = filters.player;
+            } else {
+                let filterParts = [];
+        
+                if (filters.team != "")
+                    filterParts.push(filters.team);
+        
+                if (filters.regions.length != 0)
+                    filterParts.push(filters.regions.join(", "));
+        
+                if (filters.soloOrDuo != "")
+                    filterParts.push(filters.soloOrDuo);
+                else
+                    if (filters.week != "")
+                        filterParts.push(filters.week);
+        
+                if (filters.search != "")
+                    filterParts.push('"' + filters.search + '"'); 
+            
+                filtersText = filterParts.join(" / ");
+            }
+            console.log(filtersText);
+
+            const filtersLabel = scatterplotSvg.select(".scatterplotFiltersLabel");
+            const xPos = 916 - (filtersText.length * 14.1);
+            if (!filtersLabel.empty()) {
+                filtersLabel.text(filtersText)
+                filtersLabel.attr("x", xPos);
+            } else {
+                scatterplotSvg.append("text")
+                    .attr("x", xPos)
+                    .attr("y", 125)
+                    .text(filtersText)
+                    .attr("font-family", "sans-serif")
+                    .attr("font-size", "1.6em")
+                    .attr("fill", "black")    
+                    .attr("pointer-events", "none")
+                    .classed("scatterplotFiltersLabel", true)
             }
 
             // X axis label
             const xLabel = scatterplotSvg.select(".scatterplotXAxisLabel");
             if (xLabel.empty()) {
                 scatterplotSvg.append("text")
-                    .attr("x", 450)
+                    .attr("x", 430)
                     .attr("y", 788)
                     .text(filters.xMeasure.name)
                     .attr("pointer-events", "none")
@@ -647,7 +691,7 @@ export function playerChart(id) {
             if (xAxis == null) {    
                 xScale = d3.scaleLinear()
                     .domain([0, d3.max(data, d => d.xVal)])
-                    .range([80, 930]);
+                    .range([72, 930]);
     
                 yScale = d3.scaleLinear()
                     .domain(d3.extent(data, d => d.yVal))
@@ -663,7 +707,7 @@ export function playerChart(id) {
                 setAxisFormats();
                 svg.append("g")
                     .classed("y axis", true)
-                    .attr("transform", "translate(80, 20)")
+                    .attr("transform", "translate(72, 20)")
                     .call(yAxis);
     
             // Scales and axes already there; update domain on scale and redraw axes        
@@ -696,7 +740,7 @@ export function playerChart(id) {
             .enter()
             .append("circle")
             .attr("cx", d => xScale(d.xVal))
-            .attr("cy", d => yScale(d.yVal))
+            .attr("cy", d => yScale(d.yVal) + 16)
             .attr("fill", d => d.color)
             .attr("stroke", "black")
             .attr("stroke-width", 1)
@@ -712,7 +756,6 @@ export function playerChart(id) {
 
                 svg.append("rect")
                     .attr("x", left - 12)
-                    //.attr("y", d3.event.pageY - 116)
                     .attr("y", top)
 
                     .attr("width", 206)
@@ -763,7 +806,7 @@ export function playerChart(id) {
         // Update    
         circles
           .transition(t)
-            .attr("cy", d => yScale(d.yVal))
+            .attr("cy", d => yScale(d.yVal) + 16)
             .attr("cx", d => xScale(d.xVal))    
             .style("fill-opacity", 1)
             
@@ -1246,7 +1289,7 @@ export function playerChart(id) {
                     return cellText(row, i, rowNum);
                 })
                 .attr('fill', "black")
-                //.attr("font-size", "1.3em")
+
                 .attr("font-size", d => (d.code === filters.sort) ? "1.7em" : "1.3em") 
                 .attr("pointer-events", "none")
                 .attr("font-weight", d => (d.code === filters.sort) ? 1000 : 260); 
