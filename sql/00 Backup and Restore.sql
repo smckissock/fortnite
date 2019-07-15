@@ -87,18 +87,19 @@ GO
 
 
 
--- July 7, 2019
+
+-- July 13, 2019
 BACKUP DATABASE Fortnite
-TO DISK = N'd:\db\FortniteJuly7.bak' WITH NOFORMAT, NOINIT, NAME = N'Full Database Backup', SKIP, NOREWIND, NOUNLOAD, STATS = 10
+TO DISK = N'd:\db\FortniteJuly13.bak' WITH NOFORMAT, NOINIT, NAME = N'Full Database Backup', SKIP, NOREWIND, NOUNLOAD, STATS = 10
 GO
 
 RESTORE FILELISTONLY
-FROM DISK = N'd:\db\FortniteJuly7.bak'
+FROM DISK = N'c:\fortnitedb\FortniteJuly7.bak'
 GO
 
-RESTORE DATABASE Fortnite_2019_07_27
-FROM DISK = N'd:\db\FortniteJuly7.bak'
-WITH MOVE 'Fortnite' TO 'C:\Program Files\Microsoft SQL Server\MSSQL14.SQLEXPRESS\MSSQL\DATA\Fortnite_2019_07_07.mdf',
-MOVE 'Fortnite_log' TO 'C:\Program Files\Microsoft SQL Server\MSSQL14.SQLEXPRESS\MSSQL\DATA\Fortnite_log_2019_07_07.ldf'
+RESTORE DATABASE Fortnite
+FROM DISK = N'c:\fortnitedb\FortniteJuly7.bak'
+WITH MOVE 'Fortnite' TO 'C:\fortnitedb\FortniteJuly7\Fortnite.mdf',
+MOVE 'Fortnite_log' TO 'C:\fortnitedb\FortniteJuly7\Fortnite_log.ldf'
 
 
