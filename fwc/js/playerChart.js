@@ -496,7 +496,7 @@ export function playerChart(id) {
             }
 
             // Default case
-            const y = (i === 0) ? 30 : 44; // Player
+            const y = (i === 0) ? 32 : 44; // Player
             const node = svg.append("text")
                 .attr("x", x)
                 .attr("y", y)
@@ -545,13 +545,15 @@ export function playerChart(id) {
             .ry(cornerRadius)
             .markStrokeWidth(6)
             .boxStrokeWidth(2)
-            .checked(false)
-            .clickEvent(function () {
-                checkEvent(checkBoxSolos)
-            });
+            .checked(filters.worldCupOnly)
+            .clickEvent(toggleWorldCupOnly)
         svg.call(worldCupOnlyCheckBox);
     }
 
+    function toggleWorldCupOnly() {
+        filters.worldCupOnly = !filters.worldCupOnly;
+        updateCounts();
+    }
 
     // Draw triangles to change page 
     function pageArrows() {
@@ -837,7 +839,7 @@ export function playerChart(id) {
             .transition(t)
             .attr("r", 9)
 
-        circles
+        //circles
 
         // Update    
         circles
@@ -845,7 +847,6 @@ export function playerChart(id) {
             .attr("cy", d => yScale(d.yVal) + 16)
             .attr("cx", d => xScale(d.xVal))
             .style("fill-opacity", 1)
-
 
         // Exit    
         circles.exit()
@@ -895,7 +896,7 @@ export function playerChart(id) {
             d3.select(".y").attr("stroke-opacity", 0)
             d3.select(".x").attr("stroke-opacity", 0)
 
-            // TO DO - Border on Sort, no border on xMeasureand yMeasure
+            // TO DO - Border on Sort, no border on xMeasure and yMeasure
             columns.forEach(function (d) {
                 d.elm
                     .transition()

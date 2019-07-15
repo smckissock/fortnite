@@ -59,6 +59,14 @@ body {
     font-size: 1.0em;
 }
 
+.filters-string {
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 1.0rem;
+    fill: black;
+    pointer-events: none;
+    font-weight: 600;
+}
+
 .search {
     grid-area: search;
     font-weight: 700;
