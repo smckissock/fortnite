@@ -73,6 +73,14 @@ body {
     font-size: 1.2em;
 }
 
+.world-cup-only-check {
+    font-weight: 900;
+    font-family: sans-serif;
+    font-size: 0.7em;
+    pointer-events: "none";
+} 
+
+
 .right {
     grid-area: right;
 }
@@ -118,13 +126,11 @@ body {
     font-size: 1.0em;
 }
 
-
 .scatterplotYAxisLabel, .scatterplotXAxisLabel {
     font-family: sans-serif;
     font-size: 1.6em;
     fill: "black";
 }
-
 
 .player-profile-div {
     position: fixed; 
