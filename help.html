@@ -1,19 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-141290996-1"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
+        function gtag() { dataLayer.push(arguments); }
         gtag('js', new Date());
-    
+
         gtag('config', 'UA-141290996-1');
     </script>
 
     <title>Release Notes</title>
 
-    <link rel="stylesheet" type="text/css" href="fwc/css/app.css"/>
-    
+    <link rel="stylesheet" type="text/css" href="fwc/css/app.css" />
+
     <style>
         body {
             height: 100%;
@@ -24,23 +25,23 @@
         ul {
             margin-top: 0px;
             margin-bottom: 0px;
-            font-weight: 600; 
+            font-weight: 600;
             font-size: 0.8em;
             font-family: Helvetica, Arial, sans-serif;
         }
-        
+
         li {
             margin-top: 5px;
         }
 
         .gradient {
             height: 1680px;
-            background-image: radial-gradient(circle at top right,lightblue,#1E90FF);
+            background-image: radial-gradient(circle at top right, lightblue, #1E90FF);
         }
 
         .title {
             font-weight: 700;
-            font-size: 2.6em;  
+            font-size: 2.6em;
             padding: 10px 50px 0px 20px;
         }
 
@@ -60,10 +61,11 @@
     </style>
 
 </head>
+
 <body>
     <div class="gradient">
         <div class="title">
-            Release Notes 
+            Release Notes
         </div>
 
         <div class="header">
@@ -73,7 +75,8 @@
         <div class="header">
             Note! This only includes the first 100 solos or duos for a region/week, based on Epic's standings.
             <br>
-            This means that most player's payout will be understated, and those who have never finished in the top 100 will not appear at all, even if they have winnings.</a>
+            This means that most player's payout will be understated, and those who have never finished in the top 100
+            will not appear at all, even if they have winnings.</a>
 
             <br>
             <br>
@@ -83,13 +86,25 @@
         <!-- adds HTML to the CSV!!! -->
         <!-- <a href="fwc/data/data.csv" download="data.csv">
             <img src="fwc/img/download.png" alt="Download CSV" width="45" height="45" hspace="20">
-        </a> --> 
+        </a> -->
+
+        <div class="text">
+            v 14
+            <ul>
+                <li>Added a "World Cup Only" checkbox to limit the player listing and scatterplot to only the players
+                    who qualified for the World Cup.</li>
+            </ul>
+        </div>
 
         <div class="text">
             v 13
             <ul>
-                <li>Added a "Show Listing" / "Show Chart" button. "Show Chart" draws a scatterplot of the players, based on what you hose above the  player listing. If you click on a filter - region, week or solo/duo - they work the same as they do when in "listing" mode. Mousing over a circle shows the player stats.</li>
-                <li>We welcome feedback on this addition. What can do to make it useful, or was it just a bad idea? DM or tweet to <a href="https://twitter.com/fortnitestats4">@fortnitestats4</a></li>
+                <li>Added a "Show Listing" / "Show Chart" button. "Show Chart" draws a scatterplot of the players,
+                    based on what you hose above the player listing. If you click on a filter - region, week or
+                    solo/duo - they work the same as they do when in "listing" mode. Mousing over a circle shows the
+                    player stats.</li>
+                <li>We welcome feedback on this addition. What can do to make it useful, or was it just a bad idea? DM
+                    or tweet to <a href="https://twitter.com/fortnitestats4">@fortnitestats4</a></li>
             </ul>
         </div>
 
@@ -97,8 +112,10 @@
         <div class="text">
             v 12
             <ul>
-                <li>Added winnings by team and a way to filter for teams. This only includes qualified players, and is a work in progress. Please DM corrections.</li>
-                <li>Changed background from yellow/orange to grey. I like the orange, but everyone else hated it, so fine.</li>
+                <li>Added winnings by team and a way to filter for teams. This only includes qualified players, and is
+                    a work in progress. Please DM corrections.</li>
+                <li>Changed background from yellow/orange to grey. I like the orange, but everyone else hated it, so
+                    fine.</li>
             </ul>
         </div>
 
@@ -106,15 +123,17 @@
         <div class="text">
             v 11
             <ul>
-                <li>Add grey circles on week chart representing "earned qualification" i.e., weeks where a player would have earned a solo or duo qualification if they had not already done so</li>
+                <li>Add grey circles on week chart representing "earned qualification" i.e., weeks where a player would
+                    have earned a solo or duo qualification if they had not already done so</li>
             </ul>
         </div>
-        
+
         <div class="text">
             v 10
             <ul>
                 <li>Added button to download currently-selected data to a csv</li>
-                <li>Instead of just selecting one region or all regions, you can now select a combination: e.g., Europe & NA East</li>
+                <li>Instead of just selecting one region or all regions, you can now select a combination: e.g., Europe
+                    & NA East</li>
             </ul>
         </div>
 
@@ -126,7 +145,7 @@
                 <li>Added the week a player qualified next to the player's name</li>
             </ul>
         </div>
-       
+
 
         <div class="text">
             v 8
@@ -158,7 +177,8 @@
         <div class="text">
             v 5
             <ul>
-                <li>Added an "Earned Quals" columns which combines solo and duo qualifiactions with weeks where a player placed high enough to qualify but didn't because they had already qualified.</li>
+                <li>Added an "Earned Quals" columns which combines solo and duo qualifiactions with weeks where a
+                    player placed high enough to qualify but didn't because they had already qualified.</li>
                 <li>Added buttons to go forward and backward in the player list</li>
                 <li>Added columns for % elim points and % placement points</li>
                 <li>Right justified numbers and added a thousand separator</li>
@@ -173,7 +193,7 @@
                 <li>The first column header switches from "#" to "Rank" depending on whether a week is selected</li>
                 <li>Replaced stars with circles (or double circles for duos)</li>
                 <li>Added circles next to the names of players who qualified</li>
-                
+
             </ul>
         </div>
 
@@ -195,9 +215,11 @@
         <div class="text">
             v 1
             <ul>
-                <li>Issue: this only includes the first 100 solos or duos for a region/week, based on Epic's standings. This means that most player's payout will be understated, and those who have never finished in the top 100 will not appear at all, even if they have winnings</li>
+                <li>Issue: this only includes the first 100 solos or duos for a region/week, based on Epic's standings.
+                    This means that most player's payout will be understated, and those who have never finished in the
+                    top 100 will not appear at all, even if they have winnings</li>
                 <li>Issue: nothing has been done to make this work on mobile</li>
             </ul>
         </div>
-    </div>  
+    </div>
 </body>

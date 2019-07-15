@@ -15,6 +15,7 @@ export let playerDim;
 
 export let soloQualifications = [];
 export let duoQualifications = [];
+export let qualifierNames = {};
 
 export let facts;
 
@@ -103,10 +104,12 @@ function makeQualifications(data) {
     data.forEach(function (placement) {
         if (placement.soloQual != 0) {
             soloQualifications.push({ player: placement.player, week: placement.week.replace("Week ", "") });
+            qualifierNames[placement.player] = "";
             return;
         }
         if (placement.duoQual != 0) {
             duoQualifications.push({ player: placement.player, week: placement.week.replace("Week ", "") });
+            qualifierNames[placement.player] = "";
             return;
         }
     });

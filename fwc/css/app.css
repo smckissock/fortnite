@@ -82,9 +82,9 @@ body {
 }
 
 .world-cup-only-check {
-    font-weight: 900;
+    font-weight: 700;
     font-family: sans-serif;
-    font-size: 0.7em;
+    font-size: 0.9em;
     pointer-events: "none";
 } 
 

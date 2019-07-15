@@ -2,7 +2,7 @@
 
 import { colors } from "./shared.js";
 
-import { cornerRadius, filters, playerDim, playerColors, soloQualifications, duoQualifications, updateCounts, showPlayerProfile } from "./main.js";
+import { cornerRadius, filters, playerDim, playerColors, soloQualifications, duoQualifications, qualifierNames, updateCounts, showPlayerProfile } from "./main.js";
 import { showPlayerOnWeekChart } from "./weekChart.js";
 import { d3CheckBox } from "./d3CheckBox.js";
 
@@ -525,21 +525,21 @@ export function playerChart(id) {
 
     function drawWorldCupOnly() {
         svg.append("text")
-            .attr("x", 86)
-            .attr("y", 56)
+            .attr("x", 80)
+            .attr("y", 58)
             .text("World Cup")
             .classed("world-cup-only-check", true);
 
         svg.append("text")
             .attr("x", 120)
-            .attr("y", 70)
+            .attr("y", 73)
             .text("Only")
             .classed("world-cup-only-check", true);
 
         worldCupOnlyCheckBox = new d3CheckBox("X");
         worldCupOnlyCheckBox
             .size(27)
-            .x(154)
+            .x(158)
             .y(46)
             .rx(cornerRadius)
             .ry(cornerRadius)
@@ -552,6 +552,7 @@ export function playerChart(id) {
 
     function toggleWorldCupOnly() {
         filters.worldCupOnly = !filters.worldCupOnly;
+        renderRows();
         updateCounts();
     }
 
@@ -838,8 +839,6 @@ export function playerChart(id) {
             .classed("scatter", true)
             .transition(t)
             .attr("r", 9)
-
-        //circles
 
         // Update    
         circles
@@ -1215,9 +1214,9 @@ export function playerChart(id) {
             .sortKeys(sortOrder)
             .entries(_chart.dimension().top(Infinity));
 
-        let sortedValues = values.sort(function (a, b) {
-            return sortOrder(a.values[0].value[sortColumn], b.values[0].value[sortColumn]);
-        });
+        // Remove non World Cup, if neccessary
+        if (filters.worldCupOnly)
+            values = values.filter(d => qualifierNames[d.key] != undefined);
 
         // Set player data, which is what gets rendered (or a slice of it)
         playerData = filterPlayersFast(values, playerDim.top(Infinity));
