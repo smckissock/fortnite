@@ -652,6 +652,41 @@ export function playerChart(id) {
                     .classed("scatterplotMeasuresLabel", true)
             }
 
+            // Big diagonal label for week/solo/duo 
+            let weekText = "";
+            if (filters.soloOrDuo != "")
+                weekText = filters.soloOrDuo;
+            else
+                if (filters.week != "")
+                    weekText = filters.week;
+
+            // Solos and Duos are shorter the "Week x", so shift them        
+            const solosOrDuos = (weekText == "Solos" || weekText == "Duos");
+            const xVal = solosOrDuos ? 140 : 10;
+            const yVal = solosOrDuos ? -10 : 10;
+
+            const weekLabel = scatterplotSvg.select(".weekLabel");
+            if (!weekLabel.empty()) {
+                weekLabel
+                    .text(weekText)
+                    .transition()
+                    .duration(800)
+                    .attr("x", xVal)
+                    .attr("y", yVal);
+            } else {
+                console.log(weekText)
+                scatterplotSvg.append("text")
+                    .text(weekText)
+                    .attr("font-family", "burbank")
+                    .attr("font-size", "18em")
+                    .attr("fill", "lightgrey")
+                    .attr("pointer-events", "none")
+                    .attr("transform", "translate(160, 710) rotate(-27)")
+                    .classed("weekLabel", true)
+                    .attr("x", xVal)
+                    .attr("y", yVal)
+            }
+
             // Update label in the right corner of the chart - filters
             let filtersText = "";
             // Similar to something in main.js 
@@ -666,31 +701,24 @@ export function playerChart(id) {
                 if (filters.regions.length != 0)
                     filterParts.push(filters.regions.join(", "));
 
-                if (filters.soloOrDuo != "")
-                    filterParts.push(filters.soloOrDuo);
-                else
-                    if (filters.week != "")
-                        filterParts.push(filters.week);
-
                 if (filters.search != "")
                     filterParts.push('"' + filters.search + '"');
 
-                filtersText = filterParts.join("/");
+                filtersText = filterParts.join(" / ");
             }
-            console.log(filtersText);
 
             const filtersLabel = scatterplotSvg.select(".scatterplotFiltersLabel");
-            const xPos = 916 - (filtersText.length * 17.6);
+            const xPos = 916 - (filtersText.length * 22.1);
             if (!filtersLabel.empty()) {
                 filtersLabel.text(filtersText)
                 filtersLabel.attr("x", xPos);
             } else {
                 scatterplotSvg.append("text")
                     .attr("x", xPos)
-                    .attr("y", 129)
+                    .attr("y", 132)
                     .text(filtersText)
                     .attr("font-family", "sans-serif")
-                    .attr("font-size", "2.0em")
+                    .attr("font-size", "2.4em")
                     .attr("fill", "black")
                     .attr("pointer-events", "none")
                     .classed("scatterplotFiltersLabel", true)
@@ -778,7 +806,7 @@ export function playerChart(id) {
             .data(data, function (d) { return d.player; });
 
         const radius = 9;
-        const bigRadius = 28;
+        const bigRadius = 30;
 
         circles
             .transition(t)
