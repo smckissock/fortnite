@@ -17,6 +17,8 @@ export let soloQualifications = [];
 export let duoQualifications = [];
 export let qualifierNames = {};
 
+export let teamMembers = [];
+
 export let facts;
 
 
@@ -69,6 +71,7 @@ d3.json('fwc/data/data.json').then(function (data) {
         d.wins = +d.wins;
     });
     makeQualifications(data);
+    makeTeamMembers(data);
 
     facts = crossfilter(data);
 
@@ -113,6 +116,31 @@ function makeQualifications(data) {
             return;
         }
     });
+}
+
+function makeTeamMembers(data) {
+
+    const members = data.filter(d => (d.team != '') && (d.team != 'Free Agent'))
+
+    let finder = function (d) { return d.team; }
+    members.forEach(function (d) {
+        // Get the team, or add if it is not there
+        let idx = teamMembers.findIndex(d2 => d.team == d2.team);
+        let team = {}
+        if (idx == -1) {
+            // Add a new team
+            team = { team: d.team, players: [] }
+            teamMembers.push(team);
+        } else {
+            team = teamMembers[idx];
+        }
+
+        // Now add player to team
+        idx = team.players.findIndex(d2 => d.player == d2);
+        if (idx == -1)
+            team.players.push(d.player);
+    });
+    console.table(teamMembers);
 }
 
 // Big Fortnite title

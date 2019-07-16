@@ -525,13 +525,13 @@ export function playerChart(id) {
 
     function drawWorldCupOnly() {
         svg.append("text")
-            .attr("x", 80)
+            .attr("x", 81)
             .attr("y", 58)
             .text("World Cup")
             .classed("world-cup-only-check", true);
 
         svg.append("text")
-            .attr("x", 120)
+            .attr("x", 121)
             .attr("y", 73)
             .text("Only")
             .classed("world-cup-only-check", true);
@@ -787,8 +787,8 @@ export function playerChart(id) {
             .on('mouseover', function (d) {
 
                 let left = d3.event.pageX - 510;
-                if (d3.event.pageX > 1300)
-                    left = d3.event.pageX - 760;
+                if (d3.event.pageX > 1040)
+                    left = d3.event.pageX - 755;
 
                 const top = d3.event.pageY - 120;
                 const height = 80;
@@ -833,8 +833,8 @@ export function playerChart(id) {
                     .attr("stroke-width", 4)
             })
             .on('mouseout', function (d) {
-                d3.select(this).attr("stroke-width", 1)
-                d3.selectAll(".tooltip").remove();
+                //d3.select(this).attr("stroke-width", 1)
+                //d3.selectAll(".tooltip").remove();
             })
             .classed("scatter", true)
             .transition(t)
