@@ -642,11 +642,11 @@ export function playerChart(id) {
                 label.text(text);
             } else {
                 scatterplotSvg.append("text")
-                    .attr("x", 30)
-                    .attr("y", 138)
+                    .attr("x", 26)
+                    .attr("y", 157)
                     .text(text)
                     .attr("font-family", "burbank")
-                    .attr("font-size", "3.0em")
+                    .attr("font-size", "4.4em")
                     .attr("fill", "black")
                     .attr("pointer-events", "none")
                     .classed("scatterplotMeasuresLabel", true)
@@ -675,22 +675,22 @@ export function playerChart(id) {
                 if (filters.search != "")
                     filterParts.push('"' + filters.search + '"');
 
-                filtersText = filterParts.join(" / ");
+                filtersText = filterParts.join("/");
             }
             console.log(filtersText);
 
             const filtersLabel = scatterplotSvg.select(".scatterplotFiltersLabel");
-            const xPos = 916 - (filtersText.length * 14.1);
+            const xPos = 916 - (filtersText.length * 17.6);
             if (!filtersLabel.empty()) {
                 filtersLabel.text(filtersText)
                 filtersLabel.attr("x", xPos);
             } else {
                 scatterplotSvg.append("text")
                     .attr("x", xPos)
-                    .attr("y", 125)
+                    .attr("y", 129)
                     .text(filtersText)
                     .attr("font-family", "sans-serif")
-                    .attr("font-size", "1.6em")
+                    .attr("font-size", "2.0em")
                     .attr("fill", "black")
                     .attr("pointer-events", "none")
                     .classed("scatterplotFiltersLabel", true)
@@ -778,7 +778,7 @@ export function playerChart(id) {
             .data(data, function (d) { return d.player; });
 
         const radius = 9;
-        const bigRadius = 20;
+        const bigRadius = 28;
 
         circles
             .transition(t)
@@ -858,7 +858,6 @@ export function playerChart(id) {
         // Update    
         circles
             .transition(t)
-            //.duration(3000)
             .attr("cy", d => yScale(d.yVal) + 16)
             .attr("cx", d => xScale(d.xVal))
             .style("fill-opacity", 1)

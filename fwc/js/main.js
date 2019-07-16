@@ -140,7 +140,6 @@ function makeTeamMembers(data) {
         if (idx == -1)
             team.players.push(d.player);
     });
-    console.table(teamMembers);
 }
 
 // Big Fortnite title
