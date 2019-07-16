@@ -1,12 +1,12 @@
 // @language_out ecmascript5
 
-import {colors} from "./shared.js";
+import { colors } from "./shared.js";
 
-import {filters, facts, updateCounts} from "./main.js";
-import {clearPlayer} from "./playerChart.js";
+import { filters, facts, updateCounts } from "./main.js";
+import { clearPlayer, showingScatterplot, playerChart_renderPlayerPage } from "./playerChart.js";
 
 export let clearTeam;
-export let updateTeamBars; 
+export let updateTeamBars;
 
 
 export function teamChart(id, teamDim, teamGroup) {
@@ -17,8 +17,8 @@ export function teamChart(id, teamDim, teamGroup) {
     const div = d3.select(id);
 
     const _chart = dc.baseMixin({});
-    
-    const leftMargin = 4; 
+
+    const leftMargin = 4;
     const chartWidth = 180;
 
     const titleHeight = 34;
@@ -33,15 +33,15 @@ export function teamChart(id, teamDim, teamGroup) {
     let groups;
 
     let selectedTeam = {
-        name: "", 
-        rect: null, 
+        name: "",
+        rect: null,
         n: -1
     };
 
     const svg = div.append("svg")
         .attr("width", chartWidth)
         .attr("height", titleHeight + (barHeight * teamCount));
-    
+
     drawTitle();
     drawBars();
     updateBars();
@@ -62,7 +62,7 @@ export function teamChart(id, teamDim, teamGroup) {
     clearTeam = resetTeam;
 
     return _chart;
-    
+
     function drawTitle() {
         svg.append("text")
             .attr("x", 10)
@@ -70,12 +70,12 @@ export function teamChart(id, teamDim, teamGroup) {
             .text("Teams")
             .attr("font-size", "1.8em")
             .attr("fill", "black");
-    } 
-    
+    }
+
     function drawBars() {
-        
+
         let n = 0;
-        group.all().forEach(function(d) {
+        group.all().forEach(function (d) {
             svg.append("rect")
                 //.attr("data", d)
                 .attr("x", leftMargin)
@@ -91,11 +91,11 @@ export function teamChart(id, teamDim, teamGroup) {
                 .on("mouseover", function () {
                     const node = d3.select(this);
                     const team = node.attr("data");
-                    
+
                     // This is selected, so keep the thick border
                     if (filters.team == team)
-                        return;   
-                        
+                        return;
+
                     node
                         .transition()
                         .duration(duration)
@@ -104,15 +104,15 @@ export function teamChart(id, teamDim, teamGroup) {
                 .on("mouseout", function () {
                     const node = d3.select(this);
                     const team = node.attr("data");
-                    
+
                     // This is selected, so keep the thick border
                     if (filters.team === team)
                         return;
-                  
+
                     node
                         .transition()
                         .duration(duration)
-                        .style("stroke-width", 0) 
+                        .style("stroke-width", 0)
                 })
                 .on('click', function (d) {
                     clickRect(d3.select(this));
@@ -127,7 +127,7 @@ export function teamChart(id, teamDim, teamGroup) {
                 .attr("font-size", ".8em")
                 .attr("fill", "black")
                 .attr("pointer-events", "none")
-                .classed("teamText" + n, true); 
+                .classed("teamText" + n, true);
             n++;
         });
     }
@@ -135,12 +135,12 @@ export function teamChart(id, teamDim, teamGroup) {
 
     function clickRect(rect) {
         const team = rect.attr("data");
-        
+
         const oldTeam = selectedTeam;
         selectedTeam = {
             name: team,
             rect: rect
-        } 
+        }
 
         // 5 things need to happen:
 
@@ -156,23 +156,26 @@ export function teamChart(id, teamDim, teamGroup) {
         // 1 None were selected, this is the first selection
         if (filters.team === "") {
             filters.team = selectedTeam.name;
-            
+
             rect
                 .transition()
                 .duration(duration)
                 .style("stroke-width", strokeWidthThick);
 
-            _chart.filter(filters.team);
-            _chart.redrawGroup();  
-            
+            // We don't want to filters non-team players out; we want to highlight players on the team    
+            if (showingScatterplot) {
+                playerChart_renderPlayerPage()
+            } else {
+                _chart.filter(filters.team);
+                _chart.redrawGroup();
+            }
             updateCounts();
-
             return;
         }
 
         // 2 One is selected, so unselect it and select this
         if (filters.team != selectedTeam.name) {
-            
+
             // Un-border old one
             oldTeam.rect
                 .transition()
@@ -185,69 +188,73 @@ export function teamChart(id, teamDim, teamGroup) {
                 .style("stroke-width", strokeWidthThick);
 
             filters.team = selectedTeam.name;
-            
-            _chart.filter(null);
-            _chart.filter(filters.team);
-            _chart.redrawGroup();   
 
+            if (showingScatterplot) {
+                _chart.filter(null);
+                playerChart_renderPlayerPage()
+            } else {
+                _chart.filter(null);
+                _chart.filter(filters.team);
+                _chart.redrawGroup();
+            }
+            updateCounts();
             return;
-        }   
+        }
 
         // 3 This was selected, so unselect it - none will be selected
+        filters.team = "";
         rect
             .transition()
             .duration(duration)
-            .style("stroke-width", 0); 
-
+            .style("stroke-width", 0);
         _chart.filter(null);
         _chart.redrawGroup();
-        filters.team = "";    
 
         updateCounts();
 
         selectedTeam = {
             name: '',
             rect: null
-        } 
+        }
     }
 
 
     // When data changes, rezise bars and change text 
     function updateBars() {
 
-        const commaFormat = d3.format(","); 
+        const commaFormat = d3.format(",");
 
         // Must clone groups. If you reorder them in place, crossfilter will give the wrong answers 
         const groupsClone = [...group.all()];
         groups = groupsClone
             .sort((a, b) => b.value - a.value)
-            .filter(team => (team.key != "Free Agent") && (team.key != "")); 
+            .filter(team => (team.key != "Free Agent") && (team.key != ""));
 
         const scale = d3.scaleLinear()
             .domain([0, groups[0].value])
             .range([leftMargin, chartWidth - (leftMargin * 2)]);
 
         let n = 0;
-        groups.forEach(function(d) {
+        groups.forEach(function (d) {
             d3.select(".teamRect" + n)
                 .attr("data", d.key)
                 .transition()
                 .duration(200)
                 .attr("width", d.value == 0 ? 0 : scale(d.value));
 
-            const txt = d3.select(".teamText" + n);    
+            const txt = d3.select(".teamText" + n);
             const oldText = txt.text();
-            const newText = d.value == 0 ? "" : d.key + ' $' + commaFormat(d.value); 
+            const newText = d.value == 0 ? "" : d.key + ' $' + commaFormat(d.value);
 
             txt.text(newText);
 
             //if (oldText != "" && newText == "")
             //    txt.Text(newText);
-                
-                
+
+
             //d3.select(".teamText" + n)
             //    .text(d.key + ' $' + commaFormat(d.value));    
- 
+
             n++;
         });
     }
@@ -258,13 +265,13 @@ export function teamChart(id, teamDim, teamGroup) {
                 .transition()
                 .duration(duration)
                 .style("stroke-width", 0)
-                
+
         selectedTeam = {
-            name: "", 
-            rect: null, 
+            name: "",
+            rect: null,
             n: -1
         };
-        
+
         filters.team = "";
         _chart.filter(null);
         //_chart.redrawGroup();

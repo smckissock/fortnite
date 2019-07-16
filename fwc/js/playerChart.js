@@ -2,13 +2,17 @@
 
 import { colors } from "./shared.js";
 
-import { cornerRadius, filters, playerDim, playerColors, soloQualifications, duoQualifications, qualifierNames, updateCounts, showPlayerProfile } from "./main.js";
+import { cornerRadius, filters, playerDim, playerColors, soloQualifications, duoQualifications, qualifierNames, updateCounts, teamMembers, showPlayerProfile } from "./main.js";
 import { showPlayerOnWeekChart } from "./weekChart.js";
 import { d3CheckBox } from "./d3CheckBox.js";
 
 export let clearPlayer
 export let PlayerTableWidth;
 export let playerData;
+
+export let showingScatterplot = false;
+
+export let playerChart_renderPlayerPage;
 
 
 export function playerChart(id) {
@@ -67,7 +71,7 @@ export function playerChart(id) {
     let scatterplotButton;
 
     // Whether the scatterplot button is clicked, and we see a scatterplot instead of a table
-    let showingScatterplot = false;
+    //let showingScatterplot = false;
 
 
     let svgWidth = PlayerTableWidth; //640;
@@ -617,13 +621,14 @@ export function playerChart(id) {
             .duration(500);
 
         function getChartData() {
+
             // Change x and y based on selected 
             return playerData.map(function (d) {
                 return {
                     player: d.key,
                     color: d.color,
                     xVal: d.values[0].value[filters.xMeasure.code],
-                    yVal: d.values[0].value[filters.yMeasure.code]
+                    yVal: d.values[0].value[filters.yMeasure.code],
                 };
             });
         }
@@ -772,7 +777,17 @@ export function playerChart(id) {
         var circles = svg.selectAll(".scatter")
             .data(data, function (d) { return d.player; });
 
-        circles.attr("r", 9);
+        const radius = 9;
+        const bigRadius = 20;
+
+        circles
+            .transition(t)
+            .attr("r", radius);
+
+        // If there is a team filter, get a list of players on the team
+        let members = [];
+        if (filters.team != "")
+            members = teamMembers.filter(d => d.team == filters.team)[0].players;
 
         // Enter    
         circles
@@ -833,19 +848,22 @@ export function playerChart(id) {
                     .attr("stroke-width", 4)
             })
             .on('mouseout', function (d) {
-                //d3.select(this).attr("stroke-width", 1)
-                //d3.selectAll(".tooltip").remove();
+                d3.select(this).attr("stroke-width", 1)
+                d3.selectAll(".tooltip").remove();
             })
             .classed("scatter", true)
             .transition(t)
-            .attr("r", 9)
+            .attr("r", radius)
 
         // Update    
         circles
             .transition(t)
+            //.duration(3000)
             .attr("cy", d => yScale(d.yVal) + 16)
             .attr("cx", d => xScale(d.xVal))
             .style("fill-opacity", 1)
+            .attr("r", d => (members.filter(mem => mem == d.player).length > 0) ? bigRadius : radius)
+            .attr("stroke-width", d => (members.filter(mem => mem == d.player).length > 0) ? 5 : 1);
 
         // Exit    
         circles.exit()
@@ -1451,6 +1469,7 @@ export function playerChart(id) {
     };
 
     clearPlayer = setPlayer;
+    playerChart_renderPlayerPage = renderPlayerPage;
 
     return _chart;
 }
