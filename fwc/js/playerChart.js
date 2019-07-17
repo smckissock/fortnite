@@ -833,6 +833,16 @@ export function playerChart(id) {
                     .duration(500)
                     .style("opacity", 1.0);
             });
+
+            // Allow drag & drop for annotations
+            const dragHandler = d3.drag()
+                .on("drag", function () {
+                    d3.select(this)
+                        .attr("x", d3.event.x)
+                        .attr("y", d3.event.y);
+                });
+
+            dragHandler(svg.selectAll(".player-annotation"));
         }
 
         function getChartData() {
