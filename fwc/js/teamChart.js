@@ -27,8 +27,8 @@ export function teamChart(id, teamDim, teamGroup) {
 
     const duration = 10;
 
-    const strokeWidthThin = 3;
-    const strokeWidthThick = 5;
+    const strokeWidthThin = 2;
+    const strokeWidthThick = 4;
 
     let groups;
 

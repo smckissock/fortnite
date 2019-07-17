@@ -621,7 +621,7 @@ export function playerChart(id) {
         const t = d3.transition()
             .duration(500);
 
-        function getChartData() {
+        /* function getChartData() {
 
             // Change x and y based on selected 
             return playerData.map(function (d) {
@@ -632,7 +632,7 @@ export function playerChart(id) {
                     yVal: d.values[0].value[filters.yMeasure.code],
                 };
             });
-        }
+        } */
 
         function scatterplotMeasuresLabels() {
 
@@ -643,14 +643,14 @@ export function playerChart(id) {
                 label.text(text);
             } else {
                 scatterplotSvg.append("text")
-                    .attr("x", 26)
+                    .attr("x", 40)
                     //.attr("y", 157)
-                    .attr("y", 187)
+                    .attr("y", 200)
                     .text(text)
                     .attr("font-family", "burbank")
                     //.attr("font-size", "4.4em")
-                    .attr("font-size", "6.0em")
-                    .attr("fill", "darkgrey")
+                    .attr("font-size", "5.0em")
+                    .attr("fill", "lightgrey")
                     .attr("pointer-events", "none")
                     .classed("scatterplotMeasuresLabel", true)
             }
@@ -679,7 +679,6 @@ export function playerChart(id) {
                     .attr("x", xVal)
                     .attr("y", yVal);
             } else {
-                console.log(weekText)
                 scatterplotSvg.append("text")
                     .text(weekText)
                     .attr("font-family", "burbank")
@@ -720,11 +719,11 @@ export function playerChart(id) {
             } else {
                 scatterplotSvg.append("text")
                     .attr("x", xPos)
-                    .attr("y", 132)
+                    .attr("y", 128)
                     .text(filtersText)
                     .attr("font-family", "sans-serif")
                     .attr("font-size", "2.4em")
-                    .attr("fill", "black")
+                    .attr("fill", "darkgrey")
                     .attr("pointer-events", "none")
                     .classed("scatterplotFiltersLabel", true)
             }
@@ -756,6 +755,7 @@ export function playerChart(id) {
                 yLabel.text(filters.yMeasure.name);
             }
         }
+
 
         function updateScalesAndAxes(data, t) {
 
@@ -802,6 +802,52 @@ export function playerChart(id) {
             }
         }
 
+        function updatePlayerAnnotations() {
+
+            // Remove old player annotations
+            d3.selectAll(".player-annotation")
+                .transition()
+                .duration(250)
+                .style("opacity", 0)
+                .remove();
+
+            // Add player annotations 
+            playersToAnnotate.forEach(function (player) {
+                console.log(player);
+                svg.append("text")
+                    .style("opacity", 0)
+                    //.attr("x", () => xScale(player.xVal) + 38)
+
+                    .attr("x", function () {
+                        let x = xScale(player.xVal) + 38;
+                        if (x > 800)
+                            x = x -= 90 + (player.player.length * 12);
+                        return x;
+                    })
+                    .attr("y", () => yScale(player.yVal) + 22)
+                    .attr("font-size", "1.8em")
+                    .attr("font-weight", "600")
+                    .text(player.player)
+                    .classed("player-annotation", true)
+                    .transition()
+                    .duration(500)
+                    .style("opacity", 1.0);
+            });
+        }
+
+        function getChartData() {
+
+            // Change x and y based on selected 
+            return playerData.map(function (d) {
+                return {
+                    player: d.key,
+                    color: d.color,
+                    xVal: d.values[0].value[filters.xMeasure.code],
+                    yVal: d.values[0].value[filters.yMeasure.code],
+                };
+            });
+        }
+
         scatterplotMeasuresLabels();
 
         const data = getChartData();
@@ -822,6 +868,9 @@ export function playerChart(id) {
         if (filters.team != "")
             members = teamMembers.filter(d => d.team == filters.team)[0].players;
 
+        let playersToAnnotate = [];
+
+
         // Enter    
         circles
             .enter()
@@ -834,6 +883,7 @@ export function playerChart(id) {
             .attr("r", 0)
             .on('mouseover', function (d) {
 
+                // Make tooltip for player
                 const rectWidth = 120 + (5 * d.player.length) // 206
                 let left = d3.event.pageX - 510;
                 if (d3.event.pageX > 1040)
@@ -881,6 +931,7 @@ export function playerChart(id) {
                 d3.select(this)
                     .attr("stroke-width", 4)
             })
+            // Hide player tooltip
             .on('mouseout', function (d) {
                 d3.select(this).attr("stroke-width", 1)
                 d3.selectAll(".tooltip").remove();
@@ -895,7 +946,14 @@ export function playerChart(id) {
             .attr("cy", d => yScale(d.yVal) + 16)
             .attr("cx", d => xScale(d.xVal))
             .style("fill-opacity", 1)
-            .attr("r", d => (members.filter(mem => mem == d.player).length > 0) ? bigRadius : radius)
+            .attr("r", function (d) {
+                if (members.filter(mem => mem == d.player).length > 0) {
+                    // He's on the team, put him int the list to get annotated later
+                    playersToAnnotate.push(d);
+                    return bigRadius;
+                } else
+                    return radius;
+            })
             .attr("stroke-width", d => (members.filter(mem => mem == d.player).length > 0) ? 5 : 1);
 
         // Exit    
@@ -905,6 +963,8 @@ export function playerChart(id) {
             .attr("r", 0)
             .attr("stroke-width", 0)
             .remove();
+
+        updatePlayerAnnotations();
     }
 
 
