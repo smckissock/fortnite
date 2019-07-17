@@ -67,6 +67,12 @@ body {
     font-weight: 600;
 }
 
+.tick {
+    font-weight: 500;
+    font-size: 20px;
+
+}
+
 .search {
     grid-area: search;
     font-weight: 700;

@@ -643,11 +643,13 @@ export function playerChart(id) {
             } else {
                 scatterplotSvg.append("text")
                     .attr("x", 26)
-                    .attr("y", 157)
+                    //.attr("y", 157)
+                    .attr("y", 187)
                     .text(text)
                     .attr("font-family", "burbank")
-                    .attr("font-size", "4.4em")
-                    .attr("fill", "black")
+                    //.attr("font-size", "4.4em")
+                    .attr("font-size", "6.0em")
+                    .attr("fill", "darkgrey")
                     .attr("pointer-events", "none")
                     .classed("scatterplotMeasuresLabel", true)
             }
@@ -662,8 +664,9 @@ export function playerChart(id) {
 
             // Solos and Duos are shorter the "Week x", so shift them        
             const solosOrDuos = (weekText == "Solos" || weekText == "Duos");
-            const xVal = solosOrDuos ? 140 : 10;
-            const yVal = solosOrDuos ? -10 : 10;
+            const xVal = solosOrDuos ? 100 : 10;
+            const yVal = solosOrDuos ? -20 : 10;
+            const fontSize = solosOrDuos ? "22em" : "18em";
 
             const weekLabel = scatterplotSvg.select(".weekLabel");
             if (!weekLabel.empty()) {
@@ -671,6 +674,7 @@ export function playerChart(id) {
                     .text(weekText)
                     .transition()
                     .duration(800)
+                    .attr("font-size", fontSize)
                     .attr("x", xVal)
                     .attr("y", yVal);
             } else {
@@ -678,7 +682,7 @@ export function playerChart(id) {
                 scatterplotSvg.append("text")
                     .text(weekText)
                     .attr("font-family", "burbank")
-                    .attr("font-size", "18em")
+                    .attr("font-size", fontSize)
                     .attr("fill", "lightgrey")
                     .attr("pointer-events", "none")
                     .attr("transform", "translate(160, 710) rotate(-27)")
@@ -708,7 +712,7 @@ export function playerChart(id) {
             }
 
             const filtersLabel = scatterplotSvg.select(".scatterplotFiltersLabel");
-            const xPos = 916 - (filtersText.length * 22.1);
+            const xPos = 920 - (filtersText.length * 22.9);
             if (!filtersLabel.empty()) {
                 filtersLabel.text(filtersText)
                 filtersLabel.attr("x", xPos);
@@ -729,7 +733,7 @@ export function playerChart(id) {
             if (xLabel.empty()) {
                 scatterplotSvg.append("text")
                     .attr("x", 430)
-                    .attr("y", 788)
+                    .attr("y", 792)
                     .text(filters.xMeasure.name)
                     .attr("pointer-events", "none")
                     .classed("scatterplotXAxisLabel", true);
@@ -746,7 +750,7 @@ export function playerChart(id) {
                     .text(filters.yMeasure.name)
                     .attr("pointer-events", "none")
                     .classed("scatterplotYAxisLabel", true)
-                    .attr("transform", "translate(34, 490) rotate(-90)");
+                    .attr("transform", "translate(28, 490) rotate(-90)");
             } else {
                 yLabel.text(filters.yMeasure.name);
             }
@@ -767,7 +771,7 @@ export function playerChart(id) {
 
                 yScale = d3.scaleLinear()
                     .domain(d3.extent(data, d => d.yVal))
-                    .range([720, 140]);
+                    .range([720, 180]);
 
                 xAxis = d3.axisBottom(xScale);
                 scatterplotBox.append("g")
