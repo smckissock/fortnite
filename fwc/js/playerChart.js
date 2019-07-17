@@ -130,10 +130,11 @@ export function playerChart(id) {
         .attr("x", 3)
         .attr("y", 84)
         .attr("width", svgWidth - 6)
-        .attr("height", 746)
+        //.attr("height", 746)
+        .attr("height", 713)
         .attr("fill", "#F0F8FF")
         .attr("stroke", "black")
-        .attr("stroke-width", 8)
+        .attr("stroke-width", 9)
         .attr("rx", cornerRadius)
         .attr("ry", cornerRadius)
         .attr("opacity", "0")
@@ -665,7 +666,7 @@ export function playerChart(id) {
             // Solos and Duos are shorter the "Week x", so shift them        
             const solosOrDuos = (weekText == "Solos" || weekText == "Duos");
             const xVal = solosOrDuos ? 100 : 10;
-            const yVal = solosOrDuos ? -20 : 10;
+            const yVal = solosOrDuos ? 10 : 10;
             const fontSize = solosOrDuos ? "22em" : "18em";
 
             const weekLabel = scatterplotSvg.select(".weekLabel");
@@ -712,7 +713,7 @@ export function playerChart(id) {
             }
 
             const filtersLabel = scatterplotSvg.select(".scatterplotFiltersLabel");
-            const xPos = 920 - (filtersText.length * 22.9);
+            const xPos = 920 - (filtersText.length * 22.7);
             if (!filtersLabel.empty()) {
                 filtersLabel.text(filtersText)
                 filtersLabel.attr("x", xPos);
@@ -733,7 +734,7 @@ export function playerChart(id) {
             if (xLabel.empty()) {
                 scatterplotSvg.append("text")
                     .attr("x", 430)
-                    .attr("y", 792)
+                    .attr("y", 788)
                     .text(filters.xMeasure.name)
                     .attr("pointer-events", "none")
                     .classed("scatterplotXAxisLabel", true);
