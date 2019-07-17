@@ -834,9 +834,10 @@ export function playerChart(id) {
             .attr("r", 0)
             .on('mouseover', function (d) {
 
+                const rectWidth = 120 + (5 * d.player.length) // 206
                 let left = d3.event.pageX - 510;
                 if (d3.event.pageX > 1040)
-                    left = d3.event.pageX - 755;
+                    left = d3.event.pageX - 555 - rectWidth;
 
                 const top = d3.event.pageY - 120;
                 const height = 80;
@@ -845,7 +846,7 @@ export function playerChart(id) {
                     .attr("x", left - 12)
                     .attr("y", top)
 
-                    .attr("width", 206)
+                    .attr("width", rectWidth)
                     .attr("height", height)
                     .attr("fill", "white")
                     .attr("stroke", "black")
