@@ -997,6 +997,9 @@ export function playerChart(id) {
         }
 
         showingScatterplot = !showingScatterplot;
+        ga('set', 'page', showingScatterplot ? "/scatterplot" : "/listing");
+        ga('send', 'pageview');
+
 
         // GOING TO SHOW THE TABLE
         if (!showingScatterplot) {
