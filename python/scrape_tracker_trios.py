@@ -1,4 +1,5 @@
 import requests
+import time
 
 from db import cmd, cursor, conn, max_id
 
@@ -68,16 +69,35 @@ def save_places(json, week, region, solo_or_duo):
 
 
 regions = ["NAE", "NAW", "EU", "OCE", "ASIA", "BR"]
-match = "CashCup_Trios1"
+solo_weeks = ["Week1", "Week3", "Week5", "Week7", "Week9"]
+duo_weeks = ["Week2", "Week4", "Week6", "Week8", "Week10"]
+
+match = "OnlineOpen"
+#match = "CashCup_Trios1"
 event = "Event2"
 
 for region in regions:
-    print(region)
-    for week in range(1, 20):
-        print(week)
-        #url = "https://www.epicgames.com/fortnite/competitive/api/leaderboard/epicgames_OnlineOpen_" + solo_week + "_" + region + "/OnlineOpen_" + solo_week + "_" + region + "_" + event
-        #response = requests.get(url)
-        #json = response.json()
-        #save_places(json, solo_week, region, "Solo")
+    for week in duo_weeks:
+        for page in range(1, 16):
 
+            # Import Solos
+            #      https://fortnitetracker.com/events/epicgames_OnlineOpen_Week1_NAE?window=OnlineOpen_Week1_NAE_Event2&page=1
+            url = "https://fortnitetracker.com/events/epicgames_" + match + "_" + \
+                week + "_" + region + "?window=" + match + "_" + week + "_" + region + \
+                "_" + event + "&page=" + str(page)
+
+            # Import Trios
+            # https://fortnitetracker.com/events/epicgames_CashCup_Trios1_NAE?window=CashCup_Trios1_NAE_Event2&page=2
+            # url = "https://fortnitetracker.com/events/epicgames_" + match + "_" + \
+            #    region + "?window=" + match + "_" + region + \
+            #    "_" + event + "&page=" + str(page)
+            # print(url)
+            response = requests.get(url)
+
+            f = open("c:\\fortnite\\scraped\\worldcup\\duos\\" + region + "_" + week +
+                     "_" + str(page) + ".html", "w+", encoding="utf-8")
+            f.write(response.text)
+            f.close()
+
+        time.sleep(3)
 print("Done")
