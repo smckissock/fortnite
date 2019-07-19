@@ -5,7 +5,7 @@ conn = pyodbc.connect(
     # r'SERVER=SCOTT-PC\SQLExpress;'
     r'SERVER=PC\SQLExpress;'
     # r'DATABASE=RussiaNews;'
-    r'DATABASE=Fortnite;'
+    r'DATABASE=Fortnite2;'
     r'Trusted_Connection=yes;'
 )
 cursor = conn.cursor()

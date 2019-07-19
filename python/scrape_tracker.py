@@ -1,5 +1,6 @@
 import requests
 import time
+from bs4 import BeautifulSoup
 
 from db import cmd, cursor, conn, max_id
 
@@ -92,12 +93,13 @@ for region in regions:
             #    region + "?window=" + match + "_" + region + \
             #    "_" + event + "&page=" + str(page)
             # print(url)
-            response = requests.get(url)
 
-            f = open("c:\\fortnite\\scraped\\worldcup\\duos\\" + region + "_" + week +
-                     "_" + str(page) + ".html", "w+", encoding="utf-8")
-            f.write(response.text)
-            f.close()
+            # Import World Cup
+            #response = requests.get(url)
+            # f = open("c:\\fortnite\\scraped\\worldcup\\duos\\" + region + "_" + week +
+            #         "_" + str(page) + ".html", "w+", encoding="utf-8")
+            # f.write(response.text)
+            # f.close()
 
         time.sleep(3)
 print("Done")

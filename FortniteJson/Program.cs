@@ -13,7 +13,8 @@ namespace FortniteJson {
 
             Console.WriteLine("Running..");
 
-            Python.Run(@"c:\fortnite\python\scrape_tracker_trios.py", "");
+            //Python.Run(@"c:\fortnite\python\scrape_tracker_trios.py", "");
+            Python.Run(@"c:\fortnite\python\import_tracker.py", "");
 
             //PlayersUpdatedFromAirtable.Import();
             //Fortnite.MakeJson();
