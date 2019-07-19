@@ -19,23 +19,26 @@ GO
 --END	
 --GO
 
-EXEC DropTable 'PlayerWeek'
-EXEC DropTable 'Week'
-EXEC DropTable 'Match'
-EXEC DropTable 'MatchType'
+
+EXEC DropTable 'Placement'
 EXEC DropTable 'Region'
 EXEC DropTable 'Player'
+EXEC DropTable 'Week'
+EXEC DropTable 'Match'
+EXEC DropTable 'Format'
+EXEC DropTable 'PlayerPlacement'
+EXEC DropTable 'Game';
 
 
-CREATE TABLE dbo.MatchType (
+CREATE TABLE dbo.Format (
 	ID int IDENTITY(1,1) PRIMARY KEY,
 	Name nvarchar(100) NOT NULL
 )
 
-INSERT INTO MatchType VALUES ('Solo')
-INSERT INTO MatchType VALUES ('Duo')
-INSERT INTO MatchType VALUES ('Trio')
-INSERT INTO MatchType VALUES ('Squad')
+INSERT INTO Format VALUES ('Solo')
+INSERT INTO Format VALUES ('Duo')
+INSERT INTO Format VALUES ('Trio')
+INSERT INTO Format VALUES ('Squad')
 
 
 CREATE TABLE dbo.Match (
@@ -50,7 +53,7 @@ INSERT INTO Match VALUES ('Fortnite World Cup', 'OnlineOpen', 'Event2')
 CREATE TABLE dbo.Week (
 	ID int IDENTITY(1,1) PRIMARY KEY,
 	MatchID int NOT NULL REFERENCES Match(ID),
-	MatchTypeID int NOT NULL REFERENCES MatchType(ID),
+	FormatID int NOT NULL REFERENCES Format(ID),
 	Name nvarchar(100) NOT NULL
 )
 
@@ -71,6 +74,7 @@ CREATE TABLE dbo.Region (
 	EpicCode nvarchar(100) NOT NULL 
 )
 
+INSERT INTO Region VALUES ('TBD', 'TBD')
 INSERT INTO Region VALUES ('Oceania', 'OCE')
 INSERT INTO Region VALUES ('NA East', 'NAE')
 INSERT INTO Region VALUES ('NA West', 'NAW')
@@ -91,13 +95,44 @@ CREATE UNIQUE NONCLUSTERED INDEX [NonClusteredIndex-20190719-083914] ON [dbo].[P
 
 
 
-CREATE TABLE dbo.PlayerWeek (
+CREATE TABLE dbo.Placement (
 	ID int IDENTITY(1,1) PRIMARY KEY,
-	PlayerID int NOT NULL REFERENCES Player(ID),
 	WeekID int NOT NULL REFERENCES Week(ID),
+	RegionID int NOT NULL REFERENCES Region(ID),
+	Rank int NOT NULL DEFAULT 0,
+	Payout int NOT NULL DEFAULT 0,
+	Points int NOT NULL DEFAULT 0,
+	Elims int NOT NULL DEFAULT 0,
 	Name nvarchar(500) NOT NULL
 )
 
 
+CREATE TABLE dbo.PlayerPlacement (
+	ID int IDENTITY(1,1) PRIMARY KEY,
+	PlayerID int NOT NULL REFERENCES Player(ID),
+	PlacementID int NOT NULL REFERENCES Placement(ID),
+)
 
 
+CREATE TABLE Game (
+	ID int IDENTITY(1,1) PRIMARY KEY,
+	PlacementID int NOT NULL REFERENCES Placement(ID),
+	EndTime DateTime NOT NULL,
+	TimeAlive int NOT NULL,
+	Elims int NOT NULL,
+	Tiebreaker int NOT NULL
+) 
+
+
+
+
+-- Duos
+--SELECT * FROM PLayer     --  44,397
+--SELECT * FROM PLayerWeek --  76,522
+
+-- Then Solos
+--SELECT * FROM PLayer     --	  65,439
+--SELECT * FROM PLayerWeek --  156,309
+
+
+--SELECT * FROM PlayerWeek WHERE Rank <> 0
