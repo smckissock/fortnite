@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Fortnite.cs" />
+    <Compile Include="Fortnite2FixUp.cs" />
     <Compile Include="PlayersFromAirtableCsv.cs" />
     <Compile Include="PlayersFromCsv.cs" />
     <Compile Include="PlayersUpdatedFromAirtable.cs" />

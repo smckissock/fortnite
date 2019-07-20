@@ -10,11 +10,14 @@ namespace FortniteJson {
             //PlayersFromAirtableCsv.Import();
             //PlayersFromCsv.Import();
 
+            //Python.Run(@"c:\fortnite\python\scrape_tracker_trios.py", "");
+            //Python.Run(@"c:\fortnite\python\import_tracker.py", "");
 
             Console.WriteLine("Running..");
 
-            //Python.Run(@"c:\fortnite\python\scrape_tracker_trios.py", "");
-            Python.Run(@"c:\fortnite\python\import_tracker.py", "");
+            //Fortnite2FixUp.FixCurrentName();
+            //Fortnite2FixUp.FixPlacementPayout();
+            Fortnite2FixUp.FixPlacementElims();
 
             //PlayersUpdatedFromAirtable.Import();
             //Fortnite.MakeJson();

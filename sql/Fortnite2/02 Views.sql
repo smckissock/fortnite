@@ -17,9 +17,9 @@ GO
 
 
 
-EXEC DropView 'PlacemenentView'
+EXEC DropView 'PlacementView'
 GO
-CREATE VIEW PlacemenentView  -- 124947
+CREATE VIEW PlacementView  -- 124947
 --- 165,521 after joining on PlayerPlacement
 AS
 SELECT 
@@ -37,5 +37,4 @@ JOIN WeekView w ON p.WeekID = w.ID
 JOIN Region r ON p.RegionID = r.ID
 JOIN PlayerPlacement pp ON pp.PlacementID = p.ID 
 JOIN Player pl ON pp.PlayerID = pl.ID 
-
 
