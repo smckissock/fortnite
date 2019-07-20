@@ -31,6 +31,8 @@ EXEC DropTable 'Match'
 EXEC DropTable 'Format'
 
 
+
+
 CREATE TABLE dbo.Format (
 	ID int IDENTITY(1,1) PRIMARY KEY,
 	Name nvarchar(100) NOT NULL
@@ -150,6 +152,47 @@ CREATE TABLE Game (
 	Tiebreaker int NOT NULL
 ) 
 
+
+
+EXEC DropTable 'RankPointTier'
+EXEC DropTable 'RankPayoutTier'
+
+CREATE TABLE dbo.RankPointTier (
+	ID int IDENTITY(1,1) PRIMARY KEY,
+	WeekID int NOT NULL REFERENCES Week(ID),
+	RegionID int NOT NULL REFERENCES Region(ID),
+	Rank int NOT NULL DEFAULT 0,
+	Points int NOT NULL DEFAULT 0
+)
+CREATE UNIQUE NONCLUSTERED INDEX [NonClusteredIndex-20190720-021911] ON [dbo].[RankPointTier]
+(
+	[WeekID] ASC,
+	[RegionID] ASC,
+	[Rank] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON)
+
+
+CREATE TABLE dbo.RankPayoutTier (
+	ID int IDENTITY(1,1) PRIMARY KEY,
+	WeekID int NOT NULL REFERENCES Week(ID),
+	RegionID int NOT NULL REFERENCES Region(ID),
+	Rank int NOT NULL DEFAULT 0,
+	Payout int NOT NULL DEFAULT 0
+)
+CREATE UNIQUE NONCLUSTERED INDEX [NonClusteredIndex-20190720-021910] ON [dbo].[RankPayoutTier]
+(
+	[WeekID] ASC,
+	[RegionID] ASC,
+	[Rank] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON)
+
+SELECT * FROM RankPayoutTier
+SELECT * FROM RankPointTier
+
+
+SELECT * FROM RankPayoutTier ORDER BY Payout DESC
+
+
 -- 02 Import
 -- SELECT COUNT(*) FROM Player
 -- SELECT COUNT(*) FROM PlayerWeek
@@ -169,12 +212,12 @@ SELECT COUNT(*) FROM PlayerPlacement
 SELECT COUNT(*) FROM game
 
 -- Solos
-SELECT COUNT(*) FROM Placement
-SELECT COUNT(*) FROM PlayerPlacement
-SELECT COUNT(*) FROM game
+--SELECT COUNT(*) FROM Placement          83,369
+--SELECT COUNT(*) FROM PlayerPlacement    82,847
+--SELECT COUNT(*) FROM game              772,032
 
 -- Duos
-SELECT COUNT(*) FROM Placement
-SELECT COUNT(*) FROM PlayerPlacement
-SELECT COUNT(*) FROM game
+-- SELECT COUNT(*) FROM Placement           124,949
+-- SELECT COUNT(*) FROM PlayerPlacement     165,521
+-- SELECT COUNT(*) FROM game              1,162,245   
 
