@@ -23,24 +23,29 @@ def insert_player_guid(player, week_id, region_code):
 
     # Add PlayerPlacement with PlayerID (their Epic account) and the name they used this week.
     # PlacementID gets updated later using leaderboard
-    cursor.execute("INSERT INTO PlayerPlacement VALUES ((SELECT ID FROM Player WHERE EpicGuid = ?), 1 , ?)",
-                   account_id, player)
-    conn.commit()
-
-    #cursor.execute("SELECT ID FROM Player WHERE EpicGuid = ?", accountId)
-    #rows = cursor.fetchall()
-    #player_id = rows[0].ID
-
-    # Old - PlayerWeek is replaced by Placement and PayerPlacement. Leaderboard populates these noW
-    # cursor.execute("INSERT INTO PlayerWeek (PlayerID, WeekID, RegionID, Name) VALUES ( " +
-    #               "(SELECT ID FROM Player WHERE EpicGuid = ?), ?, " +
-    #               "(SELECT ID FROM Region WHERE EpicCode = ?), ?)", account_id, week_id, region_code, player)
-    # conn.commit()
+    try:
+        cursor.execute("INSERT INTO PlayerWeek VALUES ((SELECT ID FROM Player WHERE EpicGuid = ?), ?, " +
+                       "(SELECT ID FROM Region WHERE EpicCode = ?), ?)",
+                       account_id, week_id, region_code, player)
+        conn.commit()
+    # Shouldn't happen, but does: in Week NAE, KNG Sebby placed 1339 with "jinFN on youtube" and 49 with Grove
+    # Ignoring this should break anything...
+    except Exception as e:
+        pass
 
 
 regions = ["NAE", "NAW", "EU", "OCE", "ASIA", "BR"]
 solo_weeks = ["1", "3", "5", "7", "9"]
 duo_weeks = ["2", "4", "6", "8", "10"]
+
+weeks = solo_weeks
+last_page = 31
+duos_directory = ''
+
+#weeks = duo_weeks
+#last_page = 16
+#duos_directory = 'duos\\'
+
 
 match = "OnlineOpen"
 #match = "CashCup_Trios1"
@@ -48,13 +53,13 @@ event = "Event2"
 
 for region in regions:
     print(region)
-    for week in duo_weeks:  # duo_weeks
-        for page in range(0, 17):  # 16
+    for week in weeks:  # duo_weeks
+        for page in range(0, last_page):  # 16
             fileName = region + "_Week" + str(week) + "_" + str(page) + ".html"
             try:
                 # "c:\\fortnite-scrape\\scraped\\worldcup\\duos\\"
                 file = open(
-                    "c:\\fortnite-scrape\\scraped\\worldcup\\duos\\" + fileName, encoding="utf-8")
+                    "c:\\fortnite-scrape\\scraped\\worldcup\\" + duos_directory + fileName, encoding="utf-8")
             except Exception as e:
                 continue
 

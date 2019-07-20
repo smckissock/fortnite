@@ -22,6 +22,7 @@ GO
 
 EXEC DropTable 'Game';
 EXEC DropTable 'PlayerPlacement'
+EXEC DropTable 'PlayerWeek'
 EXEC DropTable 'Player'
 EXEC DropTable 'Placement'
 EXEC DropTable 'Region'
@@ -95,6 +96,23 @@ CREATE UNIQUE NONCLUSTERED INDEX [NonClusteredIndex-20190719-083914] ON [dbo].[P
 
 
 
+CREATE TABLE dbo.PlayerWeek (
+	ID int IDENTITY(1,1) PRIMARY KEY,
+	PlayerID int NOT NULL REFERENCES Player(ID),
+	WeekID int NOT NULL REFERENCES Week(ID),
+	RegionID int NOT NULL REFERENCES Region(ID),
+	PlayerName nvarchar(500) NOT NULL
+)
+CREATE UNIQUE NONCLUSTERED INDEX [NonClusteredIndex-20190719-230012] ON [dbo].[PlayerWeek]
+(
+	[PlayerID] ASC,
+	[WeekID] ASC,
+	[RegionID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON)
+
+GO
+
+
 CREATE TABLE dbo.Placement (
 	ID int IDENTITY(1,1) PRIMARY KEY,
 	WeekID int NOT NULL REFERENCES Week(ID),
@@ -113,36 +131,50 @@ GO
 CREATE TABLE dbo.PlayerPlacement (
 	ID int IDENTITY(1,1) PRIMARY KEY,
 	PlayerID int NOT NULL REFERENCES Player(ID),
-	PlacementID int NOT NULL REFERENCES Placement(ID),
-	PlayerName nvarchar(500) NOT NULL
+	PlacementID int NOT NULL REFERENCES Placement(ID)
 )
+CREATE UNIQUE NONCLUSTERED INDEX [NonClusteredIndex-20190719-231121] ON [dbo].[PlayerPlacement]
+(
+	[PlayerID] ASC,
+	[PlacementID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON)
 
 
 CREATE TABLE Game (
 	ID int IDENTITY(1,1) PRIMARY KEY,
 	PlacementID int NOT NULL REFERENCES Placement(ID),
-	EndTime DateTime NOT NULL,
+	EndTime datetime NOT NULL,
 	SecondsAlive int NOT NULL DEFAULT 0, 
 	GameRank int NOT NULL,
 	Elims int NOT NULL,
 	Tiebreaker int NOT NULL
 ) 
 
+-- 02 Import
+-- SELECT COUNT(*) FROM Player
+-- SELECT COUNT(*) FROM PlayerWeek
 
-
-
--- Duos
---SELECT * FROM PLayer          --  44,397    45,167
---SELECT * FROM PLayerPlacement --  76,522    82,780
+-- Duos                                       Added Page 0 HTML   I don't know why these are lower, but have to move on...
+--SELECT * FROM Player          --  44,397    45,167              44,733
+--SELECT * FROM PlayerPlacement --  76,522    82,780              82,015
 
 -- Then Solos
---SELECT * FROM PLayer     --	  65,439
---SELECT * FROM PLayerWeek --  156,309
+--SELECT * FROM Player         --	 65,439   65,513			  65,513
+--SELECT * FROM PlayerPlacement -- 156,309   165,290             164,789
 
 
---SELECT * FROM PlayerWeek WHERE Rank <> 0
+-- 03 Import 
+SELECT COUNT(*) FROM Placement
+SELECT COUNT(*) FROM PlayerPlacement
+SELECT COUNT(*) FROM game
 
+-- Solos
+SELECT COUNT(*) FROM Placement
+SELECT COUNT(*) FROM PlayerPlacement
+SELECT COUNT(*) FROM game
 
+-- Duos
+SELECT COUNT(*) FROM Placement
+SELECT COUNT(*) FROM PlayerPlacement
+SELECT COUNT(*) FROM game
 
-SELECT * FROM Player
-SELECT * FROM PlayerPlacement
