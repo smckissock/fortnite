@@ -1,3 +1,7 @@
+# Using the html files from ftn, grab the impl_account section:
+# 1) Populate the Player table, which is ID and Epic Guid
+# 2) Add Placement records
+
 import requests
 import json
 import re
@@ -17,14 +21,21 @@ def insert_player_guid(player, week_id, region_code):
     except Exception as e:
         pass
 
+    # Add PlayerPlacement with PlayerID (their Epic account) and the name they used this week.
+    # PlacementID gets updated later using leaderboard
+    cursor.execute("INSERT INTO PlayerPlacement VALUES ((SELECT ID FROM Player WHERE EpicGuid = ?), 1 , ?)",
+                   account_id, player)
+    conn.commit()
+
     #cursor.execute("SELECT ID FROM Player WHERE EpicGuid = ?", accountId)
     #rows = cursor.fetchall()
     #player_id = rows[0].ID
 
-    cursor.execute("INSERT INTO PlayerWeek (PlayerID, WeekID, RegionID, Name) VALUES ( " +
-                   "(SELECT ID FROM Player WHERE EpicGuid = ?), ?, " +
-                   "(SELECT ID FROM Region WHERE EpicCode = ?), ?)", account_id, week_id, region_code, player)
-    conn.commit()
+    # Old - PlayerWeek is replaced by Placement and PayerPlacement. Leaderboard populates these noW
+    # cursor.execute("INSERT INTO PlayerWeek (PlayerID, WeekID, RegionID, Name) VALUES ( " +
+    #               "(SELECT ID FROM Player WHERE EpicGuid = ?), ?, " +
+    #               "(SELECT ID FROM Region WHERE EpicCode = ?), ?)", account_id, week_id, region_code, player)
+    # conn.commit()
 
 
 regions = ["NAE", "NAW", "EU", "OCE", "ASIA", "BR"]
@@ -37,13 +48,13 @@ event = "Event2"
 
 for region in regions:
     print(region)
-    for week in solo_weeks:  # duo_weeks
-        for page in range(1, 31):  # 16
+    for week in duo_weeks:  # duo_weeks
+        for page in range(0, 17):  # 16
             fileName = region + "_Week" + str(week) + "_" + str(page) + ".html"
             try:
                 # "c:\\fortnite-scrape\\scraped\\worldcup\\duos\\"
                 file = open(
-                    "c:\\fortnite-scrape\\scraped\\worldcup\\" + fileName, encoding="utf-8")
+                    "c:\\fortnite-scrape\\scraped\\worldcup\\duos\\" + fileName, encoding="utf-8")
             except Exception as e:
                 continue
 

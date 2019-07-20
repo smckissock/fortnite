@@ -20,14 +20,14 @@ GO
 --GO
 
 
+EXEC DropTable 'Game';
+EXEC DropTable 'PlayerPlacement'
+EXEC DropTable 'Player'
 EXEC DropTable 'Placement'
 EXEC DropTable 'Region'
-EXEC DropTable 'Player'
 EXEC DropTable 'Week'
 EXEC DropTable 'Match'
 EXEC DropTable 'Format'
-EXEC DropTable 'PlayerPlacement'
-EXEC DropTable 'Game';
 
 
 CREATE TABLE dbo.Format (
@@ -102,15 +102,19 @@ CREATE TABLE dbo.Placement (
 	Rank int NOT NULL DEFAULT 0,
 	Payout int NOT NULL DEFAULT 0,
 	Points int NOT NULL DEFAULT 0,
-	Elims int NOT NULL DEFAULT 0,
-	Name nvarchar(500) NOT NULL
+	Elims int NOT NULL DEFAULT 0
 )
+
+-- This is ID 1 - the "blank" or TBD placement 
+INSERT INTO Placement (WeekID, RegionID) VALUES (1, 1)
+GO
 
 
 CREATE TABLE dbo.PlayerPlacement (
 	ID int IDENTITY(1,1) PRIMARY KEY,
 	PlayerID int NOT NULL REFERENCES Player(ID),
 	PlacementID int NOT NULL REFERENCES Placement(ID),
+	PlayerName nvarchar(500) NOT NULL
 )
 
 
@@ -118,7 +122,8 @@ CREATE TABLE Game (
 	ID int IDENTITY(1,1) PRIMARY KEY,
 	PlacementID int NOT NULL REFERENCES Placement(ID),
 	EndTime DateTime NOT NULL,
-	TimeAlive int NOT NULL,
+	SecondsAlive int NOT NULL DEFAULT 0, 
+	GameRank int NOT NULL,
 	Elims int NOT NULL,
 	Tiebreaker int NOT NULL
 ) 
@@ -127,8 +132,8 @@ CREATE TABLE Game (
 
 
 -- Duos
---SELECT * FROM PLayer     --  44,397
---SELECT * FROM PLayerWeek --  76,522
+--SELECT * FROM PLayer          --  44,397    45,167
+--SELECT * FROM PLayerPlacement --  76,522    82,780
 
 -- Then Solos
 --SELECT * FROM PLayer     --	  65,439
@@ -136,3 +141,8 @@ CREATE TABLE Game (
 
 
 --SELECT * FROM PlayerWeek WHERE Rank <> 0
+
+
+
+SELECT * FROM Player
+SELECT * FROM PlayerPlacement

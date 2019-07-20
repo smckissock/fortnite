@@ -10,28 +10,51 @@ def insert_placement(placement, week, region):
     points_earned = placement["pointsEarned"]
     rank = placement["rank"]
 
+    # Insert Placement record
+    try:
+        cursor.execute("INSERT INTO Placement (WeekID, RegionID, Rank, Points) VALUES ( " +
+                       "?, (SELECT ID FROM Region WHERE EpicCode = ?), ?, ?)", week, region, rank, points_earned)
+
+        conn.commit()
+    # Should never happen
+    except Exception as e:
+        pass
+
+    # Update PlayerPlacement records [1..4] with the ID of the placement just added
     for member_guid in placement["teamAccountIds"]:
         try:
-            cursor.execute("UPDATE PlayerWeek SET Points = ?, Rank = ? WHERE " +
-                           "PlayerID = (SELECT ID FROM Player WHERE EpicGuid = ?) AND " +
-                           "WeekID = ? AND RegionID = (SELECT ID FROM Region WHERE EpicCode = ?)",
-                           points_earned, rank, member_guid, week, region)
+            cursor.execute("UPDATE PlayerPlacement SET PlacementID = (SELECT MAX(ID) FROM Placement) " +
+                           "WHERE PlayerID = (SELECT ID FROM Player WHERE EpicGuid = ?)", member_guid)
             conn.commit()
+        # Should never happen
         except Exception as e:
             pass
 
-        # for game in
+    # Add games
+    for game in placement["sessionHistory"]:
+        end_time = game["endTime"]
 
-        # "PLACEMENT_STAT_INDEX": 1,
-        # "TIME_ALIVE_STAT": 1373,
-        # "TEAM_ELIMS_STAT_INDEX": 19,
-        # "MATCH_PLAYED_STAT": 1,
-        # "PLACEMENT_TIEBREAKER_STAT": 99,
+        stats = game["trackedStats"]
 
-    # cursor.execute("INSERT INTO PlayerWeek (PlayerID, WeekID, RegionID, Name) VALUES ( " +
-    #               "(SELECT ID FROM Player WHERE EpicGuid = ?), ?, " +
-    #              "(SELECT ID FROM Region WHERE EpicCode = ?), ?)", account_id, week_id, region_code, player)
-    # conn.commit()
+        # Doesn't seem to exist for first two weeks
+        seconds_alive = 0
+        try:
+            seconds_alive = stats["TIME_ALIVE_STAT"]
+        # Could happen!
+        except Exception as e:
+            pass
+
+        game_rank = stats["PLACEMENT_STAT_INDEX"]
+        elims = stats["TEAM_ELIMS_STAT_INDEX"]
+        tiebreaker = stats["PLACEMENT_TIEBREAKER_STAT"]
+
+        try:
+            cursor.execute("INSERT INTO Game VALUES((SELECT MAX(ID) FROM Placement), ?, ?, ? ?, ?)",
+                           end_time, seconds_alive, game_rank, elims, tiebreaker)
+            conn.commit()
+        # Should never happen
+        except Exception as e:
+            pass
 
 
 regions = ["NAE", "NAW", "EU", "OCE", "ASIA", "BR"]
@@ -45,7 +68,7 @@ event = "Event2"
 for region in regions:
     print(region)
     for week in solo_weeks:  # duo_weeks
-        for page in range(1, 31):  # 16
+        for page in range(0, 31):  # 16
             fileName = region + "_Week" + str(week) + "_" + str(page) + ".html"
             try:
                 # "c:\\fortnite-scrape\\scraped\\worldcup\\duos\\"

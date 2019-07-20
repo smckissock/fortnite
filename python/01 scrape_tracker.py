@@ -1,3 +1,6 @@
+# Download all world cup and trio gtml files from FTN
+
+
 import requests
 import time
 from bs4 import BeautifulSoup
@@ -78,8 +81,8 @@ match = "OnlineOpen"
 event = "Event2"
 
 for region in regions:
-    for week in duo_weeks:
-        for page in range(1, 16):
+    for week in solo_weeks:
+        for page in range(0, 1):
 
             # Import Solos
             #      https://fortnitetracker.com/events/epicgames_OnlineOpen_Week1_NAE?window=OnlineOpen_Week1_NAE_Event2&page=1
@@ -95,11 +98,11 @@ for region in regions:
             # print(url)
 
             # Import World Cup
-            #response = requests.get(url)
-            # f = open("c:\\fortnite\\scraped\\worldcup\\duos\\" + region + "_" + week +
-            #         "_" + str(page) + ".html", "w+", encoding="utf-8")
-            # f.write(response.text)
-            # f.close()
+            response = requests.get(url)
+            f = open("c:\\fortnite-scrape\\scraped\\worldcup\\" + region + "_" + week +
+                     "_" + str(page) + ".html", "w+", encoding="utf-8")
+            f.write(response.text)
+            f.close()
 
         time.sleep(3)
 print("Done")
