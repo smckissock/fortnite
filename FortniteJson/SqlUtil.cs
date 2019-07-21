@@ -10,7 +10,7 @@ namespace FortniteJson {
 
         static string sqlErrorPath = @"C:\Fortnite\FortniteJson\Sql Error\";
 
-        static string db = "Fortnite";
+        static string db = "Fortnite2";
 
         //private static string connectionString = "Server=SCOTT-PC\\SQLExpress;Database=" + db + ";Trusted_Connection=True;";
         private static string connectionString =   "Server=PC\\SQLExpress;Database=" + db + ";Trusted_Connection=True;";
