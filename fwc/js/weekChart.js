@@ -517,9 +517,14 @@ export function weekChart(id) {
     const showSinglePlayer = function (player) {
         //showPlayerProfile(player);
 
-        function showPlayerHeader(player) {
+        function showPlayerHeader(player, weeks) {
 
-            if (player == "") {
+            function winnings() {
+                let dollars = weeks.map(x => x.payout);
+                return dollars.reduce((sum, num) => sum + num);
+            }
+
+            if (!player) {
                 d3.selectAll(".player-summary")
                     .transition()
                     .duration(500)
@@ -528,32 +533,58 @@ export function weekChart(id) {
                 return;
             }
 
-            playerRect = svg.append("rect")
-                //.attr("data", week.num)
+            let regionSvg = d3.select(".region-svg");
+            playerRect = regionSvg.append("rect")
                 .classed("player-summary", true)
-                .attr("x", 6)
+                .attr("x", 4)
                 .attr("y", 0)
-                .attr("width", 290)
-                .attr("height", 40)
+                .attr("width", 294)
+                .attr("height", 270)
                 .attr("fill", "lightblue")
                 .attr("stroke", "black")
                 .attr("stroke-width", 0)
                 .attr("rx", cornerRadius)
                 .attr("ry", cornerRadius)
 
-            svg.append("text")
+            regionSvg.append("text")
                 .classed("player-summary", true)
-                .attr("x", 10)
-                .attr("y", 30)
+                .attr("x", 24)
+                .attr("y", 48)
                 .text(player)
-                .attr("font-size", "2.2em")
+                .attr("font-size", (player.length < 16) ? "2.4em" : "1.8em")
                 .attr("fill", "black");
-        }
 
-        showPlayerHeader(player);
+            const num = d3.format(",d");
+            regionSvg.append("text")
+                .classed("player-summary", true)
+                .attr("x", 24)
+                .attr("y", 74)
+                .style("font-family", "Helvetica, Arial, sans-serif")
+                .text("World Cup Earnings:  $" + num(winnings()))
+                .attr("font-size", "1.0em")
+                .attr("font-weight", "600")
+                .attr("fill", "black");
+
+            // To hide solo/duo checkboxes    
+            svg.append("rect")
+                .classed("player-summary", true)
+                .attr("x", 8)
+                .attr("y", 0)
+                .attr("width", 296)
+                .attr("height", 31)
+                .attr("fill", "lightblue")
+                .attr("stroke", "black")
+                .attr("stroke-width", 0)
+                .attr("rx", cornerRadius)
+                .attr("ry", cornerRadius)
+
+            winnings(console.log(winnings()));
+        }
 
         const neverShowPlace = player === "";
         const recs = facts.all().filter(x => x.player === player);
+
+        showPlayerHeader(player, recs);
 
         const top = 40;
         let count = 0;
