@@ -2,6 +2,7 @@ USE Fortnite2
 GO
 
 
+
 CREATE TABLE [dbo].[Nationality](
 	[ID] [int] IDENTITY(1,1) NOT NULL,
 	[Name] [nvarchar](100) NOT NULL,
@@ -174,5 +175,25 @@ INSERT INTO KbmOrController VALUES ('KB&M')
 
 
 ALTER TABLE Player ADD NationalityID int NOT NULL DEFAULT 1 REFERENCES Nationality(ID) 
-ALTER TABLE Team ADD TeamID int NOT NULL DEFAULT 1 REFERENCES Team(ID) 
-ALTER TABLE KbmOrController ADD KbmOrController int NOT NULL DEFAULT 1 REFERENCES KbmOrController(ID) 
+ALTER TABLE PLayer ADD TeamID int NOT NULL DEFAULT 1 REFERENCES Team(ID) 
+ALTER TABLE PLayer ADD KbmOrController int NOT NULL DEFAULT 1 REFERENCES KbmOrController(ID) 
+
+
+UPDATE 
+	NewPlayer  
+SET 
+	NewPlayer.TeamID = oldPlayer.TeamID
+FROM 
+	Fortnite..player as oldPlayer
+INNER JOIN player AS NewPlayer ON oldPlayer.Name = newPLayer.currentName
+
+
+
+UPDATE 
+	NewPlayer  
+SET 
+	NewPlayer.NationalityID = oldPlayer.NationalityID
+FROM 
+	Fortnite..player as oldPlayer
+INNER JOIN player AS NewPlayer ON oldPlayer.Name = newPLayer.currentName
+
