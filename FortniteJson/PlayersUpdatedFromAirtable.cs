@@ -87,6 +87,5 @@ namespace FortniteJson {
 
             return csv;
         }
-
     }
 }

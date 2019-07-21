@@ -20,10 +20,10 @@ namespace FortniteJson {
 
             Console.WriteLine("Running..");
 
-            Fortnite2FixUp.FixQualifications();
+            //Fortnite2FixUp.FixQualifications();
 
             //PlayersUpdatedFromAirtable.Import();
-            //Fortnite.MakeJson();
+            Fortnite.MakeJson();
 
             Console.Write("DONE");
             Console.Read();

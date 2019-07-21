@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
 
+
+
 namespace FortniteJson {
 
     public static class Fortnite2FixUp {
@@ -113,44 +115,7 @@ namespace FortniteJson {
                 //Thread.Sleep(1);
             }
         }
-
-        //public static void FixQualifications() {
-        //    int i = 0;
-        //    var reader = SqlUtil.Query("SELECT RegionCode, WeekNumber FROM Fortnite..Placement WHERE Qualification = 1");
-
-        //    while (reader.Read()) {
-        //        //var playerId = reader[0].ToString();
-        //        var weekId = reader[1].ToString().Replace("Week", "");
-
-        //        var regionId = "0";
-        //        switch ((string)reader[0]) {
-        //            case "NAE":
-        //                regionId = "3";
-        //                break;
-        //            case "NAW":
-        //                regionId = "4";
-        //                break;
-        //            case "EU":
-        //                regionId = "5";
-        //                break;
-        //            case "OCE":
-        //                regionId = "2";
-        //                break;
-        //            case "ASIA":
-        //                regionId = "7";
-        //                break;
-        //            case "BR":
-        //                regionId = "6";
-        //                break;
-        //        }
-
-        //        var sql = "UPDATE Placement SET Qualification = 1 WHERE WeekID = " + weekId + " AND RegionID = " + regionId + " AND Rank = 1";
-        //        Console.WriteLine(sql);
-        //        SqlUtil.Command(sql); 
-
-        //    }
-        //    Console.WriteLine(i.ToString());
-        //}
+        
 
         public static string GetRegion(string code) {
             var regionId = "0";
@@ -187,8 +152,10 @@ namespace FortniteJson {
                 " FROM Player p " +
                 " JOIN Fortnite..Player p1 ON p.CurrentName = p1.Name " +
                 " JOIN Fortnite..Placement pl1 ON pl1.PlayerID = p1.ID " +
-                "WHERE pl1.Qualification = 1");
-            
+                //"WHERE pl1.Qualification = 1");
+                "WHERE pl1.EarnedQualification = 1");
+
+            var inserts = new List<string>(); 
             while (reader.Read()) {
                 var playerId = reader[0].ToString();
                 var weekId = reader[2].ToString().Replace("Week", "");
@@ -199,10 +166,13 @@ namespace FortniteJson {
                 if (reader2.Read()) {
                     var placementId = reader2[0].ToString();
 
-                    SqlUtil.Command("UPDATE Placement SET Qualification = 1 WHERE ID = " + placementId);
+                    var cmd = "UPDATE Placement SET EarnedQualification = 1 WHERE ID = " + placementId;
+                    inserts.Add(cmd);
+                    SqlUtil.Command(cmd);
                 }
                 i++;
             }
+            System.IO.File.WriteAllLines("c:\\Test\\Inserts.txt", inserts);
             Console.WriteLine(i.ToString());
         }
     }

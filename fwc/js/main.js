@@ -183,9 +183,10 @@ function searchLabel(svg) {
 
 function disclaimer(svg) {
     svg.append("text")
-        .attr("x", 1136)
+        .attr("x", 1170)
         .attr("y", 34)
-        .text("Top 100 in each region for each week")
+        .text("Includes all World Cup Earnings")
+        //.text("Top 100 in each region for each week")
         .attr("font-size", ".8rem")
         .attr("fill", "#606060")
         .style("font-family", "Helvetica, Arial, sans-serif")
