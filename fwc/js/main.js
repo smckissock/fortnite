@@ -50,8 +50,8 @@ let titleSvg;
 let filterTextDisplayed;
 
 
-
-d3.json('fwc/data/data.json').then(function (data) {
+d3.json('fwc/data/data.json').then(function (dataArray) {
+    //d3.json('fwc/data/data.json').then(function (data) {
     const leftMargin = 20
 
     // From playerChart!!!
@@ -64,12 +64,28 @@ d3.json('fwc/data/data.json').then(function (data) {
     posickLabel(titleSvg)
     disclaimer(titleSvg);
 
-    data.forEach(function (d) {
-        d.rank = +d.rank;
-        d.payout = +d.payout;
-        d.points = +d.points;
-        d.wins = +d.wins;
+    let data = [];
+    dataArray.forEach(function (d) {
+        let rec = {};
+        rec.week = d[0];
+        rec.soloQual = parseInt(d[1], 10);
+        rec.duoQual = parseInt(d[2], 10);
+        rec.soloOrDuo = d[3];
+        rec.player = d[4];
+        rec.region = d[5];
+        rec.nationality = d[6];
+        rec.team = d[7];
+        rec.rank = parseInt(d[8], 10);
+        rec.payout = parseInt(d[9], 10);
+        rec.points = parseInt(d[10], 10);
+        rec.wins = parseInt(d[11], 10);
+        rec.elims = parseInt(d[12], 10);
+        rec.placementPoints = parseInt(d[13], 10);
+        rec.earnedQualifications = parseInt(d[14], 10);
+
+        data.push(rec);
     });
+
     makeQualifications(data);
     makeTeamMembers(data);
 

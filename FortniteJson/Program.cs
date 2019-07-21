@@ -23,7 +23,11 @@ namespace FortniteJson {
             //Fortnite2FixUp.FixQualifications();
 
             //PlayersUpdatedFromAirtable.Import();
-            Fortnite.MakeJson();
+            //Fortnite.MakeJson();
+
+            Fortnite.MakeJsonArray();
+
+            //Fortnite.MakeCsv();
 
             Console.Write("DONE");
             Console.Read();
@@ -31,7 +35,7 @@ namespace FortniteJson {
 
 
             // Not needed - make it in browser.
-            //Fortnite.MakeCsv();
+            
         }
     }
 }
