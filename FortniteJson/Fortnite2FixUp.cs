@@ -33,8 +33,31 @@ namespace FortniteJson {
         }
 
         public static void FixPlacementPayout() {
+            // Go though every placement to update payouts
+            var reader = SqlUtil.Query("SELECT ID, RegionID, WeekID, Rank FROM Placement WHERE ID <> 1");
+            while (reader.Read()) {
+                var id = reader[0].ToString();
+                var regionId = reader[1].ToString();
+                var weekId = reader[2].ToString();
+                var rank = (int)reader[3];
 
+                int payout = 0;
+                var tiers = SqlUtil.Query("SELECT Rank, Payout FROM RankPayoutTier WHERE RegionID = " + regionId + " AND WeekID = " + weekId + " ORDER BY Rank DESC");
+                while (tiers.Read()) {
+                    var tierRank = (int)tiers[0];
+                    var tierPayout = (int)tiers[1];
+
+                    // Add points if they hit the tier
+                    if (rank <= tierRank)
+                        payout = tierPayout;
+                }
+                tiers.Close();
+                
+                SqlUtil.Command("UPDATE Placement SET Payout = " + payout.ToString() + " WHERE ID = " + id);
+                //Thread.Sleep(1);
+            }
         }
+
 
         public static void FixPlacementElims() {
             // Go though ever placement to update elims
@@ -68,6 +91,26 @@ namespace FortniteJson {
                 //if (totalPoints > 0)
                 SqlUtil.Command("UPDATE Placement SET Elims = " + elims.ToString() + " WHERE ID = " + id);
                 Thread.Sleep(3);
+            }
+        }
+
+        public static void UpdateWins() {
+            var reader = SqlUtil.Query("SELECT ID FROM Placement WHERE ID <> 1");
+            while (reader.Read()) {
+                var id = reader[0].ToString();
+
+                int wins = 0;
+                var games = SqlUtil.Query("SELECT GameRank FROM Game WHERE PlacementID = " + id + " ORDER BY EndTime");
+                while (games.Read()) {
+                    var gameRank = (int)games[0];
+                    
+                    if (gameRank == 1 )
+                        wins++;
+                }
+                games.Close();
+
+                SqlUtil.Command("UPDATE Placement SET Wins = " + wins.ToString() + " WHERE ID = " + id);
+                //Thread.Sleep(1);
             }
         }
     }

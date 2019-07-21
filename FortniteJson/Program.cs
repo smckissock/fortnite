@@ -17,9 +17,10 @@ namespace FortniteJson {
 
             //Fortnite2FixUp.FixCurrentName();
             //Fortnite2FixUp.FixPlacementPayout();
-            Fortnite2FixUp.FixPlacementElims();
+            //Fortnite2FixUp.FixPlacementElims();
+            //Fortnite2FixUp.UpdateWins();
 
-            //PlayersUpdatedFromAirtable.Import();
+            PlayersUpdatedFromAirtable.Import();
             //Fortnite.MakeJson();
 
             Console.Write("DONE");

@@ -197,3 +197,6 @@ FROM
 	Fortnite..player as oldPlayer
 INNER JOIN player AS NewPlayer ON oldPlayer.Name = newPLayer.currentName
 
+
+ALTER TABLE Placement ADD Wins int NOT NULL DEFAULT 0
+

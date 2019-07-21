@@ -38,11 +38,11 @@ regions = ["NAE", "NAW", "EU", "OCE", "ASIA", "BR"]
 solo_weeks = ["1", "3", "5", "7", "9"]
 duo_weeks = ["2", "4", "6", "8", "10"]
 
-weeks = solo_weeks
-duos_directory = ''
+#weeks = solo_weeks
+#duos_directory = ''
 
-#weeks = duo_weeks
-#duos_directory = 'duos\\'
+weeks = duo_weeks
+duos_directory = 'duos\\'
 
 
 match = "OnlineOpen"

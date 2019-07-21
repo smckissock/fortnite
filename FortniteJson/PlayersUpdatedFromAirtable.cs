@@ -60,7 +60,7 @@ namespace FortniteJson {
                 "NationalityID = (SELECT ID FROM Nationality WHERE Name = '" + nationality + "'), " +
                 "TeamID = (SELECT ID FROM Team WHERE Name = '" + team + "'), " +
                 "KbmOrControllerID = (SELECT ID FROM KbmOrController WHERE Name = '" + kbmOrController + "') " +
-                "WHERE Name = N'" + name + "'"; 
+                "WHERE CurrentName = N'" + name + "'"; 
 
             SqlUtil.Command(sql);
         }
