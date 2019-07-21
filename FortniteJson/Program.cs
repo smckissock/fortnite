@@ -20,8 +20,8 @@ namespace FortniteJson {
             //Fortnite2FixUp.FixPlacementElims();
             //Fortnite2FixUp.UpdateWins();
 
-            PlayersUpdatedFromAirtable.Import();
-            //Fortnite.MakeJson();
+            //PlayersUpdatedFromAirtable.Import();
+            Fortnite.MakeJson();
 
             Console.Write("DONE");
             Console.Read();

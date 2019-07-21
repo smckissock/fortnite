@@ -270,10 +270,11 @@ export function weekChart(id) {
             .attr("pointer-events", "none");
 
         const noPlaceLabel = svg.append("text")
-            .attr("x", x + 14)
-            .attr("y", y + bigLabel.y + 6)
-            .text("Placed outside top 100")
-            .attr("font-size", ".8em")
+            .attr("x", x + 28)
+            .attr("y", y + bigLabel.y + 8)
+            .text("No Winnings")
+            .style("font-family", "Helvetica, Arial, sans-serif")
+            .attr("font-size", "0.8em")
             .attr("fill", "black")
             .attr("fill-opacity", 0)
             .attr("pointer-events", "none");
