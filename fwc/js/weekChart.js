@@ -517,6 +517,8 @@ export function weekChart(id) {
     const showSinglePlayer = function (player) {
         //showPlayerProfile(player);
 
+        const pushDown = 160;
+
         function showPlayerHeader(player, weeks) {
 
             function winnings() {
@@ -538,7 +540,7 @@ export function weekChart(id) {
                 .classed("player-summary", true)
                 .attr("x", 4)
                 .attr("y", 0)
-                .attr("width", 294)
+                .attr("width", 298)
                 .attr("height", 270)
                 .attr("fill", "lightblue")
                 .attr("stroke", "black")
@@ -549,7 +551,7 @@ export function weekChart(id) {
             regionSvg.append("text")
                 .classed("player-summary", true)
                 .attr("x", 24)
-                .attr("y", 48)
+                .attr("y", 48 + pushDown)
                 .text(player)
                 .attr("font-size", (player.length < 16) ? "2.4em" : "1.8em")
                 .attr("fill", "black");
@@ -558,7 +560,7 @@ export function weekChart(id) {
             regionSvg.append("text")
                 .classed("player-summary", true)
                 .attr("x", 24)
-                .attr("y", 74)
+                .attr("y", 74 + pushDown)
                 .style("font-family", "Helvetica, Arial, sans-serif")
                 .text("World Cup Earnings:  $" + num(winnings()))
                 .attr("font-size", "1.0em")
