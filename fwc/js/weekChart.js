@@ -54,7 +54,10 @@ export function weekChart(id) {
     let checkBoxSolos;
     let checkBoxDuos;
 
+    let playerRect;
+
     const div = d3.select(id);
+    const divPlayer = d3.select("#chart-weeks-player");
 
     // The selection rectangle what moves around when the current week changes
     //let cursor;
@@ -74,6 +77,12 @@ export function weekChart(id) {
     const svg = div.append("svg")
         .attr("width", 300)
         .attr("height", (height * 5) + 50);
+
+
+    const svgPlayer = divPlayer.append("svg")
+        .attr("width", 300)
+        .attr("height", 50)
+        .attr("pointer-events", "none");;
 
     svg.append("text")
         .attr("x", 25)
@@ -395,7 +404,7 @@ export function weekChart(id) {
         }
         return g;
 
-        // Star (no used)
+        // Star (not used)
         /* return svg.append("polygon")
             .attr("data", week)
             .attr("points", "250,75 323,301 131,161 369,161 177,301")
@@ -507,6 +516,41 @@ export function weekChart(id) {
 
     const showSinglePlayer = function (player) {
         //showPlayerProfile(player);
+
+        function showPlayerHeader(player) {
+
+            if (player == "") {
+                d3.selectAll(".player-summary")
+                    .transition()
+                    .duration(500)
+                    .style("opacity", 0)
+                    .remove();
+                return;
+            }
+
+            playerRect = svg.append("rect")
+                //.attr("data", week.num)
+                .classed("player-summary", true)
+                .attr("x", 6)
+                .attr("y", 0)
+                .attr("width", 290)
+                .attr("height", 40)
+                .attr("fill", "lightblue")
+                .attr("stroke", "black")
+                .attr("stroke-width", 0)
+                .attr("rx", cornerRadius)
+                .attr("ry", cornerRadius)
+
+            svg.append("text")
+                .classed("player-summary", true)
+                .attr("x", 10)
+                .attr("y", 30)
+                .text(player)
+                .attr("font-size", "2.2em")
+                .attr("fill", "black");
+        }
+
+        showPlayerHeader(player);
 
         const neverShowPlace = player === "";
         const recs = facts.all().filter(x => x.player === player);

@@ -339,11 +339,11 @@ export function updateCounts() {
             filterParts.push('"' + filters.search + '"');
 
         const num = d3.format(",d"); // Add commas
-        filterParts.push(num(filters.playerCount) + ((filters.worldCupOnly) ? " WC players" : " players"));
+        filterParts.push(num(filters.playerCount) + ((filters.worldCupOnly) ? " WC qualifiers" : " players"));
 
         filterText = filterParts.join(" / ");
 
-        filterText += " sorted by " + niceSortName();
+        filterText += " by " + niceSortName();
     }
 
     // Toggle the filter to display, then fade it in and fade the old one out

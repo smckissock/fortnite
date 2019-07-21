@@ -23,7 +23,7 @@ body {
         "left-margin    weeks       team      player    player      player";
     grid-template-columns: 10px var(--left-width) var(--team-width) 300px 150px 550px;
     grid-template-rows: 80px 14.2rem auto; 
-    grid-gap: 15px;
+    grid-gap: 12px;
     margin: 0px;
     height: 1800px;
     width: 1510px; 
@@ -116,6 +116,11 @@ body {
 }
 
 .weeks {
+    grid-area: weeks;
+    font-weight: 500;
+}
+
+.weeks-player {
     grid-area: weeks;
     font-weight: 500;
 }
