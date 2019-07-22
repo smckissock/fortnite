@@ -38,7 +38,7 @@ export function d3CheckBox(checkBoxName) {
 
             .style("fill", "none")
             .style("opacity", 1)
-            .style("stroke", (checked) ? "black" : "lightgrey")
+            .style("stroke", (checked) ? "black" : "darkgrey")
 
             .attr("pointer-events", "none");
 
@@ -139,7 +139,7 @@ export function d3CheckBox(checkBoxName) {
                 mark
                     .transition()
                     .duration(100)
-                    .style("stroke", (mark.checked) ? "black" : "lightgrey")
+                    .style("stroke", (mark.checked) ? "black" : "darkgrey")
             }
             return checkBox;
         }

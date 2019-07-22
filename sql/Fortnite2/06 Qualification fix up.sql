@@ -1,37 +1,43 @@
+﻿
+
+SELECT COUNT(*) FROM FOrtnite..StatsWithPlayerInfoView WHERE EarnedQualification <> 0
+SELECT COUNT(*) FROM StatsWithPlayerInfoView WHERE EarnedQualification <> 0
+
+SELECT * FROM 
 
 
 
+SELECT week, region, player, rank, Points FROM Fortnite..StatsWithPlayerInfoView WHERE SoloWeek <> 0
+AND Player NOT IN (
+SELECT PLayer FROM StatsWithPlayerInfoView WHERE SoloWeek <> 0
+) ORDER BY Week, Region
 
-SELECT top 10 * FROM FOrtnite..StatsWithPlayerInfoView ORDER BY Week, Rank, region 
-SELECT top 10 * FROM StatsWithPlayerInfoView ORDER BY Week, Rank, region
-
-
-SELECT COUNT(*) FROM FOrtnite..StatsWithPlayerInfoView 
-SELECT COUNT(*) FROM StatsWithPlayerInfoView WHERE Payout > 0
-
-
-
-UPDATE Placement SET Qualification = 1 WHERE WeekID = 1 AND RegionID = 3 AND Rank = 1
-UPDATE Placement SET Qualification = 1 WHERE WeekID = 1 AND RegionID = 3 AND Rank = 1
-
-
-SELECT RegionCode, WeekNumber FROM Fortnite..Placement WHERE Qualification = 1
-
-SELECT DISTINCT p.ID, pl1.RegionCode, pl1.WeekNumber  FROM Player p  JOIN Fortnite..Player p1 ON p.CurrentName = p1.Name  JOIN Fortnite..Placement pl1 ON pl1.PlayerID = p1.ID WHERE pl1.Qualification = 1
+Week 1	Europe	LеStrеam Nayte	6	61
+Week 3	Brazil	Lasers is bad	1	79
+Week 5	NA West	1400 Rhux UwU	2	76
+Week 7	Asia	T1 がちがち Arius	2	85
+Week 7	NA East	Astоnish	4	62
+Week 9	Europe	HORT_LYGHT	4	66
+Week 9	Oceania	sozmann 奧	1	82
 
 
-
-UPDATE Placement SET Qualification = 0 
-
-
-
-SELECT top 10 * FROM FOrtnite..StatsWithPlayerInfoView WHERE SoloWeek ORDER BY Week, Rank, region 
-SELECT top 10 * FROM StatsWithPlayerInfoView ORDER BY Week, Rank, region
-
-
-
-
-SELECT * FROM FOrtnite..StatsWithPlayerInfoView WHERE SoloWeek <> 0 ORDER BY Week, Rank, region 
+SELECT * FROM StatsWithPlayerInfoView WHERE Week = 'Week 9' AND Region = 'Oceania' ORDER BY Week, Region, Rank
+UPDATE Placement SET Qualification = 1 WHERE ID =  
+UPDATE Placement SET Qualification = 1 WHERE ID =
+UPDATE Placement SET Qualification = 1 WHERE ID =
+UPDATE Placement SET Qualification = 1 WHERE ID =
+UPDATE Placement SET Qualification = 1 WHERE ID =
+UPDATE Placement SET Qualification = 1 WHERE ID =
+vUPDATE Placement SET Qualification = 1 WHERE ID =
 
 
+UPDATE Placement SET Qualification = 1 WHERE ID = 28677 
+UPDATE Placement SET Qualification = 1 WHERE ID = 72036 
+UPDATE Placement SET Qualification = 1 WHERE ID = 20184
+UPDATE Placement SET Qualification = 1 WHERE ID = 63852
+UPDATE Placement SET Qualification = 1 WHERE ID = 8698
+UPDATE Placement SET Qualification = 1 WHERE ID = 40674
+UPDATE Placement SET Qualification = 1 WHERE ID = 53693
 
+
+SELECT * FROM StatsWithPlayerInfoView
