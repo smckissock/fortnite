@@ -541,7 +541,7 @@ export function weekChart(id) {
                 .attr("x", 4)
                 .attr("y", 0)
                 .attr("width", 298)
-                .attr("height", 270)
+                .attr("height", 272)
                 .attr("fill", "lightblue")
                 .attr("stroke", "black")
                 .attr("stroke-width", 0)
