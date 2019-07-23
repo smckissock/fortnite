@@ -9,16 +9,16 @@ export function setupStats(data) {
         .key(d => d.player)
         .rollup(function (values) {
             return {
-                sololElims: d3.sum(values, d => (d.soloOrDuo === "Solo") ? d.elims : 0),
+                soloElims: d3.sum(values, d => (d.soloOrDuo === "Solo") ? d.elims : 0),
                 duoElims: d3.sum(values, d => (d.soloOrDuo === "Duo") ? d.elims : 0),
 
-                sololPayout: d3.sum(values, d => (d.soloOrDuo === "Solo") ? d.payout : 0),
+                soloPayout: d3.sum(values, d => (d.soloOrDuo === "Solo") ? d.payout : 0),
                 duoPayout: d3.sum(values, d => (d.soloOrDuo === "Duo") ? d.payout : 0),
 
-                sololWins: d3.sum(values, d => (d.soloOrDuo === "Solo") ? d.wins : 0),
+                soloWins: d3.sum(values, d => (d.soloOrDuo === "Solo") ? d.wins : 0),
                 duoWins: d3.sum(values, d => (d.soloOrDuo === "Duo") ? d.wins : 0),
 
-                sololPoints: d3.sum(values, d => (d.soloOrDuo === "Solo") ? d.points : 0),
+                soloPoints: d3.sum(values, d => (d.soloOrDuo === "Solo") ? d.points : 0),
                 duoPoints: d3.sum(values, d => (d.soloOrDuo === "Duo") ? d.points : 0)
             };
         })
