@@ -1,6 +1,6 @@
 //@language ECMASCRIPT5
 
-import { colors } from "./shared.js";
+import { colors, setupStats } from "./shared.js";
 
 import { playerChart, playerData, PlayerTableWidth } from "./playerChart.js";
 import { weekChart, showPlayerOnWeekChart } from "./weekChart.js";
@@ -39,6 +39,7 @@ export let filters = {
 }
 
 export let showPlayerProfile;
+export let statsForPlayer;
 
 
 let playerStatsGroup;
@@ -85,6 +86,8 @@ d3.json('fwc/data/data.json').then(function (dataArray) {
 
         data.push(rec);
     });
+
+    statsForPlayer = setupStats(data);
 
     makeQualifications(data);
     makeTeamMembers(data);

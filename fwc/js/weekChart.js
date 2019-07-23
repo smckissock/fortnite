@@ -1,6 +1,6 @@
 // @language_out ecmascript5
 
-import { cornerRadius, filters, facts, updateCounts } from "./main.js";
+import { cornerRadius, filters, facts, updateCounts, statsForPlayer } from "./main.js";
 import { clearPlayer } from "./playerChart.js";
 import { d3CheckBox } from "./d3CheckBox.js";
 
@@ -419,7 +419,6 @@ export function weekChart(id) {
         _chart.filter(null);
         checkBoxSolos.checked(false);
         checkBoxDuos.checked(false);
-
     }
 
     const clickRect = function (d3Rect) {
@@ -536,7 +535,6 @@ export function weekChart(id) {
                     stats.total = stats.solo + stats.duo;
                     return stats;
                 }
-
                 function writeNumber(x, y, text, styleClass) {
                     regionSvg.append("text")
                         .classed("player-summary", true)
@@ -545,7 +543,6 @@ export function weekChart(id) {
                         .attr("y", y)
                         .text(text)
                 }
-
                 regionSvg.append("text")
                     .classed("player-summary", true)
                     //.classed("player-stat-Label", true)
@@ -553,14 +550,12 @@ export function weekChart(id) {
                     .attr("y", y)
                     .attr("font-family", "Helvetica, Arial, sans-serif")
                     .text(label)
-
                 let stats = getStats(statType);
                 const num = d3.format(",d");
                 writeNumber(80, y, num(stats.solo), "player-stat");
                 writeNumber(150, y, num(stats.duo), "player-stat");
                 writeNumber(230, y, num(stats.total), "player-stat");
             }
-
             // Start showPlayerHeader
             if (!player) {
                 d3.selectAll(".player-summary")
@@ -570,7 +565,6 @@ export function weekChart(id) {
                     .remove();
                 return;
             }
-
             let regionSvg = d3.select(".region-svg");
             playerRect = regionSvg.append("rect")
                 .classed("player-summary", true)
@@ -583,7 +577,6 @@ export function weekChart(id) {
                 .attr("stroke-width", 0)
                 .attr("rx", cornerRadius)
                 .attr("ry", cornerRadius)
-
             regionSvg.append("text")
                 .classed("player-summary", true)
                 .attr("x", 24)
@@ -604,20 +597,25 @@ export function weekChart(id) {
                 .attr("stroke-width", 0)
                 .attr("rx", cornerRadius)
                 .attr("ry", cornerRadius)
-
             const top = 110;
             const inc = 40
             writeStatType("Payout", "payout", top + pushDown);
             writeStatType("Elims", "elims", top + inc + pushDown);
             writeStatType("Wins", "wins", top + (inc * 2) + pushDown);
             writeStatType("Points", "points", top + (inc * 3) + pushDown);
-        }
+        } // End showPlayerHeader
+
 
         const neverShowPlace = player === "";
         const recs = facts.all().filter(x => x.player === player);
+        // This is a messed up way to find the player's region. Need to look it up in a player array. Then wouldn't need line above.
 
-        showPlayerHeader(player, recs);
+        if (recs.length > 0) {
+            let stats = statsForPlayer(recs[0].region, player);
+            showPlayerHeader(player, recs);
+        }
 
+        // Draw weeks
         const top = 40;
         let count = 0;
         weeks.forEach(function (week) {

@@ -1,16 +1,40 @@
 // @language_out ecmascript5
 
-/* export const colors = {
-    green: '#56af5a',
-    purple: '#ad76c1',
-    blue: '#4C51F7',
-    red: '#ffb3b3', //#e25856'
-    teal: '#3E93BC',
-    lime: '#3CFF3E',
-    grey: '#B3B3B3',
-    brown: '#987654'
+
+
+export function setupStats(data) {
+
+    const stats = d3.nest()
+        .key(d => d.region)
+        .key(d => d.player)
+        .rollup(function (values) {
+            return {
+                sololElims: d3.sum(values, d => (d.soloOrDuo === "Solo") ? d.elims : 0),
+                duoElims: d3.sum(values, d => (d.soloOrDuo === "Duo") ? d.elims : 0),
+
+                sololPayout: d3.sum(values, d => (d.soloOrDuo === "Solo") ? d.payout : 0),
+                duoPayout: d3.sum(values, d => (d.soloOrDuo === "Duo") ? d.payout : 0),
+
+                sololWins: d3.sum(values, d => (d.soloOrDuo === "Solo") ? d.wins : 0),
+                duoWins: d3.sum(values, d => (d.soloOrDuo === "Duo") ? d.wins : 0),
+
+                sololPoints: d3.sum(values, d => (d.soloOrDuo === "Solo") ? d.points : 0),
+                duoPoints: d3.sum(values, d => (d.soloOrDuo === "Duo") ? d.points : 0)
+            };
+        })
+        .entries(data);
+
+    function statsForPlayer(region, player) {
+
+        const regionPlayers = stats.filter(d => d.key === region)[0].values;
+        const playerStats = regionPlayers.filter(d => d.key === player)[0].value;
+        //console.log(playerStats);
+
+        return playerStats;
+    }
+
+    return statsForPlayer;
 }
-*/
 
 
 export const colors = {
