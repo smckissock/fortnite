@@ -517,15 +517,51 @@ export function weekChart(id) {
     const showSinglePlayer = function (player) {
         //showPlayerProfile(player);
 
-        const pushDown = 160;
+        const pushDown = 0;
 
         function showPlayerHeader(player, weeks) {
 
-            function winnings() {
-                let dollars = weeks.map(x => x.payout);
-                return dollars.reduce((sum, num) => sum + num);
+            function writeStatType(label, statType, y) {
+
+                function getStats(statType) {
+                    let stats = {}
+                    stats.solo = weeks
+                        .filter(x => x.soloOrDuo === "Solo")
+                        .map(x => x[statType])
+                        .reduce((sum, num) => sum + num);
+                    stats.duo = weeks
+                        .filter(x => x.soloOrDuo === "Duo")
+                        .map(x => x[statType])
+                        .reduce((sum, num) => sum + num);
+                    stats.total = stats.solo + stats.duo;
+                    return stats;
+                }
+
+                function writeNumber(x, y, text, styleClass) {
+                    regionSvg.append("text")
+                        .classed("player-summary", true)
+                        .classed(styleClass, true)
+                        .attr("x", x)
+                        .attr("y", y)
+                        .text(text)
+                }
+
+                regionSvg.append("text")
+                    .classed("player-summary", true)
+                    //.classed("player-stat-Label", true)
+                    .attr("x", 10)
+                    .attr("y", y)
+                    .attr("font-family", "Helvetica, Arial, sans-serif")
+                    .text(label)
+
+                let stats = getStats(statType);
+                const num = d3.format(",d");
+                writeNumber(80, y, num(stats.solo), "player-stat");
+                writeNumber(150, y, num(stats.duo), "player-stat");
+                writeNumber(230, y, num(stats.total), "player-stat");
             }
 
+            // Start showPlayerHeader
             if (!player) {
                 d3.selectAll(".player-summary")
                     .transition()
@@ -556,17 +592,6 @@ export function weekChart(id) {
                 .attr("font-size", (player.length < 16) ? "2.4em" : "1.8em")
                 .attr("fill", "black");
 
-            const num = d3.format(",d");
-            regionSvg.append("text")
-                .classed("player-summary", true)
-                .attr("x", 24)
-                .attr("y", 74 + pushDown)
-                .style("font-family", "Helvetica, Arial, sans-serif")
-                .text("World Cup Earnings:  $" + num(winnings()))
-                .attr("font-size", "1.0em")
-                .attr("font-weight", "600")
-                .attr("fill", "black");
-
             // To hide solo/duo checkboxes    
             svg.append("rect")
                 .classed("player-summary", true)
@@ -580,7 +605,12 @@ export function weekChart(id) {
                 .attr("rx", cornerRadius)
                 .attr("ry", cornerRadius)
 
-            winnings(console.log(winnings()));
+            const top = 110;
+            const inc = 40
+            writeStatType("Payout", "payout", top + pushDown);
+            writeStatType("Elims", "elims", top + inc + pushDown);
+            writeStatType("Wins", "wins", top + (inc * 2) + pushDown);
+            writeStatType("Points", "points", top + (inc * 3) + pushDown);
         }
 
         const neverShowPlace = player === "";
@@ -720,4 +750,28 @@ export function weekChart(id) {
     showPlayerOnWeekChart = showSinglePlayer;
 
     return _chart;
+}
+
+
+function Qb() {
+
+    d3.nest()
+        .key(d => d.region)
+        .key(d => d.player)
+        .rollup(function (values) {
+            return {
+                sololElims: d3.sum(values, d => (d.soloOrDuo === "Solo") ? d.elims : 0),
+                duoElims: d3.sum(values, d => (d.soloOrDuo === "Duo") ? d.elims : 0),
+
+                sololPayout: d3.sum(values, d => (d.soloOrDuo === "Solo") ? d.payout : 0),
+                duoPayout: d3.sum(values, d => (d.soloOrDuo === "Duo") ? d.payout : 0),
+
+                sololWins: d3.sum(values, d => (d.soloOrDuo === "Solo") ? d.wins : 0),
+                duoWins: d3.sum(values, d => (d.soloOrDuo === "Duo") ? d.wins : 0),
+
+                sololPoints: d3.sum(values, d => (d.soloOrDuo === "Solo") ? d.points : 0),
+                duoPoints: d3.sum(values, d => (d.soloOrDuo === "Duo") ? d.points : 0)
+            };
+        })
+        .entries(data);
 }
