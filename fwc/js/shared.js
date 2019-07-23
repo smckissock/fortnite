@@ -4,7 +4,7 @@
 
 export function setupStats(data) {
 
-    const stats = d3.nest()
+    const regionStats = d3.nest()
         .key(d => d.region)
         .key(d => d.player)
         .rollup(function (values) {
@@ -25,12 +25,58 @@ export function setupStats(data) {
         .entries(data);
 
     function statsForPlayer(region, player) {
+        const regionPlayers = regionStats.filter(d => d.key === region)[0].values;
+        const stats = regionPlayers.filter(d => d.key === player)[0].value;
 
-        const regionPlayers = stats.filter(d => d.key === region)[0].values;
-        const playerStats = regionPlayers.filter(d => d.key === player)[0].value;
-        //console.log(playerStats);
+        stats.soloElimsRank = 1;
+        stats.duoElimsRank = 1;
+        stats.totalElimsRank = 1;
 
-        return playerStats;
+        stats.soloPayoutRank = 1;
+        stats.duoPayoutRank = 1;
+        stats.totalPayoutRank = 1;
+
+        stats.soloWinsRank = 1;
+        stats.duoWinsRank = 1;
+        stats.totalWinsRank = 1;
+
+        stats.soloPointsRank = 1;
+        stats.duoPointsRank = 1;
+        stats.totalPointsRank = 1;
+
+        function increment(player, other, field) {
+            // Solo or Duo 
+            if (field.includes("duo") || (field.includes("solo"))) {
+                if (player[field] < other[field]) {
+                    player[field + "Rank"]++;
+                    return;
+                }
+            }
+
+            // Totals handled differently
+            if (player["duo" + field] + player["solo" + field] < other["duo" + field] + other["solo" + field]) {
+                player["total" + field + "Rank"]++;
+                return;
+            }
+        }
+
+        regionPlayers.forEach(function (d) {
+            increment(stats, d.value, "soloElims");
+            increment(stats, d.value, "duoElims");
+            increment(stats, d.value, "totalElims");
+            increment(stats, d.value, "soloPayout");
+            increment(stats, d.value, "duoPayout");
+            increment(stats, d.value, "totalPayout");
+
+            increment(stats, d.value, "soloWins");
+            increment(stats, d.value, "duoWins");
+            increment(stats, d.value, "totalWins");
+            increment(stats, d.value, "soloPoints");
+            increment(stats, d.value, "duoPoints");
+            increment(stats, d.value, "totalPoints");
+
+        })
+        return stats;
     }
 
     return statsForPlayer;

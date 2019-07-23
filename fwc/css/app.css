@@ -148,7 +148,13 @@ body {
 .player-stat {
     font-family: monospace;
     font-weight: 400;
-    font-size: 1.3em;
+    font-size: 1.5em;
+}
+
+.player-stat-label {
+    font-family: Helvetica, Arial, sans-serif;
+    font-weight: 600;
+    font-size: 1.2em;
 }
 
 .scatterplotYAxisLabel, .scatterplotXAxisLabel {

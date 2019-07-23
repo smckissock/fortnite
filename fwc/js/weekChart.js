@@ -103,7 +103,7 @@ export function weekChart(id) {
     checkBoxSolos
         .size(27)
         .x(100)
-        .y(3)
+        .y(2)
         .rx(corner)
         .ry(corner)
         .markStrokeWidth(6)
@@ -119,7 +119,7 @@ export function weekChart(id) {
     checkBoxDuos
         .size(27)
         .x(duoX + 100)
-        .y(3)
+        .y(2)
         .rx(corner)
         .ry(corner)
         .markStrokeWidth(6)
@@ -525,9 +525,7 @@ export function weekChart(id) {
 
         const pushDown = 0;
 
-
         function showPlayerHeader(stats) {
-
 
             let regionSvg = d3.select(".region-svg");
             playerRect = regionSvg.append("rect")
@@ -543,8 +541,8 @@ export function weekChart(id) {
                 .attr("ry", cornerRadius)
             regionSvg.append("text")
                 .classed("player-summary", true)
-                .attr("x", 24)
-                .attr("y", 48 + pushDown)
+                .attr("x", 18)
+                .attr("y", 42 + pushDown)
                 .text(player)
                 .attr("font-size", (player.length < 16) ? "2.4em" : "1.8em")
                 .attr("fill", "black");
@@ -566,7 +564,7 @@ export function weekChart(id) {
                 regionSvg.append("text")
                     .classed("player-summary", true)
                     .classed("player-stat", true)
-                    .attr("x", x)
+                    .attr("x", x + 40 - (text.length * 9))
                     .attr("y", y)
                     .text(text)
             }
@@ -575,34 +573,61 @@ export function weekChart(id) {
                 regionSvg.append("text")
                     .classed("player-summary", true)
                     .classed("player-stat-label", true)
-                    .attr("x", 10)
+                    .attr("x", x)
                     .attr("y", y)
                     .attr("font-family", "Helvetica, Arial, sans-serif")
                     .text(text)
             }
 
             const num = d3.format(",d");
-            let y = 100;
+
+            const x0 = 10;
+            const x1 = 95;
+            const x2 = 170;
+            const x3 = 245;
             const yStep = 40;
-            writeText(10, y, "Payout");
-            writeNumber(80, y, num(stats.soloPayout));
-            writeNumber(150, y, num(stats.duoPayout));
-            writeNumber(230, y, num(stats.duoPayout + stats.soloPayout));
+            const yRank = 18;
+
+            writeText(x1 + 5, 70, "Solo");
+            writeText(x2 + 5, 70, "Duo");
+            writeText(x3, 70, "Total");
+
+            let y = 54;
             y = y + yStep;
-            writeText(10, y, "Points");
-            writeNumber(80, y, num(stats.soloPoints));
-            writeNumber(150, y, num(stats.duoPoints));
-            writeNumber(230, y, num(stats.duoPoints + stats.soloPoints));
+            writeText(x0, y, "Payout");
+            writeNumber(x1, y, num(stats.soloPayout));
+            writeNumber(x1, y + yRank, num(stats.soloPayoutRank));
+            writeNumber(x2, y, num(stats.duoPayout));
+            writeNumber(x2, y + yRank, num(stats.duoPayoutRank));
+            writeNumber(x3, y, num(stats.duoPayout + stats.soloPayout));
+            writeNumber(x3, y + yRank, num(stats.totalPayoutRank));
+            y = y + yStep;
+
+            writeText(x0, y, "Points");
+            writeNumber(x1, y, num(stats.soloPoints));
+            writeNumber(x1, y + yRank, num(stats.soloPointsRank));
+            writeNumber(x2, y, num(stats.duoPoints));
+            writeNumber(x2, y + yRank, num(stats.duoPointsRank));
+            writeNumber(x3, y, num(stats.duoPoints + stats.soloPoints));
+            writeNumber(x3, y + yRank, num(stats.totalPointsRank));
+
             y = y + yStep
-            writeText(10, y, "Wins");
-            writeNumber(80, y, num(stats.soloWins));
-            writeNumber(150, y, num(stats.duoWins));
-            writeNumber(230, y, num(stats.duoWins + stats.soloWins));
+            writeText(x0, y, "Wins");
+            writeNumber(x1, y, num(stats.soloWins));
+            writeNumber(x1, y + yRank, num(stats.soloWinsRank));
+            writeNumber(x2, y, num(stats.duoWins));
+            writeNumber(x2, y + yRank, num(stats.duoWinsRank));
+            writeNumber(x3, y, num(stats.duoWins + stats.soloWins));
+            writeNumber(x3, y + yRank, num(stats.totalWinsRank));
+
             y = y + yStep
-            writeText(10, y, "Elims");
-            writeNumber(80, y, num(stats.soloElims));
-            writeNumber(150, y, num(stats.duoElims));
-            writeNumber(230, y, num(stats.duoElims + stats.soloElims));
+            writeText(x0, y, "Elims");
+            writeNumber(x1, y, num(stats.soloElims));
+            writeNumber(x1, y + yRank, num(stats.soloElimsRank));
+            writeNumber(x2, y, num(stats.duoElims));
+            writeNumber(x2, y + yRank, num(stats.duoElimsRank));
+            writeNumber(x3, y, num(stats.duoElims + stats.soloElims));
+            writeNumber(x3, y + yRank, num(stats.totalElimsRank));
 
         } // End showPlayerHeader
 
@@ -643,7 +668,6 @@ export function weekChart(id) {
                 .transition()
                 .style("fill-opacity", qualified ? 1 : 0);
             showQualificationCircles(matches, count);
-
 
             const pctFormat = d3.format(",.1%")
             let place = "";
