@@ -79,7 +79,6 @@ body {
     font-size: 1.2em;
 }
 
-
 .search-box {
     margin-top: 50px;
     grid-area: search-box;
@@ -151,10 +150,19 @@ body {
     font-size: 1.5em;
 }
 
+.player-rank {
+    font-family: monospace;
+    font-weight: 600;
+    font-size: 1.3em;
+    color: '#fc8d62';
+    fill: '#fc8d62';
+    /* color: rgb(80, 80, 80); */
+}
+
 .player-stat-label {
     font-family: Helvetica, Arial, sans-serif;
     font-weight: 600;
-    font-size: 1.2em;
+    font-size: 1.0em;
 }
 
 .scatterplotYAxisLabel, .scatterplotXAxisLabel {

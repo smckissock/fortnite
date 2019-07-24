@@ -569,6 +569,16 @@ export function weekChart(id) {
                     .text(text)
             }
 
+            function writeRank(x, y, text) {
+                regionSvg.append("text")
+                    .classed("player-summary", true)
+                    .classed("player-rank", true)
+                    .attr("x", x + 40 - (text.length * 9))
+                    .attr("y", y)
+                    .attr("color", "green")
+                    .text("#" + text)
+            }
+
             function writeText(x, y, text) {
                 regionSvg.append("text")
                     .classed("player-summary", true)
@@ -596,38 +606,38 @@ export function weekChart(id) {
             y = y + yStep;
             writeText(x0, y, "Payout");
             writeNumber(x1, y, num(stats.soloPayout));
-            writeNumber(x1, y + yRank, num(stats.soloPayoutRank));
+            writeRank(x1, y + yRank, num(stats.soloPayoutRank));
             writeNumber(x2, y, num(stats.duoPayout));
-            writeNumber(x2, y + yRank, num(stats.duoPayoutRank));
+            writeRank(x2, y + yRank, num(stats.duoPayoutRank));
             writeNumber(x3, y, num(stats.duoPayout + stats.soloPayout));
-            writeNumber(x3, y + yRank, num(stats.totalPayoutRank));
+            writeRank(x3, y + yRank, num(stats.totalPayoutRank));
             y = y + yStep;
 
             writeText(x0, y, "Points");
             writeNumber(x1, y, num(stats.soloPoints));
-            writeNumber(x1, y + yRank, num(stats.soloPointsRank));
+            writeRank(x1, y + yRank, num(stats.soloPointsRank));
             writeNumber(x2, y, num(stats.duoPoints));
-            writeNumber(x2, y + yRank, num(stats.duoPointsRank));
+            writeRank(x2, y + yRank, num(stats.duoPointsRank));
             writeNumber(x3, y, num(stats.duoPoints + stats.soloPoints));
-            writeNumber(x3, y + yRank, num(stats.totalPointsRank));
+            writeRank(x3, y + yRank, num(stats.totalPointsRank));
 
             y = y + yStep
             writeText(x0, y, "Wins");
             writeNumber(x1, y, num(stats.soloWins));
-            writeNumber(x1, y + yRank, num(stats.soloWinsRank));
+            writeRank(x1, y + yRank, num(stats.soloWinsRank));
             writeNumber(x2, y, num(stats.duoWins));
-            writeNumber(x2, y + yRank, num(stats.duoWinsRank));
+            writeRank(x2, y + yRank, num(stats.duoWinsRank));
             writeNumber(x3, y, num(stats.duoWins + stats.soloWins));
-            writeNumber(x3, y + yRank, num(stats.totalWinsRank));
+            writeRank(x3, y + yRank, num(stats.totalWinsRank));
 
             y = y + yStep
             writeText(x0, y, "Elims");
             writeNumber(x1, y, num(stats.soloElims));
-            writeNumber(x1, y + yRank, num(stats.soloElimsRank));
+            writeRank(x1, y + yRank, num(stats.soloElimsRank));
             writeNumber(x2, y, num(stats.duoElims));
-            writeNumber(x2, y + yRank, num(stats.duoElimsRank));
+            writeRank(x2, y + yRank, num(stats.duoElimsRank));
             writeNumber(x3, y, num(stats.duoElims + stats.soloElims));
-            writeNumber(x3, y + yRank, num(stats.totalElimsRank));
+            writeRank(x3, y + yRank, num(stats.totalElimsRank));
 
         } // End showPlayerHeader
 
