@@ -1,6 +1,6 @@
 // @language_out ecmascript5
 
-import { cornerRadius, filters, facts, updateCounts, statsForPlayer } from "./main.js";
+import { cornerRadius, filters, facts, updateCounts, statsForPlayer, playerInfos } from "./main.js";
 import { clearPlayer } from "./playerChart.js";
 import { d3CheckBox } from "./d3CheckBox.js";
 
@@ -279,9 +279,9 @@ export function weekChart(id) {
             .attr("pointer-events", "none");
 
         const noPlaceLabel = svg.append("text")
-            .attr("x", x + 28)
+            .attr("x", x + 34)
             .attr("y", y + bigLabel.y + 8)
-            .text("No Winnings")
+            .text("No Payout")
             .style("font-family", "Helvetica, Arial, sans-serif")
             .attr("font-size", "0.8em")
             .attr("fill", "black")
@@ -523,9 +523,23 @@ export function weekChart(id) {
             return;
         }
 
-        const pushDown = 0;
-
         function showPlayerHeader(stats, region) {
+
+            let team = "";
+            let nationality = "";
+            let age = "";
+            let playerInfoLabel = "";
+            const players = playerInfos.filter(d => d.name === player);
+            if (players.length > 0) {
+                let info = [];
+                info.push(players[0].age);
+                info.push(players[0].team);
+                info.push(players[0].nationality);
+
+                info = info.filter(d => d != ""); 
+                playerInfoLabel = info.join(" | ");
+            } 
+                
 
             let regionSvg = d3.select(".region-svg");
             playerRect = regionSvg.append("rect")
@@ -539,17 +553,30 @@ export function weekChart(id) {
                 .attr("stroke-width", 0)
                 .attr("rx", cornerRadius)
                 .attr("ry", cornerRadius)
+
+            // Player Name
             regionSvg.append("text")
                 .classed("player-summary", true)
-                .attr("x", 18)
-                .attr("y", 42 + pushDown - 15)
+                .attr("x", 12)
+                .attr("y", 22)
                 .text(player)
                 .attr("fill", "black")
                 .attr("font-size", 0) 
               .transition()
                 .duration(140) 
-                .attr("y", 42 + pushDown)
+                .attr("y", 35)
                 .attr("font-size", (player.length < 16) ? "2.4em" : "1.8em")
+
+            // Player team, nationality & age, if any    
+            regionSvg.append("text")
+                .classed("player-summary", true)
+                .attr("x", 12)
+                .attr("y", 63)
+                .text(playerInfoLabel)
+                .attr("fill", "black")
+                .attr("font-family", "Helvetica, Arial, sans-serif")
+                .attr("font-weight", "600")
+                .attr("font-size", "0.9em")
                 
             // To hide solo/duo checkboxes    
             svg.append("rect")
@@ -599,14 +626,14 @@ export function weekChart(id) {
             const x1 = 75;
             const x2 = 150;
             const x3 = 225;
-            const yStep = 40;
+            const yStep = 38;
             const yRank = 16;
 
-            writeText(x1 + 5, 70, "Solo");
-            writeText(x2 + 5, 70, "Duo");
-            writeText(x3, 70, "Total");
+            writeText(x1 + 5, 89, "Solo");
+            writeText(x2 + 5, 89, "Duo");
+            writeText(x3, 89, "Total");
 
-            let y = 54;
+            let y = 70;
             y = y + yStep;
             writeText(x0, y, "Payout");
             writeNumber(x1, y, num(stats.soloPayout));
@@ -644,7 +671,6 @@ export function weekChart(id) {
             writeRank(x3, y + yRank, num(stats.totalElimsRank));
 
             // Region label
-            //regionSvg.append("text")
             svg.append("text")
                 .classed("player-summary", true)
                 .classed("player-rank", true)

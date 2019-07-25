@@ -37,18 +37,39 @@ namespace FortniteJson {
             string json = JsonConvert.SerializeObject(array);
             var niceJson = Newtonsoft.Json.Linq.JToken.Parse(json).ToString();
             File.WriteAllText(fileName, niceJson);
+
+            MakePlayerArray();
         }
 
-        public static void MakeJson() {
+        public static void MakePlayerArray() {
+            var list = new List<List<string>>();
+            var reader = SqlUtil.Query("SELECT * FROM PlayerFrontEndView");
+            while (reader.Read()) {
+                var record = new List<string>();
+                record.Add(reader["name"].ToString());
+                record.Add(reader["nationality"].ToString());
+                record.Add(reader["team"].ToString());
+                record.Add(reader["age"].ToString());
+                list.Add(record);
+            }
 
-            var places = GetPlaces();
-            
-            string fileName = @"c:\fortnite\fwc\data\data.json";
+            string fileName = @"c:\fortnite\fwc\data\players.json";
 
-            string json = JsonConvert.SerializeObject(places);
+            string json = JsonConvert.SerializeObject(list);
             var niceJson = Newtonsoft.Json.Linq.JToken.Parse(json).ToString();
             File.WriteAllText(fileName, niceJson);
         }
+
+        //public static void MakeJson() {
+
+        //    var places = GetPlaces();
+
+        //    string fileName = @"c:\fortnite\fwc\data\data.json";
+
+        //    string json = JsonConvert.SerializeObject(places);
+        //    var niceJson = Newtonsoft.Json.Linq.JToken.Parse(json).ToString();
+        //    File.WriteAllText(fileName, niceJson);
+        //}
 
         private static List<List<string>> GetArray() {
             var list = new List<List<string>>();

@@ -22,7 +22,7 @@ namespace FortniteJson {
 
             Console.WriteLine("Running..");
 
-            PlayersUpdatedFromAirtable.Import();
+            //PlayersUpdatedFromAirtable.Import();
             Fortnite.MakeJsonArray();
 
 
