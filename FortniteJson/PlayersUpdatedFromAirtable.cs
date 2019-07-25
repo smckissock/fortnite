@@ -18,7 +18,7 @@ namespace FortniteJson {
 
             teams = GetTeams();
             ImportCsv();
-            LinkPlacementsToPlayers();
+            //LinkPlacementsToPlayers();
         }
 
         private static void ImportCsv() {
