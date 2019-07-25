@@ -209,7 +209,7 @@ function searchLabel(svg) {
         .attr("y", 71)
         .text("Search")
         .style("font-family", "Helvetica, Arial, sans-serif")
-        .attr("font-size", "1.2rem")
+        .attr("font-size", "1.0rem")
         .attr("fill", "black")
         .attr("font-weight", 600)
 }
