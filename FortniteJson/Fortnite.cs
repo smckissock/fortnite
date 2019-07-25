@@ -32,7 +32,7 @@ namespace FortniteJson {
 
             var array = GetArray();
 
-            string fileName = @"c:\fortnite\fwc\data\dataArray.json";
+            string fileName = @"c:\fortnite\fwc\data\data.json";
 
             string json = JsonConvert.SerializeObject(array);
             var niceJson = Newtonsoft.Json.Linq.JToken.Parse(json).ToString();

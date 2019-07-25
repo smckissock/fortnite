@@ -9,7 +9,7 @@ namespace FortniteJson {
 
     class PlayersUpdatedFromAirtable {
         static string path = "c:\\fortnite\\airtable\\";
-        static string date = "2019 07 12";
+        static string date = "2019 07 25";
 
         static List<string> teams;
 
@@ -67,7 +67,7 @@ namespace FortniteJson {
 
         private static void LinkPlacementsToPlayers() {
             SqlUtil.Command("UPDATE Placement SET PlayerID = " +
-                "(SELECT ID FROM Player WHERE PLacement.Player = Player.Name)");
+                "(SELECT ID FROM Player WHERE Placement.Player = Player.Name)");
         }
 
         private static List<string> GetTeams() {
