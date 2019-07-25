@@ -525,7 +525,7 @@ export function weekChart(id) {
 
         const pushDown = 0;
 
-        function showPlayerHeader(stats) {
+        function showPlayerHeader(stats, region) {
 
             let regionSvg = d3.select(".region-svg");
             playerRect = regionSvg.append("rect")
@@ -542,11 +542,15 @@ export function weekChart(id) {
             regionSvg.append("text")
                 .classed("player-summary", true)
                 .attr("x", 18)
-                .attr("y", 42 + pushDown)
+                .attr("y", 42 + pushDown - 15)
                 .text(player)
+                .attr("fill", "black")
+                .attr("font-size", 0) 
+              .transition()
+                .duration(140) 
+                .attr("y", 42 + pushDown)
                 .attr("font-size", (player.length < 16) ? "2.4em" : "1.8em")
-                .attr("fill", "black");
-
+                
             // To hide solo/duo checkboxes    
             svg.append("rect")
                 .classed("player-summary", true)
@@ -564,7 +568,7 @@ export function weekChart(id) {
                 regionSvg.append("text")
                     .classed("player-summary", true)
                     .classed("player-stat", true)
-                    .attr("x", x + 40 - (text.length * 9))
+                    .attr("x", x)
                     .attr("y", y)
                     .text(text)
             }
@@ -573,9 +577,9 @@ export function weekChart(id) {
                 regionSvg.append("text")
                     .classed("player-summary", true)
                     .classed("player-rank", true)
-                    .attr("x", x + 40 - (text.length * 9))
+                    //.attr("x", x + 40 - (text.length * 9)) // Don't attempt to right-justify
+                    .attr("x", x)
                     .attr("y", y)
-                    .attr("color", "green")
                     .text("#" + text)
             }
 
@@ -592,11 +596,11 @@ export function weekChart(id) {
             const num = d3.format(",d");
 
             const x0 = 10;
-            const x1 = 95;
-            const x2 = 170;
-            const x3 = 245;
+            const x1 = 75;
+            const x2 = 150;
+            const x3 = 225;
             const yStep = 40;
-            const yRank = 18;
+            const yRank = 16;
 
             writeText(x1 + 5, 70, "Solo");
             writeText(x2 + 5, 70, "Duo");
@@ -639,6 +643,16 @@ export function weekChart(id) {
             writeNumber(x3, y, num(stats.duoElims + stats.soloElims));
             writeRank(x3, y + yRank, num(stats.totalElimsRank));
 
+            // Region label
+            //regionSvg.append("text")
+            svg.append("text")
+                .classed("player-summary", true)
+                .classed("player-rank", true)
+                .attr("x", 34)
+                .attr("y", 20)
+                .attr("font-family", "Helvetica, Arial, sans-serif")
+                .text("# rankings are for " + region);
+            
         } // End showPlayerHeader
 
 
@@ -647,8 +661,9 @@ export function weekChart(id) {
         // This is a messed up way to find the player's region. Need to look it up in a player array. Then wouldn't need line above.
 
         if (recs.length > 0) {
-            let stats = statsForPlayer(recs[0].region, player);
-            showPlayerHeader(stats);
+            const region = recs[0].region;
+            const stats = statsForPlayer(region, player);
+            showPlayerHeader(stats, region);
         }
 
         // Draw weeks

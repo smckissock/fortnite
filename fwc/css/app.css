@@ -148,21 +148,21 @@ body {
     font-family: monospace;
     font-weight: 400;
     font-size: 1.5em;
+    text-align: right;
 }
 
 .player-rank {
     font-family: monospace;
     font-weight: 600;
-    font-size: 1.3em;
-    color: '#fc8d62';
-    fill: '#fc8d62';
-    /* color: rgb(80, 80, 80); */
+    font-size: 1.2em;
+    fill: dimgrey;
+    text-align: right;
 }
 
 .player-stat-label {
     font-family: Helvetica, Arial, sans-serif;
     font-weight: 600;
-    font-size: 1.0em;
+    font-size: 0.9em;
 }
 
 .scatterplotYAxisLabel, .scatterplotXAxisLabel {

@@ -47,15 +47,17 @@ export function setupStats(data) {
         function increment(player, other, field) {
             // Solo or Duo 
             if (field.includes("duo") || (field.includes("solo"))) {
-                if (player[field] < other[field]) {
+                if (player[field] < other[field]) 
                     player[field + "Rank"]++;
-                    return;
-                }
+                return;
             }
 
             // Totals handled differently
-            if (player["duo" + field] + player["solo" + field] < other["duo" + field] + other["solo" + field]) {
-                player["total" + field + "Rank"]++;
+            const stat = field.replace("total", "");
+            const totalOther = other["duo" + stat] + other["solo" + stat];
+            const totalPlayer = player["duo" + stat] + player["solo" + stat];
+            if (totalOther > totalPlayer) {
+                player[field + "Rank"]++;
                 return;
             }
         }
