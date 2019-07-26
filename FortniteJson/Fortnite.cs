@@ -7,6 +7,27 @@ using Microsoft.VisualBasic.FileIO;
 
 namespace FortniteJson {
 
+    public class Game {
+        public List<string> fields;
+        public List<string> players;
+
+        public Game() {
+            fields = new List<string>();
+            players = new List<string>();
+        } 
+    }
+
+
+        // Used in GetPlacementPoints() below
+        public struct Tier {
+        public int place, points;
+
+        public Tier(int p1, int p2) {
+            place = p1;
+            points = p2;
+        }
+    }
+
     public class Place {
         public string week;
         public int soloQual;
@@ -160,6 +181,60 @@ namespace FortniteJson {
             string fileName = @"c:\fortnite\fwc\data\data.csv";
 
             File.WriteAllText(fileName, string.Join("\n", lines));
+        }
+
+        private static int GetPlacementPoints(int rank) {
+
+            // Super inefficient...
+            var tiers = new List<Tier>();
+            var tierReader = SqlUtil.Query("SELECT Rank, Points FROM RankPointTier WHERE RegionID = (SELECT ID FROM Region WHERE Name = 'NA East') AND WeekID = 10 ORDER BY Rank");
+            while (tierReader.Read())
+                tiers.Add(new Tier( (int)tierReader["Rank"], (int)tierReader["Points"]));
+            tierReader.Close();
+
+            int points = 0;
+            foreach (Tier tier in tiers)
+                if (tier.place >= rank)
+                    points += tier.points;
+            
+            return points;
+        }
+
+        public static void MakeGames() {
+
+            var list = new List<Game>();
+
+            // ORDERING is important!!
+            var reader = SqlUtil.Query("SELECT PlacementID, Player, SecondsAlive, EndTime, GameRank, Elims FROM TimelineView ORDER BY PlacementID, EndTime");
+
+            Game game = null;
+            string placementId = "";
+            while (reader.Read()) {
+
+                if ((game == null) || (placementId != reader["PlacementID"].ToString())) {
+                    game = new Game();
+                    game.players.Add(reader["Player"].ToString());
+
+                    game.fields.Add(reader["SecondsAlive"].ToString());
+                    game.fields.Add(reader["EndTime"].ToString());
+                    game.fields.Add(reader["GameRank"].ToString());
+                    game.fields.Add(reader["Elims"].ToString());
+                    game.fields.Add(GetPlacementPoints((int)reader["GameRank"]).ToString());
+
+                    placementId = reader["PlacementID"].ToString();
+
+                    list.Add(game);
+                } else {
+                    game.players.Add(reader["Player"].ToString());
+                }
+            }
+
+            string fileName = @"c:\fortnite\fwc\data\games.json";
+
+            string json = JsonConvert.SerializeObject(list);
+            var niceJson = Newtonsoft.Json.Linq.JToken.Parse(json).ToString();
+            File.WriteAllText(fileName, niceJson);
+
         }
     }
 }

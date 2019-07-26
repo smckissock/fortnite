@@ -538,8 +538,10 @@ export function weekChart(id) {
 
                 info = info.filter(d => d != ""); 
                 playerInfoLabel = info.join(" | ");
-            } 
-                
+            }
+            
+            if (player === "Posick")
+                playerInfoLabel = "19 | Free Agent | Arlington, Virginia"
 
             let regionSvg = d3.select(".region-svg");
             playerRect = regionSvg.append("rect")
