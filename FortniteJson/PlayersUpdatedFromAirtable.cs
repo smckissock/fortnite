@@ -9,7 +9,7 @@ namespace FortniteJson {
 
     class PlayersUpdatedFromAirtable {
         static string path = "c:\\fortnite\\airtable\\";
-        static string date = "2019 07 25";
+        static string date = "2019 07 26";
 
         static List<string> teams;
 
@@ -47,7 +47,7 @@ namespace FortniteJson {
 
             // Insert Team if neccessary
             if (!teams.Contains(team)) {
-                SqlUtil.Command("INSERT INTO Team VALUES ('" + team + "')");
+                SqlUtil.Command("INSERT INTO Team VALUES ('" + team.Replace("'", "''") + "')");
                 teams.Add(team);
             }
 
@@ -58,7 +58,7 @@ namespace FortniteJson {
                 "Twitter = '" + twitter + "', " +
 
                 "NationalityID = (SELECT ID FROM Nationality WHERE Name = '" + nationality + "'), " +
-                "TeamID = (SELECT ID FROM Team WHERE Name = '" + team + "'), " +
+                "TeamID = (SELECT ID FROM Team WHERE Name = '" + team.Replace("'", "''") + "'), " +
                 "KbmOrControllerID = (SELECT ID FROM KbmOrController WHERE Name = '" + kbmOrController + "') " +
                 "WHERE CurrentName = N'" + name + "'"; 
 

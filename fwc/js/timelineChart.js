@@ -76,18 +76,26 @@ function draw() {
         .attr("font-weight", "600")
         .attr("fill", "black")
 
-    const startSeconds =
-        teams[0].values[0].endSeconds - teams[0].values[0].secondsAlive;
-    const endSeconds = startSeconds + (60 * 60 * 3.6);
+    const beforeStart = teams[0].values[0].endSeconds - teams[0].values[0].secondsAlive;
+    const start =
+        teams[0].values[0].endSeconds -
+        teams[0].values[0].secondsAlive -
+        beforeStart;
+
+    const end = start + (60 * 60 * 3.6);
+
+    //const startSeconds =
+    //    teams[0].values[0].endSeconds - teams[0].values[0].secondsAlive;
+    //const endSeconds = startSeconds + (60 * 60 * 3.6);
 
     let xScale = d3.scaleLinear()
-        .domain([startSeconds, endSeconds])
+        .domain([start, end])
         .range([200, chartWidth]);
 
     svg.selectAll("g").data(teams).append("rect")
-        .attr("x", d => xScale(d.values[0].endSeconds))
+        .attr("x", d => xScale(start))
         .attr("y", (d, i) => i * rowHeight + 5)
-        .attr("width", d => xScale(d.values[0].endSeconds - d.values[0].secondsAlive))
+        .attr("width", d => xScale(d.values[0].endSeconds))
         .attr("height", 43)
         .attr("fill", "white")
         .attr("stroke", "black")

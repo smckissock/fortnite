@@ -23,9 +23,10 @@ namespace FortniteJson {
             Console.WriteLine("Running..");
 
             //PlayersUpdatedFromAirtable.Import();
-            //Fortnite.MakeJsonArray();
+            Fortnite.MakeJsonArray();
 
-            Fortnite.MakeGames();
+            //Fortnite.MakeGames();
+
 
             Console.Write("DONE");
             Console.Read();
