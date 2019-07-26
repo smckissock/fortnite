@@ -205,13 +205,14 @@ namespace FortniteJson {
             var list = new List<Game>();
 
             // ORDERING is important!!
-            var reader = SqlUtil.Query("SELECT PlacementID, Player, SecondsAlive, EndTime, GameRank, Elims FROM TimelineView ORDER BY PlacementID, EndTime");
+            var reader = SqlUtil.Query("SELECT PlacementID, Player, SecondsAlive, EndTime, GameRank, Elims, EndSeconds FROM TimelineView ORDER BY PlacementID, EndTime");
 
             Game game = null;
             string placementId = "";
+            int endSeconds = 0;
             while (reader.Read()) {
 
-                if ((game == null) || (placementId != reader["PlacementID"].ToString())) {
+                if ((game == null) || (placementId != reader["PlacementID"].ToString()) || endSeconds != (int)reader["EndSeconds"]) {
                     game = new Game();
                     game.players.Add(reader["Player"].ToString());
 
@@ -219,9 +220,11 @@ namespace FortniteJson {
                     game.fields.Add(reader["EndTime"].ToString());
                     game.fields.Add(reader["GameRank"].ToString());
                     game.fields.Add(reader["Elims"].ToString());
+                    game.fields.Add(reader["EndSeconds"].ToString()); 
                     game.fields.Add(GetPlacementPoints((int)reader["GameRank"]).ToString());
 
                     placementId = reader["PlacementID"].ToString();
+                    endSeconds = (int)reader["EndSeconds"];
 
                     list.Add(game);
                 } else {

@@ -90,7 +90,7 @@ GO
 
 -- July 13, 2019
 BACKUP DATABASE Fortnite
-TO DISK = N'd:\db\FortniteJuly13.bak' WITH NOFORMAT, NOINIT, NAME = N'Full Database Backup', SKIP, NOREWIND, NOUNLOAD, STATS = 10
+TO DISK = N'e:\db\FortniteJuly13.bak' WITH NOFORMAT, NOINIT, NAME = N'Full Database Backup', SKIP, NOREWIND, NOUNLOAD, STATS = 10
 GO
 
 RESTORE FILELISTONLY
@@ -103,3 +103,29 @@ WITH MOVE 'Fortnite' TO 'C:\fortnitedb\FortniteJuly7\Fortnite.mdf',
 MOVE 'Fortnite_log' TO 'C:\fortnitedb\FortniteJuly7\Fortnite_log.ldf'
 
 
+
+
+-- July 24, 2019
+ 
+RESTORE FILELISTONLY
+FROM DISK = N'c:\fortnitedb\FortniteJuly7.bak'
+GO
+
+RESTORE DATABASE Fortnite
+FROM DISK = N'c:\fortnitedb\FortniteJuly7.bak'
+WITH MOVE 'Fortnite' TO 'C:\fortnitedb\FortniteJuly7\Fortnite.mdf',
+MOVE 'Fortnite_log' TO 'C:\fortnitedb\FortniteJuly7\Fortnite_log.ldf'
+
+
+
+
+RESTORE FILELISTONLY
+FROM DISK = N'f:\db\FortniteJuly26_2.bak'
+GO
+
+RESTORE DATABASE Fortnite2
+FROM DISK = N'f:\db\FortniteJuly26_2.bak'
+WITH MOVE 'Fortnite2' TO 'C:\fortnitedb\FortniteJuly26.mdf',
+MOVE 'Fortnite2_log' TO 'C:\fortnitedb\FortniteJuly26_log.ldf'
+
+SELECT * FROM TimelineView
