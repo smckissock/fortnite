@@ -16,7 +16,8 @@ SELECT
 	pl.Points PlacementPoints,
 	pl.WeekID,
 	pl.Player,
-	pl.Region
+	pl.Region,
+	DATEDIFF(SECOND, '19700101', g.EndTime) EndSeconds
 FROM Game g
 JOIN PlacementView pl on pl.ID = g.PlacementID
 WHERE pl.Rank < 21 

@@ -36,4 +36,22 @@ d3.json('fwc/data/games.json').then(function (data) {
 function draw() {
     //console.log(games);
     console.log(teams);
+
+    let div = d3.select(".timeline");
+
+    const chartWidth = 1200
+    const svg = div.append("svg")
+        .attr("width", chartWidth)
+        .attr("height", 1000)
+
+    const rowHeight = 60
+    svg.selectAll("g").data(teams).enter().append("g")
+        .append("rect")
+        .attr("x", 0)
+        .attr("y", (d, i) => i * rowHeight)
+        .attr("width", chartWidth)
+        .attr("height", rowHeight - 8)
+        .attr("fill", "lightblue")
+        .attr("stroke", "black")
+        .attr("stroke-width", 2)
 }
