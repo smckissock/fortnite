@@ -28,7 +28,7 @@ d3.json('fwc/data/games.json').then(function (data) {
         .key(d => d.placementId)
         .entries(games);
 
-    //console.log("games");
+    console.log(teams);
 
     draw();
 });
@@ -54,4 +54,24 @@ function draw() {
         .attr("fill", "lightblue")
         .attr("stroke", "black")
         .attr("stroke-width", 2)
+
+    svg.selectAll("g").data(teams)
+        .append("text")  // 
+        .attr("x", 6)
+        .attr("y", (d, i) => i * rowHeight + 21)
+        .text(d => d.values[0].players[0])
+        .attr("font-family", "Helvetica, Arial, sans-serif")
+        .attr("font-size", "1.0em")
+        .attr("font-weight", "600")
+        .attr("fill", "black")
+
+    svg.selectAll("g").data(teams)
+        .append("text")  // 
+        .attr("x", 6)
+        .attr("y", (d, i) => i * rowHeight + 45)
+        .text(d => d.values[0].players[1])
+        .attr("font-family", "Helvetica, Arial, sans-serif")
+        .attr("font-size", "1.0em")
+        .attr("font-weight", "600")
+        .attr("fill", "black")
 }
