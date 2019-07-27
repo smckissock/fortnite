@@ -5,6 +5,8 @@ let teams;
 let matchStart;
 let matchEnd;
 
+const cornerRadius = 8;
+
 
 d3.json('fwc/data/games.json').then(function (data) {
     let games = [];
@@ -96,6 +98,8 @@ function draw() {
         .attr("fill", "lightblue")
         .attr("stroke", "black")
         .attr("stroke-width", 0)
+        .attr("rx", cornerRadius)
+        .attr("ry", cornerRadius)
 
     // Rank
     svg.selectAll("g").data(teams)
@@ -176,6 +180,60 @@ function draw() {
                 .attr("stroke-width", game => (game.rank === "1") ? 6 : 1)
                 .on('click', function (game) {
                     console.log(game.start + " -> " + game.end + "  " + game.secondsAlive);
-                });
+                })
+                .on('mouseover', function (game) {
+
+                    // Make tooltip for player
+                    const rectWidth = 140;
+                    let left = d3.event.pageX - 140;
+                    //if (d3.event.pageX > 1040)
+                    //    left = d3.event.pageX - 555 - rectWidth;
+
+                    const top = d3.event.pageY - 120;
+                    const height = 80;
+
+                    svg.append("rect")
+                        .attr("x", left - 12)
+                        .attr("y", top)
+
+                        .attr("width", rectWidth)
+                        .attr("height", height)
+                        .attr("fill", "white")
+                        .attr("stroke", "black")
+                        .attr("stroke-width", 8)
+                        .attr("rx", cornerRadius)
+                        .attr("ry", cornerRadius)
+                        .attr("font-size", "1.4em")
+                        .classed("tooltip", true);
+
+                    svg.append("text")
+                        .attr("x", left)
+                        .attr("y", d3.event.pageY - 94)
+                        .attr("font-size", "1.2em")
+                        .text(game.placementPoints + " placement points")
+                        .classed("tooltip", true);
+
+                    svg.append("text")
+                        .attr("x", left)
+                        .attr("y", d3.event.pageY - 72)
+                        .attr("font-size", "1.2em")
+                        .text(game.elims + " elim points")
+                        .classed("tooltip", true);
+
+                    /*  svg.append("text")
+                         .attr("x", left)
+                         .attr("y", d3.event.pageY - 52)
+                         .attr("font-size", "1.2em")
+                         .text(game.placementPoints)
+                         .classed("tooltip", true); */
+
+                    d3.select(this)
+                        .attr("stroke-width", 4)
+                })
+                // Hide player tooltip
+                .on('mouseout', function (d) {
+                    d3.select(this).attr("stroke-width", 1)
+                    d3.selectAll(".tooltip").remove();
+                })
         })
 }
