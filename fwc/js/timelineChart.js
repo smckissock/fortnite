@@ -266,34 +266,50 @@ function tooltip(svg, game) {
         .attr("font-size", "1.4em")
         .classed("tooltip", true);
 
+    function addText(text, yOffset) {
+        const leftText = left;
+        svg.append("text")
+            .attr("x", leftText)
+            .attr("y", d3.event.pageY - yOffset)
+            .text(text)
+            .classed("tooltip", true)
+            .classed("tooltip-text", true);
+    }
+
+
+    addText(parseInt(game.placementPoints) + parseInt(game.elims) + "  Total points", 98)
+    addText(game.placementPoints + "  Placement points", 78)
+    addText(game.elims + "  Elim points", 58)
+    addText(game.time + "  Duration", 38)
+
     const leftText = left;
-    svg.append("text")
-        .attr("x", leftText)
-        .attr("y", d3.event.pageY - 98)
-        .text(parseInt(game.placementPoints) + parseInt(game.elims) + "  Total points")
-        .classed("tooltip", true)
-        .classed("tooltip-text", true);
+    /*     svg.append("text")
+            .attr("x", leftText)
+            .attr("y", d3.event.pageY - 98)
+            .text(parseInt(game.placementPoints) + parseInt(game.elims) + "  Total points")
+            .classed("tooltip", true)
+            .classed("tooltip-text", true); */
 
-    svg.append("text")
-        .attr("x", leftText)
-        .attr("y", d3.event.pageY - 78)
-        .text(game.placementPoints + "  Placement points")
-        .classed("tooltip", true)
-        .classed("tooltip-text", true);
-
-    svg.append("text")
-        .attr("x", leftText)
-        .attr("y", d3.event.pageY - 58)
-        .text(game.elims + "  Elim points")
-        .classed("tooltip", true)
-        .classed("tooltip-text", true);
-
-    svg.append("text")
-        .attr("x", leftText)
-        .attr("y", d3.event.pageY - 38)
-        .text(game.time + "  Duration")
-        .classed("tooltip", true)
-        .classed("tooltip-text", true);
+    /*     svg.append("text")
+            .attr("x", leftText)
+            .attr("y", d3.event.pageY - 78)
+            .text(game.placementPoints + "  Placement points")
+            .classed("tooltip", true)
+            .classed("tooltip-text", true); */
+    /* 
+        svg.append("text")
+            .attr("x", leftText)
+            .attr("y", d3.event.pageY - 58)
+            .text(game.elims + "  Elim points")
+            .classed("tooltip", true)
+            .classed("tooltip-text", true);
+    
+        svg.append("text")
+            .attr("x", leftText)
+            .attr("y", d3.event.pageY - 38)
+            .text(game.time + "  Duration")
+            .classed("tooltip", true)
+            .classed("tooltip-text", true); */
 
     d3.select(this)
         .attr("stroke-width", 4)
