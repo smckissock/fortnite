@@ -46,23 +46,40 @@ d3.json('fwc/data/games.json').then(function (data) {
         })
     })
 
+    drawHeader();
     draw();
 });
+
+function drawHeader() {
+    let div = d3.select(".title");
+    const svg = div.append("svg")
+        .attr("width", 1000)
+        .attr("height", 70);
+
+    svg.append("text")
+        .attr("x", 20)
+        .attr("y", 60)
+        .text("FORTNITE 2019 World Cup Duos")
+        .attr("font-size", "1.1em")
+        .attr("fill", "black");
+}
 
 function draw() {
 
     let div = d3.select(".timeline");
 
-    const chartWidth = 1200
+    const chartWidth = 1200 // Width of chart, not including left margin
+    const leftMargin = 15;
     const playerWidth = 180;
+
     const svg = div.append("svg")
-        .attr("width", chartWidth)
+        .attr("width", chartWidth + leftMargin)
         .attr("height", 1000)
 
     const rowHeight = 60
     svg.selectAll("g").data(teams).enter().append("g")
         .append("rect")
-        .attr("x", 3)
+        .attr("x", leftMargin)
         .attr("y", (d, i) => i * rowHeight + 3)
         .attr("width", chartWidth - 3)
         .attr("height", rowHeight - 8)
@@ -72,7 +89,7 @@ function draw() {
 
     svg.selectAll("g").data(teams)
         .append("text")  // 
-        .attr("x", 6)
+        .attr("x", leftMargin + 6)
         .attr("y", (d, i) => i * rowHeight + 21)
         .text(d => d.values[0].players[0])
         .attr("font-family", "Helvetica, Arial, sans-serif")
@@ -82,7 +99,7 @@ function draw() {
 
     svg.selectAll("g").data(teams)
         .append("text")  // 
-        .attr("x", 6)
+        .attr("x", leftMargin + 6)
         .attr("y", (d, i) => i * rowHeight + 45)
         .text(d => d.values[0].players[1])
         .attr("font-family", "Helvetica, Arial, sans-serif")
@@ -90,11 +107,11 @@ function draw() {
         .attr("font-weight", "600")
         .attr("fill", "black")
 
-    console.log(matchStart + " " + matchEnd)
+    //console.log(matchStart + " " + matchEnd)
 
     let xScale = d3.scaleLinear()
         .domain([matchStart, matchEnd])
-        .range([playerWidth, chartWidth - 5]);
+        .range([playerWidth + leftMargin, chartWidth]);
 
     svg.selectAll("g").data(teams)
         .each(function (teamGames, teamIndex) {
@@ -110,7 +127,6 @@ function draw() {
                 .attr("height", 30)
                 .attr("fill", "white")
                 .attr("stroke", "black")
-                //.attr("stroke-width", 4)
                 .attr("stroke-width", game => (game.rank === "1") ? 6 : 1)
                 .on('click', function (game) {
                     console.log(game.start + " -> " + game.end + "  " + game.secondsAlive);
