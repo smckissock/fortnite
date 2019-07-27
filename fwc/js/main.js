@@ -62,8 +62,8 @@ d3.json('fwc/data/players.json').then(function (players) {
         rec.age = d[3];
         playerInfos.push(rec);
     });
-    console.log("Players");    
-}); 
+    console.log("Players");
+});
 
 d3.json('fwc/data/data.json').then(function (dataArray) {
     //d3.json('fwc/data/data.json').then(function (data) {
@@ -188,7 +188,6 @@ function title(width) {
         .text("FORTNITE  World Cup Stats")
         .attr("font-size", "1.1em")
         .attr("fill", "black");
-
     return svg;
 }
 
