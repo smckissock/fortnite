@@ -3,6 +3,9 @@ import { colors } from "./shared.js";
 let games;
 let teams;
 
+let matchStart;
+let matchEnd;
+
 
 d3.json('fwc/data/games.json').then(function (data) {
     games = [];
@@ -28,19 +31,30 @@ d3.json('fwc/data/games.json').then(function (data) {
         .key(d => d.placementId)
         .entries(games);
 
-    console.log("HI");
-    console.log(teams);
+    const beforeMatch =
+        teams[0].values[0].endSeconds -
+        teams[0].values[0].secondsAlive - 100; // First started late
+
+    matchStart = 0;
+    matchEnd = 60 * 60 * 3.4;
+
+    teams.forEach(function (team) {
+        team.values.forEach(function (game) {
+            game.start = game.endSeconds - beforeMatch - game.secondsAlive;
+            game.end = game.endSeconds - beforeMatch;
+            console.log(game.start + " -> " + game.end);
+        })
+    })
 
     draw();
 });
 
 function draw() {
-    //console.log(games);
-    console.log(teams);
 
     let div = d3.select(".timeline");
 
     const chartWidth = 1200
+    const playerWidth = 180;
     const svg = div.append("svg")
         .attr("width", chartWidth)
         .attr("height", 1000)
@@ -48,13 +62,13 @@ function draw() {
     const rowHeight = 60
     svg.selectAll("g").data(teams).enter().append("g")
         .append("rect")
-        .attr("x", 0)
-        .attr("y", (d, i) => i * rowHeight)
-        .attr("width", chartWidth)
+        .attr("x", 3)
+        .attr("y", (d, i) => i * rowHeight + 3)
+        .attr("width", chartWidth - 3)
         .attr("height", rowHeight - 8)
         .attr("fill", "lightblue")
         .attr("stroke", "black")
-        .attr("stroke-width", 2)
+        .attr("stroke-width", 5)
 
     svg.selectAll("g").data(teams)
         .append("text")  // 
@@ -76,29 +90,32 @@ function draw() {
         .attr("font-weight", "600")
         .attr("fill", "black")
 
-    const beforeStart = teams[0].values[0].endSeconds - teams[0].values[0].secondsAlive;
-    const start =
-        teams[0].values[0].endSeconds -
-        teams[0].values[0].secondsAlive -
-        beforeStart;
-
-    const end = start + (60 * 60 * 3.6);
-
-    //const startSeconds =
-    //    teams[0].values[0].endSeconds - teams[0].values[0].secondsAlive;
-    //const endSeconds = startSeconds + (60 * 60 * 3.6);
+    console.log(matchStart + " " + matchEnd)
 
     let xScale = d3.scaleLinear()
-        .domain([start, end])
-        .range([200, chartWidth]);
+        .domain([matchStart, matchEnd])
+        .range([playerWidth, chartWidth - 5]);
 
-    svg.selectAll("g").data(teams).append("rect")
-        .attr("x", d => xScale(start))
-        .attr("y", (d, i) => i * rowHeight + 5)
-        .attr("width", d => xScale(d.values[0].endSeconds))
-        .attr("height", 43)
-        .attr("fill", "white")
-        .attr("stroke", "black")
-        .attr("stroke", "black")
-        .attr("stroke-width", 2)
+    svg.selectAll("g").data(teams)
+        .each(function (teamGames, teamIndex) {
+            console.log(teamGames);
+            d3.select(this)
+                .selectAll("rect")
+                .data(teamGames.values)
+                .enter()
+                .append("rect")
+                .attr("x", function (game) {
+                    console.log(game.start);
+                    return xScale(game.start)
+                })
+                .attr("y", (d, i) => teamIndex * rowHeight + 14)
+                .attr("width", game => xScale(game.end) - xScale(game.start))
+                .attr("height", 30)
+                .attr("fill", "white")
+                .attr("stroke", "black")
+                .attr("stroke-width", 2)
+                .on('click', function (game) {
+                    console.log(game.start + " -> " + game.end + "  " + game.secondsAlive);
+                });
+        })
 }
