@@ -3,7 +3,6 @@
     --team-width: 180px;
 }
 
-
 @font-face {
     font-family: 'burbank';
     src: url('burbank.ttf') format('truetype');
@@ -14,7 +13,6 @@ body {
     font: "rubic";
 }
 
-
 .gradient {
     background-image:
       radial-gradient(
@@ -22,23 +20,7 @@ body {
         #FFFFFF,
         #A4A4A4
       );
-  }
-
-.player {
-    font-family: Helvetica, Arial, sans-serif;
-    font-size: 1.0em;
-    font-weight: 600;
-    fill: black;
-}
-
-.right-align {
-    text-align: right;
-}
-
-.wrap {
-    word-wrap: break-word;
-    border: 0px;
-}
+ }
 
 .title {
     grid-area: title;
@@ -46,136 +28,9 @@ body {
     font-size: 3.0em;
 }
 
-.subtitle {
-    grid-area: subtitle;
-    font-weight: 700;
-    font-size: 1.0em;
-}
-
-.filters-string {
-    font-family: Helvetica, Arial, sans-serif;
-    font-size: 1.0rem;
-    fill: black;
-    pointer-events: none;
-    font-weight: 600;
-}
-
-.tick {
-    font-weight: 500;
-    font-size: 20px;
-
-}
-
-.search {
-    grid-area: search;
-    font-weight: 700;
-    font-size: 1.2em;
-}
-
-.search-box {
-    margin-top: 50px;
-    grid-area: search-box;
-    font-weight: 700;
-    font-size: 1.2em;
-}
-
-.world-cup-only-check {
-    font-weight: 700;
-    font-family: sans-serif;
-    font-size: 0.9em;
-    pointer-events: "none";
-} 
-
-
-.right {
-    grid-area: right;
-}
-
-.player-count {
-    grid-area: search;
-    font-weight: 400;
-    font-size: 1.2em;
-}
-
-.download-arrow {
-    stroke: black;  
-    stroke-width: 5;
-    pointer-events: none;
-}
-
-.table {
-    grid-area: table;
-}
-
-.weeks {
-    grid-area: weeks;
-    font-weight: 500;
-}
-
-.weeks-player {
-    grid-area: weeks;
-    font-weight: 500;
-}
-
-.week-chart {
-    fill: red;
-}
-
-.region {
-    grid-area: region;
-}
-
-.team {
-    grid-area: team;
-    /* overflow: auto; */
-}
-
 .player {
-    grid-area: player;
-    font-family: monospace;
-    font-weight: 800;
-    font-size: 1.0em;
-}
-
-.player-stat {
-    font-family: monospace;
-    font-weight: 400;
-    font-size: 1.5em;
-    text-align: right;
-}
-
-.player-rank {
-    font-family: monospace;
-    font-weight: 600;
-    font-size: 1.2em;
-    fill: dimgrey;
-    text-align: right;
-}
-
-.player-stat-label {
     font-family: Helvetica, Arial, sans-serif;
+    font-size: 1.0em;
     font-weight: 600;
-    font-size: 0.9em;
+    fill: black;
 }
-
-.scatterplotYAxisLabel, .scatterplotXAxisLabel {
-    font-family: sans-serif;
-    font-size: 1.6em;
-    fill: darkgrey;
-}
-
-.player-profile-div {
-    position: fixed; 
-    z-index: 1; 
-    left: 37%;
-    top: 100px;
-    width: 22%; 
-    height: 46%; 
-   /* overflow: auto;  Enable scroll if needed */
-   /* background-color: #fefefe; */
-}
-
-.player-profile-rect {
-    fill: #fefefe; 
-}
-
