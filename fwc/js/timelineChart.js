@@ -28,7 +28,6 @@ d3.json('fwc/data/games.json').then(function (data) {
     });
 
     teams = d3.nest()
-        //.key(d => d.placementId)
         .key(d => d.placementRank)
         .entries(games);
 
@@ -40,11 +39,17 @@ d3.json('fwc/data/games.json').then(function (data) {
     matchEnd = 60 * 60 * 3.4;
 
     teams.forEach(function (team) {
+
+        // Normalize seconds to start of match = 0
         team.values.forEach(function (game) {
             game.start = game.endSeconds - beforeMatch - game.secondsAlive;
             game.end = game.endSeconds - beforeMatch;
             console.log(game.start + " -> " + game.end);
         })
+
+        // Add team level sum of elims and placement points
+        team.elims = d3.sum(team.values, game => game.elims);
+        team.placementPoints = d3.sum(team.values, game => game.placementPoints);
     })
 
     drawHeader();
@@ -58,6 +63,7 @@ function drawHeader() {
         .attr("width", 1000)
         .attr("height", headerHeight);
 
+    // "FORTNITE"    
     svg.append("text")
         .attr("x", 20)
         .attr("y", 60)
@@ -72,7 +78,7 @@ function draw() {
 
     const chartWidth = 1200 // Not including left margin
     const leftMargin = 15;
-    const playerWidth = 180;
+    const playerWidth = 220;
     const rowHeight = 60
 
     const svg = div.append("svg")
@@ -90,10 +96,43 @@ function draw() {
         .attr("stroke", "black")
         .attr("stroke-width", 0)
 
-    // First player
+    // Rank
     svg.selectAll("g").data(teams)
         .append("text")  // 
         .attr("x", leftMargin + 6)
+        .attr("y", (d, i) => i * rowHeight + 40)
+        .text(d => d.key)
+        .classed("rank", true)
+
+    // Points   
+    svg.selectAll("g").data(teams)
+        .append("text")  // 
+        .attr("x", leftMargin + 45)
+        .attr("y", (d, i) => i * rowHeight + 30)
+        .text(d => d.elims + d.placementPoints)
+        .classed("rank", true)
+
+    // Placement points   
+    svg.selectAll("g").data(teams)
+        .append("text")  // 
+        .attr("x", leftMargin + 45)
+        .attr("y", (d, i) => i * rowHeight + 50)
+        .text(d => d.placementPoints)
+        .classed("points", true)
+
+    // Elims   
+    svg.selectAll("g").data(teams)
+        .append("text")  // 
+        .attr("x", leftMargin + 75)
+        .attr("y", (d, i) => i * rowHeight + 50)
+        .text(d => d.elims)
+        .classed("points", true)
+
+    // First player
+    const leftPlayer = 120;
+    svg.selectAll("g").data(teams)
+        .append("text")  // 
+        .attr("x", leftMargin + leftPlayer)
         .attr("y", (d, i) => i * rowHeight + 21)
         .text(d => d.values[0].players[0])
         .classed("player", true)
@@ -101,7 +140,7 @@ function draw() {
     // Second player    
     svg.selectAll("g").data(teams)
         .append("text")  // 
-        .attr("x", leftMargin + 6)
+        .attr("x", leftMargin + leftPlayer)
         .attr("y", (d, i) => i * rowHeight + 45)
         .text(d => d.values[0].players[1])
         .classed("player", true)
