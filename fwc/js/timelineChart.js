@@ -7,6 +7,9 @@ let matchEnd;
 
 const cornerRadius = 8;
 
+const chartWidth = 1200 // Not including left margin
+const leftMargin = 15;
+
 
 d3.json('fwc/data/games.json').then(function (data) {
     let games = [];
@@ -47,7 +50,7 @@ d3.json('fwc/data/games.json').then(function (data) {
             // Normalize seconds to start of match = 0
             game.start = game.endSeconds - beforeMatch - game.secondsAlive;
             game.end = game.endSeconds - beforeMatch;
-            console.log(game.start + " -> " + game.end);
+            //console.log(game.start + " -> " + game.end);
 
             // Add nice time string
             const minutes = Math.floor(game.secondsAlive / 60);
@@ -62,14 +65,48 @@ d3.json('fwc/data/games.json').then(function (data) {
     })
 
     drawHeader();
-    draw();
+    drawLeaderboard();
 });
 
 function drawHeader() {
+
+    const regions = [
+        { color: colors.green, name: "NA EAST", filter: "NA East", textOffset: 7 },
+        { color: colors.purple, name: "NA WEST", filter: "NA West", textOffset: 6 },
+        { color: colors.blue, name: "EUROPE", filter: "Europe", textOffset: 9 },
+        { color: colors.red, name: "OCEANIA", filter: "Oceania", textOffset: 6 },
+        { color: colors.teal, name: "BRAZIL", filter: "Brazil", textOffset: 12 },
+        { color: colors.brown, name: "ASIA", filter: "Asia", textOffset: 17 }
+    ];
+
+    function drawButtons() {
+        const left = 740
+        regions.forEach(function (region, i) {
+            svg.append("rect")
+                .attr("x", left + (i * 80))
+                .attr("y", 20)
+                .attr("width", 70)
+                .attr("height", 50)
+                .attr("fill", "lightblue")
+                .attr("stroke", "black")
+                .attr("stroke-width", 0)
+                .attr("rx", cornerRadius)
+                .attr("ry", cornerRadius)
+
+            svg.append("text")
+                .attr("x", left + region.textOffset + (i * 80))
+                .attr("y", 51)
+                .attr("stroke", "black")
+                .attr("stroke-width", 0)
+                .attr("font-size", "1.2rem")
+                .text(region.name)
+        });
+    }
+
     const headerHeight = 70;
     let div = d3.select(".title");
     const svg = div.append("svg")
-        .attr("width", 1000)
+        .attr("width", leftMargin + chartWidth)
         .attr("height", headerHeight);
 
     // "FORTNITE"    
@@ -79,14 +116,14 @@ function drawHeader() {
         .text("FORTNITE 2019 World Cup Duos")
         .attr("font-size", "1.1em")
         .attr("fill", "black");
+
+    drawButtons();
 }
 
-function draw() {
+function drawLeaderboard() {
 
     let div = d3.select(".timeline");
 
-    const chartWidth = 1200 // Not including left margin
-    const leftMargin = 15;
     const playerWidth = 220;
     const rowHeight = 60
 
@@ -109,7 +146,7 @@ function draw() {
 
     // Rank
     svg.selectAll("g").data(teams)
-        .append("text")  // 
+        .append("text")
         .attr("x", leftMargin + 6)
         .attr("y", (d, i) => i * rowHeight + 40)
         .text(d => d.key)
@@ -117,7 +154,7 @@ function draw() {
 
     // Points   
     svg.selectAll("g").data(teams)
-        .append("text")  // 
+        .append("text")
         .attr("x", leftMargin + 45)
         .attr("y", (d, i) => i * rowHeight + 30)
         .text(d => d.elims + d.placementPoints)
@@ -125,7 +162,7 @@ function draw() {
 
     // Games   
     svg.selectAll("g").data(teams)
-        .append("text")  // 
+        .append("text")
         .attr("x", leftMargin + 40)
         .attr("y", (d, i) => i * rowHeight + 50)
         .text(d => d.games)
@@ -133,7 +170,7 @@ function draw() {
 
     // Placement points   
     svg.selectAll("g").data(teams)
-        .append("text")  // 
+        .append("text")
         .attr("x", leftMargin + 60)
         .attr("y", (d, i) => i * rowHeight + 50)
         .text(d => d.placementPoints)
@@ -141,7 +178,7 @@ function draw() {
 
     // Elims   
     svg.selectAll("g").data(teams)
-        .append("text")  // 
+        .append("text")
         .attr("x", leftMargin + 85)
         .attr("y", (d, i) => i * rowHeight + 50)
         .text(d => d.elims)
@@ -150,7 +187,7 @@ function draw() {
     // First player
     const leftPlayer = 120;
     svg.selectAll("g").data(teams)
-        .append("text")  // 
+        .append("text")
         .attr("x", leftMargin + leftPlayer)
         .attr("y", (d, i) => i * rowHeight + 21)
         .text(d => d.values[0].players[0])
@@ -158,7 +195,7 @@ function draw() {
 
     // Second player    
     svg.selectAll("g").data(teams)
-        .append("text")  // 
+        .append("text")
         .attr("x", leftMargin + leftPlayer)
         .attr("y", (d, i) => i * rowHeight + 45)
         .text(d => d.values[0].players[1])
@@ -171,13 +208,24 @@ function draw() {
 
     svg.selectAll("g").data(teams)
         .each(function (teamGames, teamIndex) {
-            console.log(teamGames);
+            if (teamIndex == 1) {
+                let game1 = teamGames.values[1];
+                console.log("x = " + xScale(game1.start));
+                console.log("Width = " + (xScale(game1.end) - xScale(game1.start)).toString())
+                console.log("");
+            }
+
+            //console.log(teamGames);
             d3.select(this)
                 .selectAll("rect")
                 .data(teamGames.values)
                 .enter()
                 .append("rect")
                 .attr("x", game => xScale(game.start))
+                .attr("x", function (game) {
+                    return xScale(game.start)
+                    //console.log(game.start + " -> " + game.end + "  " + game.secondsAlive);
+                })
                 .attr("y", (d, i) => teamIndex * rowHeight + 14)
                 .attr("width", game => xScale(game.end) - xScale(game.start))
                 .attr("height", 30)
@@ -195,12 +243,11 @@ function draw() {
         })
 }
 
+
 function tooltip(svg, game) {
-    // Make tooltip for player
+
     const rectWidth = 148;
     let left = d3.event.pageX - 150;
-    //if (d3.event.pageX > 1040)
-    //    left = d3.event.pageX - 555 - rectWidth;
 
     const top = d3.event.pageY - 120;
     const height = 94;

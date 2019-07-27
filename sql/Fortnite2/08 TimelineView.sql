@@ -25,10 +25,6 @@ WHERE pl.Rank < 101
 AND pl.Region = 'NA East' 
 AND pl.Week = 'Week 10' 
 
-
-SELECT * FROM PlacementView
 GO
-
-
-
-
+SELECT * FROM TimelineView
+GO
