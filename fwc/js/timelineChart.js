@@ -50,6 +50,7 @@ d3.json('fwc/data/games.json').then(function (data) {
         // Add team level sum of elims and placement points
         team.elims = d3.sum(team.values, game => game.elims);
         team.placementPoints = d3.sum(team.values, game => game.placementPoints);
+        team.games = team.values.length;
     })
 
     drawHeader();
@@ -112,10 +113,18 @@ function draw() {
         .text(d => d.elims + d.placementPoints)
         .classed("rank", true)
 
+    // Games   
+    svg.selectAll("g").data(teams)
+        .append("text")  // 
+        .attr("x", leftMargin + 40)
+        .attr("y", (d, i) => i * rowHeight + 50)
+        .text(d => d.games)
+        .classed("points", true)
+
     // Placement points   
     svg.selectAll("g").data(teams)
         .append("text")  // 
-        .attr("x", leftMargin + 45)
+        .attr("x", leftMargin + 60)
         .attr("y", (d, i) => i * rowHeight + 50)
         .text(d => d.placementPoints)
         .classed("points", true)
@@ -123,7 +132,7 @@ function draw() {
     // Elims   
     svg.selectAll("g").data(teams)
         .append("text")  // 
-        .attr("x", leftMargin + 75)
+        .attr("x", leftMargin + 85)
         .attr("y", (d, i) => i * rowHeight + 50)
         .text(d => d.elims)
         .classed("points", true)
