@@ -10,6 +10,8 @@ const cornerRadius = 8;
 const chartWidth = 1200 // Not including left margin
 const leftMargin = 15;
 
+let regions = [];
+
 
 d3.json('fwc/data/games.json').then(function (data) {
     let games = [];
@@ -70,8 +72,8 @@ d3.json('fwc/data/games.json').then(function (data) {
 
 function drawHeader() {
 
-    const regions = [
-        { color: colors.green, name: "NA EAST", filter: "NA East", textOffset: 7 },
+    const regionInfo = [
+        { color: colors.green, name: "NA EAST", filter: "NA East", textOffset: 8 },
         { color: colors.purple, name: "NA WEST", filter: "NA West", textOffset: 6 },
         { color: colors.blue, name: "EUROPE", filter: "Europe", textOffset: 9 },
         { color: colors.red, name: "OCEANIA", filter: "Oceania", textOffset: 6 },
@@ -81,17 +83,51 @@ function drawHeader() {
 
     function drawButtons() {
         const left = 740
-        regions.forEach(function (region, i) {
+        regionInfo.forEach(function (region, i) {
             svg.append("rect")
+                .attr("data", region.name)
                 .attr("x", left + (i * 80))
-                .attr("y", 20)
+                .attr("y", 19)
                 .attr("width", 70)
                 .attr("height", 50)
-                .attr("fill", "lightblue")
+                .attr("fill", region.color)
                 .attr("stroke", "black")
                 .attr("stroke-width", 0)
                 .attr("rx", cornerRadius)
                 .attr("ry", cornerRadius)
+                .on('mouseover', function (d) {
+                    // The are mousing over the selected item - don't shrink the border
+                    //    if (d3.select(this).attr("data") === filters.region)
+                    //        return;
+
+                    d3.select(this)
+                        .transition()
+                        .duration(100)
+                        .attr("stroke-width", 4)
+                })
+                .on('mouseout', function (d) {
+                    let dom = d3.select(this);
+                    dom
+                        .transition()
+                        .duration(100)
+                        .attr("stroke-width", (regions.indexOf(dom.attr("data")) == -1) ? 0 : 8);
+                })
+                .on('click', function (d) {
+                    let dom = d3.select(this);
+                    const region = dom.attr("data");
+
+                    // Select it because it is not already selected
+                    if (regions.indexOf(region) == -1)
+                        regions.push(region)
+                    else
+                        regions = regions.filter(d => d !== region);
+
+                    drawLeaderboard();
+                    dom
+                        .transition()
+                        .duration(100)
+                        .attr("stroke-width", (regions.indexOf(dom.attr("data")) == -1) ? 0 : 8);
+                })
 
             svg.append("text")
                 .attr("x", left + region.textOffset + (i * 80))
@@ -99,11 +135,12 @@ function drawHeader() {
                 .attr("stroke", "black")
                 .attr("stroke-width", 0)
                 .attr("font-size", "1.2rem")
+                .attr("pointer-events", "none")
                 .text(region.name)
         });
     }
 
-    const headerHeight = 70;
+    const headerHeight = 76;
     let div = d3.select(".title");
     const svg = div.append("svg")
         .attr("width", leftMargin + chartWidth)
@@ -121,6 +158,9 @@ function drawHeader() {
 }
 
 function drawLeaderboard() {
+
+    // Apply region filters here!!
+    console.log("Filters: " + regions.join(", "))
 
     let div = d3.select(".timeline");
 
@@ -210,12 +250,11 @@ function drawLeaderboard() {
         .each(function (teamGames, teamIndex) {
             if (teamIndex == 1) {
                 let game1 = teamGames.values[1];
-                console.log("x = " + xScale(game1.start));
-                console.log("Width = " + (xScale(game1.end) - xScale(game1.start)).toString())
-                console.log("");
+                /*                 console.log("x = " + xScale(game1.start));
+                                console.log("Width = " + (xScale(game1.end) - xScale(game1.start)).toString())
+                                console.log(""); */
             }
 
-            //console.log(teamGames);
             d3.select(this)
                 .selectAll("rect")
                 .data(teamGames.values)
@@ -276,40 +315,10 @@ function tooltip(svg, game) {
             .classed("tooltip-text", true);
     }
 
-
     addText(parseInt(game.placementPoints) + parseInt(game.elims) + "  Total points", 98)
     addText(game.placementPoints + "  Placement points", 78)
     addText(game.elims + "  Elim points", 58)
     addText(game.time + "  Duration", 38)
-
-    const leftText = left;
-    /*     svg.append("text")
-            .attr("x", leftText)
-            .attr("y", d3.event.pageY - 98)
-            .text(parseInt(game.placementPoints) + parseInt(game.elims) + "  Total points")
-            .classed("tooltip", true)
-            .classed("tooltip-text", true); */
-
-    /*     svg.append("text")
-            .attr("x", leftText)
-            .attr("y", d3.event.pageY - 78)
-            .text(game.placementPoints + "  Placement points")
-            .classed("tooltip", true)
-            .classed("tooltip-text", true); */
-    /* 
-        svg.append("text")
-            .attr("x", leftText)
-            .attr("y", d3.event.pageY - 58)
-            .text(game.elims + "  Elim points")
-            .classed("tooltip", true)
-            .classed("tooltip-text", true);
-    
-        svg.append("text")
-            .attr("x", leftText)
-            .attr("y", d3.event.pageY - 38)
-            .text(game.time + "  Duration")
-            .classed("tooltip", true)
-            .classed("tooltip-text", true); */
 
     d3.select(this)
         .attr("stroke-width", 4)
