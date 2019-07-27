@@ -19,6 +19,7 @@ d3.json('fwc/data/games.json').then(function (data) {
         rec.endSeconds = d.fields[4];
         rec.placementPoints = d.fields[5];
         rec.placementId = d.fields[6];
+        rec.placementRank = d.fields[7];
 
         rec.players = [];
         rec.players[0] = d.players[0];
@@ -28,7 +29,8 @@ d3.json('fwc/data/games.json').then(function (data) {
     });
 
     teams = d3.nest()
-        .key(d => d.placementId)
+        //.key(d => d.placementId)
+        .key(d => d.placementRank)
         .entries(games);
 
     const beforeMatch =
@@ -51,10 +53,11 @@ d3.json('fwc/data/games.json').then(function (data) {
 });
 
 function drawHeader() {
+    const headerHeight = 70;
     let div = d3.select(".title");
     const svg = div.append("svg")
         .attr("width", 1000)
-        .attr("height", 70);
+        .attr("height", headerHeight);
 
     svg.append("text")
         .attr("x", 20)
@@ -71,12 +74,12 @@ function draw() {
     const chartWidth = 1200 // Width of chart, not including left margin
     const leftMargin = 15;
     const playerWidth = 180;
+    const rowHeight = 60
 
     const svg = div.append("svg")
         .attr("width", chartWidth + leftMargin)
-        .attr("height", 1000)
+        .attr("height", rowHeight * 100)
 
-    const rowHeight = 60
     svg.selectAll("g").data(teams).enter().append("g")
         .append("rect")
         .attr("x", leftMargin)
@@ -85,7 +88,7 @@ function draw() {
         .attr("height", rowHeight - 8)
         .attr("fill", "lightblue")
         .attr("stroke", "black")
-        .attr("stroke-width", 5)
+        .attr("stroke-width", 0)
 
     svg.selectAll("g").data(teams)
         .append("text")  // 
