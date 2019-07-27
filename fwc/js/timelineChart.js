@@ -104,16 +104,14 @@ function draw() {
                 .data(teamGames.values)
                 .enter()
                 .append("rect")
-                .attr("x", function (game) {
-                    console.log(game.start);
-                    return xScale(game.start)
-                })
+                .attr("x", game => xScale(game.start))
                 .attr("y", (d, i) => teamIndex * rowHeight + 14)
                 .attr("width", game => xScale(game.end) - xScale(game.start))
                 .attr("height", 30)
                 .attr("fill", "white")
                 .attr("stroke", "black")
-                .attr("stroke-width", 2)
+                //.attr("stroke-width", 4)
+                .attr("stroke-width", game => (game.rank === "1") ? 6 : 1)
                 .on('click', function (game) {
                     console.log(game.start + " -> " + game.end + "  " + game.secondsAlive);
                 });
