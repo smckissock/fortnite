@@ -1,6 +1,5 @@
 import { colors } from "./shared.js";
 
-let games;
 let teams;
 
 let matchStart;
@@ -8,7 +7,7 @@ let matchEnd;
 
 
 d3.json('fwc/data/games.json').then(function (data) {
-    games = [];
+    let games = [];
     data.forEach(function (d) {
         let rec = {};
         //rec.name = d.fields[0];
@@ -71,7 +70,7 @@ function draw() {
 
     let div = d3.select(".timeline");
 
-    const chartWidth = 1200 // Width of chart, not including left margin
+    const chartWidth = 1200 // Not including left margin
     const leftMargin = 15;
     const playerWidth = 180;
     const rowHeight = 60
@@ -80,6 +79,7 @@ function draw() {
         .attr("width", chartWidth + leftMargin)
         .attr("height", rowHeight * 100)
 
+    // Big rect for team background 
     svg.selectAll("g").data(teams).enter().append("g")
         .append("rect")
         .attr("x", leftMargin)
@@ -90,28 +90,23 @@ function draw() {
         .attr("stroke", "black")
         .attr("stroke-width", 0)
 
+    // First player
     svg.selectAll("g").data(teams)
         .append("text")  // 
         .attr("x", leftMargin + 6)
         .attr("y", (d, i) => i * rowHeight + 21)
         .text(d => d.values[0].players[0])
-        .attr("font-family", "Helvetica, Arial, sans-serif")
-        .attr("font-size", "1.0em")
-        .attr("font-weight", "600")
-        .attr("fill", "black")
+        .classed("player", true)
 
+    // Second player    
     svg.selectAll("g").data(teams)
         .append("text")  // 
         .attr("x", leftMargin + 6)
         .attr("y", (d, i) => i * rowHeight + 45)
         .text(d => d.values[0].players[1])
-        .attr("font-family", "Helvetica, Arial, sans-serif")
-        .attr("font-size", "1.0em")
-        .attr("font-weight", "600")
-        .attr("fill", "black")
+        .classed("player", true)
 
-    //console.log(matchStart + " " + matchEnd)
-
+    // Draw game rects    
     let xScale = d3.scaleLinear()
         .domain([matchStart, matchEnd])
         .range([playerWidth + leftMargin, chartWidth]);

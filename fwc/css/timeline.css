@@ -24,6 +24,13 @@ body {
       );
   }
 
+.player {
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 1.0em;
+    font-weight: 600;
+    fill: black;
+}
+
 .right-align {
     text-align: right;
 }
