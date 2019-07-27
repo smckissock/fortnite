@@ -248,6 +248,8 @@ function drawLeaderboard() {
 
     svg.selectAll("g").data(teams)
         .each(function (teamGames, teamIndex) {
+
+            // Debugging..
             if (teamIndex == 1) {
                 let game1 = teamGames.values[1];
                 /*                 console.log("x = " + xScale(game1.start));
@@ -255,8 +257,11 @@ function drawLeaderboard() {
                                 console.log(""); */
             }
 
-            d3.select(this)
+            const g = d3.select(this);
+
+            g
                 .selectAll("rect")
+
                 .data(teamGames.values)
                 .enter()
                 .append("rect")
@@ -279,6 +284,23 @@ function drawLeaderboard() {
                     d3.select(this).attr("stroke-width", 1)
                     d3.selectAll(".tooltip").remove();
                 })
+
+                // Draw elim lines
+                .each(function (game) {
+                    for (let i = 0; i < game.elims; i++) {
+                        const x = xScale(game.start) + (i * 4) + 6;
+                        g
+                            .append("line")
+                            .attr("x1", x)
+                            .attr("x2", x)
+                            .attr("y1", teamIndex * rowHeight + 17)
+                            .attr("y2", teamIndex * rowHeight + 14 + 27)
+                            .attr("stroke-width", "2")
+                            .attr("stroke", "green")
+                            .attr("pointer-events", "none");
+                    }
+                    //console.log(game.elims);
+                });
         })
 }
 
