@@ -42,9 +42,17 @@ body {
     fill: black;
 }
 
+.region-stats {
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 0.8rem;
+    font-weight: 500;
+    fill:black;
+    pointer-events: none;
+}
+
 .player {
     font-family: Helvetica, Arial, sans-serif;
-    font-size: 1.0em;
+    font-size: 1.0rem;
     font-weight: 600;
     fill: black;
 }

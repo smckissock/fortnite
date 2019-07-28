@@ -63,6 +63,7 @@ d3.json('fwc/data/duo_games.json').then(function (data) {
 
     regionInfo.forEach(function (region) {
         region.count = regionTotals.find(r => r.key == region.name).value.count;
+        region.payout = regionTotals.find(r => r.key == region.name).value.payout;
     });
 
     const beforeMatch =
@@ -148,12 +149,24 @@ function drawHeader() {
 
             svg.append("text")
                 .attr("x", left + region.textOffset + (i * 80))
-                .attr("y", 30)
-                .attr("stroke", "black")
-                .attr("stroke-width", 0)
+                .attr("y", 25)
                 .attr("font-size", "1.2rem")
                 .attr("pointer-events", "none")
                 .text(region.name)
+
+            svg.append("text")
+                .attr("x", left + (i * 80) + 6)
+                .attr("y", 43)
+                .text(region.count.toString() + " players")
+                .classed("region-stats", true)
+
+            const commaFormat = d3.format(",");
+            svg.append("text")
+                .attr("x", left + (i * 80) + 4)
+                .attr("y", 64)
+                .attr("font-size", "0.6rem")
+                .text("$" + commaFormat(region.payout))
+                .classed("region-stats", true)
         });
     }
 
