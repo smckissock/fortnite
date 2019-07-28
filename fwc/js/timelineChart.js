@@ -12,7 +12,7 @@ const leftMargin = 15;
 
 let regions = [];
 
-let teamPositions = [];
+let regionTotals;
 
 const regionInfo = [
     { color: colors.green, name: "NA EAST", filter: "NA East", textOffset: 8 },
@@ -51,6 +51,20 @@ d3.json('fwc/data/duo_games.json').then(function (data) {
 
     addRegions(teams);
 
+    regionTotals = d3.nest()
+        .key(team => team.region)
+        .rollup(function (teams) {
+            return {
+                count: teams.length,
+                payout: d3.sum(teams, function (team) { return team.payout; })
+            };
+        })
+        .entries(teams);
+
+    regionInfo.forEach(function (region) {
+        region.count = regionTotals.find(r => r.key == region.name).value.count;
+    });
+
     const beforeMatch =
         teams[0].values[0].endSeconds -
         teams[0].values[0].secondsAlive - 100; // First started late
@@ -65,7 +79,6 @@ d3.json('fwc/data/duo_games.json').then(function (data) {
             // Normalize seconds to start of match = 0
             game.start = game.endSeconds - beforeMatch - game.secondsAlive;
             game.end = game.endSeconds - beforeMatch;
-            //console.log(game.start + " -> " + game.end);
 
             // Add nice time string
             const minutes = Math.floor(game.secondsAlive / 60);
@@ -77,7 +90,7 @@ d3.json('fwc/data/duo_games.json').then(function (data) {
         team.elims = d3.sum(team.values, game => game.elims);
         team.placementPoints = d3.sum(team.values, game => game.placementPoints);
         team.games = team.values.length;
-    })
+    });
 
     drawHeader();
     drawLeaderboard();
@@ -91,9 +104,9 @@ function drawHeader() {
             svg.append("rect")
                 .attr("data", region.name)
                 .attr("x", left + (i * 80))
-                .attr("y", 19)
+                .attr("y", 3)
                 .attr("width", 70)
-                .attr("height", 50)
+                .attr("height", 70)
                 .attr("fill", region.color)
                 .attr("stroke", "black")
                 .attr("stroke-width", 0)
@@ -107,14 +120,14 @@ function drawHeader() {
                     d3.select(this)
                         .transition()
                         .duration(100)
-                        .attr("stroke-width", 4)
+                        .attr("stroke-width", 3)
                 })
                 .on('mouseout', function (d) {
                     let dom = d3.select(this);
                     dom
                         .transition()
                         .duration(100)
-                        .attr("stroke-width", (regions.indexOf(dom.attr("data")) == -1) ? 0 : 8);
+                        .attr("stroke-width", (regions.indexOf(dom.attr("data")) == -1) ? 0 : 6);
                 })
                 .on('click', function (d) {
                     let dom = d3.select(this);
@@ -130,12 +143,12 @@ function drawHeader() {
                     dom
                         .transition()
                         .duration(100)
-                        .attr("stroke-width", (regions.indexOf(dom.attr("data")) == -1) ? 0 : 8);
+                        .attr("stroke-width", (regions.indexOf(dom.attr("data")) == -1) ? 0 : 6);
                 })
 
             svg.append("text")
                 .attr("x", left + region.textOffset + (i * 80))
-                .attr("y", 51)
+                .attr("y", 30)
                 .attr("stroke", "black")
                 .attr("stroke-width", 0)
                 .attr("font-size", "1.2rem")
