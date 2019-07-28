@@ -163,6 +163,13 @@ function drawHeader() {
 
 function drawLeaderboard() {
 
+    function filterTeams() {
+        if (regions.length == 0)
+            return teams;
+        let filtered = teams.filter(team => regions.includes(team.region));
+        return filtered;
+    }
+
     // Apply region filters here!!
     console.log("Filters: " + regions.join(", "))
 
@@ -171,12 +178,17 @@ function drawLeaderboard() {
     const playerWidth = 220;
     const rowHeight = 60
 
+    d3.select(".leaderboard-svg")
+        .transition()
+        .remove();
+
     const svg = div.append("svg")
         .attr("width", chartWidth + leftMargin)
         .attr("height", rowHeight * 100)
+        .classed("leaderboard-svg", true);
 
     // Big rect for team background 
-    svg.selectAll("g").data(teams).enter().append("g")
+    svg.selectAll("g").data(filterTeams()).enter().append("g")
         .append("rect")
         .attr("x", leftMargin)
         .attr("y", (d, i) => i * rowHeight + 3)
@@ -264,7 +276,6 @@ function drawLeaderboard() {
             }
 
             const g = d3.select(this);
-
             g
                 .selectAll("rect")
 
@@ -286,8 +297,8 @@ function drawLeaderboard() {
                     console.log(game.start + " -> " + game.end + "  " + game.secondsAlive);
                 })
                 .on('mouseover', game => tooltip(svg, game))
-                .on('mouseout', function (d) {
-                    d3.select(this).attr("stroke-width", 1)
+                .on('mouseout', function (game) {
+                    d3.select(this).attr("stroke-width", game => (game.rank === "1") ? 6 : 1)
                     d3.selectAll(".tooltip").remove();
                 })
 
