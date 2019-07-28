@@ -22,6 +22,10 @@ namespace FortniteJson {
 
             Console.WriteLine("Running..");
 
+            //Python.Run(@"c:\fortnite\python\02import_wc_duo_player_playerWeek", "");
+            
+            //Python.Run(@"c:\fortnite\python\03import_wc_duo_loaderboard.py", "");
+
             //PlayersUpdatedFromAirtable.Import();
             //Fortnite.MakeJsonArray();
 

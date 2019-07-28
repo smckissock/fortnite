@@ -205,7 +205,7 @@ namespace FortniteJson {
             var list = new List<Game>();
 
             // ORDERING is important!!
-            var reader = SqlUtil.Query("SELECT PlacementID, Player, SecondsAlive, EndTime, GameRank, Elims , EndSeconds, PlacementRank FROM TimelineView ORDER BY PlacementID, EndTime");
+            var reader = SqlUtil.Query("SELECT PlacementID, Player, SecondsAlive, EndTime, GameRank, Elims , EndSeconds, PlacementRank FROM TimelineDuoView ORDER BY PlacementID, EndTime");
 
             Game game = null;
             string placementId = "";
@@ -234,7 +234,7 @@ namespace FortniteJson {
                 }
             }
 
-            string fileName = @"c:\fortnite\fwc\data\games.json";
+            string fileName = @"c:\fortnite\fwc\data\duo_games.json";
 
             string json = JsonConvert.SerializeObject(list);
             var niceJson = Newtonsoft.Json.Linq.JToken.Parse(json).ToString();

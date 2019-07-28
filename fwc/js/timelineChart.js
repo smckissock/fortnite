@@ -12,6 +12,15 @@ const leftMargin = 15;
 
 let regions = [];
 
+const regionInfo = [
+    { color: colors.green, name: "NA EAST", filter: "NA East", textOffset: 8 },
+    { color: colors.purple, name: "NA WEST", filter: "NA West", textOffset: 6 },
+    { color: colors.blue, name: "EUROPE", filter: "Europe", textOffset: 9 },
+    { color: colors.red, name: "OCEANIA", filter: "Oceania", textOffset: 6 },
+    { color: colors.teal, name: "BRAZIL", filter: "Brazil", textOffset: 12 },
+    { color: colors.brown, name: "ASIA", filter: "Asia", textOffset: 17 }
+];
+
 
 d3.json('fwc/data/duo_games.json').then(function (data) {
     let games = [];
@@ -37,6 +46,8 @@ d3.json('fwc/data/duo_games.json').then(function (data) {
     teams = d3.nest()
         .key(d => d.placementRank)
         .entries(games);
+
+    addRegions(teams);
 
     const beforeMatch =
         teams[0].values[0].endSeconds -
@@ -72,14 +83,7 @@ d3.json('fwc/data/duo_games.json').then(function (data) {
 
 function drawHeader() {
 
-    const regionInfo = [
-        { color: colors.green, name: "NA EAST", filter: "NA East", textOffset: 8 },
-        { color: colors.purple, name: "NA WEST", filter: "NA West", textOffset: 6 },
-        { color: colors.blue, name: "EUROPE", filter: "Europe", textOffset: 9 },
-        { color: colors.red, name: "OCEANIA", filter: "Oceania", textOffset: 6 },
-        { color: colors.teal, name: "BRAZIL", filter: "Brazil", textOffset: 12 },
-        { color: colors.brown, name: "ASIA", filter: "Asia", textOffset: 17 }
-    ];
+
 
     function drawButtons() {
         const left = 740
@@ -178,7 +182,9 @@ function drawLeaderboard() {
         .attr("y", (d, i) => i * rowHeight + 3)
         .attr("width", chartWidth - 3)
         .attr("height", rowHeight - 8)
-        .attr("fill", "lightblue")
+        .attr("fill", function (team) {
+            return regionInfo.filter(region => region.name == team.region)[0].color;
+        })
         .attr("stroke", "black")
         .attr("stroke-width", 0)
         .attr("rx", cornerRadius)
@@ -345,3 +351,64 @@ function tooltip(svg, game) {
     d3.select(this)
         .attr("stroke-width", 4)
 }
+
+function addRegions(teams) {
+    let i = 1;
+    function addRegion(region, payout) {
+        let team = teams.filter(d => d.key == i.toString())[0];
+        team.region = region;
+        team.payout = payout;
+        i++;
+    }
+
+    addRegion('EUROPE', 3000000); // 1
+    addRegion('EUROPE', 2225000);
+    addRegion('NA EAST', 1800000);
+    addRegion('NA EAST', 1500000);
+    addRegion('NA EAST', 900000);
+    addRegion('EUROPE', 450000);
+    addRegion('EUROPE', 375000);
+    addRegion('EUROPE', 225000);
+    addRegion('NA EAST', 100000);
+    addRegion('EUROPE', 100000); // 10
+    addRegion('EUROPE', 100000);
+    addRegion('NA EAST', 100000);
+    addRegion('EUROPE', 100000);
+    addRegion('NA EAST', 100000);
+    addRegion('NA EAST', 100000);
+    addRegion('NA EAST', 100000);
+    addRegion('NA EAST', 100000);
+    addRegion('EUROPE', 100000);
+    addRegion('EUROPE', 100000);
+    addRegion('ASIA', 100000); // 20
+    addRegion('EUROPE', 100000);
+    addRegion('EUROPE', 100000);
+    addRegion('EUROPE', 100000);
+    addRegion('EUROPE', 100000);
+    addRegion('EUROPE', 100000);
+    addRegion('EUROPE', 100000);
+    addRegion('ASIA', 100000);
+    addRegion('NA WEST', 100000);
+    addRegion('EUROPE', 100000);
+    addRegion('NA EAST', 100000); // 30
+    addRegion('NA EAST', 100000);
+    addRegion('EUROPE', 100000);
+    addRegion('EUROPE', 100000);
+    addRegion('NA EAST', 100000);
+    addRegion('NA EAST', 100000);
+    addRegion('NA EAST', 100000);
+    addRegion('NA EAST', 100000);
+    addRegion('NA EAST', 100000);
+    addRegion('EUROPE', 100000);
+    addRegion('OCEANIA', 100000); // 40
+    addRegion('NA EAST', 100000);
+    addRegion('NA EAST', 100000);
+    addRegion('EUROPE', 100000);
+    addRegion('EUROPE', 100000);
+    addRegion('EUROPE', 100000);
+    addRegion('NA EAST', 100000);
+    addRegion('EUROPE', 100000);
+    addRegion('EUROPE', 100000);
+    addRegion('EUROPE', 100000);
+    addRegion('OCEANIA', 100000);
+};
