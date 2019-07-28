@@ -12,6 +12,8 @@ const leftMargin = 15;
 
 let regions = [];
 
+let teamPositions = [];
+
 const regionInfo = [
     { color: colors.green, name: "NA EAST", filter: "NA East", textOffset: 8 },
     { color: colors.purple, name: "NA WEST", filter: "NA West", textOffset: 6 },
@@ -83,8 +85,6 @@ d3.json('fwc/data/duo_games.json').then(function (data) {
 
 function drawHeader() {
 
-
-
     function drawButtons() {
         const left = 740
         regionInfo.forEach(function (region, i) {
@@ -126,7 +126,7 @@ function drawHeader() {
                     else
                         regions = regions.filter(d => d !== region);
 
-                    drawLeaderboard();
+                    updateLeaderboard();
                     dom
                         .transition()
                         .duration(100)
@@ -161,13 +161,47 @@ function drawHeader() {
     drawButtons();
 }
 
+function updateLeaderboard() {
+    let includedTeams = teams.filter(team => regions.includes(team.region));
+
+    let x = d3.selectAll(".leaderboard-team")
+        .each(function (team, i) {
+            const dom = d3.select(this);
+            const curY = team.y;
+
+            let y = -1;
+            if (includedTeams.length == 0) {
+                y = i * 60;
+            } else {
+                for (var i = 0; i < includedTeams.length; i++) {
+                    const includedTeam = includedTeams[i]
+                    if (includedTeam.key == team.key) {
+                        console.log(dom.attr())
+                        y = i * 60;  // RowHeight;
+                        console.log(y)
+                    }
+                }
+            }
+
+            const toMove = y - curY;
+            const duration = 500;
+            if (y == -1)
+                dom.transition()
+                    .duration(duration)
+                    .style("opacity", "0")
+            else
+                dom
+                    .transition()
+                    .duration(duration)
+                    .style("opacity", "1")
+                    .attr("transform", "translate(0," + toMove + ")");
+        });
+}
+
 function drawLeaderboard() {
 
     function filterTeams() {
-        if (regions.length == 0)
-            return teams;
-        let filtered = teams.filter(team => regions.includes(team.region));
-        return filtered;
+        return teams;
     }
 
     // Apply region filters here!!
@@ -178,10 +212,6 @@ function drawLeaderboard() {
     const playerWidth = 220;
     const rowHeight = 60
 
-    d3.select(".leaderboard-svg")
-        .transition()
-        .remove();
-
     const svg = div.append("svg")
         .attr("width", chartWidth + leftMargin)
         .attr("height", rowHeight * 100)
@@ -189,9 +219,14 @@ function drawLeaderboard() {
 
     // Big rect for team background 
     svg.selectAll("g").data(filterTeams()).enter().append("g")
+        .classed("leaderboard-team", true)
         .append("rect")
         .attr("x", leftMargin)
-        .attr("y", (d, i) => i * rowHeight + 3)
+        .attr("y", function (d, i) {
+            let y = i * rowHeight + 3;
+            d.y = y;
+            return y;
+        })
         .attr("width", chartWidth - 3)
         .attr("height", rowHeight - 8)
         .attr("fill", function (team) {
@@ -201,6 +236,8 @@ function drawLeaderboard() {
         .attr("stroke-width", 0)
         .attr("rx", cornerRadius)
         .attr("ry", cornerRadius)
+
+
 
     // Rank
     svg.selectAll("g").data(teams)
@@ -369,6 +406,7 @@ function addRegions(teams) {
         let team = teams.filter(d => d.key == i.toString())[0];
         team.region = region;
         team.payout = payout;
+        team.ordering = i;
         i++;
     }
 
