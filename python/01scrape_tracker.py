@@ -80,6 +80,14 @@ match = "OnlineOpen"
 #match = "CashCup_Trios1"
 event = "Event2"
 
+url = "https://fortnitetracker.com/events/epicgames_ONSITE_WorldCup_Duos?window=WorldCup_Duos_Finals&page=0"
+response = requests.get(url)
+f = open("c:\\fortnite-scrape\\scraped\\worldcup\\duos\\duos.html",
+         "w+", encoding="utf-8")
+f.write(response.text)
+f.close()
+exit()
+
 for region in regions:
     for week in solo_weeks:
         for page in range(0, 1):

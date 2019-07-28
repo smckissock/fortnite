@@ -129,3 +129,11 @@ WITH MOVE 'Fortnite2' TO 'C:\fortnitedb\FortniteJuly26.mdf',
 MOVE 'Fortnite2_log' TO 'C:\fortnitedb\FortniteJuly26_log.ldf'
 
 SELECT * FROM TimelineView
+
+
+
+-- July 27, 2019
+-- BEFORE IMPORTING WORLD CUP DUOS
+BACKUP DATABASE Fortnite
+TO DISK = N'c:\Fortnitedb\FortniteJuly27.bak' WITH NOFORMAT, NOINIT, NAME = N'Full Database Backup', SKIP, NOREWIND, NOUNLOAD, STATS = 10
+GO

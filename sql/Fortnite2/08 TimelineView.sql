@@ -28,3 +28,6 @@ AND pl.Week = 'Week 10'
 GO
 SELECT * FROM TimelineView
 GO
+
+
+SELECT * FROM Player

@@ -13,7 +13,7 @@ const leftMargin = 15;
 let regions = [];
 
 
-d3.json('fwc/data/games.json').then(function (data) {
+d3.json('fwc/data/duo_games.json').then(function (data) {
     let games = [];
     data.forEach(function (d) {
         let rec = {};
@@ -43,7 +43,7 @@ d3.json('fwc/data/games.json').then(function (data) {
         teams[0].values[0].secondsAlive - 100; // First started late
 
     matchStart = 0;
-    matchEnd = 60 * 60 * 3.4;
+    matchEnd = 60 * 60 * 4.5;
 
     teams.forEach(function (team) {
 
