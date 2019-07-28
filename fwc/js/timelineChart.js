@@ -303,27 +303,18 @@ function drawLeaderboard() {
 
     svg.selectAll("g").data(teams)
         .each(function (teamGames, teamIndex) {
-
-            // Debugging..
-            if (teamIndex == 1) {
-                let game1 = teamGames.values[1];
-                /*                 console.log("x = " + xScale(game1.start));
-                                console.log("Width = " + (xScale(game1.end) - xScale(game1.start)).toString())
-                                console.log(""); */
-            }
-
             const g = d3.select(this);
             g
-                .selectAll("rect")
+                .selectAll("rect.team-rect")
 
                 .data(teamGames.values)
                 .enter()
                 .append("rect")
                 .attr("x", game => xScale(game.start))
-                .attr("x", function (game) {
-                    return xScale(game.start)
-                    //console.log(game.start + " -> " + game.end + "  " + game.secondsAlive);
-                })
+                //.attr("x", function (game) {
+                //    return xScale(game.start)
+                //    //console.log(game.start + " -> " + game.end + "  " + game.secondsAlive);
+                //})
                 .attr("y", (d, i) => teamIndex * rowHeight + 14)
                 .attr("width", game => xScale(game.end) - xScale(game.start))
                 .attr("height", 30)
@@ -338,6 +329,7 @@ function drawLeaderboard() {
                     d3.select(this).attr("stroke-width", game => (game.rank === "1") ? 6 : 1)
                     d3.selectAll(".tooltip").remove();
                 })
+                .classed("team-rect", true)
 
                 // Draw elim lines
                 .each(function (game) {
@@ -353,7 +345,6 @@ function drawLeaderboard() {
                             .attr("stroke", "green")
                             .attr("pointer-events", "none");
                     }
-                    //console.log(game.elims);
                 });
         })
 }
@@ -414,7 +405,7 @@ function addRegions(teams) {
     addRegion('EUROPE', 2225000);
     addRegion('NA EAST', 1800000);
     addRegion('NA EAST', 1500000);
-    addRegion('NA EAST', 900000);
+    addRegion('NA WEST', 900000);
     addRegion('EUROPE', 450000);
     addRegion('EUROPE', 375000);
     addRegion('EUROPE', 225000);
