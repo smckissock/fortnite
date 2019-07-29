@@ -12,8 +12,8 @@ namespace FortniteJson {
 
         static string db = "Fortnite2";
 
-        //private static string connectionString = "Server=SCOTT-PC\\SQLExpress;Database=" + db + ";Trusted_Connection=True;";
-        private static string connectionString =   "Server=PC\\SQLExpress;Database=" + db + ";Trusted_Connection=True;";
+        private static string connectionString = "Server=SCOTT-PC\\SQLExpress;Database=" + db + ";Trusted_Connection=True;";
+        //private static string connectionString =   "Server=PC\\SQLExpress;Database=" + db + ";Trusted_Connection=True;";
         
         public static SqlDataReader Query(string sql) {
             SqlDataReader reader = null;

@@ -26,7 +26,8 @@ const regionInfo = [
 ];
 
 
-d3.json('fwc/data/duo_games.json').then(function (data) {
+//d3.json('fwc/data/duo_games.json').then(function (data) {
+d3.json('fwc/data/finals.json').then(function (data) {    
     let games = [];
     data.forEach(function (d) {
         let rec = {};
@@ -39,17 +40,23 @@ d3.json('fwc/data/duo_games.json').then(function (data) {
         rec.placementPoints = d.fields[5];
         rec.placementId = d.fields[6];
         rec.placementRank = d.fields[7];
+        rec.week = d.fields[8];
 
         rec.players = [];
         rec.players[0] = d.players[0];
-        rec.players[1] = d.players[1];
+
+        // Will only be one for solo
+        if (d.players[1])
+            rec.players[1] = d.players[1];
 
         games.push(rec);
     });
 
+    let duoGames = games.filter(game => game.week === "11"); 
+
     teams = d3.nest()
         .key(d => d.placementRank)
-        .entries(games);
+        .entries(duoGames);
 
     addRegions(teams);
 

@@ -200,12 +200,26 @@ namespace FortniteJson {
             return points;
         }
 
+
         public static void MakeGames() {
+
+            var games = MakeWorldCupGamesGames();
+
+            string fileName = @"c:\fortnite\fwc\data\finals.json";
+
+            string json = JsonConvert.SerializeObject(games);
+            var niceJson = Newtonsoft.Json.Linq.JToken.Parse(json).ToString();
+            File.WriteAllText(fileName, niceJson);
+        }
+        
+
+        public static List<Game> MakeWorldCupGamesGames() {
 
             var list = new List<Game>();
 
             // ORDERING is important!!
-            var reader = SqlUtil.Query("SELECT PlacementID, Player, SecondsAlive, EndTime, GameRank, Elims , EndSeconds, PlacementRank FROM TimelineDuoView ORDER BY PlacementID, EndTime");
+            string query = "SELECT PlacementID, Player, SecondsAlive, EndTime, GameRank, Elims , EndSeconds, PlacementRank, WeekID FROM WorldCupFinalView ORDER BY WeekID, PlacementID, EndTime";
+            var reader = SqlUtil.Query(query);
 
             Game game = null;
             string placementId = "";
@@ -224,6 +238,7 @@ namespace FortniteJson {
                     game.fields.Add(GetPlacementPoints((int)reader["GameRank"]).ToString());
                     game.fields.Add(reader["PlacementId"].ToString());
                     game.fields.Add(reader["PlacementRank"].ToString());
+                    game.fields.Add(reader["WeekID"].ToString());
 
                     placementId = reader["PlacementID"].ToString();
                     endSeconds = (int)reader["EndSeconds"];
@@ -233,6 +248,8 @@ namespace FortniteJson {
                     game.players.Add(reader["Player"].ToString());
                 }
             }
+
+            return list;
 
             string fileName = @"c:\fortnite\fwc\data\duo_games.json";
 
