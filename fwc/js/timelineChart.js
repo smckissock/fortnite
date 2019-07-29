@@ -306,7 +306,7 @@ function drawHeader() {
 
     // Posick
     svg.append("text")
-        .attr("x", 523)
+        .attr("x", 521)
         .attr("y", 70)
         .text('"Posick"')
         .classed("player", true);
@@ -612,12 +612,12 @@ function addRegions(teams) {
     addRegion('NA EAST', 1500000);
     addRegion('NA WEST', 900000);
     addRegion('EUROPE', 450000);
-    addRegion('EUROPE', 375000);
+    addRegion('NA EAST', 375000);
     addRegion('EUROPE', 225000);
     addRegion('NA EAST', 100000);
     addRegion('EUROPE', 100000); // 10
     addRegion('EUROPE', 100000);
-    addRegion('NA EAST', 100000);
+    addRegion('NA WEST', 100000);
     addRegion('EUROPE', 100000);
     addRegion('EUROPE', 100000);
     addRegion('NA EAST', 100000);
@@ -642,13 +642,13 @@ function addRegions(teams) {
     addRegion('NA EAST', 100000);
     addRegion('NA EAST', 100000);
     addRegion('NA EAST', 100000);
-    addRegion('NA EAST', 100000);
-    addRegion('NA EAST', 100000);
-    addRegion('EUROPE', 100000);
-    addRegion('OCEANIA', 100000); // 40
-    addRegion('NA EAST', 100000);
+    addRegion('NA WEST', 100000);
     addRegion('NA EAST', 100000);
     addRegion('BRAZIL', 100000);
+    addRegion('OCEANIA', 100000); // 40
+    addRegion('NA WEST', 100000);
+    addRegion('ASIA', 100000);
+    addRegion('NA EAST', 100000);
     addRegion('EUROPE', 100000);
     addRegion('EUROPE', 100000);
     addRegion('NA EAST', 100000);
