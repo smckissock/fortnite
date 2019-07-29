@@ -2,8 +2,8 @@ import pyodbc
 
 conn = pyodbc.connect(
     r'DRIVER={SQL Server Native Client 11.0};'
-    # r'SERVER=SCOTT-PC\SQLExpress;'
-    r'SERVER=PC\SQLExpress;'
+    r'SERVER=SCOTT-PC\SQLExpress;'
+    #r'SERVER=PC\SQLExpress;'
     # r'DATABASE=RussiaNews;'
     r'DATABASE=Fortnite2;'
     r'Trusted_Connection=yes;'

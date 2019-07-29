@@ -185,6 +185,21 @@ function drawHeader() {
         .attr("font-size", "1.1em")
         .attr("fill", "black");
 
+    // Creator Code
+    svg.append("text")
+        .attr("x", 615)
+        .attr("y", 32)
+        .text("Creator Code")
+        .attr("font-family", "Helvetica, Arial, sans-serif")
+        .attr("font-size", ".9rem")
+    
+    // Posick
+    svg.append("text")
+        .attr("x", 623)
+        .attr("y", 60)
+        .text('"Posick"')
+        .classed("player", true)
+
     drawButtons();
 }
 
