@@ -75,12 +75,12 @@ d3.json('fwc/data/finals.json').then(function (data) {
     duos.teams = d3.nest()
         .key(d => d.placementRank)
         .entries(duoGames);
-    addRegions(duos.teams);
+    addDuoRegions(duos.teams);
 
     solos.teams = d3.nest()
         .key(d => d.placementRank)
         .entries(soloGames);
-    addRegions();
+    addSoloRegions(solos.teams);
 
     duos.regionTotals = d3.nest()
         .key(team => team.region)
@@ -328,12 +328,14 @@ function toggleSolosOrDuos() {
         .text(otherFormat())
         .attr("x", toggleLeft + ((solosOrDuos == "Duos") ? 16 : 20));
 
+    d3.selectAll(".leaderboard-team")
+        .remove();
 
-    updateLeaderboard();
+    d3.selectAll(".leaderboard-svg")
+        .remove();
 
-    //alert(solosOrDuos);
+    drawLeaderboard();
 }
-
 
 
 function updateLeaderboard() {
@@ -578,17 +580,17 @@ function tooltip(svg, game) {
         .attr("stroke-width", 4)
 }
 
-function addRegions(teams) {
+function addSoloRegions(teams) {
 
     // ugh
-    if (!teams) {
-        for (let i = 0; i < 100; i++) {
-            solos.teams[i].region = regionInfo[i % 6].name;
-            solos.teams[i].payout = 99;
-            solos.teams[i].ordering = i;
-        }
-        return;
+    for (let i = 0; i < 100; i++) {
+        solos.teams[i].region = regionInfo[i % 6].name;
+        solos.teams[i].payout = 99;
+        solos.teams[i].ordering = i;
     }
+}
+
+function addDuoRegions(teams) {
 
     let i = 1;
     function addRegion(region, payout) {
