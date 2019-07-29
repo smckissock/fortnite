@@ -119,7 +119,7 @@ d3.json('fwc/data/finals.json').then(function (data) {
         solos.teams[0].values[0].secondsAlive - 100; // First started late
 
     matchStart = 0;
-    matchEnd = 60 * 60 * 4.5;
+    matchEnd = 60 * 60 * 4.7;
 
     duos.teams.forEach(function (team) {
 
@@ -234,7 +234,7 @@ function drawHeader() {
                 .classed("region-stats", true)
         }); // End region buttons
 
-        let opacity = 0;
+        let opacity = 1;
         let solosOrDuosButton = svg.append("rect")
             .attr("x", 630)
             .attr("y", 3)
@@ -320,6 +320,7 @@ function otherFormat() {
 
 function toggleSolosOrDuos() {
     solosOrDuos = (solosOrDuos === "Solos") ? "Duos" : "Solos";
+    format = (solosOrDuos === "Solos") ? solos : duos;
 
     titleText.text("FORTNITE World Cup " + solosOrDuos)
     toggleButtonText
@@ -374,15 +375,7 @@ function updateLeaderboard() {
 
 function drawLeaderboard() {
 
-    function filterTeams() {
-        return format.teams;
-    }
-
-    // Apply region filters here!!
-    console.log("Filters: " + regions.join(", "))
-
     let div = d3.select(".timeline");
-
     const rowHeight = 60
 
     const svg = div.append("svg")
@@ -391,7 +384,7 @@ function drawLeaderboard() {
         .classed("leaderboard-svg", true);
 
     // Big rect for team background 
-    svg.selectAll("g").data(filterTeams()).enter().append("g")
+    svg.selectAll("g").data(format.teams).enter().append("g")
         .classed("leaderboard-team", true)
         .append("rect")
         .attr("x", leftMargin)
