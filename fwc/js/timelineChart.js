@@ -14,6 +14,8 @@ let regions = [];
 
 let regionTotals;
 
+const commaFormat = d3.format(",");
+
 const regionInfo = [
     { color: colors.green, name: "NA EAST", filter: "NA East", textOffset: 8 },
     { color: colors.purple, name: "NA WEST", filter: "NA West", textOffset: 6 },
@@ -160,7 +162,6 @@ function drawHeader() {
                 .text(region.count.toString() + " players")
                 .classed("region-stats", true)
 
-            const commaFormat = d3.format(",");
             svg.append("text")
                 .attr("x", left + (i * 80) + 4)
                 .attr("y", 64)
@@ -180,7 +181,7 @@ function drawHeader() {
     svg.append("text")
         .attr("x", 20)
         .attr("y", 60)
-        .text("FORTNITE 2019 World Cup Duos")
+        .text("FORTNITE World Cup Duos")
         .attr("font-size", "1.1em")
         .attr("fill", "black");
 
@@ -210,7 +211,7 @@ function updateLeaderboard() {
             }
 
             const toMove = y - curY;
-            const duration = 500;
+            const duration = 400;
             if (y == -1)
                 dom.transition()
                     .duration(duration)
@@ -263,54 +264,30 @@ function drawLeaderboard() {
         .attr("rx", cornerRadius)
         .attr("ry", cornerRadius)
 
-
+    // Labels on the left
 
     // Rank
     svg.selectAll("g").data(teams)
         .append("text")
-        .attr("x", leftMargin + 6)
-        .attr("y", (d, i) => i * rowHeight + 40)
-        .text(d => d.key)
+        .attr("x", leftMargin + 23)
+        .attr("y", (d, i) => i * rowHeight + 31)
+        .text(d => "#" + d.key.toString())
         .classed("rank", true)
 
-    // Points   
+    // Payout    
     svg.selectAll("g").data(teams)
         .append("text")
-        .attr("x", leftMargin + 45)
-        .attr("y", (d, i) => i * rowHeight + 30)
-        .text(d => d.elims + d.placementPoints)
-        .classed("rank", true)
-
-    // Games   
-    svg.selectAll("g").data(teams)
-        .append("text")
-        .attr("x", leftMargin + 40)
-        .attr("y", (d, i) => i * rowHeight + 50)
-        .text(d => d.games)
-        .classed("points", true)
-
-    // Placement points   
-    svg.selectAll("g").data(teams)
-        .append("text")
-        .attr("x", leftMargin + 60)
-        .attr("y", (d, i) => i * rowHeight + 50)
-        .text(d => d.placementPoints)
-        .classed("points", true)
-
-    // Elims   
-    svg.selectAll("g").data(teams)
-        .append("text")
-        .attr("x", leftMargin + 85)
-        .attr("y", (d, i) => i * rowHeight + 50)
-        .text(d => d.elims)
+        .attr("x", leftMargin + 15)
+        .attr("y", (d, i) => i * rowHeight + 48)
+        .text(d => "$" + commaFormat(d.payout.toString()))
         .classed("points", true)
 
     // First player
-    const leftPlayer = 120;
+    const leftPlayer = 90;
     svg.selectAll("g").data(teams)
         .append("text")
         .attr("x", leftMargin + leftPlayer)
-        .attr("y", (d, i) => i * rowHeight + 21)
+        .attr("y", (d, i) => i * rowHeight + 23)
         .text(d => d.values[0].players[0])
         .classed("player", true)
 
@@ -318,9 +295,53 @@ function drawLeaderboard() {
     svg.selectAll("g").data(teams)
         .append("text")
         .attr("x", leftMargin + leftPlayer)
-        .attr("y", (d, i) => i * rowHeight + 45)
+        .attr("y", (d, i) => i * rowHeight + 48)
         .text(d => d.values[0].players[1])
         .classed("player", true)
+
+
+    // Labels on the right 
+
+    // Points   
+    svg.selectAll("g").data(teams)
+        .append("text")
+        .attr("x", chartWidth - 135)
+        .attr("y", (d, i) => i * rowHeight + 33)
+        .text(d => d.elims + d.placementPoints)
+        .classed("rank", true)
+
+    // "Points"
+    svg.selectAll("g").data(teams)
+        .append("text")
+        .attr("x", chartWidth - 140)
+        .attr("y", (d, i) => i * rowHeight + 49)
+        .text("points")
+        .classed("points", true)
+
+    // Games   
+    svg.selectAll("g").data(teams)
+        .append("text")
+        .attr("x", chartWidth - 60)
+        .attr("y", (d, i) => i * rowHeight + 20)
+        .text(d => d.games)
+        .classed("points", true)
+
+    // Placement points   
+    svg.selectAll("g").data(teams)
+        .append("text")
+        .attr("x", chartWidth - 60)
+        .attr("y", (d, i) => i * rowHeight + 35)
+        .text(d => d.placementPoints)
+        .classed("points", true)
+
+    // Elims   
+    svg.selectAll("g").data(teams)
+        .append("text")
+        .attr("x", chartWidth - 60)
+        .attr("y", (d, i) => i * rowHeight + 50)
+        .text(d => d.elims)
+        .classed("points", true)
+
 
     // Draw game rects    
     let xScale = d3.scaleLinear()
