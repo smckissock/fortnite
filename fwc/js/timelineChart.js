@@ -159,7 +159,7 @@ function drawHeader() {
             svg.append("text")
                 .attr("x", left + (i * 80) + 6)
                 .attr("y", 43)
-                .text(region.count.toString() + " players")
+                .text(region.count.toString() + ((region.count == 1) ? " player" : " players"))
                 .classed("region-stats", true)
 
             svg.append("text")
@@ -236,7 +236,6 @@ function drawLeaderboard() {
 
     let div = d3.select(".timeline");
 
-    const playerWidth = 220;
     const rowHeight = 60
 
     const svg = div.append("svg")
@@ -302,51 +301,52 @@ function drawLeaderboard() {
 
     // Labels on the right 
 
-    // Points   
+    // Big Points   
+    const playerWidth = 400;
     svg.selectAll("g").data(teams)
         .append("text")
-        .attr("x", chartWidth - 135)
+        .attr("x", playerWidth - 145)
         .attr("y", (d, i) => i * rowHeight + 33)
         .text(d => d.elims + d.placementPoints)
         .classed("rank", true)
 
-    // "Points"
+    // "Points" label
     svg.selectAll("g").data(teams)
         .append("text")
-        .attr("x", chartWidth - 140)
+        .attr("x", playerWidth - 150)
         .attr("y", (d, i) => i * rowHeight + 49)
         .text("points")
         .classed("points", true)
 
-    // Games   
+    // Elim percentage  
+    const pctFormat = d3.format(",.1%"); 
     svg.selectAll("g").data(teams)
         .append("text")
-        .attr("x", chartWidth - 60)
+        .attr("x", playerWidth - 93)
         .attr("y", (d, i) => i * rowHeight + 20)
-        .text(d => d.games)
+        .text(d => pctFormat(d.elims / (d.elims + d.placementPoints )) + " elim pct")
+        .classed("points", true)
+        
+    // Elims   
+    svg.selectAll("g").data(teams)
+        .append("text")
+        .attr("x", playerWidth - 93)
+        .attr("y", (d, i) => i * rowHeight + 35)
+        .text(d => d.elims.toString() + " elim points")
         .classed("points", true)
 
     // Placement points   
     svg.selectAll("g").data(teams)
         .append("text")
-        .attr("x", chartWidth - 60)
-        .attr("y", (d, i) => i * rowHeight + 35)
-        .text(d => d.placementPoints)
-        .classed("points", true)
-
-    // Elims   
-    svg.selectAll("g").data(teams)
-        .append("text")
-        .attr("x", chartWidth - 60)
+        .attr("x", playerWidth - 93)
         .attr("y", (d, i) => i * rowHeight + 50)
-        .text(d => d.elims)
+        .text(d => d.placementPoints.toString() + " place points")
         .classed("points", true)
-
 
     // Draw game rects    
     let xScale = d3.scaleLinear()
         .domain([matchStart, matchEnd])
-        .range([playerWidth + leftMargin, chartWidth]);
+        .range([playerWidth + leftMargin, chartWidth + 170]);
 
     svg.selectAll("g").data(teams)
         .each(function (teamGames, teamIndex) {
