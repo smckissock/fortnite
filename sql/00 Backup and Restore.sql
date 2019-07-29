@@ -122,4 +122,11 @@ MOVE 'Fortnite2_log' TO 'C:\fortnitedb\2019_07_29\Fortnite2_log.ldf'
 
 
 
+-- July 29 2019 - after solo
+BACKUP DATABASE Fortnite
+TO DISK = N'j:\db\FortniteJuly29_2.bak' WITH NOFORMAT, NOINIT, NAME = N'Full Database Backup', SKIP, NOREWIND, NOUNLOAD, STATS = 10
+GO
+
+
+
 

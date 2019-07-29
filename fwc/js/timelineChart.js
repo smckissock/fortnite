@@ -2,6 +2,10 @@ import { colors } from "./shared.js";
 
 let teams;
 
+let soloTeams
+let duoTeams;
+
+
 let matchStart;
 let matchEnd;
 
@@ -58,12 +62,18 @@ d3.json('fwc/data/finals.json').then(function (data) {
     });
 
     let duoGames = games.filter(game => game.week === "11"); 
+    let soloGames = games.filter(game => game.week === "12"); 
 
-    teams = d3.nest()
+    duoTeams = d3.nest()
+        .key(d => d.placementRank)
+        .entries(duoGames);
+    addRegions(duoTeams);
+
+    soloTeams = d3.nest()
         .key(d => d.placementRank)
         .entries(duoGames);
 
-    addRegions(teams);
+    teams = soloTeams;
 
     regionTotals = d3.nest()
         .key(team => team.region)
