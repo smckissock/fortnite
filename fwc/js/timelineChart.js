@@ -11,8 +11,13 @@ const chartWidth = 1200 // Not including left margin
 const leftMargin = 15;
 
 let regions = [];
+let solosOrDuos = "Duos";
+
+let titleText;
+let toggleButtonText;
 
 let regionTotals;
+const toggleLeft = 626;
 
 const commaFormat = d3.format(",");
 
@@ -110,23 +115,20 @@ function drawHeader() {
 
     function drawButtons() {
         const left = 740
+        const buttonHeight = 80;
         regionInfo.forEach(function (region, i) {
             svg.append("rect")
                 .attr("data", region.name)
                 .attr("x", left + (i * 80))
                 .attr("y", 3)
                 .attr("width", 70)
-                .attr("height", 70)
+                .attr("height", buttonHeight)
                 .attr("fill", region.color)
                 .attr("stroke", "black")
                 .attr("stroke-width", 0)
                 .attr("rx", cornerRadius)
                 .attr("ry", cornerRadius)
                 .on('mouseover', function (d) {
-                    // The are mousing over the selected item - don't shrink the border
-                    //    if (d3.select(this).attr("data") === filters.region)
-                    //        return;
-
                     d3.select(this)
                         .transition()
                         .duration(100)
@@ -158,43 +160,87 @@ function drawHeader() {
 
             svg.append("text")
                 .attr("x", left + region.textOffset + (i * 80))
-                .attr("y", 25)
+                .attr("y", 30)
                 .attr("font-size", "1.2rem")
                 .attr("pointer-events", "none")
                 .text(region.name)
 
             svg.append("text")
                 .attr("x", left + (i * 80) + 6)
-                .attr("y", 43)
+                .attr("y", 48)
                 .text(region.count.toString() + ((region.count == 1) ? " player" : " players"))
                 .classed("region-stats", true)
 
             svg.append("text")
                 .attr("x", left + (i * 80) + 4)
-                .attr("y", 64)
+                .attr("y", 69)
                 .attr("font-size", "0.6rem")
                 .text("$" + commaFormat(region.payout))
                 .classed("region-stats", true)
-        });
-    }
+        }); // End region buttons
 
-    const headerHeight = 76;
+        
+        let solosOrDuosButton = svg.append("rect")
+            .attr("x", 630)
+            .attr("y", 3)
+            .attr("width", 100)
+            .attr("height", buttonHeight)
+            .attr("fill", "lightblue")
+            .attr("stroke", "black")
+            .attr("stroke-width", 0)
+            .attr("rx", cornerRadius)
+            .attr("ry", cornerRadius)
+            .on('mouseover', function (d) {
+                d3.select(this)
+                    .transition()
+                    .duration(100)
+                    .attr("stroke-width", 3);
+            })
+            .on('mouseout', function (d) {
+                d3.select(this)
+                    .transition()
+                    .duration(100)
+                    .attr("stroke-width", 0);
+            })
+            .on('click', function (d) {
+                toggleSolosOrDuos();
+            });
+
+        // "Switch to"
+        svg.append("text")
+            .attr("x", toggleLeft + 18)
+            .attr("y", 34)
+            .text("Switch to")
+            .attr("font-family", "Helvetica, Arial, sans-serif")
+            .attr("font-size", ".9rem")   
+            .attr("pointer-events", "none")
+            
+        toggleButtonText = svg.append("text")
+            .attr("x", toggleLeft + ((solosOrDuos == "Duos") ? 16 : 20))
+            .attr("y", 63)
+            .text(d => otherFormat())  
+            .attr("font-family", "Helvetica, Arial, sans-serif")
+            .attr("font-size", "1.6rem")
+            .attr("pointer-events", "none")
+    }
+    
+    const headerHeight = 86;
     let div = d3.select(".title");
     const svg = div.append("svg")
         .attr("width", leftMargin + chartWidth)
         .attr("height", headerHeight);
 
     // "FORTNITE"    
-    svg.append("text")
+    titleText = svg.append("text")
         .attr("x", 20)
         .attr("y", 60)
-        .text("FORTNITE World Cup Duos")
+        .text("FORTNITE World Cup " + solosOrDuos)
         .attr("font-size", "1.1em")
         .attr("fill", "black");
 
     // Creator Code
     svg.append("text")
-        .attr("x", 615)
+        .attr("x", 515)
         .attr("y", 32)
         .text("Creator Code")
         .attr("font-family", "Helvetica, Arial, sans-serif")
@@ -202,13 +248,34 @@ function drawHeader() {
     
     // Posick
     svg.append("text")
-        .attr("x", 623)
+        .attr("x", 523)
         .attr("y", 60)
         .text('"Posick"')
-        .classed("player", true)
+        .classed("player", true);
 
     drawButtons();
 }
+
+function otherFormat() {
+    return (solosOrDuos === "Solos") ? "Duos" : "Solos";    
+}
+
+function toggleSolosOrDuos() {
+    solosOrDuos = (solosOrDuos === "Solos") ? "Duos" : "Solos";
+    
+    titleText.text("FORTNITE World Cup " + solosOrDuos)
+    toggleButtonText
+        .transition()
+        .text(otherFormat())
+        .attr("x", toggleLeft + ((solosOrDuos == "Duos") ? 16 : 20));
+        
+
+    updateLeaderboard();
+
+    //alert(solosOrDuos);
+}
+
+
 
 function updateLeaderboard() {
     let includedTeams = teams.filter(team => regions.includes(team.region));
