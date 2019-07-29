@@ -1,10 +1,7 @@
 import { colors } from "./shared.js";
 
-let teams;
-
-let soloTeams
-let duoTeams;
-
+//let soloTeams
+//let duoTeams;
 
 let matchStart;
 let matchEnd;
@@ -19,6 +16,17 @@ let solosOrDuos = "Duos";
 
 let titleText;
 let toggleButtonText;
+
+let format = {
+    teams: null,
+    regionTotals: null,
+    beforeMatch: null
+}
+
+// One of these is assigned to format at all times   
+let solos = {};
+let duos = {};
+format = duos;
 
 let regionTotals;
 const toggleLeft = 626;
@@ -36,7 +44,7 @@ const regionInfo = [
 
 
 //d3.json('fwc/data/duo_games.json').then(function (data) {
-d3.json('fwc/data/finals.json').then(function (data) {    
+d3.json('fwc/data/finals.json').then(function (data) {
     let games = [];
     data.forEach(function (d) {
         let rec = {};
@@ -61,21 +69,20 @@ d3.json('fwc/data/finals.json').then(function (data) {
         games.push(rec);
     });
 
-    let duoGames = games.filter(game => game.week === "11"); 
-    let soloGames = games.filter(game => game.week === "12"); 
+    let duoGames = games.filter(game => game.week === "11");
+    let soloGames = games.filter(game => game.week === "12");
 
-    duoTeams = d3.nest()
+    duos.teams = d3.nest()
         .key(d => d.placementRank)
         .entries(duoGames);
-    addRegions(duoTeams);
+    addRegions(duos.teams);
 
-    soloTeams = d3.nest()
+    solos.teams = d3.nest()
         .key(d => d.placementRank)
-        .entries(duoGames);
+        .entries(soloGames);
+    addRegions();
 
-    teams = soloTeams;
-
-    regionTotals = d3.nest()
+    duos.regionTotals = d3.nest()
         .key(team => team.region)
         .rollup(function (teams) {
             return {
@@ -83,27 +90,64 @@ d3.json('fwc/data/finals.json').then(function (data) {
                 payout: d3.sum(teams, function (team) { return team.payout; })
             };
         })
-        .entries(teams);
+        .entries(duos.teams);
+
+    solos.regionTotals = d3.nest()
+        .key(team => team.region)
+        .rollup(function (teams) {
+            return {
+                count: teams.length,
+                payout: d3.sum(teams, function (team) { return team.payout; })
+            };
+        })
+        .entries(solos.teams);
 
     regionInfo.forEach(function (region) {
-        region.count = regionTotals.find(r => r.key == region.name).value.count;
-        region.payout = regionTotals.find(r => r.key == region.name).value.payout;
+        region.duosCount = duos.regionTotals.find(r => r.key == region.name).value.count;
+        region.duosPayout = duos.regionTotals.find(r => r.key == region.name).value.payout;
+
+        region.solosCount = solos.regionTotals.find(r => r.key == region.name).value.count;
+        region.solosPayout = solos.regionTotals.find(r => r.key == region.name).value.payout;
     });
 
-    const beforeMatch =
-        teams[0].values[0].endSeconds -
-        teams[0].values[0].secondsAlive - 100; // First started late
+    duos.beforeMatch =
+        duos.teams[0].values[0].endSeconds -
+        duos.teams[0].values[0].secondsAlive - 100; // First started late
+
+    solos.beforeMatch =
+        solos.teams[0].values[0].endSeconds -
+        solos.teams[0].values[0].secondsAlive - 100; // First started late
 
     matchStart = 0;
     matchEnd = 60 * 60 * 4.5;
 
-    teams.forEach(function (team) {
+    duos.teams.forEach(function (team) {
 
         // Add extra fields to each game
         team.values.forEach(function (game) {
             // Normalize seconds to start of match = 0
-            game.start = game.endSeconds - beforeMatch - game.secondsAlive;
-            game.end = game.endSeconds - beforeMatch;
+            game.start = game.endSeconds - duos.beforeMatch - game.secondsAlive;
+            game.end = game.endSeconds - duos.beforeMatch;
+
+            // Add nice time string
+            const minutes = Math.floor(game.secondsAlive / 60);
+            const seconds = game.secondsAlive - minutes * 60;
+            game.time = minutes + ":" + ((seconds.toString().length == 1) ? "0" + seconds : seconds);
+        })
+
+        // Add team level sum of elims and placement points
+        team.elims = d3.sum(team.values, game => game.elims);
+        team.placementPoints = d3.sum(team.values, game => game.placementPoints);
+        team.games = team.values.length;
+    });
+
+    solos.teams.forEach(function (team) {
+
+        // Add extra fields to each game
+        team.values.forEach(function (game) {
+            // Normalize seconds to start of match = 0
+            game.start = game.endSeconds - solos.beforeMatch - game.secondsAlive;
+            game.end = game.endSeconds - solos.beforeMatch;
 
             // Add nice time string
             const minutes = Math.floor(game.secondsAlive / 60);
@@ -175,21 +219,22 @@ function drawHeader() {
                 .attr("pointer-events", "none")
                 .text(region.name)
 
+            let playerLabel = ((region.count == 1) ? " player" : " players");
             svg.append("text")
                 .attr("x", left + (i * 80) + 6)
                 .attr("y", 48)
-                .text(region.count.toString() + ((region.count == 1) ? " player" : " players"))
+                .text((solosOrDuos == "Solos") ? region.solosCount.toString() : region.duosCount.toString() + playerLabel)
                 .classed("region-stats", true)
 
             svg.append("text")
                 .attr("x", left + (i * 80) + 4)
                 .attr("y", 69)
                 .attr("font-size", "0.6rem")
-                .text("$" + commaFormat(region.payout))
+                .text("$" + ((solosOrDuos == "Solos") ? commaFormat(region.solosPayout) : commaFormat(region.duosPayout)))
                 .classed("region-stats", true)
         }); // End region buttons
 
-        
+        let opacity = 0;
         let solosOrDuosButton = svg.append("rect")
             .attr("x", 630)
             .attr("y", 3)
@@ -200,6 +245,7 @@ function drawHeader() {
             .attr("stroke-width", 0)
             .attr("rx", cornerRadius)
             .attr("ry", cornerRadius)
+            .attr("opacity", opacity)
             .on('mouseover', function (d) {
                 d3.select(this)
                     .transition()
@@ -218,22 +264,24 @@ function drawHeader() {
 
         // "Switch to"
         svg.append("text")
-            .attr("x", toggleLeft + 18)
+            .attr("x", toggleLeft + 12)
             .attr("y", 34)
             .text("Switch to")
             .attr("font-family", "Helvetica, Arial, sans-serif")
-            .attr("font-size", ".9rem")   
+            .attr("font-size", "1.0rem")
             .attr("pointer-events", "none")
-            
+            .attr("opacity", opacity)
+
         toggleButtonText = svg.append("text")
             .attr("x", toggleLeft + ((solosOrDuos == "Duos") ? 16 : 20))
-            .attr("y", 63)
-            .text(d => otherFormat())  
+            .attr("y", 67)
+            .text(d => otherFormat())
             .attr("font-family", "Helvetica, Arial, sans-serif")
             .attr("font-size", "1.6rem")
             .attr("pointer-events", "none")
+            .attr("opacity", opacity)
     }
-    
+
     const headerHeight = 86;
     let div = d3.select(".title");
     const svg = div.append("svg")
@@ -243,7 +291,7 @@ function drawHeader() {
     // "FORTNITE"    
     titleText = svg.append("text")
         .attr("x", 20)
-        .attr("y", 60)
+        .attr("y", 70)
         .text("FORTNITE World Cup " + solosOrDuos)
         .attr("font-size", "1.1em")
         .attr("fill", "black");
@@ -251,15 +299,15 @@ function drawHeader() {
     // Creator Code
     svg.append("text")
         .attr("x", 515)
-        .attr("y", 32)
+        .attr("y", 42)
         .text("Creator Code")
         .attr("font-family", "Helvetica, Arial, sans-serif")
         .attr("font-size", ".9rem")
-    
+
     // Posick
     svg.append("text")
         .attr("x", 523)
-        .attr("y", 60)
+        .attr("y", 70)
         .text('"Posick"')
         .classed("player", true);
 
@@ -267,18 +315,18 @@ function drawHeader() {
 }
 
 function otherFormat() {
-    return (solosOrDuos === "Solos") ? "Duos" : "Solos";    
+    return (solosOrDuos === "Solos") ? "Duos" : "Solos";
 }
 
 function toggleSolosOrDuos() {
     solosOrDuos = (solosOrDuos === "Solos") ? "Duos" : "Solos";
-    
+
     titleText.text("FORTNITE World Cup " + solosOrDuos)
     toggleButtonText
         .transition()
         .text(otherFormat())
         .attr("x", toggleLeft + ((solosOrDuos == "Duos") ? 16 : 20));
-        
+
 
     updateLeaderboard();
 
@@ -288,7 +336,7 @@ function toggleSolosOrDuos() {
 
 
 function updateLeaderboard() {
-    let includedTeams = teams.filter(team => regions.includes(team.region));
+    let includedTeams = format.teams.filter(team => regions.includes(team.region));
 
     let x = d3.selectAll(".leaderboard-team")
         .each(function (team, i) {
@@ -327,7 +375,7 @@ function updateLeaderboard() {
 function drawLeaderboard() {
 
     function filterTeams() {
-        return teams;
+        return format.teams;
     }
 
     // Apply region filters here!!
@@ -365,7 +413,7 @@ function drawLeaderboard() {
     // Labels on the left
 
     // Rank
-    svg.selectAll("g").data(teams)
+    svg.selectAll("g").data(format.teams)
         .append("text")
         .attr("x", leftMargin + 23)
         .attr("y", (d, i) => i * rowHeight + 31)
@@ -373,7 +421,7 @@ function drawLeaderboard() {
         .classed("rank", true)
 
     // Payout    
-    svg.selectAll("g").data(teams)
+    svg.selectAll("g").data(format.teams)
         .append("text")
         .attr("x", leftMargin + 15)
         .attr("y", (d, i) => i * rowHeight + 48)
@@ -382,7 +430,7 @@ function drawLeaderboard() {
 
     // First player
     const leftPlayer = 90;
-    svg.selectAll("g").data(teams)
+    svg.selectAll("g").data(format.teams)
         .append("text")
         .attr("x", leftMargin + leftPlayer)
         .attr("y", (d, i) => i * rowHeight + 23)
@@ -390,7 +438,7 @@ function drawLeaderboard() {
         .classed("player", true)
 
     // Second player    
-    svg.selectAll("g").data(teams)
+    svg.selectAll("g").data(format.teams)
         .append("text")
         .attr("x", leftMargin + leftPlayer)
         .attr("y", (d, i) => i * rowHeight + 48)
@@ -402,7 +450,7 @@ function drawLeaderboard() {
 
     // Big Points   
     const playerWidth = 400;
-    svg.selectAll("g").data(teams)
+    svg.selectAll("g").data(format.teams)
         .append("text")
         .attr("x", playerWidth - 145)
         .attr("y", (d, i) => i * rowHeight + 33)
@@ -410,7 +458,7 @@ function drawLeaderboard() {
         .classed("rank", true)
 
     // "Points" label
-    svg.selectAll("g").data(teams)
+    svg.selectAll("g").data(format.teams)
         .append("text")
         .attr("x", playerWidth - 150)
         .attr("y", (d, i) => i * rowHeight + 49)
@@ -418,16 +466,16 @@ function drawLeaderboard() {
         .classed("points", true)
 
     // Elim percentage  
-    const pctFormat = d3.format(",.1%"); 
-    svg.selectAll("g").data(teams)
+    const pctFormat = d3.format(",.1%");
+    svg.selectAll("g").data(format.teams)
         .append("text")
         .attr("x", playerWidth - 93)
         .attr("y", (d, i) => i * rowHeight + 20)
-        .text(d => pctFormat(d.elims / (d.elims + d.placementPoints )) + " elim pct")
+        .text(d => pctFormat(d.elims / (d.elims + d.placementPoints)) + " elim pct")
         .classed("points", true)
-        
+
     // Elims   
-    svg.selectAll("g").data(teams)
+    svg.selectAll("g").data(format.teams)
         .append("text")
         .attr("x", playerWidth - 93)
         .attr("y", (d, i) => i * rowHeight + 35)
@@ -435,7 +483,7 @@ function drawLeaderboard() {
         .classed("points", true)
 
     // Placement points   
-    svg.selectAll("g").data(teams)
+    svg.selectAll("g").data(format.teams)
         .append("text")
         .attr("x", playerWidth - 93)
         .attr("y", (d, i) => i * rowHeight + 50)
@@ -447,7 +495,7 @@ function drawLeaderboard() {
         .domain([matchStart, matchEnd])
         .range([playerWidth + leftMargin, chartWidth + 170]);
 
-    svg.selectAll("g").data(teams)
+    svg.selectAll("g").data(format.teams)
         .each(function (teamGames, teamIndex) {
             const g = d3.select(this);
             g
@@ -538,6 +586,17 @@ function tooltip(svg, game) {
 }
 
 function addRegions(teams) {
+
+    // ugh
+    if (!teams) {
+        for (let i = 0; i < 100; i++) {
+            solos.teams[i].region = regionInfo[i % 6].name;
+            solos.teams[i].payout = 99;
+            solos.teams[i].ordering = i;
+        }
+        return;
+    }
+
     let i = 1;
     function addRegion(region, payout) {
         let team = teams.filter(d => d.key == i.toString())[0];
