@@ -47,7 +47,7 @@ export function setupStats(data) {
         function increment(player, other, field) {
             // Solo or Duo 
             if (field.includes("duo") || (field.includes("solo"))) {
-                if (player[field] < other[field]) 
+                if (player[field] < other[field])
                     player[field + "Rank"]++;
                 return;
             }
@@ -76,7 +76,6 @@ export function setupStats(data) {
             increment(stats, d.value, "soloPoints");
             increment(stats, d.value, "duoPoints");
             increment(stats, d.value, "totalPoints");
-
         })
         return stats;
     }

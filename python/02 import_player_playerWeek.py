@@ -15,9 +15,10 @@ def insert_player_guid(player, week_id, region_code):
     account_id = player.get("accountId")
     player = player.get("playerName")
     try:
-        cursor.execute("INSERT INTO Player VALUES (?)", account_id)
+        cursor.execute(
+            "INSERT INTO Player VALUES (?, '', 1, 1, 1, '', '')", account_id)
         conn.commit()
-        # There will duplicates here most of the time, that's normal
+    # There will duplicates here most of the time, that's normal
     except Exception as e:
         pass
 
@@ -32,6 +33,26 @@ def insert_player_guid(player, week_id, region_code):
     # Ignoring this should break anything...
     except Exception as e:
         pass
+
+
+file = open(
+    "c:\\fortnite-scrape\\scraped\\worldcup\\duos\\duos.html", encoding="utf-8")
+html = file.read()
+
+firstChar = html.find("var imp_accounts = [") + 18
+lastChar = html.find("</script>", firstChar) - 1
+json_text = html[firstChar:lastChar]
+try:
+    players = json.loads(json_text)
+except Exception as e:
+    print(json_text)
+    exit()
+
+for player in players:
+    insert_player_guid(player, "11", "TBD")
+
+
+exit()
 
 
 regions = ["NAE", "NAW", "EU", "OCE", "ASIA", "BR"]
