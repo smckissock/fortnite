@@ -103,3 +103,23 @@ WITH MOVE 'Fortnite' TO 'C:\fortnitedb\FortniteJuly7\Fortnite.mdf',
 MOVE 'Fortnite_log' TO 'C:\fortnitedb\FortniteJuly7\Fortnite_log.ldf'
 
 
+
+[Fortnite_2019_07_27]
+-- Post fortnite duos 
+-- July 29 2019
+BACKUP DATABASE Fortnite
+TO DISK = N'j:\db\FortniteJuly29.bak' WITH NOFORMAT, NOINIT, NAME = N'Full Database Backup', SKIP, NOREWIND, NOUNLOAD, STATS = 10
+GO
+
+RESTORE FILELISTONLY
+FROM DISK =  N'j:\db\FortniteJuly29.bak'
+GO
+
+RESTORE DATABASE Fortnite2
+FROM DISK = N'j:\db\FortniteJuly29.bak'
+WITH MOVE 'Fortnite2' TO 'C:\fortnitedb\2019_07_29\Fortnite2.mdf',
+MOVE 'Fortnite2_log' TO 'C:\fortnitedb\2019_07_29\Fortnite2_log.ldf'
+
+
+
+
