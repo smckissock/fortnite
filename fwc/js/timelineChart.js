@@ -284,7 +284,6 @@ function drawHeader() {
 
 
         // Switch to Qualifiers
-        let opacity2 = 1;
         const qualifierLeft = 520
         let qualifierButton = svg.append("a")
             .attr("xlink:href", "https://fortnitewc.netlify.com")
@@ -298,7 +297,6 @@ function drawHeader() {
             .attr("stroke-width", 0)
             .attr("rx", cornerRadius)
             .attr("ry", cornerRadius)
-            .attr("opacity", opacity)
             .on('mouseover', function (d) {
                 d3.select(this)
                     .transition()
@@ -311,10 +309,6 @@ function drawHeader() {
                     .duration(100)
                     .attr("stroke-width", 0);
             })
-            //.on('click', function (d) {
-            //toggleSolosOrDuos();
-            //})
-            .attr("opacity", opacity2);
 
         // "Switch to"
         svg.append("text")
@@ -324,7 +318,6 @@ function drawHeader() {
             .attr("font-family", "Helvetica, Arial, sans-serif")
             .attr("font-size", "1.0rem")
             .attr("pointer-events", "none")
-            .attr("opacity", opacity2)
 
         // Qualifier    
         svg.append("text")
@@ -334,7 +327,6 @@ function drawHeader() {
             .attr("font-family", "Helvetica, Arial, sans-serif")
             .attr("font-size", "1.0rem")
             .attr("pointer-events", "none")
-            .attr("opacity", opacity2)
     }
 
     const headerHeight = 86;
@@ -556,6 +548,7 @@ function drawLeaderboard() {
     svg.selectAll("g").data(format.teams)
         .each(function (teamGames, teamIndex) {
             const g = d3.select(this);
+            let totalPoints = 0;
             g
                 .selectAll("rect.team-rect")
 
@@ -568,7 +561,7 @@ function drawLeaderboard() {
                 .attr("height", 45)
                 .attr("fill", "white")
                 .attr("stroke", "black")
-                .attr("stroke-width", game => (game.rank === "1") ? 5 : 1)
+                .attr("stroke-width", game => (game.rank === "1") ? 5 : 0)
                 .on('click', function (game) {
                     console.log(game.start + " -> " + game.end + "  " + game.secondsAlive);
                 })
@@ -579,15 +572,13 @@ function drawLeaderboard() {
                 })
                 .classed("team-rect", true)
 
-
                 .each(function (game) {
                     const top = 12;
                     const bottom = 33
 
-                    // Draw elim lines
                     for (let i = 0; i < game.elims; i++) {
                         const xElim = xScale(game.start) + (i * 4) + 7;
-                        g
+                        g // Elim lines
                             .append("line")
                             .attr("x1", xElim)
                             .attr("x2", xElim)
@@ -597,11 +588,10 @@ function drawLeaderboard() {
                             .attr("stroke", "darkgrey")
                             .attr("pointer-events", "none");
                     }
-                    // Draw placement lines
                     const elimOffset = game.elims * 4 + 1
                     for (let i = 0; i < game.placementPoints; i++) {
                         const x = xScale(game.start) + (i * 4) + 7 + elimOffset;
-                        g
+                        g // Placement lines
                             .append("line")
                             .attr("x1", x)
                             .attr("x2", x)
@@ -611,12 +601,21 @@ function drawLeaderboard() {
                             .attr("stroke", "black")
                             .attr("pointer-events", "none");
                     }
-
-                    g
+                    const gamePoints = parseInt(game.elims) + parseInt(game.placementPoints);
+                    totalPoints += gamePoints;
+                    g // Points in game
                         .append("text")
                         .attr("x", xScale(game.start) + 6)
                         .attr("y", teamIndex * rowHeight + 47)
-                        .text((parseInt(game.elims) + parseInt(game.placementPoints)).toString())
+                        .text(gamePoints.toString())
+                        .classed("points", true)
+
+                    g // Running total of points
+                        .append("text")
+                        //.attr("x", xScale(game.start) + ((totalPoints.toString().length == 1) ? 173 : 168))
+                        .attr("x", xScale(game.start) + 70)
+                        .attr("y", teamIndex * rowHeight + 47)
+                        .text(totalPoints.toString())
                         .classed("points", true)
                 });
         })
