@@ -600,10 +600,10 @@ function addSoloRegions(teams) {
     }
 
     addRegion('NA EAST', 3000000); // 1
-    addRegion('NA EAST', 1800000);
+    addRegion('NA WEST', 1800000);
     addRegion('NA WEST', 1200000);
     addRegion('NA EAST', 1050000);
-    addRegion('EUROPE', 900000);
+    addRegion('BRAZIL', 900000);
     addRegion('EUROPE', 600000);
     addRegion('EUROPE', 525000);
     addRegion('EUROPE', 375000);
