@@ -187,10 +187,16 @@ namespace FortniteJson {
 
             // Super inefficient...
             var tiers = new List<Tier>();
-            var tierReader = SqlUtil.Query("SELECT Rank, Points FROM RankPointTier WHERE RegionID = (SELECT ID FROM Region WHERE Name = 'NA East') AND WeekID = 10 ORDER BY Rank");
-            while (tierReader.Read())
-                tiers.Add(new Tier( (int)tierReader["Rank"], (int)tierReader["Points"]));
-            tierReader.Close();
+            //var tierReader = SqlUtil.Query("SELECT Rank, Points FROM RankPointTier WHERE RegionID = (SELECT ID FROM Region WHERE Name = 'NA East') AND WeekID = 10 ORDER BY Rank");
+            //while (tierReader.Read())
+            //   tiers.Add(new Tier( (int)tierReader["Rank"], (int)tierReader["Points"]));
+            //tierReader.Close();
+            
+            // SOLOS aren't in DB!!!
+            tiers.Add(new Tier(1, 3));
+            tiers.Add(new Tier(5, 2));
+            tiers.Add(new Tier(15, 2));
+            tiers.Add(new Tier(25, 3));
 
             int points = 0;
             foreach (Tier tier in tiers)

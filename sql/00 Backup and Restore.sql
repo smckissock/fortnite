@@ -111,14 +111,17 @@ BACKUP DATABASE Fortnite
 TO DISK = N'j:\db\FortniteJuly29.bak' WITH NOFORMAT, NOINIT, NAME = N'Full Database Backup', SKIP, NOREWIND, NOUNLOAD, STATS = 10
 GO
 
+
+
+
 RESTORE FILELISTONLY
-FROM DISK =  N'j:\db\FortniteJuly29.bak'
+FROM DISK =  N'f:\FortniteJuly29_2.bak'
 GO
 
 RESTORE DATABASE Fortnite2
-FROM DISK = N'j:\db\FortniteJuly29.bak'
-WITH MOVE 'Fortnite2' TO 'C:\fortnitedb\2019_07_29\Fortnite2.mdf',
-MOVE 'Fortnite2_log' TO 'C:\fortnitedb\2019_07_29\Fortnite2_log.ldf'
+FROM DISK = N'f:\FortniteJuly29_2.bak'
+WITH MOVE 'Fortnite2' TO 'C:\fortnitedb\Fortnite3.mdf',
+MOVE 'Fortnite2_log' TO 'C:\fortnitedb\Fortnite3_log.ldf'
 
 
 
