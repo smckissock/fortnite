@@ -75,7 +75,7 @@ UPDATE Player SET CurrentName = 'letw1k3' WHERE ID = 165471   --59
 UPDATE Player SET CurrentName = 'Ceice' WHERE ID = 165472   --60
 UPDATE Player SET CurrentName = 'Aspect' WHERE ID = 165473   --61
 UPDATE Player SET CurrentName = 'Megga' WHERE ID = 165474   --62
-UPDATE Player SET CurrentName = 'Flendermoys' WHERE ID = 165475   --63
+UPDATE Player SET CurrentName = 'Fledermoys' WHERE ID = 165475   --63
 UPDATE Player SET CurrentName = 'Bucke' WHERE ID = 165476   --64
 UPDATE Player SET CurrentName = 'Banny' WHERE ID = 165477   --65
 UPDATE Player SET CurrentName = 'Emqu' WHERE ID = 165478   --66
@@ -105,7 +105,7 @@ UPDATE Player SET CurrentName = 'Legedien' WHERE ID = 165501   --89
 UPDATE Player SET CurrentName = 'Revers2k' WHERE ID = 165502   --90
 UPDATE Player SET CurrentName = 'Maufin' WHERE ID = 165503   --91
 UPDATE Player SET CurrentName = 'Nittle' WHERE ID = 165504   --92
-UPDATE Player SET CurrentName = 'Hormet' WHERE ID = 165505   --93
+UPDATE Player SET CurrentName = 'Hornet' WHERE ID = 165505   --93
 UPDATE Player SET CurrentName = 'aqua' WHERE ID = 165506   --94
 UPDATE Player SET CurrentName = 'Cat' WHERE ID = 165507   --95
 UPDATE Player SET CurrentName = 'twins' WHERE ID = 165508   --96
