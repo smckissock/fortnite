@@ -524,36 +524,45 @@ function drawLeaderboard() {
                 })
                 .classed("team-rect", true)
 
-                // Draw elim lines
+
                 .each(function (game) {
+                    const top = 12;
+                    const bottom = 33
+
+                    // Draw elim lines
                     for (let i = 0; i < game.elims; i++) {
-                        const x = xScale(game.start) + (i * 4) + 6;
+                        const xElim = xScale(game.start) + (i * 4) + 7;
                         g
                             .append("line")
-                            .attr("x1", x)
-                            .attr("x2", x)
-                            .attr("y1", teamIndex * rowHeight + 13)
-                            .attr("y2", teamIndex * rowHeight + 45)
+                            .attr("x1", xElim)
+                            .attr("x2", xElim)
+                            .attr("y1", teamIndex * rowHeight + top)
+                            .attr("y2", teamIndex * rowHeight + bottom)
                             .attr("stroke-width", "2")
                             .attr("stroke", "darkgrey")
                             .attr("pointer-events", "none");
                     }
-                })
-                // Draw placement lines
-                .each(function (game) {
-                    const elimOffset = game.elims * 4
+                    // Draw placement lines
+                    const elimOffset = game.elims * 4 + 1
                     for (let i = 0; i < game.placementPoints; i++) {
-                        const x = xScale(game.start) + (i * 4) + 6 + elimOffset;
+                        const x = xScale(game.start) + (i * 4) + 7 + elimOffset;
                         g
                             .append("line")
                             .attr("x1", x)
                             .attr("x2", x)
-                            .attr("y1", teamIndex * rowHeight + 13)
-                            .attr("y2", teamIndex * rowHeight + 45)
+                            .attr("y1", teamIndex * rowHeight + top)
+                            .attr("y2", teamIndex * rowHeight + bottom)
                             .attr("stroke-width", "2")
                             .attr("stroke", "black")
                             .attr("pointer-events", "none");
                     }
+
+                    g
+                        .append("text")
+                        .attr("x", xScale(game.start) + 6)
+                        .attr("y", teamIndex * rowHeight + 47)
+                        .text((parseInt(game.elims) + parseInt(game.placementPoints)).toString())
+                        .classed("points", true)
                 });
         })
 }
