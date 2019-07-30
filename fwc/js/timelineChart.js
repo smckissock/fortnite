@@ -435,17 +435,18 @@ function drawLeaderboard() {
     svg.selectAll("g").data(format.teams)
         .append("text")
         .attr("x", leftMargin + leftPlayer)
-        .attr("y", (d, i) => i * rowHeight + 23)
+        .attr("y", (d, i) => i * rowHeight + ((solosOrDuos == "Duos") ? 23 : 36))
         .text(d => d.values[0].players[0])
         .classed("player", true)
 
     // Second player    
-    svg.selectAll("g").data(format.teams)
-        .append("text")
-        .attr("x", leftMargin + leftPlayer)
-        .attr("y", (d, i) => i * rowHeight + 48)
-        .text(d => d.values[0].players[1])
-        .classed("player", true)
+    if (solosOrDuos == "Duos")
+        svg.selectAll("g").data(format.teams)
+            .append("text")
+            .attr("x", leftMargin + leftPlayer)
+            .attr("y", (d, i) => i * rowHeight + 48)
+            .text(d => d.values[0].players[1])
+            .classed("player", true)
 
 
     // Labels on the right 
