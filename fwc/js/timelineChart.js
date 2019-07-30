@@ -599,115 +599,115 @@ function addSoloRegions(teams) {
         i++;
     }
 
-    addRegion('EUROPE', 3000000); // 1
+    addRegion('NA EAST', 3000000); // 1
     addRegion('NA EAST', 1800000);
     addRegion('NA WEST', 1200000);
-    addRegion('ASIA', 1050000);
-    addRegion('BRAZIL', 900000);
-    addRegion('OCEANIA', 600000);
-    addRegion('NA WEST', 525000);
-    addRegion('ASIA', 375000);
-    addRegion('BRAZIL', 300000);
-    addRegion('OCEANIA', 225000);
+    addRegion('NA EAST', 1050000);
+    addRegion('EUROPE', 900000);
+    addRegion('EUROPE', 600000);
+    addRegion('EUROPE', 525000);
+    addRegion('EUROPE', 375000);
+    addRegion('NA WEST', 300000);
+    addRegion('NA EAST', 225000);
 
-    addRegion('EUROPE', 150000); // 11
+    addRegion('NA EAST', 150000); // 11
+    addRegion('EUROPE', 150000);
+    addRegion('EUROPE', 150000);
+    addRegion('EUROPE', 150000);
     addRegion('NA EAST', 150000);
-    addRegion('NA WEST', 150000);
-    addRegion('ASIA', 150000);
-    addRegion('BRAZIL', 150000);
-    addRegion('OCEANIA', 112500);
-    addRegion('NA WEST', 112500);
+    addRegion('NA EAST', 112500);
+    addRegion('EUROPE', 112500);
+    addRegion('NA EAST', 112500);
     addRegion('ASIA', 112500);
-    addRegion('BRAZIL', 112500);
-    addRegion('OCEANIA', 112500);
+    addRegion('NA EAST', 112500);
 
     addRegion('EUROPE', 50000); // 21
+    addRegion('EUROPE', 50000);
+    addRegion('NA WEST', 50000);
+    addRegion('EUROPE', 50000);
+    addRegion('EUROPE', 50000);
+    addRegion('EUROPE', 50000);
+    addRegion('EUROPE', 50000);
     addRegion('NA EAST', 50000);
-    addRegion('NA WEST', 50000);
-    addRegion('ASIA', 50000);
-    addRegion('BRAZIL', 50000);
-    addRegion('OCEANIA', 50000);
-    addRegion('NA WEST', 50000);
-    addRegion('ASIA', 50000);
-    addRegion('BRAZIL', 50000);
-    addRegion('OCEANIA', 50000);
+    addRegion('EUROPE', 50000);
+    addRegion('EUROPE', 50000);
 
     addRegion('EUROPE', 50000); // 31
+    addRegion('EUROPE', 50000);
+    addRegion('ASIA', 50000);
     addRegion('NA EAST', 50000);
     addRegion('NA WEST', 50000);
-    addRegion('ASIA', 50000);
+    addRegion('NA EAST', 50000);
+    addRegion('EUROPE', 50000);
+    addRegion('NA EAST', 50000);
+    addRegion('NA EAST', 50000);
     addRegion('BRAZIL', 50000);
-    addRegion('OCEANIA', 50000);
-    addRegion('NA WEST', 50000);
-    addRegion('ASIA', 50000);
-    addRegion('BRAZIL', 50000);
-    addRegion('OCEANIA', 50000);
 
     addRegion('EUROPE', 50000); // 41
     addRegion('NA EAST', 50000);
-    addRegion('NA WEST', 50000);
     addRegion('ASIA', 50000);
-    addRegion('BRAZIL', 50000);
-    addRegion('OCEANIA', 50000);
-    addRegion('NA WEST', 50000);
-    addRegion('ASIA', 50000);
-    addRegion('BRAZIL', 50000);
-    addRegion('OCEANIA', 50000);
+    addRegion('EUROPE', 50000);
+    addRegion('EUROPE', 50000);
+    addRegion('EUROPE', 50000);
+    addRegion('EUROPE', 50000);
+    addRegion('EUROPE', 50000);
+    addRegion('EUROPE', 50000);
+    addRegion('NA EAST', 50000);
 
     addRegion('EUROPE', 50000); // 51
+    addRegion('ASIA', 50000);
     addRegion('NA EAST', 50000);
-    addRegion('NA WEST', 50000);
     addRegion('ASIA', 50000);
-    addRegion('BRAZIL', 50000);
-    addRegion('OCEANIA', 50000);
-    addRegion('NA WEST', 50000);
     addRegion('ASIA', 50000);
+    addRegion('NA EAST', 50000);
     addRegion('BRAZIL', 50000);
-    addRegion('OCEANIA', 50000);
+    addRegion('EUROPE', 50000);
+    addRegion('EUROPE', 50000);
+    addRegion('NA EAST', 50000);
 
-    addRegion('EUROPE', 50000); // 61
+    addRegion('NA WEST', 50000); // 61
     addRegion('NA EAST', 50000);
-    addRegion('NA WEST', 50000);
+    addRegion('EUROPE', 50000);
+    addRegion('NA EAST', 50000);
     addRegion('ASIA', 50000);
-    addRegion('BRAZIL', 50000);
-    addRegion('OCEANIA', 50000);
-    addRegion('NA WEST', 50000);
+    addRegion('EUROPE', 50000);
+    addRegion('NA EAST', 50000);
     addRegion('ASIA', 50000);
-    addRegion('BRAZIL', 50000);
-    addRegion('OCEANIA', 50000);
+    addRegion('NA EAST', 50000);
+    addRegion('NA EAST', 50000);
 
-    addRegion('EUROPE', 50000); // 71
+    addRegion('BRAZIL', 50000); // 71
+    addRegion('EUROPE', 50000);
+    addRegion('ASIA', 50000);
     addRegion('NA EAST', 50000);
-    addRegion('NA WEST', 50000);
-    addRegion('ASIA', 50000);
     addRegion('BRAZIL', 50000);
-    addRegion('OCEANIA', 50000);
-    addRegion('NA WEST', 50000);
+    addRegion('NA EAST', 50000);
+    addRegion('NA EAST', 50000);
     addRegion('ASIA', 50000);
-    addRegion('BRAZIL', 50000);
-    addRegion('OCEANIA', 50000);
+    addRegion('EUROPE', 50000);
+    addRegion('EUROPE', 50000);
 
     addRegion('EUROPE', 50000); // 81
+    addRegion('EUROPE', 50000);
+    addRegion('OCEANIA', 50000);
+    addRegion('EUROPE', 50000);
+    addRegion('EUROPE', 50000);
+    addRegion('EUROPE', 50000);
     addRegion('NA EAST', 50000);
-    addRegion('NA WEST', 50000);
-    addRegion('ASIA', 50000);
-    addRegion('BRAZIL', 50000);
-    addRegion('OCEANIA', 50000);
-    addRegion('NA WEST', 50000);
-    addRegion('ASIA', 50000);
-    addRegion('BRAZIL', 50000);
-    addRegion('OCEANIA', 50000);
+    addRegion('EUROPE', 50000);
+    addRegion('NA EAST', 50000);
+    addRegion('NA EAST', 50000);
 
-    addRegion('EUROPE', 50000); // 91
+    addRegion('ASIA', 50000); // 91
     addRegion('NA EAST', 50000);
-    addRegion('NA WEST', 50000);
-    addRegion('ASIA', 50000);
-    addRegion('BRAZIL', 50000);
+    addRegion('NA EAST', 50000);
+    addRegion('EUROPE', 50000);
+    addRegion('OCEANIA', 50000);
     addRegion('OCEANIA', 50000);
     addRegion('NA WEST', 50000);
+    addRegion('EUROPE', 50000);
+    addRegion('NA EAST', 50000);
     addRegion('ASIA', 50000);
-    addRegion('BRAZIL', 50000);
-    addRegion('OCEANIA', 50000);
 
 }
 
