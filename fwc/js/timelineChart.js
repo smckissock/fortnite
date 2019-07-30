@@ -508,16 +508,12 @@ function drawLeaderboard() {
                 .enter()
                 .append("rect")
                 .attr("x", game => xScale(game.start))
-                //.attr("x", function (game) {
-                //    return xScale(game.start)
-                //    //console.log(game.start + " -> " + game.end + "  " + game.secondsAlive);
-                //})
-                .attr("y", (d, i) => teamIndex * rowHeight + 14)
+                .attr("y", (d, i) => teamIndex * rowHeight + 7)
                 .attr("width", game => xScale(game.end) - xScale(game.start))
-                .attr("height", 30)
+                .attr("height", 45)
                 .attr("fill", "white")
                 .attr("stroke", "black")
-                .attr("stroke-width", game => (game.rank === "1") ? 6 : 1)
+                .attr("stroke-width", game => (game.rank === "1") ? 5 : 1)
                 .on('click', function (game) {
                     console.log(game.start + " -> " + game.end + "  " + game.secondsAlive);
                 })
@@ -536,10 +532,26 @@ function drawLeaderboard() {
                             .append("line")
                             .attr("x1", x)
                             .attr("x2", x)
-                            .attr("y1", teamIndex * rowHeight + 17)
-                            .attr("y2", teamIndex * rowHeight + 14 + 27)
+                            .attr("y1", teamIndex * rowHeight + 13)
+                            .attr("y2", teamIndex * rowHeight + 45)
                             .attr("stroke-width", "2")
-                            .attr("stroke", "green")
+                            .attr("stroke", "darkgrey")
+                            .attr("pointer-events", "none");
+                    }
+                })
+                // Draw placement lines
+                .each(function (game) {
+                    const elimOffset = game.elims * 4
+                    for (let i = 0; i < game.placementPoints; i++) {
+                        const x = xScale(game.start) + (i * 4) + 6 + elimOffset;
+                        g
+                            .append("line")
+                            .attr("x1", x)
+                            .attr("x2", x)
+                            .attr("y1", teamIndex * rowHeight + 13)
+                            .attr("y2", teamIndex * rowHeight + 45)
+                            .attr("stroke-width", "2")
+                            .attr("stroke", "black")
                             .attr("pointer-events", "none");
                     }
                 });
@@ -610,8 +622,8 @@ function addSoloRegions(teams) {
     addRegion('NA WEST', 300000);
     addRegion('NA EAST', 225000);
 
-    addRegion('NA EAST', 150000); // 11
-    addRegion('NA WEST', 150000);
+    addRegion('NA WEST', 150000); // 11
+    addRegion('EUROPE', 150000);
     addRegion('EUROPE', 150000);
     addRegion('EUROPE', 150000);
     addRegion('NA EAST', 150000);
@@ -627,7 +639,7 @@ function addSoloRegions(teams) {
     addRegion('EUROPE', 50000);
     addRegion('EUROPE', 50000);
     addRegion('EUROPE', 50000);
-    addRegion('EUROPE', 50000);
+    addRegion('BRAZIL', 50000);
     addRegion('NA EAST', 50000);
     addRegion('EUROPE', 50000);
     addRegion('EUROPE', 50000);
@@ -655,7 +667,7 @@ function addSoloRegions(teams) {
     addRegion('NA EAST', 50000);
 
     addRegion('EUROPE', 50000); // 51
-    addRegion('EUROPE', 50000);
+    addRegion('BRAZIL', 50000);
     addRegion('NA WEST', 50000);
     addRegion('ASIA', 50000);
     addRegion('ASIA', 50000);
