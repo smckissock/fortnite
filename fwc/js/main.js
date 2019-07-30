@@ -75,8 +75,9 @@ d3.json('fwc/data/data.json').then(function (dataArray) {
 
     const screenWidth = LeftSideWidth + teamWidth + playerTableWidth - leftMargin;
     titleSvg = title(screenWidth);
+    goToFinalsButton(titleSvg);
     searchLabel(titleSvg);
-    posickLabel(titleSvg)
+    posickLabel(titleSvg);
     disclaimer(titleSvg);
 
     let data = [];
@@ -191,6 +192,54 @@ function title(width) {
     return svg;
 }
 
+function goToFinalsButton(svg) {
+    // Switch to Finals
+    const qualifierLeft = 1270;
+    let qualifierButton = svg.append("a")
+        .attr("xlink:href", "https://fortnitewc.netlify.com/finals.html")
+        .append("rect")
+        .attr("x", qualifierLeft)
+        .attr("y", 15)
+        .attr("width", 70)
+        .attr("height", 60)
+        .attr("fill", "lightblue")
+        .attr("stroke", "black")
+        .attr("stroke-width", 0)
+        .attr("rx", cornerRadius)
+        .attr("ry", cornerRadius)
+        .on('mouseover', function (d) {
+            d3.select(this)
+                .transition()
+                .duration(100)
+                .attr("stroke-width", 3);
+        })
+        .on('mouseout', function (d) {
+            d3.select(this)
+                .transition()
+                .duration(100)
+                .attr("stroke-width", 0);
+        })
+
+    // "Switch to"
+    svg.append("text")
+        .attr("x", qualifierLeft + 16)
+        .attr("y", 38)
+        .text("See")
+        .attr("font-family", "Helvetica, Arial, sans-serif")
+        .attr("font-size", "1.0rem")
+        .attr("pointer-events", "none")
+
+    // "Finals"   
+    svg.append("text")
+        .attr("x", qualifierLeft + 8)
+        .attr("y", 62)
+        .text("Finals")
+        .attr("font-family", "Helvetica, Arial, sans-serif")
+        .attr("font-size", "1.0rem")
+        .attr("pointer-events", "none")
+}
+
+
 function posickLabel(svg) {
     svg.append("text")
         .attr("x", 760)
@@ -214,6 +263,7 @@ function searchLabel(svg) {
 }
 
 function disclaimer(svg) {
+    return;
     svg.append("text")
         .attr("x", 1190)
         .attr("y", 34)

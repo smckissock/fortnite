@@ -266,7 +266,7 @@ function drawHeader() {
         // "Switch to"
         svg.append("text")
             .attr("x", toggleLeft + 12)
-            .attr("y", 38)
+            .attr("y", 35)
             .text("Switch to")
             .attr("font-family", "Helvetica, Arial, sans-serif")
             .attr("font-size", "1.0rem")
@@ -283,11 +283,12 @@ function drawHeader() {
             .attr("opacity", opacity)
 
 
-
         // Switch to Qualifiers
-        let opacity2 = 0;
+        let opacity2 = 1;
         const qualifierLeft = 520
-        let qualifierButton = svg.append("rect")
+        let qualifierButton = svg.append("a")
+            .attr("xlink:href", "https://fortnitewc.netlify.com")
+            .append("rect")
             .attr("x", qualifierLeft)
             .attr("y", 3)
             .attr("width", 100)
@@ -310,15 +311,15 @@ function drawHeader() {
                     .duration(100)
                     .attr("stroke-width", 0);
             })
-            .on('click', function (d) {
-                //toggleSolosOrDuos();
-            })
+            //.on('click', function (d) {
+            //toggleSolosOrDuos();
+            //})
             .attr("opacity", opacity2);
 
         // "Switch to"
         svg.append("text")
             .attr("x", qualifierLeft + 8)
-            .attr("y", 38)
+            .attr("y", 35)
             .text("Switch to")
             .attr("font-family", "Helvetica, Arial, sans-serif")
             .attr("font-size", "1.0rem")
@@ -328,7 +329,7 @@ function drawHeader() {
         // Qualifier    
         svg.append("text")
             .attr("x", qualifierLeft + 7)
-            .attr("y", 60)
+            .attr("y", 62)
             .text("Qualifiers")
             .attr("font-family", "Helvetica, Arial, sans-serif")
             .attr("font-size", "1.0rem")
