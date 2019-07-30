@@ -165,6 +165,7 @@ d3.json('fwc/data/finals.json').then(function (data) {
     drawLeaderboard();
 });
 
+
 function drawHeader() {
 
     function drawButtons() {
@@ -219,14 +220,14 @@ function drawHeader() {
                 .attr("pointer-events", "none")
                 .text(region.name)
 
-            let playerLabel = ((region.count == 1) ? " player" : " players");
-            svg.append("text")
+            let teamType = ((solosOrDuos == "Solos") ? " players" : " duos");
+            region.countText = svg.append("text")
                 .attr("x", left + (i * 80) + 6)
                 .attr("y", 48)
-                .text((solosOrDuos == "Solos") ? region.solosCount.toString() : region.duosCount.toString() + playerLabel)
+                .text((solosOrDuos == "Solos") ? region.solosCount.toString() : region.duosCount.toString() + teamType)
                 .classed("region-stats", true)
 
-            svg.append("text")
+            region.payoutText = svg.append("text")
                 .attr("x", left + (i * 80) + 4)
                 .attr("y", 69)
                 .attr("font-size", "0.6rem")
@@ -327,6 +328,12 @@ function toggleSolosOrDuos() {
         .transition()
         .text(otherFormat())
         .attr("x", toggleLeft + ((solosOrDuos == "Duos") ? 16 : 20));
+
+    let teamType = ((solosOrDuos === "Solos") ? " players" : " duos");
+    regionInfo.forEach(function (region) {
+        region.countText.text((solosOrDuos == "Solos") ? region.solosCount.toString() + teamType : region.duosCount.toString() + teamType)
+        region.payoutText.text("$" + ((solosOrDuos == "Solos") ? commaFormat(region.solosPayout) : commaFormat(region.duosPayout)));
+    });
 
     d3.selectAll(".leaderboard-team")
         .remove();
