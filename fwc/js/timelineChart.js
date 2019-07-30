@@ -582,12 +582,125 @@ function tooltip(svg, game) {
 
 function addSoloRegions(teams) {
 
-    // ugh
-    for (let i = 0; i < 100; i++) {
-        solos.teams[i].region = regionInfo[i % 6].name;
-        solos.teams[i].payout = 99;
-        solos.teams[i].ordering = i;
+    let i = 1;
+    function addRegion(region, payout) {
+        let team = teams.filter(d => d.key == i.toString())[0];
+        team.region = region;
+        team.payout = payout;
+        team.ordering = i;
+        i++;
     }
+
+    addRegion('EUROPE', 3000000); // 1
+    addRegion('NA EAST', 1800000);
+    addRegion('NA WEST', 1200000);
+    addRegion('ASIA', 1050000);
+    addRegion('BRAZIL', 900000);
+    addRegion('OCEANIA', 600000);
+    addRegion('NA WEST', 525000);
+    addRegion('ASIA', 375000);
+    addRegion('BRAZIL', 300000);
+    addRegion('OCEANIA', 225000);
+
+    addRegion('EUROPE', 150000); // 11
+    addRegion('NA EAST', 150000);
+    addRegion('NA WEST', 150000);
+    addRegion('ASIA', 150000);
+    addRegion('BRAZIL', 150000);
+    addRegion('OCEANIA', 112500);
+    addRegion('NA WEST', 112500);
+    addRegion('ASIA', 112500);
+    addRegion('BRAZIL', 112500);
+    addRegion('OCEANIA', 112500);
+
+    addRegion('EUROPE', 50000); // 21
+    addRegion('NA EAST', 50000);
+    addRegion('NA WEST', 50000);
+    addRegion('ASIA', 50000);
+    addRegion('BRAZIL', 50000);
+    addRegion('OCEANIA', 50000);
+    addRegion('NA WEST', 50000);
+    addRegion('ASIA', 50000);
+    addRegion('BRAZIL', 50000);
+    addRegion('OCEANIA', 50000);
+
+    addRegion('EUROPE', 50000); // 31
+    addRegion('NA EAST', 50000);
+    addRegion('NA WEST', 50000);
+    addRegion('ASIA', 50000);
+    addRegion('BRAZIL', 50000);
+    addRegion('OCEANIA', 50000);
+    addRegion('NA WEST', 50000);
+    addRegion('ASIA', 50000);
+    addRegion('BRAZIL', 50000);
+    addRegion('OCEANIA', 50000);
+
+    addRegion('EUROPE', 50000); // 41
+    addRegion('NA EAST', 50000);
+    addRegion('NA WEST', 50000);
+    addRegion('ASIA', 50000);
+    addRegion('BRAZIL', 50000);
+    addRegion('OCEANIA', 50000);
+    addRegion('NA WEST', 50000);
+    addRegion('ASIA', 50000);
+    addRegion('BRAZIL', 50000);
+    addRegion('OCEANIA', 50000);
+
+    addRegion('EUROPE', 50000); // 51
+    addRegion('NA EAST', 50000);
+    addRegion('NA WEST', 50000);
+    addRegion('ASIA', 50000);
+    addRegion('BRAZIL', 50000);
+    addRegion('OCEANIA', 50000);
+    addRegion('NA WEST', 50000);
+    addRegion('ASIA', 50000);
+    addRegion('BRAZIL', 50000);
+    addRegion('OCEANIA', 50000);
+
+    addRegion('EUROPE', 50000); // 61
+    addRegion('NA EAST', 50000);
+    addRegion('NA WEST', 50000);
+    addRegion('ASIA', 50000);
+    addRegion('BRAZIL', 50000);
+    addRegion('OCEANIA', 50000);
+    addRegion('NA WEST', 50000);
+    addRegion('ASIA', 50000);
+    addRegion('BRAZIL', 50000);
+    addRegion('OCEANIA', 50000);
+
+    addRegion('EUROPE', 50000); // 71
+    addRegion('NA EAST', 50000);
+    addRegion('NA WEST', 50000);
+    addRegion('ASIA', 50000);
+    addRegion('BRAZIL', 50000);
+    addRegion('OCEANIA', 50000);
+    addRegion('NA WEST', 50000);
+    addRegion('ASIA', 50000);
+    addRegion('BRAZIL', 50000);
+    addRegion('OCEANIA', 50000);
+
+    addRegion('EUROPE', 50000); // 81
+    addRegion('NA EAST', 50000);
+    addRegion('NA WEST', 50000);
+    addRegion('ASIA', 50000);
+    addRegion('BRAZIL', 50000);
+    addRegion('OCEANIA', 50000);
+    addRegion('NA WEST', 50000);
+    addRegion('ASIA', 50000);
+    addRegion('BRAZIL', 50000);
+    addRegion('OCEANIA', 50000);
+
+    addRegion('EUROPE', 50000); // 91
+    addRegion('NA EAST', 50000);
+    addRegion('NA WEST', 50000);
+    addRegion('ASIA', 50000);
+    addRegion('BRAZIL', 50000);
+    addRegion('OCEANIA', 50000);
+    addRegion('NA WEST', 50000);
+    addRegion('ASIA', 50000);
+    addRegion('BRAZIL', 50000);
+    addRegion('OCEANIA', 50000);
+
 }
 
 function addDuoRegions(teams) {
