@@ -266,7 +266,7 @@ function drawHeader() {
         // "Switch to"
         svg.append("text")
             .attr("x", toggleLeft + 12)
-            .attr("y", 34)
+            .attr("y", 38)
             .text("Switch to")
             .attr("font-family", "Helvetica, Arial, sans-serif")
             .attr("font-size", "1.0rem")
@@ -275,12 +275,65 @@ function drawHeader() {
 
         toggleButtonText = svg.append("text")
             .attr("x", toggleLeft + ((solosOrDuos == "Duos") ? 16 : 20))
-            .attr("y", 67)
+            .attr("y", 64)
             .text(d => otherFormat())
             .attr("font-family", "Helvetica, Arial, sans-serif")
-            .attr("font-size", "1.6rem")
+            .attr("font-size", "1.4rem")
             .attr("pointer-events", "none")
             .attr("opacity", opacity)
+
+
+
+        // Switch to Qualifiers
+        let opacity2 = 0;
+        const qualifierLeft = 520
+        let qualifierButton = svg.append("rect")
+            .attr("x", qualifierLeft)
+            .attr("y", 3)
+            .attr("width", 100)
+            .attr("height", buttonHeight)
+            .attr("fill", "lightblue")
+            .attr("stroke", "black")
+            .attr("stroke-width", 0)
+            .attr("rx", cornerRadius)
+            .attr("ry", cornerRadius)
+            .attr("opacity", opacity)
+            .on('mouseover', function (d) {
+                d3.select(this)
+                    .transition()
+                    .duration(100)
+                    .attr("stroke-width", 3);
+            })
+            .on('mouseout', function (d) {
+                d3.select(this)
+                    .transition()
+                    .duration(100)
+                    .attr("stroke-width", 0);
+            })
+            .on('click', function (d) {
+                //toggleSolosOrDuos();
+            })
+            .attr("opacity", opacity2);
+
+        // "Switch to"
+        svg.append("text")
+            .attr("x", qualifierLeft + 8)
+            .attr("y", 38)
+            .text("Switch to")
+            .attr("font-family", "Helvetica, Arial, sans-serif")
+            .attr("font-size", "1.0rem")
+            .attr("pointer-events", "none")
+            .attr("opacity", opacity2)
+
+        // Qualifier    
+        svg.append("text")
+            .attr("x", qualifierLeft + 7)
+            .attr("y", 60)
+            .text("Qualifiers")
+            .attr("font-family", "Helvetica, Arial, sans-serif")
+            .attr("font-size", "1.0rem")
+            .attr("pointer-events", "none")
+            .attr("opacity", opacity2)
     }
 
     const headerHeight = 86;
@@ -292,23 +345,24 @@ function drawHeader() {
     // "FORTNITE"    
     titleText = svg.append("text")
         .attr("x", 20)
-        .attr("y", 70)
+        .attr("y", 56)
         .text("FORTNITE World Cup " + solosOrDuos)
         .attr("font-size", "1.1em")
         .attr("fill", "black");
 
     // Creator Code
+    const posickTop = 84
     svg.append("text")
-        .attr("x", 515)
-        .attr("y", 42)
-        .text("Creator Code")
+        .attr("x", 20)
+        .attr("y", posickTop)
+        .text("USE CREATOR CODE")
         .attr("font-family", "Helvetica, Arial, sans-serif")
         .attr("font-size", ".9rem")
 
     // Posick
     svg.append("text")
-        .attr("x", 521)
-        .attr("y", 70)
+        .attr("x", 190)
+        .attr("y", posickTop)
         .text('"Posick"')
         .classed("player", true);
 

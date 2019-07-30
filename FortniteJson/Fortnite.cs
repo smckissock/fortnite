@@ -183,20 +183,28 @@ namespace FortniteJson {
             File.WriteAllText(fileName, string.Join("\n", lines));
         }
 
-        private static int GetPlacementPoints(int rank) {
+        private static int GetPlacementPoints(int rank, string week) {
 
             // Super inefficient...
             var tiers = new List<Tier>();
-            //var tierReader = SqlUtil.Query("SELECT Rank, Points FROM RankPointTier WHERE RegionID = (SELECT ID FROM Region WHERE Name = 'NA East') AND WeekID = 10 ORDER BY Rank");
-            //while (tierReader.Read())
-            //   tiers.Add(new Tier( (int)tierReader["Rank"], (int)tierReader["Points"]));
-            //tierReader.Close();
-            
-            // SOLOS aren't in DB!!!
-            tiers.Add(new Tier(1, 3));
-            tiers.Add(new Tier(5, 2));
-            tiers.Add(new Tier(15, 2));
-            tiers.Add(new Tier(25, 3));
+
+            if (week == "11") {
+                //var tierReader = SqlUtil.Query("SELECT Rank, Points FROM RankPointTier WHERE RegionID = (SELECT ID FROM Region WHERE Name = 'NA East') AND WeekID = 10 ORDER BY Rank");
+                //while (tierReader.Read())
+                //    tiers.Add(new Tier((int)tierReader["Rank"], (int)tierReader["Points"]));
+                //tierReader.Close();
+
+                tiers.Add(new Tier(1, 3));
+                tiers.Add(new Tier(5, 2));
+                tiers.Add(new Tier(10, 2));
+                tiers.Add(new Tier(15, 3));
+            } else {
+                // SOLOS aren't in DB!!!
+                tiers.Add(new Tier(1, 3));
+                tiers.Add(new Tier(5, 2));
+                tiers.Add(new Tier(15, 2));
+                tiers.Add(new Tier(25, 3));
+            }
 
             int points = 0;
             foreach (Tier tier in tiers)
@@ -240,8 +248,9 @@ namespace FortniteJson {
                     game.fields.Add(reader["EndTime"].ToString());
                     game.fields.Add(reader["GameRank"].ToString());
                     game.fields.Add(reader["Elims"].ToString());
-                    game.fields.Add(reader["EndSeconds"].ToString()); 
-                    game.fields.Add(GetPlacementPoints((int)reader["GameRank"]).ToString());
+                    game.fields.Add(reader["EndSeconds"].ToString());
+                    game.fields.Add(
+                        GetPlacementPoints((int)reader["GameRank"], reader["WeekID"].ToString()).ToString());
                     game.fields.Add(reader["PlacementId"].ToString());
                     game.fields.Add(reader["PlacementRank"].ToString());
                     game.fields.Add(reader["WeekID"].ToString());
