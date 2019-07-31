@@ -612,7 +612,6 @@ function drawLeaderboard() {
 
                     g // Running total of points
                         .append("text")
-                        //.attr("x", xScale(game.start) + ((totalPoints.toString().length == 1) ? 173 : 168))
                         .attr("x", xScale(game.start) + 70)
                         .attr("y", teamIndex * rowHeight + 47)
                         .text(totalPoints.toString())
@@ -834,7 +833,7 @@ function addDuoRegions(teams) {
     addRegion('NA EAST', 100000);
     addRegion('NA EAST', 100000);
     addRegion('NA WEST', 100000);
-    addRegion('NA EAST', 100000);
+    addRegion('NA WEST', 100000);
     addRegion('BRAZIL', 100000);
     addRegion('OCEANIA', 100000); // 40
     addRegion('NA WEST', 100000);
