@@ -35,6 +35,20 @@ body {
     fill: black;
 }
 
+.game {
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 1.0em;
+    font-weight: 600;
+    fill: black;
+}
+
+.game-time {
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 0.8em;
+    font-weight: 600;
+    fill: black;
+}
+
 .points {
     font-family: Helvetica, Arial, sans-serif;
     font-size: 0.8em;

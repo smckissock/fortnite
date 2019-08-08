@@ -1,7 +1,5 @@
 import { colors } from "./shared.js";
 
-//let soloTeams
-//let duoTeams;
 
 let matchStart;
 let matchEnd;
@@ -17,11 +15,15 @@ let solosOrDuos = "Duos";
 let titleText;
 let toggleButtonText;
 
+let xScale;
+
 let format = {
     teams: null,
     regionTotals: null,
     beforeMatch: null
 }
+
+const isLan = true;
 
 // One of these is assigned to format at all times   
 let solos = {};
@@ -30,6 +32,7 @@ format = duos;
 
 let regionTotals;
 const toggleLeft = 626;
+const playerWidth = 400;
 
 const commaFormat = d3.format(",");
 
@@ -161,7 +164,12 @@ d3.json('fwc/data/finals.json').then(function (data) {
         team.games = team.values.length;
     });
 
+    xScale = d3.scaleLinear()
+        .domain([matchStart, matchEnd])
+        .range([playerWidth + leftMargin, chartWidth + 170]);
+
     drawHeader();
+    drawGameHeaders();
     drawLeaderboard();
 });
 
@@ -382,12 +390,11 @@ function toggleSolosOrDuos() {
         region.payoutText.text("$" + ((solosOrDuos == "Solos") ? commaFormat(region.solosPayout) : commaFormat(region.duosPayout)));
     });
 
-    d3.selectAll(".leaderboard-team")
-        .remove();
+    d3.selectAll(".games-svg").remove();
+    drawGameHeaders();
 
-    d3.selectAll(".leaderboard-svg")
-        .remove();
-
+    d3.selectAll(".leaderboard-team").remove();
+    d3.selectAll(".leaderboard-svg").remove();
     drawLeaderboard();
 }
 
@@ -429,10 +436,72 @@ function updateLeaderboard() {
         });
 }
 
+
+function drawGameHeaders() {
+
+    if (!isLan)
+        return;
+
+    const gameHeaderHeight = 40
+
+    const div = d3.select(".timeline");
+    const svg = div.append("svg")
+        .attr("width", chartWidth + leftMargin)
+        .attr("height", gameHeaderHeight)
+        .classed("games-svg", true);
+
+    const games = [
+        { num: 1 },
+        { num: 2 },
+        { num: 3 },
+        { num: 4 },
+        { num: 5 },
+        { num: 6 }
+    ];
+
+    // Add the earliest start and the latest end to each game 
+    games.forEach(function (game) {
+        game.start = d3.min(format.teams, d => d.values[game.num - 1] ? d.values[game.num - 1].start : 99999999);
+        game.end = d3.max(format.teams, d => d.values[game.num - 1] ? d.values[game.num - 1].end : 0);
+    });
+
+    // Boxes for game headers
+    svg
+        .selectAll("rect")
+        .data(games)
+        .enter()
+        .append("rect")
+        .attr("x", game => xScale(game.start))
+        .attr("y", 0)
+        .attr("width", game => xScale(game.end) - xScale(game.start))
+        .attr("height", gameHeaderHeight)
+        .attr("rx", cornerRadius)
+        .attr("ry", cornerRadius)
+        .attr("fill", "lightblue")
+        .attr("stroke", "black")
+        .attr("stroke-width", 0)
+
+    svg.selectAll("text.game").data(games).enter().append("text")
+        .attr("x", game => xScale(game.start) + 8)
+        .attr("y", 18)
+        .text(game => "Game " + game.num)
+        .classed("game", true);
+
+    function formatSeconds(seconds) {
+        return Math.floor(seconds / 60) + ':' + ('0' + Math.floor(seconds % 60)).slice(-2);
+    }
+
+    svg.selectAll("text.game-time").data(games).enter().append("text")
+        .attr("x", game => xScale(game.start) + 8)
+        .attr("y", 34)
+        .text(game => formatSeconds(game.end - game.start))
+        .classed("game-time", true);
+}
+
 function drawLeaderboard() {
 
     let div = d3.select(".timeline");
-    const rowHeight = 60
+    const rowHeight = 60;
 
     const svg = div.append("svg")
         .attr("width", chartWidth + leftMargin)
@@ -499,7 +568,6 @@ function drawLeaderboard() {
     // Labels on the right 
 
     // Big Points   
-    const playerWidth = 400;
     svg.selectAll("g").data(format.teams)
         .append("text")
         .attr("x", playerWidth - 145)
@@ -539,11 +607,6 @@ function drawLeaderboard() {
         .attr("y", (d, i) => i * rowHeight + 50)
         .text(d => d.placementPoints.toString() + " place points")
         .classed("points", true)
-
-    // Draw game rects    
-    let xScale = d3.scaleLinear()
-        .domain([matchStart, matchEnd])
-        .range([playerWidth + leftMargin, chartWidth + 170]);
 
     svg.selectAll("g").data(format.teams)
         .each(function (teamGames, teamIndex) {
