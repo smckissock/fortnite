@@ -390,6 +390,8 @@ function toggleSolosOrDuos() {
         region.payoutText.text("$" + ((solosOrDuos == "Solos") ? commaFormat(region.solosPayout) : commaFormat(region.duosPayout)));
     });
 
+    //updateGameHeaders();
+
     d3.selectAll(".games-svg").remove();
     drawGameHeaders();
 
@@ -450,14 +452,7 @@ function drawGameHeaders() {
         .attr("height", gameHeaderHeight)
         .classed("games-svg", true);
 
-    const games = [
-        { num: 1 },
-        { num: 2 },
-        { num: 3 },
-        { num: 4 },
-        { num: 5 },
-        { num: 6 }
-    ];
+    const games = [{ num: 1 }, { num: 2 }, { num: 3 }, { num: 4 }, { num: 5 }, { num: 6 }];
 
     // Add the earliest start and the latest end to each game 
     games.forEach(function (game) {
@@ -480,6 +475,7 @@ function drawGameHeaders() {
         .attr("fill", "lightblue")
         .attr("stroke", "black")
         .attr("stroke-width", 0)
+        .attr("class", d => "game" + d.num);
 
     svg.selectAll("text.game").data(games).enter().append("text")
         .attr("x", game => xScale(game.start) + 8)
@@ -495,7 +491,45 @@ function drawGameHeaders() {
         .attr("x", game => xScale(game.start) + 8)
         .attr("y", 34)
         .text(game => formatSeconds(game.end - game.start))
-        .classed("game-time", true);
+        .classed("game-time", true)
+    //.attr("class", d => "game-time-" + d.num);
+}
+
+// Not called. Supposed to transition the x and width of the game rectangles 
+function updateGameHeaders() {
+
+    function formatSeconds(seconds) {
+        return Math.floor(seconds / 60) + ':' + ('0' + Math.floor(seconds % 60)).slice(-2);
+    }
+
+    const games = [{ num: 1 }, { num: 2 }, { num: 3 }, { num: 4 }, { num: 5 }, { num: 6 }];
+
+    games.forEach(function (game) {
+        game.start = d3.min(format.teams, d => d.values[game.num - 1] ? d.values[game.num - 1].start : 99999999);
+        game.end = d3.max(format.teams, d => d.values[game.num - 1] ? d.values[game.num - 1].end : 0);
+    });
+
+    console.log(format.teams.length);
+    console.log("");
+    games.forEach(function (game) {
+        const x = xScale(game.start);
+        const width = xScale(game.end) - xScale(game.start) + 40;
+
+        console.log(".game" + game.num + " " + x);
+        const rect = d3.select(".game" + game.num);
+
+        rect
+            .transition()
+            .duration(1000)
+            //.attr("x", game => xScale(game.start) + 10)
+            //.attr("width", game => xScale(game.end) - xScale(game.start) + 40)
+            .attr("width", width)
+            .attr("x", x)
+        //.text(game => formatSeconds(game.end - game.start))
+
+        const time = d3.select(".game-time-" + game.num);
+        time.text = formatSeconds(game.end - game.start);
+    });
 }
 
 function drawLeaderboard() {
