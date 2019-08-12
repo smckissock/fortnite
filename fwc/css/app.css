@@ -139,20 +139,20 @@ body {
 
 .player {
     grid-area: player;
-    font-family: monospace;
+    font-family: 'Source Sans Pro', sans-serif;
     font-weight: 800;
     font-size: 1.0em;
 }
 
 .player-stat {
-    font-family: monospace;
+    font-family: 'Source Sans Pro', sans-serif;
     font-weight: 400;
     font-size: 1.5em;
     text-align: right;
 }
 
 .player-rank {
-    font-family: monospace;
+    font-family: 'Source Sans Pro', sans-serif;
     font-weight: 600;
     font-size: 1.2em;
     fill: dimgrey;

@@ -1450,9 +1450,9 @@ export function playerChart(id) {
                 })
                 .attr('fill', "black")
 
-                .attr("font-size", d => (d.code === filters.sort) ? "1.7em" : "1.3em")
+                .attr("font-size", d => (d.code === filters.sort) ? "1.5em" : "1.3em")
                 .attr("pointer-events", "none")
-                .attr("font-weight", d => (d.code === filters.sort) ? 1000 : 260);
+                .attr("font-weight", d => (d.code === filters.sort) ? 600 : 260);
 
             const rowSelection = svg.select(".row" + rowNum);
 

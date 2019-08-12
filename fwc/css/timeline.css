@@ -8,8 +8,9 @@
     src: url('burbank.ttf') format('truetype');
 } 
 
+
 body {
-    font-family: burbank;
+    font-family: 'Source Sans Pro', sans-serif;
     font: "rubic";
 }
 
@@ -29,35 +30,30 @@ body {
 }
 
 .rank {
-    font-family: Helvetica, Arial, sans-serif;
     font-size: 1.8em;
     font-weight: 600;
     fill: black;
 }
 
 .game {
-    font-family: Helvetica, Arial, sans-serif;
-    font-size: 1.0em;
+    font-size: 1.0em; 
     font-weight: 600;
     fill: black;
 }
 
 .game-time {
-    font-family: Helvetica, Arial, sans-serif;
     font-size: 0.8em;
     font-weight: 600;
     fill: black;
 }
 
 .points {
-    font-family: Helvetica, Arial, sans-serif;
-    font-size: 0.8em;
-    font-weight: 600;
+    font-size: 0.9em;
+    font-weight: 400;
     fill: black;
 }
 
 .region-stats {
-    font-family: Helvetica, Arial, sans-serif;
     font-size: 0.8rem;
     font-weight: 500;
     fill:black;
@@ -65,14 +61,12 @@ body {
 }
 
 .player {
-    font-family: Helvetica, Arial, sans-serif;
     font-size: 1.3rem;
     font-weight: 600;
     fill: black;
 }
 
 .tooltip-text {
-    font-family: Helvetica, Arial, sans-serif;
     font-size: 0.8em;
     font-weight: 600;
 }

@@ -273,11 +273,11 @@ function drawHeader() {
 
         // "Switch to"
         svg.append("text")
-            .attr("x", toggleLeft + 12)
+            .attr("x", toggleLeft + 15)
             .attr("y", 35)
             .text("Switch to")
-            .attr("font-family", "Helvetica, Arial, sans-serif")
-            .attr("font-size", "1.0rem")
+            .attr("font-family", "Source Sans Pro, sans-serif")
+            .attr("font-size", "1.2rem")
             .attr("pointer-events", "none")
             .attr("opacity", opacity)
 
@@ -285,7 +285,7 @@ function drawHeader() {
             .attr("x", toggleLeft + ((solosOrDuos == "Duos") ? 16 : 20))
             .attr("y", 64)
             .text(d => otherFormat())
-            .attr("font-family", "Helvetica, Arial, sans-serif")
+            .attr("font-family", "Source Sans Pro, sans-serif")
             .attr("font-size", "1.4rem")
             .attr("pointer-events", "none")
             .attr("opacity", opacity)
@@ -323,8 +323,8 @@ function drawHeader() {
             .attr("x", qualifierLeft + 8)
             .attr("y", 35)
             .text("Switch to")
-            .attr("font-family", "Helvetica, Arial, sans-serif")
-            .attr("font-size", "1.0rem")
+            .attr("font-family", "Source Sans Pro, sans-serif")
+            .attr("font-size", "1.2rem")
             .attr("pointer-events", "none")
 
         // Qualifier    
@@ -332,8 +332,8 @@ function drawHeader() {
             .attr("x", qualifierLeft + 7)
             .attr("y", 62)
             .text("Qualifiers")
-            .attr("font-family", "Helvetica, Arial, sans-serif")
-            .attr("font-size", "1.0rem")
+            .attr("font-family", "Source Sans Pro, sans-serif")
+            .attr("font-size", "1.2rem")
             .attr("pointer-events", "none")
     }
 
@@ -349,6 +349,7 @@ function drawHeader() {
         .attr("y", 56)
         .text("FORTNITE World Cup " + solosOrDuos)
         .attr("font-size", "1.1em")
+        .attr("font-family", "burbank")
         .attr("fill", "black");
 
     // Creator Code
@@ -357,15 +358,17 @@ function drawHeader() {
         .attr("x", 20)
         .attr("y", posickTop)
         .text("USE CREATOR CODE")
-        .attr("font-family", "Helvetica, Arial, sans-serif")
-        .attr("font-size", ".9rem")
+        .attr("font-family", "Source Sans Pro, sans-serif")
+        .attr("font-size", "1.0rem")
 
     // Posick
     svg.append("text")
-        .attr("x", 190)
+        .attr("x", 170)
         .attr("y", posickTop)
         .text('"Posick"')
-        .classed("player", true);
+        .attr("font-family", "Source Sans Pro, sans-serif")
+        .attr("font-size", "1.4rem")
+    //.classed("player", true);
 
     drawButtons();
 }
