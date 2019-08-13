@@ -37,12 +37,12 @@ const playerWidth = 400;
 const commaFormat = d3.format(",");
 
 const regionInfo = [
-    { color: colors.green, name: "NA EAST", filter: "NA East", textOffset: 8 },
-    { color: colors.purple, name: "NA WEST", filter: "NA West", textOffset: 6 },
-    { color: colors.blue, name: "EUROPE", filter: "Europe", textOffset: 9 },
-    { color: colors.red, name: "OCEANIA", filter: "Oceania", textOffset: 6 },
-    { color: colors.teal, name: "BRAZIL", filter: "Brazil", textOffset: 12 },
-    { color: colors.brown, name: "ASIA", filter: "Asia", textOffset: 17 }
+    { color: colors.green, name: "NA EAST", filter: "NA East", textOffset: 5 },
+    { color: colors.purple, name: "NA WEST", filter: "NA West", textOffset: 4 },
+    { color: colors.blue, name: "EUROPE", filter: "Europe", textOffset: 6 },
+    { color: colors.red, name: "OCEANIA", filter: "Oceania", textOffset: 4 },
+    { color: colors.teal, name: "BRAZIL", filter: "Brazil", textOffset: 11 },
+    { color: colors.brown, name: "ASIA", filter: "Asia", textOffset: 18 }
 ];
 
 
@@ -227,6 +227,7 @@ function drawHeader() {
                 .attr("font-size", "1.2rem")
                 .attr("pointer-events", "none")
                 .text(region.name)
+                .classed("region-name", true)
 
             let teamType = ((solosOrDuos == "Solos") ? " players" : " duos");
             region.countText = svg.append("text")

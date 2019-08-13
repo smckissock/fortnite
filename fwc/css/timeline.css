@@ -53,6 +53,13 @@ body {
     fill: black;
 }
 
+.region-name {
+    font-size: 1.0rem;
+    font-weight: 900;
+    fill:black;
+    pointer-events: none;
+}
+
 .region-stats {
     font-size: 0.8rem;
     font-weight: 500;
