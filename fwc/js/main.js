@@ -32,7 +32,7 @@ export let filters = {
     soloOrDuo: "",
     page: 0,
     playerCount: 0,
-    worldCupOnly: true,
+    worldCupOnly: false,
     // For scatter plots
     xMeasure: {},
     yMeasure: {}

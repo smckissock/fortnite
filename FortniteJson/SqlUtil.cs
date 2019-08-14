@@ -10,11 +10,12 @@ namespace FortniteJson {
 
         static string sqlErrorPath = @"C:\Fortnite\FortniteJson\Sql Error\";
 
-        static string db = "Fortnite2";
+        static string db = "Fortnite";
 
         //private static string connectionString = "Server=SCOTT-PC\\SQLExpress;Database=" + db + ";Trusted_Connection=True;";
-        private static string connectionString =   "Server=PC\\SQLExpress;Database=" + db + ";Trusted_Connection=True;";
-        
+        //private static string connectionString =   "Server=PC\\SQLExpress;Database=" + db + ";Trusted_Connection=True;";
+        private static string connectionString = "Server=DESKTOP-S1K43CL\\SQLEXPRESS;Database=" + db + ";Trusted_Connection=True;";
+
         public static SqlDataReader Query(string sql) {
             SqlDataReader reader = null;
             using (SqlCommand command = new SqlConnection(connectionString).CreateCommand()) {

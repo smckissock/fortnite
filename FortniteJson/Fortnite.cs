@@ -219,7 +219,7 @@ namespace FortniteJson {
 
             var games = MakeWorldCupGamesGames();
 
-            string fileName = @"c:\fortnite\fwc\data\finals.json";
+            string fileName = @"c:\project\fortnite\fwc\data\finals.json";
 
             string json = JsonConvert.SerializeObject(games);
             var niceJson = Newtonsoft.Json.Linq.JToken.Parse(json).ToString();
