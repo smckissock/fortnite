@@ -1,0 +1,79 @@
+:root {
+    --left-width: 300px;
+    --team-width: 180px;
+}
+
+@font-face {
+    font-family: 'burbank';
+    src: url('burbank.ttf') format('truetype');
+} 
+
+
+body {
+    font-family: 'Source Sans Pro', sans-serif;
+    font: "rubic";
+}
+
+.gradient {
+    background-image:
+      radial-gradient(
+        circle at top right,
+        #FFFFFF,
+        #A4A4A4
+      );
+ }
+
+.title {
+    grid-area: title;
+    font-weight: 800;
+    font-size: 3.0em;
+}
+
+.rank {
+    font-size: 1.8em;
+    font-weight: 600;
+    fill: black;
+}
+
+.game {
+    font-size: 1.0em; 
+    font-weight: 600;
+    fill: black;
+}
+
+.game-time {
+    font-size: 0.8em;
+    font-weight: 600;
+    fill: black;
+}
+
+.points {
+    font-size: 0.9em;
+    font-weight: 400;
+    fill: black;
+}
+
+.region-name {
+    font-size: 1.0rem;
+    font-weight: 900;
+    fill:black;
+    pointer-events: none;
+}
+
+.region-stats {
+    font-size: 0.8rem;
+    font-weight: 500;
+    fill:black;
+    pointer-events: none;
+}
+
+.player {
+    font-size: 1.3rem;
+    font-weight: 600;
+    fill: black;
+}
+
+.tooltip-text {
+    font-size: 0.8em;
+    font-weight: 600;
+}
