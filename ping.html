@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta name="copyright" content="Scott McKissock">
+    <meta charset="UTF-8">
+    
+    <title>Fortnite Ping</title>
+
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600,900&display=swap" rel="stylesheet">
+
+    <!-- <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro&display=swap" rel="stylesheet"> -->
+
+    <link rel="stylesheet" type="text/css" href="ping/css/dc.css" />
+    <link rel="stylesheet" type="text/css" href="ping/css/app.css" />
+
+    <script type="text/javascript" src="ping/lib/d3.min.js"></script>
+    <script type="text/javascript" src="ping/lib/crossfilter.js"></script>
+    <script type="text/javascript" src="ping/lib/dc.js"></script>
+   
+    <script type="module" src="ping/js/playerChart.js"></script>   
+</head>
+
+<body>
+
+    <div class="grid gradient">
+        <div class="title"></div>
+        <div class="search-box">
+            <input id="search-input" class="search-input" placeholder=" Player" spellcheck="false" size=10>
+        </div>
+        <div class="player" id="chart-player"></div>
+        <div class="region" id="chart-region"></div>
+        <div class="weeks" id="chart-weeks"></div>
+        <div class="weeks-player" id="chart-weeks-player"></div>
+        <div class="team" id="chart-team"></div>
+    </div>
+
+</body>
