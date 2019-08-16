@@ -2,7 +2,7 @@
 
 import { cornerRadius, filters, facts, updateCounts, statsForPlayer, playerInfos } from "./main.js";
 import { clearPlayer } from "./playerChart.js";
-import { d3CheckBox } from "./d3CheckBox.js";
+import { checkBox } from "./checkBox.js";
 
 export let showPlayerOnWeekChart;
 
@@ -99,7 +99,7 @@ export function weekChart(id) {
         .attr("fill", "black");
 
     const corner = 6;
-    checkBoxSolos = new d3CheckBox("Solos");
+    checkBoxSolos = new checkBox("Solos");
     checkBoxSolos
         .size(27)
         .x(100)
@@ -115,7 +115,7 @@ export function weekChart(id) {
     svg.call(checkBoxSolos);
 
 
-    checkBoxDuos = new d3CheckBox("Duos");
+    checkBoxDuos = new checkBox("Duos");
     checkBoxDuos
         .size(27)
         .x(duoX + 100)

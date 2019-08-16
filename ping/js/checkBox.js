@@ -2,7 +2,7 @@
 
 
 // https://bl.ocks.org/Lulkafe/c77a36d5efb603e788b03eb749a4a714
-export function d3CheckBox(checkBoxName) {
+export function checkBox(checkBoxName) {
 
     let theName = checkBoxName,
         size = 20,

@@ -4,7 +4,7 @@ import { colors } from "./shared.js";
 
 import { cornerRadius, filters, playerDim, playerColors, soloQualifications, duoQualifications, qualifierNames, updateCounts, teamMembers, showPlayerProfile } from "./main.js";
 import { showPlayerOnWeekChart } from "./weekChart.js";
-import { d3CheckBox } from "./d3CheckBox.js";
+import { checkBox } from "./checkBox.js";
 
 export let clearPlayer
 export let PlayerTableWidth;
@@ -541,7 +541,7 @@ export function playerChart(id) {
             .text("Only")
             .classed("world-cup-only-check", true);
 
-        worldCupOnlyCheckBox = new d3CheckBox("X");
+        worldCupOnlyCheckBox = new checkBox("X");
         worldCupOnlyCheckBox
             .size(27)
             .x(158)
