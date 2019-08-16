@@ -1,5 +1,5 @@
 :root {
-    --left-width: 300px;
+    --left-width: 180px;
     --team-width: 180px;
 }
 
@@ -15,7 +15,7 @@ body {
 }
 
 
-.grid {
+/* .grid {
     display: grid;
     grid-template-areas: 
         "left-margin    title       title     title     search-box  right"
@@ -25,9 +25,24 @@ body {
     grid-template-rows: 80px 14.2rem auto; 
     grid-gap: 12px;
     margin: 0px;
-    height: 1800px;
-    width: 1510px; 
-}
+    height: 1080px;
+    width: 1920px; 
+}    */
+
+
+.grid {
+    display: grid;
+    grid-template-areas: 
+        "left-margin    title       title     title  "
+        "left-margin    region      team      timeline"
+        "left-margin    region      team      player";
+    grid-template-columns: 10px var(--left-width) var(--team-width) 900px;
+    grid-template-rows: 80px 100px auto; 
+    grid-gap: 12px;
+    margin: 0px;
+    height: 1080px;
+    width: 1920px; 
+}   
 
 .gradient {
     background-image:

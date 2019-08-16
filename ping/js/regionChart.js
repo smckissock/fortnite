@@ -9,21 +9,24 @@ import { clearTeam } from "./teamChart.js";
 
 export function regionChart(id) {
 
+    const left = 53;
+    const height = 100;
+
     const regions = [
-        { x: 53, y: 80, color: colors.green, name: "NA EAST", filter: "NA East", textOffset: 33 },
-        { x: 153, y: 80, color: colors.purple, name: "NA WEST", filter: "NA West", textOffset: 35 },
-        { x: 253, y: 80, color: colors.blue, name: "EUROPE", filter: "Europe", textOffset: 30 },
-        { x: 53, y: 180, color: colors.red, name: "OCEANIA", filter: "Oceania", textOffset: 34 },
-        { x: 153, y: 180, color: colors.teal, name: "BRAZIL", filter: "Brazil", textOffset: 26 },
-        { x: 253, y: 180, color: colors.brown, name: "ASIA", filter: "Asia", textOffset: 19 }
+        { x: left, y: height, color: colors.green, name: "NA EAST", filter: "NA East", textOffset: 33 },
+        { x: left, y: height * 2, color: colors.purple, name: "NA WEST", filter: "NA West", textOffset: 35 },
+        { x: left, y: height * 3, color: colors.blue, name: "EUROPE", filter: "Europe", textOffset: 30 },
+        { x: left, y: height * 4, color: colors.red, name: "OCEANIA", filter: "Oceania", textOffset: 34 },
+        { x: left, y: height * 5, color: colors.teal, name: "BRAZIL", filter: "Brazil", textOffset: 26 },
+        { x: left, y: height * 6, color: colors.brown, name: "ASIA", filter: "Asia", textOffset: 19 }
     ];
 
-    let regionCircles = [];
+    let regionRects = [];
     const radius = 45;
     const strokeWidthThick = 8;
     const strokeWidthThin = 4;
 
-    const height = 80;
+    //const height = 80;
 
     const div = d3.select(id);
 
@@ -43,8 +46,8 @@ export function regionChart(id) {
 
     const svg = div.append("svg")
         .classed("region-svg", true)
-        .attr("width", 310)
-        .attr("height", (height * 5) + 30);
+        .attr("width", 180)
+        .attr("height", (height * 7) + 30);
 
     svg.append("text")
         .attr("x", 14)
@@ -85,7 +88,7 @@ export function regionChart(id) {
                 clickCircle(d3.select(this));
             });
 
-        regionCircles.push(circle);
+        regionRects.push(circle);
 
         svg.append("text")
             .attr("x", region.x - region.textOffset)
@@ -95,50 +98,6 @@ export function regionChart(id) {
             .attr("fill", "black")
             .attr("pointer-events", "none");
     });
-
-    // Make this after the region circles so that always appears "on top"
-    /* cursor = svg.append("circle")
-            .attr("cx", 50)
-            .attr("cy", 80)
-            .attr("r", radius)
-            .attr("fill", "none")
-            .attr("stroke", "black")
-            .attr("stroke-width", 0)
-            .attr("pointer-events", "none");
-    
-    function moveCursor(hide) {
-        if (hide) {
-            cursorVisible = false;
-            cursor
-                .transition()
-                .duration(80)
-                .attr("stroke-width", strokeWidthThick + 2)
-                .transition()
-                .duration(350)
-                .attr("stroke-width", 0);
-            return;    
-        }
-
-        const newRegion = regions.find(d => d.filter === filters.region);
-        if (!cursorVisible) {
-            cursorVisible = true;
-            cursor
-                .attr("cx", newRegion.x)
-                .attr("cy", newRegion.y) 
-            cursor
-                .transition()
-                .duration(100)
-                .attr("stroke-width", strokeWidthThick);
-        } else {
-            cursor
-                .transition()
-                .ease(d3.easeBack) 
-                .duration(300)
-                .attr("cx", newRegion.x)
-                .attr("cy", newRegion.y) 
-        }
-    }
- */
 
     const clickCircle = function (d3Circle) {
         const newFilter = d3Circle.attr("data");
@@ -177,7 +136,7 @@ export function regionChart(id) {
             const oldFilter = filters.region;
 
             // Uncircle old one
-            regionCircles.forEach(function (circle) {
+            regionRects.forEach(function (circle) {
                 let dom = d3.select(circle._groups[0][0]);
                 if (dom.attr("data") == oldFilter) {
                     // This will toggle it off
