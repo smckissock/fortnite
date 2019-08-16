@@ -9,20 +9,23 @@ import { clearTeam } from "./teamChart.js";
 
 export function regionChart(id) {
 
-    const left = 53;
-    const height = 100;
-
+    const left = 5;
+    //const height = 100;
+    const rectWidth = 160;
+    const rectHeight = 60
+    
     const regions = [
-        { x: left, y: height, color: colors.green, name: "NA EAST", filter: "NA East", textOffset: 33 },
-        { x: left, y: height * 2, color: colors.purple, name: "NA WEST", filter: "NA West", textOffset: 35 },
-        { x: left, y: height * 3, color: colors.blue, name: "EUROPE", filter: "Europe", textOffset: 30 },
-        { x: left, y: height * 4, color: colors.red, name: "OCEANIA", filter: "Oceania", textOffset: 34 },
-        { x: left, y: height * 5, color: colors.teal, name: "BRAZIL", filter: "Brazil", textOffset: 26 },
-        { x: left, y: height * 6, color: colors.brown, name: "ASIA", filter: "Asia", textOffset: 19 }
+        { x: left, y: 0, color: colors.green, name: "NA EAST", filter: "NA East", textOffset: 6 },
+        { x: left, y: rectHeight * 1, color: colors.purple, name: "NA WEST", filter: "NA West", textOffset: 5 },
+        { x: left, y: rectHeight * 2, color: colors.blue, name: "EUROPE", filter: "Europe", textOffset: 5 },
+        { x: left, y: rectHeight * 3, color: colors.red, name: "OCEANIA", filter: "Oceania", textOffset: 2 },
+        { x: left, y: rectHeight * 4, color: colors.teal, name: "BRAZIL", filter: "Brazil", textOffset: 14 },
+        { x: left, y: rectHeight * 5, color: colors.brown, name: "ASIA", filter: "Asia", textOffset: 29 }
     ];
 
     let regionRects = [];
-    const radius = 45;
+    
+    
     const strokeWidthThick = 8;
     const strokeWidthThin = 4;
 
@@ -47,22 +50,65 @@ export function regionChart(id) {
     const svg = div.append("svg")
         .classed("region-svg", true)
         .attr("width", 180)
-        .attr("height", (height * 7) + 30);
+        .attr("height", (rectHeight * 7) + 30);
 
-    svg.append("text")
-        .attr("x", 14)
-        .attr("y", 20)
-        .text("Regions")
-        .attr("font-size", "1.8em")
-        .attr("fill", "black");
+    svg.selectAll("rect").data(regions).enter().append("rect")
+        .attr("x", d => d.x)
+        .attr("y", d => d.y + 10)
+        .attr("width", rectWidth)
+        .attr("height", rectHeight - 17)
+        .attr("fill", d => d.color)
+    
+        .attr("stroke", "black")
+        .attr("stroke-width", 0)
+        .attr("data", d => d.filter)
+        .on('mouseover', function (d) {
+            // The are mousing over the selected item - don't shrink the border
+            if (d3.select(this).attr("data") === filters.region)
+                return;
+    
+            d3.select(this)
+                .transition()
+                .duration(100)
+                .attr("stroke-width", strokeWidthThin)
+        })
+        .on('mouseout', function (d) {
+            let dom = d3.select(this);
+            //if (filters.regions.indexOf(dom.attr("data")) != -1)
+            dom
+                .transition()
+                .duration(100)
+                .attr("stroke-width", (filters.regions.indexOf(dom.attr("data")) == -1) ? 0 : strokeWidthThick);
+        })
+        .on('click', function (d) {
+            clickRect(d3.select(this));
+        })
+        .each(d => regionRects.push(d3.select(this)));
+    
+        svg.selectAll("text").data(regions).enter().append("text")
+            .attr("x", d => d.x + d.textOffset + 20)
+            .attr("y", d => d.y + 40)
+            .text(d => d.name)
+            .attr("font-size", "1.7em")
+            .attr("font-weight", "800")
+            .attr("fill", "black")
+            .attr("pointer-events", "none"); 
 
 
-    regions.forEach(function (region) {
-        let circle = svg.append("circle")
-            .attr("cx", region.x)
-            .attr("cy", region.y)
-            .attr("r", radius)
+    /* regions.forEach(function (region) {
+        //let rect = svg.append("circle")
+        let rect = svg.append("rect")
+            //.attr("cx", region.x)
+            //.attr("cy", region.y)
+            //.attr("r", radius)
+            //.attr("fill", region.color)
+
+            .attr("x", region.x)
+            .attr("y", region.y)
+            .attr("width", rectWidth)
+            .attr("height", rectHeight)
             .attr("fill", region.color)
+
             .attr("stroke", "black")
             .attr("stroke-width", 0)
             .attr("data", region.filter)
@@ -88,7 +134,7 @@ export function regionChart(id) {
                 clickCircle(d3.select(this));
             });
 
-        regionRects.push(circle);
+        regionRects.push(rect);
 
         svg.append("text")
             .attr("x", region.x - region.textOffset)
@@ -97,10 +143,10 @@ export function regionChart(id) {
             .attr("font-size", "1.4em")
             .attr("fill", "black")
             .attr("pointer-events", "none");
-    });
+    }); */
 
-    const clickCircle = function (d3Circle) {
-        const newFilter = d3Circle.attr("data");
+    const clickRect = function (rect) {
+        const newFilter = rect.attr("data");
 
         // 5 things need to happen:
 
@@ -118,7 +164,7 @@ export function regionChart(id) {
         if (filters.regions.length === 0) {
             filters.regions.push(newFilter);
             _chart.filter(filters.regions[0]);
-            d3Circle
+            rect
                 .transition()
                 .duration(100)
                 .attr("stroke-width", strokeWidthThick);
@@ -150,7 +196,7 @@ export function regionChart(id) {
 
             filters.regions.push(newFilter);
             _chart.filter([[newFilter]]);
-            d3Circle
+            rect
                 .transition()
                 .duration(100)
                 .attr("stroke-width", strokeWidthThick);
@@ -164,7 +210,7 @@ export function regionChart(id) {
         // 3 This was already selected, so toggle it off 
         filters.regions = filters.regions.filter(d => d !== newFilter)
         _chart.filter([[newFilter]]);
-        d3Circle
+        rect
             .transition()
             .duration(100)
             .attr("stroke-width", 0);
