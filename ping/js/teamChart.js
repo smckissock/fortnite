@@ -21,7 +21,7 @@ export function teamChart(id, teamDim, teamGroup) {
     const leftMargin = 4;
     const chartWidth = 180;
 
-    const titleHeight = 34;
+    const titleHeight = 10;
     const barHeight = 26;
     const teamCount = group.all().length;
 
@@ -42,7 +42,7 @@ export function teamChart(id, teamDim, teamGroup) {
         .attr("width", chartWidth)
         .attr("height", titleHeight + (barHeight * teamCount));
 
-    drawTitle();
+    //drawTitle();
     drawBars();
     updateBars();
 

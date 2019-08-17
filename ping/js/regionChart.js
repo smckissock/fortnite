@@ -12,13 +12,13 @@ export function regionChart(id) {
     const rectHeight = 60
     
     const regions = [
-        { x: left, y: 0, color: colors.green, name: "NA EAST", filter: "NA East", textOffset: 30 },
-        { x: left, y: rectHeight * 1, color: colors.orange, name: "NA WEST", filter: "NA West", textOffset: 29 },
+        { x: left, y: 0, color: colors.green, name: "NA EAST", filter: "NA East", textOffset: 32 },
+        { x: left, y: rectHeight * 1, color: colors.orange, name: "NA WEST", filter: "NA West", textOffset: 31 },
         { x: left, y: rectHeight * 2, color: colors.blue, name: "EUROPE", filter: "Europe", textOffset: 29 },
-        { x: left, y: rectHeight * 3, color: colors.pink, name: "OCEANIA", filter: "Oceania", textOffset: 27 },
-        { x: left, y: rectHeight * 4, color: colors.teal, name: "BRAZIL", filter: "Brazil", textOffset: 39 },
-        { x: left, y: rectHeight * 5, color: colors.yellow, name: "ASIA", filter: "Asia", textOffset: 53 },
-        { x: left, y: rectHeight * 6, color: colors.grey, name: "MIDDLE EAST", filter: "Middle East", textOffset: 10 }
+        { x: left, y: rectHeight * 3, color: colors.pink, name: "OCEANIA", filter: "Oceania", textOffset: 29 },
+        { x: left, y: rectHeight * 4, color: colors.teal, name: "BRAZIL", filter: "Brazil", textOffset: 41 },
+        { x: left, y: rectHeight * 5, color: colors.yellow, name: "ASIA", filter: "Asia", textOffset: 55 },
+        { x: left, y: rectHeight * 6, color: colors.grey, name: "MIDDLE EAST", filter: "Middle East", textOffset: 9 }
     ];
 
     let regionRects = [];

@@ -4,6 +4,9 @@ import { colors, setupStats } from "./shared.js";
 
 import { playerChart, playerData, PlayerTableWidth } from "./playerChart.js";
 import { weekChart, showPlayerOnWeekChart } from "./weekChart.js";
+
+import { eventChart, showPlayerOnWeekChart2 } from "./eventChart.js";
+
 import { regionChart } from "./regionChart.js";
 import { teamChart, clearTeam } from "./teamChart.js";
 
