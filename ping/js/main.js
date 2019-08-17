@@ -73,12 +73,14 @@ d3.json('ping/data/data.json').then(function (dataArray) {
     const playerTableWidth = 964;
     const teamWidth = 180;
 
-    const screenWidth = LeftSideWidth + teamWidth + playerTableWidth - leftMargin;
+    //const screenWidth = LeftSideWidth + teamWidth + playerTableWidth - leftMargin;
+    const screenWidth = 1920 - leftMargin;
     titleSvg = title(screenWidth);
-    goToFinalsButton(titleSvg);
-    searchLabel(titleSvg);
-    posickLabel(titleSvg);
-    disclaimer(titleSvg);
+    //goToFinalsButton(titleSvg);
+    
+    //searchLabel(titleSvg);
+    //posickLabel(titleSvg);
+    //disclaimer(titleSvg);
 
     let data = [];
     dataArray.forEach(function (d) {
@@ -110,12 +112,7 @@ d3.json('ping/data/data.json').then(function (dataArray) {
     facts = crossfilter(data);
 
     draw(facts);
-    /* 
-        downloadButton(titleSvg, screenWidth);  
-        helpButton(titleSvg, screenWidth);  
-        filtersAndCount(titleSvg, screenWidth); */
-
-
+   
     d3.select("#search-input").on('keyup', function (event) {
         // Regardless of what happens below, selected player needs to be cleared 
         filters.player = "";
@@ -205,7 +202,7 @@ function title(width) {
     return svg;
 }
 
-function goToFinalsButton(svg) {
+/* function goToFinalsButton(svg) {
     // Switch to Finals
     const qualifierLeft = 1270;
     let qualifierButton = svg.append("a")
@@ -250,7 +247,7 @@ function goToFinalsButton(svg) {
         .attr("font-family", "Helvetica, Arial, sans-serif")
         .attr("font-size", "1.0rem")
         .attr("pointer-events", "none")
-}
+} */
 
 
 function posickLabel(svg) {
@@ -483,8 +480,8 @@ function draw(facts) {
         .dimension(playerStatsGroup);
 
     const width = 1464;
-    downloadButton(titleSvg, width);
-    helpButton(titleSvg, width);
+    //downloadButton(titleSvg, width);
+    //helpButton(titleSvg, width);
     filtersAndCount(titleSvg, width);
 
     dc.registerChart(players, null);
@@ -502,12 +499,13 @@ function makePlayerColors() {
 
 function getColorForRegion(region) {
     switch (region) {
-        case "NA West": return colors.purple; break;
+        case "NA West": return colors.orange; break;
         case "NA East": return colors.green; break;
         case "Europe": return colors.blue; break;
-        case "Oceania": return colors.red; break;
-        case "Asia": return colors.brown; break;
+        case "Oceania": return colors.pink; break;
+        case "Asia": return colors.yellow; break;
         case "Brazil": return colors.teal; break;
+        case "Middle East": return colors.grey; break;
     }
 }
 

@@ -39,16 +39,17 @@ export function playerChart(id) {
 
     const regions = [
         { color: colors.green, filter: "NA East" },
-        { color: colors.purple, filter: "NA West" },
+        { color: colors.orange, filter: "NA West" },
         { color: colors.blue, filter: "Europe" },
         { color: colors.red, filter: "Oceania" },
         { color: colors.teal, filter: "Brazil" },
-        { color: colors.brown, filter: "Asia" }
+        { color: colors.yellow, filter: "Asia" },
+        { color: colors.grey, filter: "Middle East" }
     ];
 
     const headerPos = { left: 150, top: 0, height: 69, width: 80, gap: 5 };
 
-    const playerColWidth = 240;
+    const playerColWidth = 300;
     PlayerTableWidth = playerColWidth + (headerPos.width * (columns.length - 1) + 4);
 
     const _chart = dc.baseMixin({});

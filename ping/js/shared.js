@@ -86,11 +86,11 @@ export function setupStats(data) {
 
 export const colors = {
     green: '#66c2a5',
-    purple: '#fc8d62',
+    orange: '#fc8d62',
     blue: '#8da0cb',
-    red: '#e78ac3', //#e25856'
-    teal: '#a6d854',
-    brown: '#ffea3f',
+    pink: '#e78ac3', //#e25856'
+    teal: '#a6d854', // light Green
+    yellow: '#ffea3f',
     lime: '#3CFF3E', // not used
     grey: '#B3B3B3', // not used
 

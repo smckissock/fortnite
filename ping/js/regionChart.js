@@ -12,12 +12,13 @@ export function regionChart(id) {
     const rectHeight = 60
     
     const regions = [
-        { x: left, y: 0, color: colors.green, name: "NA EAST", filter: "NA East", textOffset: 6 },
-        { x: left, y: rectHeight * 1, color: colors.purple, name: "NA WEST", filter: "NA West", textOffset: 5 },
-        { x: left, y: rectHeight * 2, color: colors.blue, name: "EUROPE", filter: "Europe", textOffset: 5 },
-        { x: left, y: rectHeight * 3, color: colors.red, name: "OCEANIA", filter: "Oceania", textOffset: 2 },
-        { x: left, y: rectHeight * 4, color: colors.teal, name: "BRAZIL", filter: "Brazil", textOffset: 14 },
-        { x: left, y: rectHeight * 5, color: colors.brown, name: "ASIA", filter: "Asia", textOffset: 29 }
+        { x: left, y: 0, color: colors.green, name: "NA EAST", filter: "NA East", textOffset: 30 },
+        { x: left, y: rectHeight * 1, color: colors.orange, name: "NA WEST", filter: "NA West", textOffset: 29 },
+        { x: left, y: rectHeight * 2, color: colors.blue, name: "EUROPE", filter: "Europe", textOffset: 29 },
+        { x: left, y: rectHeight * 3, color: colors.pink, name: "OCEANIA", filter: "Oceania", textOffset: 27 },
+        { x: left, y: rectHeight * 4, color: colors.teal, name: "BRAZIL", filter: "Brazil", textOffset: 39 },
+        { x: left, y: rectHeight * 5, color: colors.yellow, name: "ASIA", filter: "Asia", textOffset: 53 },
+        { x: left, y: rectHeight * 6, color: colors.grey, name: "MIDDLE EAST", filter: "Middle East", textOffset: 10 }
     ];
 
     let regionRects = [];
@@ -83,10 +84,10 @@ export function regionChart(id) {
         .each(d => regionRects.push(d3.select(this)));
     
         svg.selectAll("text").data(regions).enter().append("text")
-            .attr("x", d => d.x + d.textOffset + 20)
-            .attr("y", d => d.y + 44)
+            .attr("x", d => d.x + d.textOffset)
+            .attr("y", d => d.y + 42)
             .text(d => d.name)
-            .attr("font-size", "1.7em")
+            .attr("font-size", "1.5em")
             .attr("font-weight", "800")
             .attr("fill", "black")
             .attr("pointer-events", "none"); 
