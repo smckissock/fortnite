@@ -17,8 +17,6 @@ export let playerChart_renderPlayerPage;
 
 export function playerChart(id) {
 
-    const showScatterplotButton = true;
-
     const noFormat = function (d) { return d; }
     const commaFormat = d3.format(",");
     const pctFormat = d3.format(",.1%");
@@ -27,7 +25,7 @@ export function playerChart(id) {
     const moneyKFormat = d3.format(".2s");
 
     const columns = [
-        { name: "Players", code: "player", x: 86, format: noFormat, axisFormat: noFormat },
+        { name: "Players", code: "player", x: 10, format: noFormat, axisFormat: noFormat },
         { name: "Rank", code: "rank", x: 16, format: noFormat, axisFormat: noFormat },
         { name: "Payout", code: "payout", x: 9, format: commaFormat, format: commaFormat, axisFormat: moneyKFormat },
         { name: "Points", code: "points", x: 13, format: noFormat, axisFormat: noFormat },
@@ -69,9 +67,6 @@ export function playerChart(id) {
     let downArrowPolygon;
 
     let scatterplotButton;
-
-    // Whether the scatterplot button is clicked, and we see a scatterplot instead of a table
-    //let showingScatterplot = false;
 
 
     let svgWidth = PlayerTableWidth; //640;
@@ -130,8 +125,7 @@ export function playerChart(id) {
         .attr("x", 3)
         .attr("y", 84)
         .attr("width", svgWidth - 6)
-        //.attr("height", 746)
-        .attr("height", 713)
+         .attr("height", 713)
         .attr("fill", "#F0F8FF")
         .attr("stroke", "black")
         .attr("stroke-width", 9)
@@ -150,29 +144,10 @@ export function playerChart(id) {
                 .attr("fill", "black")
                 .attr("stroke", "black")
                 .text(text)
-                //.attr("font-family", "burbank")
                 .attr("font-size", "1.2em")
                 .attr("pointer-events", "none")
                 .attr("font-weight", 300)
                 .classed("scatterplotButton-" + text, true)
-        }
-        addText(playerColWidth - 218, headerPos.top + 32, "Show");
-        addText(playerColWidth - 230, headerPos.top + 54, "Listing");
-        addText(playerColWidth - 221, headerPos.top + 54, "Chart");
-
-        if (showingScatterplot) {
-            svg.select(".scatterplotButton-Listing").text("Listing");
-            svg.select(".scatterplotButton-Chart").text("");
-        } else {
-            svg.select(".scatterplotButton-Listing").text("");
-            svg.select(".scatterplotButton-Chart").text("Chart");
-        }
-
-        // Temporary - only while chart is turned on 
-        if (!showScatterplotButton) {
-            svg.select(".scatterplotButton-Show").text("");
-            svg.select(".scatterplotButton-Listing").text("");
-            svg.select(".scatterplotButton-Chart").text("");
         }
     }
 
@@ -198,103 +173,7 @@ export function playerChart(id) {
 
             renderRows();
             moveCursor(elm);
-        }
-
-        function scatterplotHeaderClick(d, elm) {
-
-            // Replaces closest previously-selected column with the newly-selected column 
-            function setSelectedColumn(newSelectedIndex) {
-                let space = 1;
-                let done = false;
-                while (!done) {
-                    // Check to the right 
-                    let idx = newSelectedIndex + space;
-                    if ((idx < columns.length) && (idx > 0)) {
-                        if (columns[idx].code == filters.xMeasure.code) {
-                            filters.xMeasure = columns[newSelectedIndex];
-                            break;
-                        }
-                        if (columns[idx].code == filters.yMeasure.code) {
-                            filters.yMeasure = columns[newSelectedIndex];
-                            break;
-                        }
-                    }
-                    // Check to the left
-                    idx = newSelectedIndex - space;
-                    if ((idx < columns.length) && (idx > 0)) {
-                        if (columns[idx].code == filters.xMeasure.code) {
-                            filters.xMeasure = columns[newSelectedIndex];
-                            break;
-                        }
-                        if (columns[idx].code == filters.yMeasure.code) {
-                            filters.yMeasure = columns[newSelectedIndex];
-                            break;
-                        }
-                    }
-                    space++;
-                }
-            }
-
-            // They clicked on one that was already selected
-            if ((d.code === filters.xMeasure.code) || (d.code === filters.yMeasure.code))
-                return;
-
-            // Set the new filter. Unselect the selected filter which is nearer to it
-            // One way to find index of item in columns 
-            let newSelectedIndex = 0;
-            let i = 0;
-            columns.forEach(function (x) {
-                if (x.code === d.code)
-                    newSelectedIndex = i;
-                i++;
-            });
-            //console.log("BEFORE: " + filters.xMeasure.code + " " + filters.yMeasure.code);
-            setSelectedColumn(newSelectedIndex);
-            //console.log("AFTER: " + filters.xMeasure.code + " " + filters.yMeasure.code);
-            //console.log("");
-
-            // Remove borders on unselected, add borders on selected
-            columns.forEach(function (d) {
-                d.elm
-                    //.transition()
-                    .style("stroke-width", ((d.code === filters.xMeasure.code) || (d.code === filters.yMeasure.code)) ? thickBorder : 0);
-            })
-
-            updateScatterplot();
-        }
-
-
-        // Button on top left to switch between table and scatterplot
-        function makeScatterplotButton() {
-
-            scatterplotButton = svg.append("rect")
-                .attr("x", playerColWidth - 236)
-                .attr("y", headerPos.top + 4)
-                .attr("width", headerPos.width - headerPos.gap - 3)
-                .attr("height", headerPos.height)
-                .attr("fill", "lightblue")
-                .attr("stroke", "black")
-                .attr("stroke-width", 1)
-                .attr("rx", cornerRadius)
-                .attr("ry", cornerRadius)
-                .on('mouseover', function (d) {
-                    d3.select(this)
-                        .transition()
-                        .duration(100)
-                        .attr("stroke-width", thinBorder);
-                })
-                .on('mouseout', function (d) {
-                    d3.select(this)
-                        .transition()
-                        .duration(100)
-                        .attr("stroke-width", 0);
-                })
-                .on('click', function (d) {
-                    toggleTableAndScatterplot();
-                });
-
-            scatterplotButtonText();
-        }
+        } 
 
         // Rects for column headers 
         svg.selectAll("rect").data(columns).enter().append("rect")
@@ -347,9 +226,6 @@ export function playerChart(id) {
         columnHeaderText();
         pageArrows();
 
-        if (showScatterplotButton)
-            makeScatterplotButton();
-
         drawColumnBorder("payout", thickBorder);
 
         // Make this after the the player rects so that always appears "on top"
@@ -387,26 +263,24 @@ export function playerChart(id) {
             const fontSize = (i === 0) ? "2.2em" : "1.3em";
             const x = (i === 0) ? columns[i].x : playerColWidth + headerPos.gap + (headerPos.width * (i - 1)) + columns[i].x;
 
-            const smallFontSize = "1.0em";
+            const smallFontSize = "1.1em";
             const mediumFontSize = "1.2em";
 
             // Earned Quals
             if (text === "Earned Quals") {
                 svg.append("text")
-                    .attr("x", x + 12)
+                    .attr("x", x + 8)
                     .attr("y", 34)
                     .text("Earned")
-                    .attr("font-family", "burbank")
-                    .attr("font-size", mediumFontSize)
+                    .attr("font-size", smallFontSize)
                     .attr("fill", "black")
                     .attr("pointer-events", "none");
 
                 svg.append("text")
-                    .attr("x", x + 16)
+                    .attr("x", x + 12)
                     .attr("y", 58)
                     .text("Quals")
-                    .attr("font-family", "burbank")
-                    .attr("font-size", mediumFontSize)
+                    .attr("font-size", smallFontSize)
                     .attr("fill", "black")
                     .attr("pointer-events", "none");
                 return;
@@ -415,20 +289,18 @@ export function playerChart(id) {
             // Elim Points
             if (text === "Elims") {
                 svg.append("text")
-                    .attr("x", x + 8)
+                    .attr("x", x + 6)
                     .attr("y", 34)
                     .text("Elim")
-                    .attr("font-family", "burbank")
-                    .attr("font-size", mediumFontSize)
+                    .attr("font-size", smallFontSize)
                     .attr("fill", "black")
                     .attr("pointer-events", "none");
 
                 svg.append("text")
                     .attr("x", x)
-                    .attr("y", 58)
+                    .attr("y", 56)
                     .text("Points")
-                    .attr("font-family", "burbank")
-                    .attr("font-size", mediumFontSize)
+                    .attr("font-size", smallFontSize)
                     .attr("fill", "black")
                     .attr("pointer-events", "none");
                 return;
@@ -437,11 +309,10 @@ export function playerChart(id) {
             // Elim %
             if (text === "Elim %") {
                 svg.append("text")
-                    .attr("x", x + 5)
+                    .attr("x", x + 3)
                     .attr("y", 35)
                     .text("Elim")
-                    .attr("font-family", "burbank")
-                    .attr("font-size", mediumFontSize)
+                    .attr("font-size", smallFontSize)
                     .attr("fill", "black")
                     .attr("pointer-events", "none");
 
@@ -449,7 +320,6 @@ export function playerChart(id) {
                     .attr("x", x + 10)
                     .attr("y", 60)
                     .text("%")
-                    .attr("font-family", "burbank")
                     .attr("font-size", "1.5em")
                     .attr("fill", "black")
                     .attr("pointer-events", "none");
@@ -459,19 +329,17 @@ export function playerChart(id) {
             // Placement Points
             if (text === "Placement") {
                 svg.append("text")
-                    .attr("x", x + 5)
+                    .attr("x", x + 16)
                     .attr("y", 34)
-                    .text("Placement")
-                    .attr("font-family", "burbank")
+                    .text("Place")
                     .attr("font-size", smallFontSize)
                     .attr("fill", "black")
                     .attr("pointer-events", "none");
 
                 svg.append("text")
-                    .attr("x", x + 15)
+                    .attr("x", x + 11)
                     .attr("y", 55)
                     .text("Points")
-                    .attr("font-family", "burbank")
                     .attr("font-size", smallFontSize)
                     .attr("fill", "black")
                     .attr("pointer-events", "none");
@@ -481,10 +349,9 @@ export function playerChart(id) {
             // Placement %
             if (text === "Placement %") {
                 svg.append("text")
-                    .attr("x", x + 5)
+                    .attr("x", x + 16)
                     .attr("y", 34)
-                    .text("Placement")
-                    .attr("font-family", "burbank")
+                    .text("Place")
                     .attr("font-size", smallFontSize)
                     .attr("fill", "black")
                     .attr("pointer-events", "none");
@@ -493,7 +360,6 @@ export function playerChart(id) {
                     .attr("x", x + 25)
                     .attr("y", 59)
                     .text("%")
-                    .attr("font-family", "burbank")
                     .attr("font-size", "1.5em")
                     .attr("fill", "black")
                     .attr("pointer-events", "none");
@@ -501,13 +367,13 @@ export function playerChart(id) {
             }
 
             // Default case
-            const y = (i === 0) ? 32 : 44; // Player
+            const y = (i === 0) ? 35 : 44; // Player
+            const otherSize = (i == 0) ? "1.9rem" : smallFontSize;
             const node = svg.append("text")
                 .attr("x", x)
                 .attr("y", y)
                 .text(text)
-                .attr("font-family", "burbank")
-                .attr("font-size", fontSize)
+                .attr("font-size", otherSize)
                 .attr("fill", "black")
                 .attr("pointer-events", "none");
 
@@ -530,16 +396,11 @@ export function playerChart(id) {
 
     function drawWorldCupOnly() {
         svg.append("text")
-            .attr("x", 81)
-            .attr("y", 58)
-            .text("World Cup")
+            .attr("x", 11)
+            .attr("y", 68)
+            .text("World Cup Only")
             .classed("world-cup-only-check", true);
 
-        svg.append("text")
-            .attr("x", 121)
-            .attr("y", 73)
-            .text("Only")
-            .classed("world-cup-only-check", true);
 
         worldCupOnlyCheckBox = new checkBox("X");
         worldCupOnlyCheckBox
@@ -563,7 +424,7 @@ export function playerChart(id) {
 
     // Draw triangles to change page 
     function pageArrows() {
-        const width = 50;
+        const width = 40;
         const height = headerPos.height / 2;
 
         upArrowPolygon = svg.append("polygon")
@@ -620,19 +481,6 @@ export function playerChart(id) {
 
         const t = d3.transition()
             .duration(500);
-
-        /* function getChartData() {
-
-            // Change x and y based on selected 
-            return playerData.map(function (d) {
-                return {
-                    player: d.key,
-                    color: d.color,
-                    xVal: d.values[0].value[filters.xMeasure.code],
-                    yVal: d.values[0].value[filters.yMeasure.code],
-                };
-            });
-        } */
 
         function scatterplotMeasuresLabels() {
 
@@ -975,114 +823,6 @@ export function playerChart(id) {
             .remove();
 
         updatePlayerAnnotations();
-    }
-
-
-    // Show or hides scaterplot or table elements based on showingChart
-    function toggleTableAndScatterplot() {
-
-        function setMeasures() {
-            // Draw column header outlines
-            const xHeader = columns.filter(x => x.code === filters.xMeasure.code)[0].elm;
-            xHeader
-                .transition()
-                .duration(100)
-                .style("stroke-width", thickBorder);
-
-            const yHeader = columns.filter(x => x.code === filters.yMeasure.code)[0].elm;
-            yHeader
-                .transition()
-                .duration(100)
-                .style("stroke-width", thickBorder);
-        }
-
-        showingScatterplot = !showingScatterplot;
-        //ga('set', 'page', showingScatterplot ? "/scatterplot" : "/listing");
-        //ga('send', 'pageview');
-
-
-        // GOING TO SHOW THE TABLE
-        if (!showingScatterplot) {
-            cursor.attr("stroke-width", thickBorder)
-
-            let circles = svg.selectAll(".scatter")
-            circles
-                .attr("r", 0)
-
-            scatterplotRect
-                .transition()
-                .duration(250)
-                .style("opacity", 0);
-
-            scatterplotButton.attr("stroke-width", 1)
-
-            d3.select(".y").attr("stroke-opacity", 0)
-            d3.select(".x").attr("stroke-opacity", 0)
-
-            // TO DO - Border on Sort, no border on xMeasure and yMeasure
-            columns.forEach(function (d) {
-                d.elm
-                    .transition()
-                    .style("stroke-width", 0);
-            })
-
-            renderPlayerPage();
-            return;
-        }
-
-        // GOING TO SHOW THE SCATTERPLOT
-
-        // Hide table rows and things on top
-
-        // Hide each row 
-        for (let row = 0; row < rowCount; row++) {
-            svg.select(".row" + row)
-                .attr("fill", "none")
-                .attr("stroke-width", 0);
-
-            // Hide qualification circles from hidden rows     
-            svg.select(".s" + row)
-                .style("fill-opacity", 0);
-            svg.select(".d" + row)
-                .style("fill-opacity", 0);
-
-            svg.select(".s" + "week" + row)
-                .transition()
-                .text("");
-        }
-
-        // Not awesome!    
-        svg.selectAll("text")
-            .each(function (d) {
-                if ((d != "w") && (d3.select(this).style("fill") != "currentColor"))
-                    d3.select(this).remove();
-            });
-
-        // Great - put back text we just deleted  
-        columnHeaderText();
-        scatterplotButtonText();
-
-        // Make scatter plot visible
-        scatterplotRect
-            .transition()
-            .duration(450)
-            .style("opacity", 1);
-
-        d3.select(".y").attr("stroke-opacity", 1)
-        d3.select(".x").attr("stroke-opacity", 1)
-
-        setMeasures();
-
-        // Hide table cursor
-        columns.forEach(function (d) {
-            if (((d.code != filters.xMeasure.code) && (d.code != filters.yMeasure.code)) && (d.code == filters.sort))
-                d.elm
-                    .transition()
-                    .style("stroke-width", 0);
-        })
-        cursor.attr("stroke-width", 0)
-
-        updateScatterplot();
     }
 
 
