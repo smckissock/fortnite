@@ -3,14 +3,13 @@
 import { colors, setupStats } from "./shared.js";
 
 import { playerChart, playerData, PlayerTableWidth } from "./playerChart.js";
-import { weekChart, showPlayerOnWeekChart } from "./weekChart.js";
+//import { weekChart, showPlayerOnWeekChart } from "./weekChart.js";
 
 import { eventChart, showPlayerOnWeekChart2 } from "./eventChart.js";
 
 import { regionChart } from "./regionChart.js";
 import { teamChart, clearTeam } from "./teamChart.js";
 
-import { playerProfile } from './playerProfile.js';
 
 export const cornerRadius = 8;
 export let playerColors;
@@ -41,7 +40,7 @@ export let filters = {
     yMeasure: {}
 }
 
-export let showPlayerProfile;
+
 export let statsForPlayer;
 
 export let playerInfos = [];
@@ -119,7 +118,7 @@ d3.json('ping/data/data.json').then(function (dataArray) {
     d3.select("#search-input").on('keyup', function (event) {
         // Regardless of what happens below, selected player needs to be cleared 
         filters.player = "";
-        showPlayerOnWeekChart();
+
         clearTeam();
 
         const searchTerm = document.getElementById("search-input").value;
@@ -132,8 +131,6 @@ d3.json('ping/data/data.json').then(function (dataArray) {
         dc.redrawAll();
     });
     updateCounts();
-
-    showPlayerProfile = playerProfile();
 });
 
 
@@ -463,7 +460,11 @@ function draw(facts) {
     const weekDim = facts.dimension(dc.pluck("week"));
     const weekPayoutGroup = weekDim.group().reduceSum(dc.pluck("payout"));
 
-    weekChart("#chart-weeks")
+    //weekChart("#chart-weeks")
+    //    .dimension(weekDim)
+    //    .group(weekPayoutGroup);
+
+    eventChart("#chart-events")
         .dimension(weekDim)
         .group(weekPayoutGroup);
 

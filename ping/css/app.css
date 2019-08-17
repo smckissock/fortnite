@@ -19,7 +19,7 @@ body {
     display: grid;
     grid-template-areas: 
         "left-margin    title       info      info "
-        "left-margin    region      team      timeline"
+        "left-margin    region      team      events"
         "left-margin    region      team      player";
     grid-template-columns: 10px var(--left-width) var(--team-width) 1400px;
     grid-template-rows: 80px 100px auto; 
@@ -115,6 +115,11 @@ body {
 
 .weeks {
     grid-area: weeks;
+    font-weight: 500;
+}
+
+.events {
+    grid-area: events;
     font-weight: 500;
 }
 

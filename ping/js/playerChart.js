@@ -2,8 +2,8 @@
 
 import { colors } from "./shared.js";
 
-import { cornerRadius, filters, playerDim, playerColors, soloQualifications, duoQualifications, qualifierNames, updateCounts, teamMembers, showPlayerProfile } from "./main.js";
-import { showPlayerOnWeekChart } from "./weekChart.js";
+import { cornerRadius, filters, playerDim, playerColors, soloQualifications, duoQualifications, qualifierNames, updateCounts, teamMembers } from "./main.js";
+//import { showPlayerOnWeekChart } from "./weekChart.js";
 import { checkBox } from "./checkBox.js";
 
 export let clearPlayer
@@ -993,7 +993,7 @@ export function playerChart(id) {
                 selectedRect.attr("stroke", 0);
                 selectedRect = null;
             }
-            showPlayerOnWeekChart("");
+            //showPlayerOnWeekChart("");
 
             playerCursorVisible = false;
             movePlayerCursor(true);
@@ -1009,10 +1009,8 @@ export function playerChart(id) {
             filters.player = clickedPlayer;
 
             clickedNode.attr("stroke-width", thickBorder - 2);
-            showPlayerOnWeekChart(clickedPlayer);
+            //showPlayerOnWeekChart(clickedPlayer);
             selectedRect = clickedNode;
-
-            //showPlayerProfile(clickedPlayer);
 
             playerCursorVisible = false;
             movePlayerCursor(false);
@@ -1027,9 +1025,7 @@ export function playerChart(id) {
 
             filters.player = clickedPlayer;
             clickedNode.attr("stroke-width", thickBorder - 2);
-            showPlayerOnWeekChart(clickedPlayer);
-
-            //showPlayerProfile(clickedPlayer);
+            //showPlayerOnWeekChart(clickedPlayer);
 
             movePlayerCursor(false);
             updateCounts();
@@ -1043,7 +1039,7 @@ export function playerChart(id) {
 
         movePlayerCursor(true);
         updateCounts();
-        showPlayerOnWeekChart("");
+        //showPlayerOnWeekChart("");
     }
 
 
