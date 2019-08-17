@@ -1,5 +1,3 @@
-// @language_out ecmascript5
-
 import { colors } from "./shared.js";
 
 import { filters } from "./main.js";
@@ -10,7 +8,6 @@ import { clearTeam } from "./teamChart.js";
 export function regionChart(id) {
 
     const left = 5;
-    //const height = 100;
     const rectWidth = 160;
     const rectHeight = 60
     
@@ -56,7 +53,7 @@ export function regionChart(id) {
         .attr("x", d => d.x)
         .attr("y", d => d.y + 10)
         .attr("width", rectWidth)
-        .attr("height", rectHeight - 17)
+        .attr("height", rectHeight - 10)
         .attr("fill", d => d.color)
     
         .attr("stroke", "black")
@@ -87,63 +84,12 @@ export function regionChart(id) {
     
         svg.selectAll("text").data(regions).enter().append("text")
             .attr("x", d => d.x + d.textOffset + 20)
-            .attr("y", d => d.y + 40)
+            .attr("y", d => d.y + 44)
             .text(d => d.name)
             .attr("font-size", "1.7em")
             .attr("font-weight", "800")
             .attr("fill", "black")
             .attr("pointer-events", "none"); 
-
-
-    /* regions.forEach(function (region) {
-        //let rect = svg.append("circle")
-        let rect = svg.append("rect")
-            //.attr("cx", region.x)
-            //.attr("cy", region.y)
-            //.attr("r", radius)
-            //.attr("fill", region.color)
-
-            .attr("x", region.x)
-            .attr("y", region.y)
-            .attr("width", rectWidth)
-            .attr("height", rectHeight)
-            .attr("fill", region.color)
-
-            .attr("stroke", "black")
-            .attr("stroke-width", 0)
-            .attr("data", region.filter)
-            .on('mouseover', function (d) {
-                // The are mousing over the selected item - don't shrink the border
-                if (d3.select(this).attr("data") === filters.region)
-                    return;
-
-                d3.select(this)
-                    .transition()
-                    .duration(100)
-                    .attr("stroke-width", strokeWidthThin)
-            })
-            .on('mouseout', function (d) {
-                let dom = d3.select(this);
-                //if (filters.regions.indexOf(dom.attr("data")) != -1)
-                dom
-                    .transition()
-                    .duration(100)
-                    .attr("stroke-width", (filters.regions.indexOf(dom.attr("data")) == -1) ? 0 : strokeWidthThick);
-            })
-            .on('click', function (d) {
-                clickCircle(d3.select(this));
-            });
-
-        regionRects.push(rect);
-
-        svg.append("text")
-            .attr("x", region.x - region.textOffset)
-            .attr("y", region.y + 6)
-            .text(region.name)
-            .attr("font-size", "1.4em")
-            .attr("fill", "black")
-            .attr("pointer-events", "none");
-    }); */
 
     const clickRect = function (rect) {
         const newFilter = rect.attr("data");
@@ -170,30 +116,11 @@ export function regionChart(id) {
                 .attr("stroke-width", strokeWidthThick);
 
             _chart.redrawGroup();
-
-            //moveCursor(false);
             return;
         }
-
-        // 2 One is selected, so unselect it and select this
-        // One is selected other than what was clicked, so add it
-        //if (filters.region != newFilter) {
+        
+        // An unselected rect was clicked, so add it.
         if (filters.regions.indexOf(newFilter) == -1) {
-            const oldFilter = filters.region;
-
-            // Uncircle old one
-            regionRects.forEach(function (circle) {
-                let dom = d3.select(circle._groups[0][0]);
-                if (dom.attr("data") == oldFilter) {
-                    // This will toggle it off
-                    _chart.filter(oldFilter);
-                    dom
-                        .transition()
-                        .duration(100)
-                        .attr("stroke-width", strokeWidthThick)
-                }
-            });
-
             filters.regions.push(newFilter);
             _chart.filter([[newFilter]]);
             rect
@@ -202,8 +129,6 @@ export function regionChart(id) {
                 .attr("stroke-width", strokeWidthThick);
 
             _chart.redrawGroup();
-
-            //moveCursor(false);
             return;
         }
 
@@ -216,7 +141,6 @@ export function regionChart(id) {
             .attr("stroke-width", 0);
 
         _chart.redrawGroup();
-        //moveCursor(true);
     }
 
     return _chart;
