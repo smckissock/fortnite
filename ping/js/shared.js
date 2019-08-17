@@ -96,8 +96,10 @@ export const colors = {
 
 }
 
-// ['#66c2a5','#fc8d62','#8da0cb','#e78ac3','#a6d854','#ffd92f'] 
-
-// too light
-//['#b3e2cd', '#fdcdac', '#cbd5e8', '#f4cae4', '#e6f5c9', '#fff2ae']
-
+export function text(svg, style, x, y, text) {
+    svg.append("text")
+    .attr("x", x)
+    .attr("y", y)
+    .text(text)
+    .classed(style, true)
+}

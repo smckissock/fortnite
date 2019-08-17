@@ -1,9 +1,7 @@
-//@language ECMASCRIPT5
 
-import { colors, setupStats } from "./shared.js";
+import { colors, setupStats, text } from "./shared.js";
 
 import { playerChart, playerData, PlayerTableWidth } from "./playerChart.js";
-//import { weekChart, showPlayerOnWeekChart } from "./weekChart.js";
 
 import { eventChart, showPlayerOnWeekChart2 } from "./eventChart.js";
 
@@ -81,7 +79,7 @@ d3.json('ping/data/data.json').then(function (dataArray) {
     //goToFinalsButton(titleSvg);
     
     //searchLabel(titleSvg);
-    //posickLabel(titleSvg);
+    posickLabel(titleSvg);
     //disclaimer(titleSvg);
 
     let data = [];
@@ -191,11 +189,11 @@ function title(width) {
     //return svg;
 
     svg.append("text")
-        .attr("x", 210)
+        .attr("x", 220)
         .attr("y", 65)
         .text("ping")
         .attr("font-size", "1.2em")
-        .attr("letter-spacing", "0.1rem")
+        .attr("letter-spacing", "0.19rem")
         .attr("font-weight", "900")
         .style("font-family", "Source Sans Pro, sans-serif")
         .attr("fill", "black");
@@ -251,14 +249,9 @@ function title(width) {
 
 
 function posickLabel(svg) {
-    svg.append("text")
-        .attr("x", 760)
-        .attr("y", 33)
-        .text('Use creator code "Posick" to support this!')
-        .attr("font-size", "1.0rem")
-        .attr("fill", "black")
-        .style("font-family", "Helvetica, Arial, sans-serif")
-        .attr("font-weight", 800)
+    const left = 460
+    text(svg, "posick", left, 43, "Use code");
+    text(svg, "posick", left, 72, '"Posick"');
 }
 
 function searchLabel(svg) {
@@ -286,16 +279,17 @@ function disclaimer(svg) {
 }
 
 function filtersAndCount(svg, screenWidth) {
+    const fromRight = 574;
     svg.append("text")
-        .attr("x", screenWidth - 533)
-        .attr("y", 70)
+        .attr("x", screenWidth - fromRight)
+        .attr("y", 56)
         .text("")
         .attr("id", "filterText1")
         .classed("filters-string", true);
 
     svg.append("text")
-        .attr("x", screenWidth - 533)
-        .attr("y", 70)
+        .attr("x", screenWidth - fromRight)
+        .attr("y", 56)
         .text("")
         .attr("id", "filterText2")
         .classed("filters-string", true);
@@ -460,11 +454,7 @@ function draw(facts) {
     const weekDim = facts.dimension(dc.pluck("week"));
     const weekPayoutGroup = weekDim.group().reduceSum(dc.pluck("payout"));
 
-    //weekChart("#chart-weeks")
-    //    .dimension(weekDim)
-    //    .group(weekPayoutGroup);
-
-    eventChart("#chart-events")
+    eventChart("#chart-event")
         .dimension(weekDim)
         .group(weekPayoutGroup);
 
