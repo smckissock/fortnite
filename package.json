@@ -1,0 +1,27 @@
+{
+  "name": "fortnite",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "doc": "doc"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/smckissock/fortnite.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/smckissock/fortnite/issues"
+  },
+  "homepage": "https://github.com/smckissock/fortnite#readme",
+  "dependencies": {
+    "crossfilter2": "^1.4.7",
+    "d3": "^5.9.7"
+  }
+}
