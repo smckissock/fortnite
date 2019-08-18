@@ -137,6 +137,11 @@ body {
     text-align: right;
 }
 
+.checkbox-label {
+    font-weight: 600;
+    font-size: 1.2em;
+}
+
 .posick {
     font-weight: 600;
     font-size: 1.6rem;

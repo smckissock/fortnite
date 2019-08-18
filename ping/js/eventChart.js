@@ -2,6 +2,7 @@
 import { cornerRadius, filters, facts, updateCounts, statsForPlayer, playerInfos } from "./main.js";
 import { clearPlayer } from "./playerChart.js";
 import { checkBox } from "./checkBox.js";
+import { text } from "./shared.js";
 
 export let showPlayerOnWeekChart2;
 
@@ -41,12 +42,12 @@ export function eventChart(id) {
         },
         {
             format: "Trio", items: [
-                { num: 1, weekNum: 19, name: "Week 1", type: "Champion Series", date: "August 18", done: true },
-                { num: 2, weekNum: 20, name: "Week 2", type: "Champion Series", date: "August 25", done: false },
-                { num: 3, weekNum: 21, name: "Week 3", type: "Champion Series", date: "September 1", done: false },
-                { num: 4, weekNum: 22, name: "Week 4", type: "Champion Series", date: "September 8", done: false },
-                { num: 5, weekNum: 23, name: "Week 5", type: "Champion Series", date: "September 15", done: false },
-                { num: 5, weekNum: 24, name: "Season Finals", type: "Champion Series", date: "September 23", done: false }
+                { num: 1, weekNum: 14, name: "Week 1", type: "Champion Series", date: "August 18", done: true },
+                { num: 2, weekNum: 15, name: "Week 2", type: "Champion Series", date: "August 25", done: false },
+                { num: 3, weekNum: 16, name: "Week 3", type: "Champion Series", date: "September 1", done: false },
+                { num: 4, weekNum: 17, name: "Week 4", type: "Champion Series", date: "September 8", done: false },
+                { num: 5, weekNum: 18, name: "Week 5", type: "Champion Series", date: "September 15", done: false }
+                /* { num: 5, weekNum: 19, name: "Season Finals", type: "Champion Series", date: "September 23", done: false } */
             ]
         }
     ];
@@ -67,9 +68,10 @@ export function eventChart(id) {
     let checkBoxSolos;
     let checkBoxDuos;
 
-    const div = d3.select(id);
-    const divPlayer = d3.select("#chart-weeks-player");
+    let selectedRect;
 
+    const div = d3.select(id);
+    
     
     // Include this, and add a dimension and group
     // Later call these on a click to filter: 
@@ -81,58 +83,12 @@ export function eventChart(id) {
 
     // Also - make sure to return _chart; at the end of the function, or chaining won't work! 
 
+    const svgWidth = 1030;
     const svg = div.append("svg")
-        .attr("width", 300)
-        .attr("height", (height * 5) + 50);
+        .attr("width", svgWidth)
+        .attr("height", 110);
 
     const corner = 6;
-
-    
-    svg.append("text")
-        .attr("x", 25)
-        .attr("y", 24)
-        .text("Solos")
-        .attr("font-size", "1.9em")
-        .attr("fill", "black");
-
-    checkBoxSolos = new checkBox("Solos");
-    checkBoxSolos
-        .size(27)
-        .x(100)
-        .y(2)
-        .rx(corner)
-        .ry(corner)
-        .markStrokeWidth(6)
-        .boxStrokeWidth(2)
-        .checked(false)
-        .clickEvent(function () {
-            checkEvent(checkBoxSolos)
-        });
-    svg.call(checkBoxSolos);
-
-
-    svg.append("text")
-        .attr("x", duoX + 15)
-        .attr("y", 24)
-        .text("Duos")
-        .attr("font-size", "1.9em")
-        .attr("fill", "black");
-
-    checkBoxDuos = new checkBox("Duos");
-    checkBoxDuos
-        .size(27)
-        .x(duoX + 100)
-        .y(2)
-        .rx(corner)
-        .ry(corner)
-        .markStrokeWidth(6)
-        .boxStrokeWidth(2)
-        .checked(false)
-        .clickEvent(function () {
-            checkEvent(checkBoxDuos)
-        });
-    svg.call(checkBoxDuos);
-
 
     function checkEvent(checkBox) {
         const isSolo = (checkBox.getName() === "Solos");
@@ -144,7 +100,6 @@ export function eventChart(id) {
             filters.soloOrDuo = isSolo ? "Solos" : "Duos";
         else
             filters.soloOrDuo = "";
-
 
         _chart.filter(null);
 
@@ -193,105 +148,6 @@ export function eventChart(id) {
                 .attr("stroke-width", strokeWidth)
         })
     }
-
-
-    const top = 40;
-    let count = 0;
-    weeks.forEach(function (week) {
-
-        let weekSelection = {};
-
-        const x = week.type === "Solo" ? soloX : duoX;
-        const y = Math.round((count - 1) / 2) * height + top;
-
-        const grey = '#606060';
-
-        let color = (week.type === "Duo") ? "lightblue" : "lightblue";
-        if (!week.done)
-            color = grey;
-
-        const rect = svg.append("rect")
-            .attr("data", week.num)
-            .attr("x", x)
-            .attr("y", y)
-            .attr("width", width)
-            .attr("height", height - 10)
-            .attr("fill", color)
-            .attr("stroke", "black")
-            .attr("stroke-width", 0)
-            .attr("rx", cornerRadius)
-            .attr("ry", cornerRadius)
-
-            .on('mouseover', function (d) {
-                const num = d3.select(this).attr("data");
-
-                // They are mousing over the selected item - don't shrink the border
-                if ("Week " + num === filters.week)
-                    return;
-
-                // Don't do anything for weeks that aren't done     
-                if (!weeks.filter(x => x.num == num)[0].done)
-                    return;
-
-                d3.select(this)
-                    .transition()
-                    .duration(100)
-                    .attr("stroke-width", strokeWidthThin)
-            })
-            .on('mouseout', function (d) {
-                let dom = d3.select(this);
-
-                // Solos are selected and this is a solo week, so ignore     
-                if ((dom.attr("data") % 2 === 1) && (filters.soloOrDuo === "Solos")) {
-                    dom
-                        .transition()
-                        .duration(100)
-                        .attr("stroke-width", strokeWidthThick);
-                    return;
-                }
-
-                // Duos are selected and this is a solo week, so ignore     
-                if ((dom.attr("data") % 2 === 0) && (filters.soloOrDuo === "Duos")) {
-                    dom
-                        .transition()
-                        .duration(100)
-                        .attr("stroke-width", strokeWidthThick);
-                    return;
-                }
-
-                if ("Week " + dom.attr("data") != filters.week)
-                    dom
-                        .transition()
-                        .duration(100)
-                        .attr("stroke-width", 0);
-            })
-            .on('click', function (d) {
-                clickRect(d3.select(this));
-            });
-        weekSelection.rect = rect;
-
-        const label = svg.append("text")
-            .attr("x", x + bigLabel.x)
-            .attr("y", y + bigLabel.y)
-            .text("Week " + (count + 1))
-            .attr("font-size", bigLabel.size)
-            .attr("fill", "black")
-            .attr("pointer-events", "none");
-
-        const noPlaceLabel = svg.append("text")
-            .attr("x", x + 34)
-            .attr("y", y + bigLabel.y + 8)
-            .text("No Payout")
-            .style("font-family", "Helvetica, Arial, sans-serif")
-            .attr("font-size", "0.8em")
-            .attr("fill", "black")
-            .attr("fill-opacity", 0)
-            .attr("pointer-events", "none");
-
-        weekSelection.week = week;
-
-        count++;
-    });
 
     
     function clearSoloAndDuo() {
@@ -391,6 +247,58 @@ export function eventChart(id) {
         updateSquares();
     }
 
+    makeTimelines(); 
+
+    function makeTimelines() {
+
+        //const events = [
+        //    {
+        //        format: "Solo", items: [
+        //            { num: 1, weekNum: 1, name: "Week 1", type: "World Cup", date: "April 14", done: true },
+        
+        const firstWeek = 1;
+        const lastWeek = 19;
+        const xScale = d3.scaleLinear()
+            .domain([firstWeek, lastWeek])
+            .range([100, svgWidth]);
+
+        let formatNum = 0;    
+        events.forEach(function (format) {
+            console.log(format.format);
+
+            text(svg, "checkbox-label", 10, formatNum * 35 + 22, format.format)
+            checkBoxSolos = new checkBox("Solos");
+            let formatCheckBox = new checkBox(format.format);
+            formatCheckBox
+                .size(25)
+                .x(58)
+                .y(formatNum * 35 + 3)
+                .rx(corner)
+                .ry(corner)
+                .markStrokeWidth(6)
+                .boxStrokeWidth(2)
+                .checked(false)
+                .clickEvent(function () {
+                    //checkEvent(checkBoxSolos)
+                });
+            svg.call(formatCheckBox);
+
+            svg.selectAll("rect." + format.format).data(format.items).enter().append("rect")
+                .attr("data", d => d)
+                .attr("x", d => xScale(d.weekNum) - 3)
+                .attr("y", formatNum * 35 + 3)
+                .attr("width", 46)
+                .attr("height", 34)
+                .attr("fill", "white")
+                .attr("stroke", "black")
+                .attr("stroke-width", 1)
+                .attr("rx", 5)
+                .attr("ry", 5)
+                .classed(format.format, true); 
+
+            formatNum++;
+        })   
+    } 
 
     return _chart;
 }
