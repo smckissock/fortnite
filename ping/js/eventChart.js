@@ -24,31 +24,31 @@ export function eventChart(id) {
     const events = [
         {
             format: "Solos", items: [
-                { num: 1, weekNum: 1, name: "Week 1", type: "World Cup", date: "April 14", done: true },
-                { num: 3, weekNum: 3, name: "Week 3", type: "World Cup", date: "April 28", done: true },
-                { num: 5, weekNum: 5, name: "Week 5", type: "World Cup", date: "May 12", done: true },
-                { num: 7, weekNum: 7, name: "Week 7", type: "World Cup", date: "May 26", done: true },
-                { num: 9, weekNum: 9, name: "Week 9", type: "World Cup", date: "June 9", done: true },
-                { num: "F", weekNum: 11, name: "Finals", type: "World Cup", date: "June 9", done: true }
+                { num: "W1", weekNum: 1, name: "Week 1", type: "World Cup", date: "April 14", done: true },
+                { num: "W3", weekNum: 3, name: "Week 3", type: "World Cup", date: "April 28", done: true },
+                { num: "W5", weekNum: 5, name: "Week 5", type: "World Cup", date: "May 12", done: true },
+                { num: "W7", weekNum: 7, name: "Week 7", type: "World Cup", date: "May 26", done: true },
+                { num: "W9", weekNum: 9, name: "Week 9", type: "World Cup", date: "June 9", done: true },
+                { num: "F", weekNum: 11, name: "Finals", type: "World Cup", date: "June 9", done: false }
             ]
         },
         {
             format: "Duos", items: [
-                { num: 2, weekNum: 2, name: "Week 2", type: "World Cup", date: "April 21", done: true },
-                { num: 4, weekNum: 4, name: "Week 4", type: "World Cup", date: "May 5", done: true },
-                { num: 6, weekNum: 6, name: "Week 6", type: "World Cup", date: "May 19", done: true },
-                { num: 8, weekNum: 8, name: "Week 8", type: "World Cup", date: "June 2", done: true },
-                { num: 10, weekNum: 10, name: "Week 10", type: "World Cup", date: "June 21", done: true },
-                { num: "F", weekNum: 11, name: "Finals", type: "World Cup", date: "June 21", done: true }
+                { num: "W2", weekNum: 2, name: "Week 2", type: "World Cup", date: "April 21", done: true },
+                { num: "W4", weekNum: 4, name: "Week 4", type: "World Cup", date: "May 5", done: true },
+                { num: "W6", weekNum: 6, name: "Week 6", type: "World Cup", date: "May 19", done: true },
+                { num: "W8", weekNum: 8, name: "Week 8", type: "World Cup", date: "June 2", done: true },
+                { num: "W10", weekNum: 10, name: "Week 10", type: "World Cup", date: "June 21", done: true },
+                { num: "F", weekNum: 11, name: "Finals", type: "World Cup", date: "June 21", done: false }
             ]
         },
         {
             format: "Trios", items: [
-                { num: 1, weekNum: 12, name: "Week 1", type: "Champion Series", date: "August 18", done: true },
-                { num: 2, weekNum: 13, name: "Week 2", type: "Champion Series", date: "August 25", done: false },
-                { num: 3, weekNum: 14, name: "Week 3", type: "Champion Series", date: "September 1", done: false },
-                { num: 4, weekNum: 15, name: "Week 4", type: "Champion Series", date: "September 8", done: false },
-                { num: 5, weekNum: 16, name: "Week 5", type: "Champion Series", date: "September 15", done: false },
+                { num: "W1", weekNum: 12, name: "Week 1", type: "Champion Series", date: "August 18", done: true },
+                { num: "W2", weekNum: 13, name: "Week 2", type: "Champion Series", date: "August 25", done: false },
+                { num: "W3", weekNum: 14, name: "Week 3", type: "Champion Series", date: "September 1", done: false },
+                { num: "W4", weekNum: 15, name: "Week 4", type: "Champion Series", date: "September 8", done: false },
+                { num: "W5", weekNum: 16, name: "Week 5", type: "Champion Series", date: "September 15", done: false },
                 { num: "F", weekNum: 17, name: "Season Finals", type: "Champion Series", date: "September 23", done: false }
             ]
         }
@@ -151,7 +151,6 @@ export function eventChart(id) {
                 .attr("y", formatNum * 35 + 3 + top)
                 .attr("width", 46)
                 .attr("height", 34)
-                //.attr("fill", d => d.done == true ? "lightblue" : "#888888")
                 .attr("fill", d => d.done == true ? "cornflowerblue" : "#888888")
                 .attr("stroke", "black")
                 .attr("stroke-width", 0)
@@ -179,11 +178,12 @@ export function eventChart(id) {
                     filterEvents(d);
                 })
                 .each(function(week) {
-                    const x = week.num != "10" ? xScale(week.weekNum) + 17 : xScale(week.weekNum) + 13;
+                    let x = week.num != "W10" ? xScale(week.weekNum) + 9 : xScale(week.weekNum) + 5;
+                    if (week.num == "F")
+                        x = xScale(week.weekNum) + 17    ;
                     text(svg, "week-label", x, formatNum * 35 + 26 + top, week.num);
                 }) 
                 
-
             formatNum++;
         })   
     } 
