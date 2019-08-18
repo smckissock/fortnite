@@ -23,7 +23,7 @@ export function eventChart(id) {
 
     const events = [
         {
-            format: "Solo", items: [
+            format: "Solos", items: [
                 { num: 1, weekNum: 1, name: "Week 1", type: "World Cup", date: "April 14", done: true },
                 { num: 3, weekNum: 3, name: "Week 3", type: "World Cup", date: "April 28", done: true },
                 { num: 5, weekNum: 5, name: "Week 5", type: "World Cup", date: "May 12", done: true },
@@ -33,7 +33,7 @@ export function eventChart(id) {
             ]
         },
         {
-            format: "Duo", items: [
+            format: "Duos", items: [
                 { num: 2, weekNum: 2, name: "Week 2", type: "World Cup", date: "April 21", done: true },
                 { num: 4, weekNum: 4, name: "Week 4", type: "World Cup", date: "May 5", done: true },
                 { num: 6, weekNum: 6, name: "Week 6", type: "World Cup", date: "May 19", done: true },
@@ -43,7 +43,7 @@ export function eventChart(id) {
             ]
         },
         {
-            format: "Trio", items: [
+            format: "Trios", items: [
                 { num: 1, weekNum: 12, name: "Week 1", type: "Champion Series", date: "August 18", done: true },
                 { num: 2, weekNum: 13, name: "Week 2", type: "Champion Series", date: "August 25", done: false },
                 { num: 3, weekNum: 14, name: "Week 3", type: "Champion Series", date: "September 1", done: false },
@@ -88,12 +88,11 @@ export function eventChart(id) {
     const svgWidth = 1030;
     const svg = div.append("svg")
         .attr("width", svgWidth)
-        .attr("height", 110);
+        .attr("height", 150);
 
     const corner = 6;
 
     function makeTimelines() {
-
         //const events = [
         //    {
         //        format: "Solo", items: [
@@ -105,16 +104,37 @@ export function eventChart(id) {
             .domain([firstWeek, lastWeek])
             .range([100, svgWidth]);
 
+        [
+            { firstWeek: 1, lastWeek: 12, name: "Fortnite World Cup"},
+            { firstWeek: 12, lastWeek: 18, name: "Champion Series"}
+        ]
+        .forEach(function (event) {    
+            const left = xScale(event.firstWeek) - 1;
+            const width = xScale(event.lastWeek) - left;    
+            svg.append("rect")
+                .attr("x", left)
+                .attr("y", 10)
+                .attr("width", width)
+                .attr("height", 140)
+                .attr("fill-opacity", "0.0")
+                .attr("stroke", "black")
+                .attr("stroke-width", 1)
+                .attr("rx", 5)
+                .attr("ry", 5)
+            });
+        
+
+
+        const top = 40;    
         let formatNum = 0;    
         events.forEach(function (format) {
             
-            text(svg, "checkbox-label", 10, formatNum * 35 + 22, format.format)
-            checkBoxSolos = new checkBox(format.format);
+            text(svg, "checkbox-label", 10, formatNum * 35 + 28 + top, format.format)
             let formatCheckBox = new checkBox(format.format);
             formatCheckBox
                 .size(25)
-                .x(58)
-                .y(formatNum * 35 + 3)
+                .x(62)
+                .y(formatNum * 35 + 8 + top)
                 .rx(corner)
                 .ry(corner)
                 .markStrokeWidth(4)
@@ -127,8 +147,8 @@ export function eventChart(id) {
 
             svg.selectAll("rect." + format.format).data(format.items).enter().append("rect")
                 .attr("data", d => d)
-                .attr("x", d => xScale(d.weekNum) - 3)
-                .attr("y", formatNum * 35 + 3)
+                .attr("x", d => xScale(d.weekNum))
+                .attr("y", formatNum * 35 + 3 + top)
                 .attr("width", 46)
                 .attr("height", 34)
                 .attr("fill", "lightblue")
@@ -138,10 +158,8 @@ export function eventChart(id) {
                 .attr("ry", 5)
                 .classed(format.format, true)
                 .each(function(week) {
-                    text(svg, "week-label", xScale(week.weekNum) + 13, formatNum * 35 + 26, week.num);
+                    text(svg, "week-label", xScale(week.weekNum) + 17, formatNum * 35 + 26 + top, week.num);
                 }); 
-
-            
 
             formatNum++;
         })   
