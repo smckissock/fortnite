@@ -129,7 +129,7 @@ export function eventChart(id) {
         let formatNum = 0;    
         events.forEach(function (format) {
             
-            text(svg, "checkbox-label", 10, formatNum * 35 + 26 + top, format.format)
+            text(svg, "checkbox-label", 10, formatNum * 35 + 27 + top, format.format)
             let formatCheckBox = new checkBox(format.format);
             formatCheckBox
                 .size(25)
@@ -151,34 +151,50 @@ export function eventChart(id) {
                 .attr("y", formatNum * 35 + 3 + top)
                 .attr("width", 46)
                 .attr("height", 34)
-                .attr("fill", "lightblue")
+                //.attr("fill", d => d.done == true ? "lightblue" : "#888888")
+                .attr("fill", d => d.done == true ? "cornflowerblue" : "#888888")
                 .attr("stroke", "black")
                 .attr("stroke-width", 0)
                 .attr("rx", 5)
                 .attr("ry", 5)
                 .classed(format.format, true)
                 .on('mouseover', function (d) {
-                    const num = d3.select(this).attr("data");
+                    if (!d.done)
+                        return;
     
                     d3.select(this)
                         .transition()
                         .duration(100)
-                        .attr("stroke-width", 2)
+                        .attr("stroke-width", 3)
                 })
                 .on('mouseout', function (d) {
+                    if (!d.done)
+                        return;
+
                     d3.select(this)
                         .transition()
                         .duration(100)
                         .attr("stroke-width", 0);
+                }).on('click', function (d) {
+                    filterEvents(d);
                 })
                 .each(function(week) {
                     const x = week.num != "10" ? xScale(week.weekNum) + 17 : xScale(week.weekNum) + 13;
                     text(svg, "week-label", x, formatNum * 35 + 26 + top, week.num);
-                }); 
+                }) 
+                
 
             formatNum++;
         })   
     } 
+
+    function filterEvents(d) {
+        //const data = d3.select(this).attr("data"); 
+        if (!d.done)
+            return;
+
+        alert(d.name);
+    }
 
     function checkEvent(formatName) {
         console.log(formatName);
