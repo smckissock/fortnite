@@ -368,8 +368,8 @@ export function playerChart(id) {
             }
 
             // Default case
-            const y = (i === 0) ? 35 : 44; // Player
-            const otherSize = (i == 0) ? "1.9rem" : smallFontSize;
+            const y = (i === 0) ? 37 : 44; // Player
+            const otherSize = (i == 0) ? "2.3rem" : smallFontSize;
             const node = svg.append("text")
                 .attr("x", x)
                 .attr("y", y)
@@ -400,14 +400,14 @@ export function playerChart(id) {
             .attr("x", 11)
             .attr("y", 68)
             .text("World Cup Only")
-            .classed("world-cup-only-check", true);
+            .classed("checkbox-label", true);
 
 
         worldCupOnlyCheckBox = new checkBox("X");
         worldCupOnlyCheckBox
-            .size(27)
-            .x(158)
-            .y(46)
+            .size(25)
+            .x(150)
+            .y(50)
             .rx(cornerRadius)
             .ry(cornerRadius)
             .markStrokeWidth(4)

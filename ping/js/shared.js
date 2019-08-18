@@ -100,6 +100,7 @@ export function text(svg, style, x, y, text) {
     svg.append("text")
     .attr("x", x)
     .attr("y", y)
+    .attr("pointer-events", "none")
     .text(text)
     .classed(style, true)
 }

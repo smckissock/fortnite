@@ -9,7 +9,7 @@ import { regionChart } from "./regionChart.js";
 import { teamChart, clearTeam } from "./teamChart.js";
 
 
-export const cornerRadius = 8;
+export const cornerRadius = 6;
 export let playerColors;
 export let playerDim;
 

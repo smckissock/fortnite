@@ -106,11 +106,13 @@ export function eventChart(id) {
 
         [
             { firstWeek: 1, lastWeek: 12, name: "Fortnite World Cup"},
-            { firstWeek: 12, lastWeek: 18, name: "Champion Series"}
+            { firstWeek: 12, lastWeek: 18, name: "Fortnite Champion Series"}
         ]
         .forEach(function (event) {    
-            const left = xScale(event.firstWeek) - 1;
-            const width = xScale(event.lastWeek) - left;    
+            const left = xScale(event.firstWeek) - 4;
+            const width = xScale(event.lastWeek) - left - 5;
+            
+            text(svg, "event-name", left + 10, 30, event.name)
             svg.append("rect")
                 .attr("x", left)
                 .attr("y", 10)
@@ -119,17 +121,15 @@ export function eventChart(id) {
                 .attr("fill-opacity", "0.0")
                 .attr("stroke", "black")
                 .attr("stroke-width", 1)
-                .attr("rx", 5)
-                .attr("ry", 5)
+                .attr("rx", 8)
+                .attr("ry", 8)
             });
-        
-
 
         const top = 40;    
         let formatNum = 0;    
         events.forEach(function (format) {
             
-            text(svg, "checkbox-label", 10, formatNum * 35 + 28 + top, format.format)
+            text(svg, "checkbox-label", 10, formatNum * 35 + 26 + top, format.format)
             let formatCheckBox = new checkBox(format.format);
             formatCheckBox
                 .size(25)
@@ -157,8 +157,23 @@ export function eventChart(id) {
                 .attr("rx", 5)
                 .attr("ry", 5)
                 .classed(format.format, true)
+                .on('mouseover', function (d) {
+                    const num = d3.select(this).attr("data");
+    
+                    d3.select(this)
+                        .transition()
+                        .duration(100)
+                        .attr("stroke-width", 2)
+                })
+                .on('mouseout', function (d) {
+                    d3.select(this)
+                        .transition()
+                        .duration(100)
+                        .attr("stroke-width", 0);
+                })
                 .each(function(week) {
-                    text(svg, "week-label", xScale(week.weekNum) + 17, formatNum * 35 + 26 + top, week.num);
+                    const x = week.num != "10" ? xScale(week.weekNum) + 17 : xScale(week.weekNum) + 13;
+                    text(svg, "week-label", x, formatNum * 35 + 26 + top, week.num);
                 }); 
 
             formatNum++;
