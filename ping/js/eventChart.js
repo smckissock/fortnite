@@ -28,7 +28,8 @@ export function eventChart(id) {
                 { num: 3, weekNum: 3, name: "Week 3", type: "World Cup", date: "April 28", done: true },
                 { num: 5, weekNum: 5, name: "Week 5", type: "World Cup", date: "May 12", done: true },
                 { num: 7, weekNum: 7, name: "Week 7", type: "World Cup", date: "May 26", done: true },
-                { num: 9, weekNum: 9, name: "Week 9", type: "World Cup", date: "June 9", done: true }
+                { num: 9, weekNum: 9, name: "Week 9", type: "World Cup", date: "June 9", done: true },
+                { num: "F", weekNum: 11, name: "Finals", type: "World Cup", date: "June 9", done: true }
             ]
         },
         {
@@ -37,17 +38,18 @@ export function eventChart(id) {
                 { num: 4, weekNum: 4, name: "Week 4", type: "World Cup", date: "May 5", done: true },
                 { num: 6, weekNum: 6, name: "Week 6", type: "World Cup", date: "May 19", done: true },
                 { num: 8, weekNum: 8, name: "Week 8", type: "World Cup", date: "June 2", done: true },
-                { num: 10, weekNum: 11, name: "Week 10", type: "World Cup", date: "June 21", done: true }
+                { num: 10, weekNum: 10, name: "Week 10", type: "World Cup", date: "June 21", done: true },
+                { num: "F", weekNum: 11, name: "Finals", type: "World Cup", date: "June 21", done: true }
             ]
         },
         {
             format: "Trio", items: [
-                { num: 1, weekNum: 14, name: "Week 1", type: "Champion Series", date: "August 18", done: true },
-                { num: 2, weekNum: 15, name: "Week 2", type: "Champion Series", date: "August 25", done: false },
-                { num: 3, weekNum: 16, name: "Week 3", type: "Champion Series", date: "September 1", done: false },
-                { num: 4, weekNum: 17, name: "Week 4", type: "Champion Series", date: "September 8", done: false },
-                { num: 5, weekNum: 18, name: "Week 5", type: "Champion Series", date: "September 15", done: false }
-                /* { num: 5, weekNum: 19, name: "Season Finals", type: "Champion Series", date: "September 23", done: false } */
+                { num: 1, weekNum: 12, name: "Week 1", type: "Champion Series", date: "August 18", done: true },
+                { num: 2, weekNum: 13, name: "Week 2", type: "Champion Series", date: "August 25", done: false },
+                { num: 3, weekNum: 14, name: "Week 3", type: "Champion Series", date: "September 1", done: false },
+                { num: 4, weekNum: 15, name: "Week 4", type: "Champion Series", date: "September 8", done: false },
+                { num: 5, weekNum: 16, name: "Week 5", type: "Champion Series", date: "September 15", done: false },
+                { num: "F", weekNum: 17, name: "Season Finals", type: "Champion Series", date: "September 23", done: false }
             ]
         }
     ];
@@ -90,7 +92,64 @@ export function eventChart(id) {
 
     const corner = 6;
 
-    function checkEvent(checkBox) {
+    function makeTimelines() {
+
+        //const events = [
+        //    {
+        //        format: "Solo", items: [
+        //            { num: 1, weekNum: 1, name: "Week 1", type: "World Cup", date: "April 14", done: true },
+        
+        const firstWeek = 1;
+        const lastWeek = 18;
+        const xScale = d3.scaleLinear()
+            .domain([firstWeek, lastWeek])
+            .range([100, svgWidth]);
+
+        let formatNum = 0;    
+        events.forEach(function (format) {
+            
+            text(svg, "checkbox-label", 10, formatNum * 35 + 22, format.format)
+            checkBoxSolos = new checkBox(format.format);
+            let formatCheckBox = new checkBox(format.format);
+            formatCheckBox
+                .size(25)
+                .x(58)
+                .y(formatNum * 35 + 3)
+                .rx(corner)
+                .ry(corner)
+                .markStrokeWidth(4)
+                .boxStrokeWidth(1)
+                .checked(false)
+                .clickEvent(function () {
+                    checkEvent(format.format)
+                });
+            svg.call(formatCheckBox);
+
+            svg.selectAll("rect." + format.format).data(format.items).enter().append("rect")
+                .attr("data", d => d)
+                .attr("x", d => xScale(d.weekNum) - 3)
+                .attr("y", formatNum * 35 + 3)
+                .attr("width", 46)
+                .attr("height", 34)
+                .attr("fill", "lightblue")
+                .attr("stroke", "black")
+                .attr("stroke-width", 0)
+                .attr("rx", 5)
+                .attr("ry", 5)
+                .classed(format.format, true)
+                .each(function(week) {
+                    text(svg, "week-label", xScale(week.weekNum) + 13, formatNum * 35 + 26, week.num);
+                }); 
+
+            
+
+            formatNum++;
+        })   
+    } 
+
+    function checkEvent(formatName) {
+        console.log(formatName);
+        return;
         const isSolo = (checkBox.getName() === "Solos");
 
         isSolo ? checkBoxDuos.checked(false) : checkBoxSolos.checked(false)
@@ -249,56 +308,7 @@ export function eventChart(id) {
 
     makeTimelines(); 
 
-    function makeTimelines() {
-
-        //const events = [
-        //    {
-        //        format: "Solo", items: [
-        //            { num: 1, weekNum: 1, name: "Week 1", type: "World Cup", date: "April 14", done: true },
-        
-        const firstWeek = 1;
-        const lastWeek = 19;
-        const xScale = d3.scaleLinear()
-            .domain([firstWeek, lastWeek])
-            .range([100, svgWidth]);
-
-        let formatNum = 0;    
-        events.forEach(function (format) {
-            console.log(format.format);
-
-            text(svg, "checkbox-label", 10, formatNum * 35 + 22, format.format)
-            checkBoxSolos = new checkBox("Solos");
-            let formatCheckBox = new checkBox(format.format);
-            formatCheckBox
-                .size(25)
-                .x(58)
-                .y(formatNum * 35 + 3)
-                .rx(corner)
-                .ry(corner)
-                .markStrokeWidth(6)
-                .boxStrokeWidth(2)
-                .checked(false)
-                .clickEvent(function () {
-                    //checkEvent(checkBoxSolos)
-                });
-            svg.call(formatCheckBox);
-
-            svg.selectAll("rect." + format.format).data(format.items).enter().append("rect")
-                .attr("data", d => d)
-                .attr("x", d => xScale(d.weekNum) - 3)
-                .attr("y", formatNum * 35 + 3)
-                .attr("width", 46)
-                .attr("height", 34)
-                .attr("fill", "white")
-                .attr("stroke", "black")
-                .attr("stroke-width", 1)
-                .attr("rx", 5)
-                .attr("ry", 5)
-                .classed(format.format, true); 
-
-            formatNum++;
-        })   
-    } 
+    
 
     return _chart;
 }

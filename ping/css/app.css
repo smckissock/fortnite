@@ -22,7 +22,7 @@ body {
         "left-margin    region      team      event     event"
         "left-margin    region      team      player    player";
     grid-template-columns: 10px var(--left-width) var(--team-width) 300px 700px;
-    grid-template-rows: 80px 100px auto; 
+    grid-template-rows: 80px 130px auto; 
     grid-gap: 12px;
     margin: 0px;
     height: 1080px;
@@ -139,6 +139,11 @@ body {
 
 .checkbox-label {
     font-weight: 600;
+    font-size: 1.2em;
+}
+
+.week-label {
+    font-weight: 800;
     font-size: 1.2em;
 }
 

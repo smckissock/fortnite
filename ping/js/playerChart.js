@@ -410,8 +410,8 @@ export function playerChart(id) {
             .y(46)
             .rx(cornerRadius)
             .ry(cornerRadius)
-            .markStrokeWidth(6)
-            .boxStrokeWidth(2)
+            .markStrokeWidth(4)
+            .boxStrokeWidth(1)
             .checked(filters.worldCupOnly)
             .clickEvent(toggleWorldCupOnly)
         svg.call(worldCupOnlyCheckBox);
