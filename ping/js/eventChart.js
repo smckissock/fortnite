@@ -70,8 +70,6 @@ export function eventChart(id) {
     let checkBoxSolos;
     let checkBoxDuos;
 
-    let selectedRect;
-
     const div = d3.select(id);
     
     
@@ -146,7 +144,6 @@ export function eventChart(id) {
             svg.call(formatCheckBox);
 
             svg.selectAll("rect." + format.format).data(format.items).enter().append("rect")
-                .attr("data", d => d)
                 .attr("x", d => xScale(d.weekNum))
                 .attr("y", formatNum * 35 + 3 + top)
                 .attr("width", 46)
@@ -175,7 +172,7 @@ export function eventChart(id) {
                         .duration(100)
                         .attr("stroke-width", 0);
                 }).on('click', function (d) {
-                    filterEvents(d);
+                    clickRect(d3.select(this), d);
                 })
                 .each(function(week) {
                     let x = week.num != "W10" ? xScale(week.weekNum) + 9 : xScale(week.weekNum) + 5;
@@ -188,13 +185,89 @@ export function eventChart(id) {
         })   
     } 
 
-    function filterEvents(d) {
-        //const data = d3.select(this).attr("data"); 
-        if (!d.done)
-            return;
+    const clickRect = function (d3Rect, data) {
+        // Don't do anything for weeks that aren't done   
+        if (data.done == false)
+            return;  
 
-        alert(d.name);
+        filters.soloOrDuo = "";
+        //clearSoloAndDuo();
+
+        const newFilter = "Week " + data.weekNum;
+
+        // 5 things need to happen:
+
+        // 1) Update filters.region
+        // 2) Set/unset crossfilter filter
+        // 3) Draw correct outlines
+        // 4) DC Redraw
+        // 5) Update counts
+
+        // Regardless of what happens below, selected player needs to be cleared 
+        clearPlayer(null);
+
+        // 1 None were selected, this is the first selection
+        if (filters.week === "") {
+            filters.week = newFilter;
+
+            _chart.filter(filters.week);
+            d3Rect
+                .transition()
+                .duration(100)
+                .attr("stroke-width", strokeWidthThick);
+
+            _chart.redrawGroup();
+            updateSquares();
+            return;
+        }
+
+        // 2 One is selected, so unselect it and select this
+        if (filters.week != newFilter) {
+            const oldFilter = filters.week;
+
+            // Un-border old one
+            weekSelections.forEach(function (week) {
+                let dom = d3.select(week.rect._groups[0][0]);
+                if ("Week " + dom.attr("data") == oldFilter) {
+                    // This will toggle it off
+                    _chart.filter(oldFilter);
+                    dom
+                        .transition()
+                        .duration(100)
+                        .attr("stroke-width", 0)
+                }
+            });
+
+            filters.week = newFilter;
+
+            _chart.filter(null);
+            _chart.filter(filters.week);
+            d3Rect
+                .transition()
+                .duration(100)
+                .attr("stroke-width", 0);
+
+            _chart.redrawGroup();
+         
+            updateSquares();
+
+            return;
+        }
+
+        // 3 This was selected, so unselect it - all will be selected
+        filters.week = "";
+        _chart.filter(null);
+        d3Rect
+            .transition()
+            .duration(100)
+            .attr("stroke-width", 0);
+
+        _chart.redrawGroup();
+        
+        // good
+        //updateSquares();
     }
+
 
     function checkEvent(formatName) {
         console.log(formatName);
@@ -233,8 +306,10 @@ export function eventChart(id) {
         updateSquares();
     }
 
-
     function updateSquares() {
+
+        // !!
+        return;
 
         weekSelections.forEach(function (week) {
             const solosPicked = (filters.soloOrDuo === "Solos");
@@ -265,99 +340,7 @@ export function eventChart(id) {
         checkBoxDuos.checked(false);
     }
 
-    const clickRect = function (d3Rect) {
-        const num = d3Rect.attr("data");
-
-        // Don't do anything for weeks that aren't done     
-        if (!weeks.filter(x => x.num == num)[0].done)
-            return;
-
-        filters.soloOrDuo = "";
-        clearSoloAndDuo();
-
-        const newFilter = "Week " + num;
-
-        // 5 things need to happen:
-
-        // 1) Update filters.region
-        // 2) Set/unset crossfilter filter
-        // 3) Draw correct outlines
-        // 4) DC Redraw
-        // 5) Update counts
-
-        // Regardless of what happens below, selected player needs to be cleared 
-        clearPlayer(null);
-
-        // 1 None were selected, this is the first selection
-        if (filters.week === "") {
-            filters.week = newFilter;
-
-            _chart.filter(filters.week);
-            d3Rect
-                .transition()
-                .duration(100)
-                .attr("stroke-width", strokeWidthThick);
-
-            _chart.redrawGroup();
-
-            selectedRect = d3Rect;
-            //moveCursor(false);
-            updateSquares();
-
-            return;
-        }
-
-        // 2 One is selected, so unselect it and select this
-        if (filters.week != newFilter) {
-            const oldFilter = filters.week;
-
-            // Un-border old one
-            weekSelections.forEach(function (week) {
-                let dom = d3.select(week.rect._groups[0][0]);
-                if ("Week " + dom.attr("data") == oldFilter) {
-                    // This will toggle it off
-                    _chart.filter(oldFilter);
-                    dom
-                        .transition()
-                        .duration(100)
-                        .attr("stroke-width", 0)
-                }
-            });
-
-            filters.week = newFilter;
-
-            _chart.filter(null);
-            _chart.filter(filters.week);
-            d3Rect
-                .transition()
-                .duration(100)
-                .attr("stroke-width", 0);
-
-            _chart.redrawGroup();
-
-            selectedRect = d3Rect;            
-            updateSquares();
-
-            return;
-        }
-
-        // 3 This was selected, so unselect it - all will be selected
-        filters.week = "";
-        _chart.filter(null);
-        d3Rect
-            .transition()
-            .duration(100)
-            .attr("stroke-width", 0);
-
-        _chart.redrawGroup();
-
-        selectedRect = d3Rect;
-        updateSquares();
-    }
-
     makeTimelines(); 
-
-    
 
     return _chart;
 }

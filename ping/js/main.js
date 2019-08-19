@@ -186,14 +186,13 @@ function title(width) {
         .attr("font-size", "1.1em")
         .style("font-family", "Burbank")
         .attr("fill", "black");
-    //return svg;
 
     svg.append("text")
         .attr("x", 220)
         .attr("y", 65)
         .text("ping")
         .attr("font-size", "1.2em")
-        .attr("letter-spacing", "0.19rem")
+        .attr("letter-spacing", "0.4rem")
         .attr("font-weight", "900")
         .style("font-family", "Source Sans Pro, sans-serif")
         .attr("fill", "black");
