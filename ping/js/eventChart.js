@@ -55,14 +55,16 @@ export function eventChart(id) {
     ];
 
     let weekSelections = [];
+
+    let weekRects = [];
     
     const soloX = 10;
     const duoX = 155;
 
     const width = 135;
     const height = 103;
-    const strokeWidthThick = 8;
-    const strokeWidthThin = 4;
+    const strokeWidthThick = 6;
+    const strokeWidthThin = 3;
 
     const bigLabel = { x: 25, y: 59, size: "2em" };
     
@@ -161,20 +163,32 @@ export function eventChart(id) {
                     d3.select(this)
                         .transition()
                         .duration(100)
-                        .attr("stroke-width", 3)
+                        .attr("stroke-width", strokeWidthThin)
                 })
                 .on('mouseout', function (d) {
                     if (!d.done)
                         return;
 
+                    // Leave border if it is selected
+                    if (filters.week == d.name) {
+                        d3.select(this)
+                            .transition()
+                            .duration(100)
+                            .attr("stroke-width", strokeWidthThick);
+                        return;
+                    }
+
                     d3.select(this)
                         .transition()
                         .duration(100)
                         .attr("stroke-width", 0);
+
                 }).on('click', function (d) {
                     clickRect(d3.select(this), d);
                 })
                 .each(function(week) {
+                    weekRects.push(d3.select(this));
+
                     let x = week.num != "W10" ? xScale(week.weekNum) + 9 : xScale(week.weekNum) + 5;
                     if (week.num == "F")
                         x = xScale(week.weekNum) + 17    ;
@@ -305,6 +319,15 @@ export function eventChart(id) {
         updateCounts();
         updateSquares();
     }
+
+
+
+    function drawWeekBorders() {
+
+
+    }
+    
+    
 
     function updateSquares() {
 

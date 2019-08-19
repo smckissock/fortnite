@@ -176,11 +176,11 @@ function title(width) {
     const div = d3.select(".title");
     const svg = div.append("svg")
         .attr("width", width + "px")
-        .attr("height", "80px");
+        .attr("height", "100px");
 
     svg.append("text")
         .attr("x", 0)
-        .attr("y", 65)
+        .attr("y", 55)
         .text("FORTNITE")
         .attr("letter-spacing", ".2rem")
         .attr("font-size", "1.1em")
@@ -189,13 +189,24 @@ function title(width) {
 
     svg.append("text")
         .attr("x", 220)
-        .attr("y", 65)
+        .attr("y", 55)
         .text("ping")
         .attr("font-size", "1.2em")
         .attr("letter-spacing", "0.4rem")
         .attr("font-weight", "900")
         .style("font-family", "Source Sans Pro, sans-serif")
         .attr("fill", "black");
+
+        svg.append("text")
+        .attr("x", 0)
+        .attr("y", 90)
+        .text("Competitive Battle Royale Stats")
+        .attr("font-size", ".5em")
+        .attr("letter-spacing", ".03rem")
+        .attr("font-weight", "800")
+        .style("font-family", "Source Sans Pro, sans-serif")
+        .attr("fill", "black");
+    
     return svg;
 }
 
