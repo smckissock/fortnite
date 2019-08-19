@@ -44,11 +44,11 @@ export function eventChart(id) {
         },
         {
             format: "Trios", items: [
-                { num: "W1", weekNum: 12, name: "Week 1", type: "Champion Series", date: "August 18", done: true },
-                { num: "W2", weekNum: 13, name: "Week 2", type: "Champion Series", date: "August 25", done: false },
-                { num: "W3", weekNum: 14, name: "Week 3", type: "Champion Series", date: "September 1", done: false },
-                { num: "W4", weekNum: 15, name: "Week 4", type: "Champion Series", date: "September 8", done: false },
-                { num: "W5", weekNum: 16, name: "Week 5", type: "Champion Series", date: "September 15", done: false },
+                { num: "W1", weekNum: 12, name: "CS Week 1", type: "Champion Series", date: "August 18", done: true },
+                { num: "W2", weekNum: 13, name: "CS Week 2", type: "Champion Series", date: "August 25", done: false },
+                { num: "W3", weekNum: 14, name: "CS Week 3", type: "Champion Series", date: "September 1", done: false },
+                { num: "W4", weekNum: 15, name: "CS Week 4", type: "Champion Series", date: "September 8", done: false },
+                { num: "W5", weekNum: 16, name: "CS Week 5", type: "Champion Series", date: "September 15", done: false },
                 { num: "F", weekNum: 17, name: "Season Finals", type: "Champion Series", date: "September 23", done: false }
             ]
         }
@@ -169,19 +169,21 @@ export function eventChart(id) {
                     if (!d.done)
                         return;
 
-                    // Leave border if it is selected
+                    drawWeekBorders()
+
+                    /* // Leave border if it is selected
                     if (filters.week == d.name) {
                         d3.select(this)
                             .transition()
                             .duration(100)
                             .attr("stroke-width", strokeWidthThick);
                         return;
-                    }
+                    } */
 
-                    d3.select(this)
+                    /* d3.select(this)
                         .transition()
                         .duration(100)
-                        .attr("stroke-width", 0);
+                        .attr("stroke-width", 0); */
 
                 }).on('click', function (d) {
                     clickRect(d3.select(this), d);
@@ -225,13 +227,14 @@ export function eventChart(id) {
             filters.week = newFilter;
 
             _chart.filter(filters.week);
-            d3Rect
+            /* d3Rect
                 .transition()
                 .duration(100)
-                .attr("stroke-width", strokeWidthThick);
+                .attr("stroke-width", strokeWidthThick); */
 
             _chart.redrawGroup();
-            updateSquares();
+            drawWeekBorders()
+            //updateSquares();
             return;
         }
 
@@ -240,7 +243,7 @@ export function eventChart(id) {
             const oldFilter = filters.week;
 
             // Un-border old one
-            weekSelections.forEach(function (week) {
+            /* weekSelections.forEach(function (week) {
                 let dom = d3.select(week.rect._groups[0][0]);
                 if ("Week " + dom.attr("data") == oldFilter) {
                     // This will toggle it off
@@ -250,20 +253,21 @@ export function eventChart(id) {
                         .duration(100)
                         .attr("stroke-width", 0)
                 }
-            });
+            }); */
 
             filters.week = newFilter;
 
             _chart.filter(null);
             _chart.filter(filters.week);
-            d3Rect
+            /* d3Rect
                 .transition()
                 .duration(100)
-                .attr("stroke-width", 0);
+                .attr("stroke-width", 0); */
 
             _chart.redrawGroup();
          
-            updateSquares();
+            //updateSquares();
+            drawWeekBorders()
 
             return;
         }
@@ -271,11 +275,11 @@ export function eventChart(id) {
         // 3 This was selected, so unselect it - all will be selected
         filters.week = "";
         _chart.filter(null);
-        d3Rect
+        /* d3Rect
             .transition()
             .duration(100)
             .attr("stroke-width", 0);
-
+ */
         _chart.redrawGroup();
         
         // good
@@ -323,8 +327,15 @@ export function eventChart(id) {
 
 
     function drawWeekBorders() {
+        weekRects.forEach(function(week) {
+            const data = week.data()[0];
+            const strokeWidth = (data.name == filters.week) ? strokeWidthThick : 0; 
 
-
+            week
+                .transition()
+                .duration(100)
+                .attr("stroke-width", strokeWidth);
+        }); 
     }
     
     
