@@ -206,6 +206,11 @@ export function eventChart(id) {
         if (data.done == false)
             return;  
 
+        function refresh() {
+            _chart.redrawGroup();
+            drawWeekBorders();
+        }    
+
         filters.soloOrDuo = "";
         //clearSoloAndDuo();
 
@@ -225,105 +230,34 @@ export function eventChart(id) {
         // 1 None were selected, this is the first selection
         if (filters.week === "") {
             filters.week = newFilter;
-
             _chart.filter(filters.week);
-            /* d3Rect
-                .transition()
-                .duration(100)
-                .attr("stroke-width", strokeWidthThick); */
-
-            _chart.redrawGroup();
-            drawWeekBorders()
-            //updateSquares();
+            refresh();
             return;
         }
-
         // 2 One is selected, so unselect it and select this
         if (filters.week != newFilter) {
             const oldFilter = filters.week;
-
-            // Un-border old one
-            /* weekSelections.forEach(function (week) {
-                let dom = d3.select(week.rect._groups[0][0]);
-                if ("Week " + dom.attr("data") == oldFilter) {
-                    // This will toggle it off
-                    _chart.filter(oldFilter);
-                    dom
-                        .transition()
-                        .duration(100)
-                        .attr("stroke-width", 0)
-                }
-            }); */
-
             filters.week = newFilter;
-
             _chart.filter(null);
-            _chart.filter(filters.week);
-            /* d3Rect
-                .transition()
-                .duration(100)
-                .attr("stroke-width", 0); */
-
-            _chart.redrawGroup();
-         
-            //updateSquares();
-            drawWeekBorders()
-
+            _chart.filter(filters.week); 
+            refresh();
             return;
         }
-
         // 3 This was selected, so unselect it - all will be selected
         filters.week = "";
         _chart.filter(null);
-        /* d3Rect
-            .transition()
-            .duration(100)
-            .attr("stroke-width", 0);
- */
-        _chart.redrawGroup();
-        
-        // good
-        //updateSquares();
+        refresh();
     }
 
 
     function checkEvent(formatName) {
         console.log(formatName);
         return;
-        const isSolo = (checkBox.getName() === "Solos");
-
-        isSolo ? checkBoxDuos.checked(false) : checkBoxSolos.checked(false)
-        filters.week = "";
-
-        if (checkBox.checked())
-            filters.soloOrDuo = isSolo ? "Solos" : "Duos";
-        else
-            filters.soloOrDuo = "";
-
-        _chart.filter(null);
-
-        if (checkBox.checked()) {
-            if (isSolo) {
-                _chart.filter("Week 1");
-                _chart.filter("Week 3");
-                _chart.filter("Week 5");
-                _chart.filter("Week 7");
-                _chart.filter("Week 9");
-            } else {
-                _chart.filter("Week 2");
-                _chart.filter("Week 4");
-                _chart.filter("Week 6");
-                _chart.filter("Week 8");
-                _chart.filter("Week 10");
-            }
-        }
-
+    
         _chart.redrawGroup();
-
+        drawWeekBorders();
         updateCounts();
-        updateSquares();
     }
-
 
 
     function drawWeekBorders() {
@@ -338,34 +272,6 @@ export function eventChart(id) {
         }); 
     }
     
-    
-
-    function updateSquares() {
-
-        // !!
-        return;
-
-        weekSelections.forEach(function (week) {
-            const solosPicked = (filters.soloOrDuo === "Solos");
-            const duosPicked = (filters.soloOrDuo === "Duos");
-
-            let strokeWidth;
-            if (week.week.num % 2 == 1)
-                strokeWidth = solosPicked ? strokeWidthThick : 0;
-            else
-                strokeWidth = duosPicked ? strokeWidthThick : 0;
-
-            if ("Week " + week.week.num === filters.week)
-                strokeWidth = strokeWidthThick;
-
-            weekSelections[week.week.num - 1].rect
-                .transition()
-                .delay(week.week.num * 10)
-                .duration(300)
-                .attr("stroke-width", strokeWidth)
-        })
-    }
-
     
     function clearSoloAndDuo() {
         filters.soloOrDuo = "";
