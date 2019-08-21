@@ -3,8 +3,8 @@
 import { colors } from "./shared.js";
 
 import { cornerRadius, filters, playerDim, playerColors, soloQualifications, duoQualifications, qualifierNames, updateCounts, teamMembers } from "./main.js";
-//import { showPlayerOnWeekChart } from "./weekChart.js";
 import { checkBox } from "./checkBox.js";
+import { profile } from "./profile.js";
 
 export let clearPlayer
 export let PlayerTableWidth;
@@ -69,7 +69,6 @@ export function playerChart(id) {
 
     let scatterplotButton;
 
-
     let svgWidth = PlayerTableWidth; //640;
 
     // Ugh - currently selected rect, so it can be unselected easily
@@ -126,7 +125,7 @@ export function playerChart(id) {
         .attr("x", 3)
         .attr("y", 84)
         .attr("width", svgWidth - 6)
-         .attr("height", 713)
+        .attr("height", 713)
         .attr("fill", "#F0F8FF")
         .attr("stroke", "black")
         .attr("stroke-width", 9)
@@ -174,7 +173,7 @@ export function playerChart(id) {
 
             renderRows();
             moveCursor(elm);
-        } 
+        }
 
         // Rects for column headers 
         svg.selectAll("rect").data(columns).enter().append("rect")
@@ -1009,7 +1008,7 @@ export function playerChart(id) {
             filters.player = clickedPlayer;
 
             clickedNode.attr("stroke-width", thickBorder - 2);
-            //showPlayerOnWeekChart(clickedPlayer);
+            showPlayerProfile(clickedPlayer);
             selectedRect = clickedNode;
 
             playerCursorVisible = false;
@@ -1025,7 +1024,7 @@ export function playerChart(id) {
 
             filters.player = clickedPlayer;
             clickedNode.attr("stroke-width", thickBorder - 2);
-            //showPlayerOnWeekChart(clickedPlayer);
+            showPlayerProfile(clickedPlayer);
 
             movePlayerCursor(false);
             updateCounts();
@@ -1039,7 +1038,11 @@ export function playerChart(id) {
 
         movePlayerCursor(true);
         updateCounts();
-        //showPlayerOnWeekChart("");
+        showPlayerProfile("");
+    }
+
+    function showPlayerProfile(player) {
+        profile(player)
     }
 
 
