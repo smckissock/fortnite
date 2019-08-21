@@ -102,7 +102,7 @@ export function eventChart(id) {
         const lastWeek = 18;
         const xScale = d3.scaleLinear()
             .domain([firstWeek, lastWeek])
-            .range([100, svgWidth]);
+            .range([76, svgWidth]);
 
         [
             { firstWeek: 1, lastWeek: 12, name: "Fortnite World Cup" },
@@ -141,9 +141,10 @@ export function eventChart(id) {
                 .boxStrokeWidth(1)
                 .checked(false)
                 .clickEvent(function () {
-                    formatCheck(format.format)
+                    formatCheck(format.format, formatCheckBox.checked())
                 });
-            svg.call(formatCheckBox);
+            // Maybe later...    
+            //svg.call(formatCheckBox);
 
             svg.selectAll("rect." + format.format).data(format.items).enter().append("rect")
                 .attr("x", d => xScale(d.weekNum))
@@ -238,8 +239,9 @@ export function eventChart(id) {
     }
 
 
-    function formatCheck(formatName) {
-        console.log(formatName);
+    // Checks for solo, dou and trio are hidden at the moment
+    function formatCheck(formatName, checked) {
+        console.log(formatName + " " + checked);
         return;
 
         _chart.redrawGroup();
