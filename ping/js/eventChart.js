@@ -57,7 +57,7 @@ export function eventChart(id) {
     let weekSelections = [];
 
     let weekRects = [];
-    
+
     const soloX = 10;
     const duoX = 155;
 
@@ -67,14 +67,14 @@ export function eventChart(id) {
     const strokeWidthThin = 3;
 
     const bigLabel = { x: 25, y: 59, size: "2em" };
-    
-    
+
+
     let checkBoxSolos;
     let checkBoxDuos;
 
     const div = d3.select(id);
-    
-    
+
+
     // Include this, and add a dimension and group
     // Later call these on a click to filter: 
     //    _chart.filter(filter);
@@ -97,7 +97,7 @@ export function eventChart(id) {
         //    {
         //        format: "Solo", items: [
         //            { num: 1, weekNum: 1, name: "Week 1", type: "World Cup", date: "April 14", done: true },
-        
+
         const firstWeek = 1;
         const lastWeek = 18;
         const xScale = d3.scaleLinear()
@@ -105,30 +105,30 @@ export function eventChart(id) {
             .range([100, svgWidth]);
 
         [
-            { firstWeek: 1, lastWeek: 12, name: "Fortnite World Cup"},
-            { firstWeek: 12, lastWeek: 18, name: "Fortnite Champion Series"}
+            { firstWeek: 1, lastWeek: 12, name: "Fortnite World Cup" },
+            { firstWeek: 12, lastWeek: 18, name: "Fortnite Champion Series" }
         ]
-        .forEach(function (event) {    
-            const left = xScale(event.firstWeek) - 4;
-            const width = xScale(event.lastWeek) - left - 5;
-            
-            text(svg, "event-name", left + 10, 30, event.name)
-            svg.append("rect")
-                .attr("x", left)
-                .attr("y", 10)
-                .attr("width", width)
-                .attr("height", 140)
-                .attr("fill-opacity", "0.0")
-                .attr("stroke", "black")
-                .attr("stroke-width", 1)
-                .attr("rx", 8)
-                .attr("ry", 8)
+            .forEach(function (event) {
+                const left = xScale(event.firstWeek) - 4;
+                const width = xScale(event.lastWeek) - left - 5;
+
+                text(svg, "event-name", left + 10, 30, event.name)
+                svg.append("rect")
+                    .attr("x", left)
+                    .attr("y", 10)
+                    .attr("width", width)
+                    .attr("height", 140)
+                    .attr("fill-opacity", "0.0")
+                    .attr("stroke", "black")
+                    .attr("stroke-width", 1)
+                    .attr("rx", 8)
+                    .attr("ry", 8)
             });
 
-        const top = 40;    
-        let formatNum = 0;    
+        const top = 40;
+        let formatNum = 0;
         events.forEach(function (format) {
-            
+
             text(svg, "checkbox-label", 10, formatNum * 35 + 27 + top, format.format)
             let formatCheckBox = new checkBox(format.format);
             formatCheckBox
@@ -141,7 +141,7 @@ export function eventChart(id) {
                 .boxStrokeWidth(1)
                 .checked(false)
                 .clickEvent(function () {
-                    checkEvent(format.format)
+                    formatCheck(format.format)
                 });
             svg.call(formatCheckBox);
 
@@ -159,7 +159,7 @@ export function eventChart(id) {
                 .on('mouseover', function (d) {
                     if (!d.done)
                         return;
-    
+
                     d3.select(this)
                         .transition()
                         .duration(100)
@@ -170,46 +170,31 @@ export function eventChart(id) {
                         return;
 
                     drawWeekBorders()
-
-                    /* // Leave border if it is selected
-                    if (filters.week == d.name) {
-                        d3.select(this)
-                            .transition()
-                            .duration(100)
-                            .attr("stroke-width", strokeWidthThick);
-                        return;
-                    } */
-
-                    /* d3.select(this)
-                        .transition()
-                        .duration(100)
-                        .attr("stroke-width", 0); */
-
                 }).on('click', function (d) {
                     clickRect(d3.select(this), d);
                 })
-                .each(function(week) {
+                .each(function (week) {
                     weekRects.push(d3.select(this));
 
                     let x = week.num != "W10" ? xScale(week.weekNum) + 9 : xScale(week.weekNum) + 5;
                     if (week.num == "F")
-                        x = xScale(week.weekNum) + 17    ;
+                        x = xScale(week.weekNum) + 17;
                     text(svg, "week-label", x, formatNum * 35 + 26 + top, week.num);
-                }) 
-                
+                })
+
             formatNum++;
-        })   
-    } 
+        })
+    }
 
     const clickRect = function (d3Rect, data) {
         // Don't do anything for weeks that aren't done   
         if (data.done == false)
-            return;  
+            return;
 
         function refresh() {
             _chart.redrawGroup();
             drawWeekBorders();
-        }    
+        }
 
         filters.soloOrDuo = "";
         //clearSoloAndDuo();
@@ -228,32 +213,35 @@ export function eventChart(id) {
         clearPlayer(null);
 
         // 1 None were selected, this is the first selection
-        if (filters.week === "") {
-            filters.week = newFilter;
-            _chart.filter(filters.week);
+        if (filters.weeks.length === 0) {
+            filters.weeks.push(newFilter);
+
+            _chart.filter(filters.weeks[0]);
             refresh();
             return;
         }
-        // 2 One is selected, so unselect it and select this
-        if (filters.week != newFilter) {
-            const oldFilter = filters.week;
-            filters.week = newFilter;
-            _chart.filter(null);
-            _chart.filter(filters.week); 
+
+        // An unselected rect was clicked, so add it.
+        if (filters.weeks.indexOf(newFilter) == -1) {
+            filters.weeks.push(newFilter);
+
+            _chart.filter([[newFilter]]);
             refresh();
             return;
         }
-        // 3 This was selected, so unselect it - all will be selected
-        filters.week = "";
-        _chart.filter(null);
+
+        // 3 This was already selected, so toggle it off 
+        filters.weeks = filters.weeks.filter(d => d !== newFilter)
+
+        _chart.filter([[newFilter]]);
         refresh();
     }
 
 
-    function checkEvent(formatName) {
+    function formatCheck(formatName) {
         console.log(formatName);
         return;
-    
+
         _chart.redrawGroup();
         drawWeekBorders();
         updateCounts();
@@ -261,18 +249,19 @@ export function eventChart(id) {
 
 
     function drawWeekBorders() {
-        weekRects.forEach(function(week) {
+        weekRects.forEach(function (week) {
             const data = week.data()[0];
-            const strokeWidth = (data.name == filters.week) ? strokeWidthThick : 0; 
+
+            const strokeWidth = (filters.weeks.indexOf(data.name) != -1) ? strokeWidthThick : 0;
 
             week
                 .transition()
                 .duration(100)
                 .attr("stroke-width", strokeWidth);
-        }); 
+        });
     }
-    
-    
+
+
     function clearSoloAndDuo() {
         filters.soloOrDuo = "";
         _chart.filter(null);
@@ -280,7 +269,7 @@ export function eventChart(id) {
         checkBoxDuos.checked(false);
     }
 
-    makeTimelines(); 
+    makeTimelines();
 
     return _chart;
 }

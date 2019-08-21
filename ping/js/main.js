@@ -23,7 +23,7 @@ export let facts;
 
 
 export let filters = {
-    week: "",
+    weeks: [],
     regions: [],
     team: "",
     search: "",
@@ -77,7 +77,7 @@ d3.json('ping/data/data.json').then(function (dataArray) {
     const screenWidth = 1920 - leftMargin;
     titleSvg = title(screenWidth);
     //goToFinalsButton(titleSvg);
-    
+
     //searchLabel(titleSvg);
     posickLabel(titleSvg);
     //disclaimer(titleSvg);
@@ -112,7 +112,7 @@ d3.json('ping/data/data.json').then(function (dataArray) {
     facts = crossfilter(data);
 
     draw(facts);
-   
+
     d3.select("#search-input").on('keyup', function (event) {
         // Regardless of what happens below, selected player needs to be cleared 
         filters.player = "";
@@ -197,7 +197,7 @@ function title(width) {
         .style("font-family", "Source Sans Pro, sans-serif")
         .attr("fill", "black");
 
-        svg.append("text")
+    svg.append("text")
         .attr("x", 0)
         .attr("y", 90)
         .text("Competitive Battle Royale Stats")
@@ -206,7 +206,7 @@ function title(width) {
         .attr("font-weight", "800")
         .style("font-family", "Source Sans Pro, sans-serif")
         .attr("fill", "black");
-    
+
     return svg;
 }
 
@@ -412,8 +412,10 @@ export function updateCounts() {
         if (filters.soloOrDuo != "")
             filterParts.push(filters.soloOrDuo);
         else
-            if (filters.week != "")
-                filterParts.push(filters.week);
+            if (filters.weeks.length != 0)
+                filterParts.push(filters.weeks.join(", "));
+        //if (filters.week != "")
+        //    filterParts.push(filters.week);
 
         if (filters.search != "")
             filterParts.push('"' + filters.search + '"');
