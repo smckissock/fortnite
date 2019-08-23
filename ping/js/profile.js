@@ -129,13 +129,13 @@ export function profile(player) {
 
         const colWidth = 100;
         const cols = [
-            {name: "Payout", field: ""},
-            {name: "Points", field: ""},
-            {name: "Wins", field: ""},
-            {name: "Elim Points", field: ""},
-            {name: "Elim %", field: ""},
-            {name: "Qual Points", field: ""},
-            {name: "Qual %", field: ""}
+            {name: "Payout", field: "payout"},
+            {name: "Points", field: "points"},
+            {name: "Wins", field: "wins"},
+            {name: "Elim Points", field: "elims"},
+            {name: "Elim %", field: "elims"},
+            {name: "Qual Points", field: "placementPoints"},
+            {name: "Qual %", field: "placementPoints"}
         ];
 
         function writeNumber(x, y, text) {
@@ -182,13 +182,13 @@ export function profile(player) {
         function rows(recs) {
             const rowHeaderWidth = 100;
             const rowHeight = 30;
-            svg.selectAll(".player-stat-row").data(recs).enter().append("text")
-                .attr("x", 200)
-                .attr("y", (d, i) => 240 + rowHeight * i)
-                .attr("pointer-events", "none")
-                .classed(".player-stat-row", true)
-                .text(d => d.week)
-                .each(d => console.log(d))
+
+            svg.selectAll("g").data(recs).enter().append("g")
+                .each(function (row, rowNum) {
+                    text(row.week, svg, "player-stat-row", 10, 240 + rowHeight * rowNum); 
+                    cols.forEach((col, colNum) => text(row[col.field], svg, "player-stat-row", 100 + colNum * colWidth, 240 + rowHeight * rowNum))
+                    console.log(row.week);    
+                });
         }
 
         const x0 = 10;
