@@ -52,8 +52,8 @@ export function profile(player) {
     }
 
     function makeHelpButton(svg, screenWidth) {
-        text("Fortnite", svg, "little-fortnite", screenWidth - 230, 126);
-        text("ping", svg, "little-ping", screenWidth - 120, 126);
+        //text("Fortnite", svg, "little-fortnite", screenWidth - 280, 126);
+        text("fortniteping.com", svg, "little-ping", screenWidth - 285, 127);
 
         svg.append("circle")
             .attr("cx", screenWidth - 30)
@@ -88,7 +88,7 @@ export function profile(player) {
     }
 
     
-    function showPlayerHeader(stats, region) {
+    function makePlayerHeader(stats, region) {
         let team = "";
         let nationality = "";
         let age = "";
@@ -125,33 +125,47 @@ export function profile(player) {
         text(playerInfoLabel, svg, "player-info", left, 165);
     }
 
-    function writeNumber(x, y, text) {
-        regionSvg.append("text")
-            .classed("player-summary", true)
-            .classed("player-stat", true)
-            .attr("x", x)
-            .attr("y", y)
-            .text(text)
-    }
+    function makeStats() {
 
-    function writeRank(x, y, text) {
-        regionSvg.append("text")
-            .classed("player-summary", true)
-            .classed("player-rank", true)
-            //.attr("x", x + 40 - (text.length * 9)) // Don't attempt to right-justify
-            .attr("x", x)
-            .attr("y", y)
-            .text("#" + text)
-    }
+        function writeNumber(x, y, text) {
+            svg.append("text")
+                .classed("player-summary", true)
+                .classed("player-stat", true)
+                .attr("x", x)
+                .attr("y", y)
+                .text(text)
+        }
+    
+        function writeRank(x, y, text) {
+            svg.append("text")
+                .classed("player-summary", true)
+                .classed("player-rank", true)
+                //.attr("x", x + 40 - (text.length * 9)) // Don't attempt to right-justify
+                .attr("x", x)
+                .attr("y", y)
+                .text("#" + text)
+        }
+    
+        function writeText(x, y, text) {
+            svg.append("text")
+                .classed("player-summary", true)
+                .classed("player-stat-label", true)
+                .attr("x", x)
+                .attr("y", y)
+                .attr("font-family", "Helvetica, Arial, sans-serif")
+                .text(text)
+        }
 
-    function writeText(x, y, text) {
-        regionSvg.append("text")
-            .classed("player-summary", true)
-            .classed("player-stat-label", true)
-            .attr("x", x)
-            .attr("y", y)
-            .attr("font-family", "Helvetica, Arial, sans-serif")
-            .text(text)
+        const x0 = 10;
+        const x1 = 75;
+        const x2 = 150;
+        const x3 = 225;
+        const yStep = 38;
+        const yRank = 16;
+
+        writeText(x1 + 5, 189, "Solo");
+        writeText(x2 + 5, 189, "Duo");
+        writeText(x3, 189, "Total");
     }
 
     const num = d3.format(",d");
@@ -168,8 +182,6 @@ export function profile(player) {
         
     const region = recs[0].region;
     const stats = statsForPlayer(region, player);
-    showPlayerHeader(stats, region);
-    
-
-    //text(svg, "event-name", 20, 120, player)
+    makePlayerHeader(stats, region);
+    makeStats();
 }

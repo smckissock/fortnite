@@ -302,7 +302,7 @@ function helpButton(svg, screenWidth) {
             d3.select(this)
                 .transition()
                 .duration(50)
-                .attr("stroke-width", 4)
+                .attr("stroke-width", 6)
         })
         .on('mouseout', function (d) {
             d3.select(this)
@@ -315,8 +315,8 @@ function helpButton(svg, screenWidth) {
         });
 
     svg.append("text")
-        .attr("x", screenWidth - 37)
-        .attr("y", 59)
+        .attr("x", screenWidth - 38)
+        .attr("y", 58)
         .text("?")
         .attr("font-size", ".7em")
         .attr("fill", "black")
@@ -471,7 +471,7 @@ function draw(facts) {
 
     const width = 1464;
     //downloadButton(titleSvg, width);
-    //helpButton(titleSvg, width);
+    helpButton(titleSvg, width - 50);
     filtersAndCount(titleSvg, width);
 
     dc.registerChart(players, null);
