@@ -8,14 +8,15 @@ export function profile(player) {
     let svg;
     let rect;
 
+    const svgWidth = 1000;
+    const svgHeight = 700;
+
     function enableSvgs (enabled) {
-        // Disable everything
         const val = enabled ? "auto" : "none"
         d3.selectAll("svg")
         .each(function() {
             d3.select(this)
-                .attr("pointer-events", val); 
-            console.log(val)
+                .attr("pointer-events", val);
         })
     }
 
@@ -30,18 +31,17 @@ export function profile(player) {
 
     function makeSvg () {
         const div = d3.select("#chart-player");
-        svg = div.append("svg")
-            //.attr("width", playerTableWidth + 4)
-            .attr("width", 800)
-            .attr("height", 1000)
-            .attr("transform", "translate(0,-1090)")
+        svg = div.append("svg")            
+            .attr("width", svgWidth + 6)
+            .attr("height", svgHeight + 7)
+            .attr("transform", "translate(-150,-1290)")
             .attr("fill", "black")
 
         rect = svg.append("rect")
             .attr("x", 3)
             .attr("y", 84)
-            .attr("width", 700)
-            .attr("height", 500)
+            .attr("width", svgWidth)
+            .attr("height", svgHeight)
             .attr("opacity", 1.0)
             .attr("fill-opacity", 1.0)
             .attr("fill", "#F0F8FF")
@@ -127,6 +127,17 @@ export function profile(player) {
 
     function makeStats() {
 
+        const colWidth = 100;
+        const cols = [
+            {name: "Payout", field: ""},
+            {name: "Points", field: ""},
+            {name: "Wins", field: ""},
+            {name: "Elim Points", field: ""},
+            {name: "Elim %", field: ""},
+            {name: "Qual Points", field: ""},
+            {name: "Qual %", field: ""}
+        ];
+
         function writeNumber(x, y, text) {
             svg.append("text")
                 .classed("player-summary", true)
@@ -155,6 +166,30 @@ export function profile(player) {
                 .attr("font-family", "Helvetica, Arial, sans-serif")
                 .text(text)
         }
+        
+
+        function columnHeaders() {            
+            const rowHeaderWidth = 100;
+            svg.selectAll(".player-stat-col-header").data(cols).enter().append("text")
+                .attr("x", (d, i) => rowHeaderWidth + i * colWidth)
+                .attr("y", 200)
+                .attr("pointer-events", "none")
+                .classed("player-stat-col-header", true)
+                .text(d => d.name)
+                .each(d => console.log(d))
+        }
+        
+        function rows(recs) {
+            const rowHeaderWidth = 100;
+            const rowHeight = 30;
+            svg.selectAll(".player-stat-row").data(recs).enter().append("text")
+                .attr("x", 200)
+                .attr("y", (d, i) => 240 + rowHeight * i)
+                .attr("pointer-events", "none")
+                .classed(".player-stat-row", true)
+                .text(d => d.week)
+                .each(d => console.log(d))
+        }
 
         const x0 = 10;
         const x1 = 75;
@@ -163,9 +198,14 @@ export function profile(player) {
         const yStep = 38;
         const yRank = 16;
 
-        writeText(x1 + 5, 189, "Solo");
-        writeText(x2 + 5, 189, "Duo");
-        writeText(x3, 189, "Total");
+        //writeText(x1 + 5, 189, "Solo");
+        //writeText(x2 + 5, 189, "Duo");
+        //writeText(x3, 189, "Total");
+
+        const recs = facts.all().filter(x => x.player === player);
+        const matches = recs.filter(x => "Week 1" === x.week);
+        columnHeaders();
+        rows(recs);
     }
 
     const num = d3.format(",d");
@@ -178,7 +218,7 @@ export function profile(player) {
 
     enableSvgs(false);
     makeSvg();
-    makeHelpButton(svg, 694) 
+    makeHelpButton(svg, svgWidth) 
         
     const region = recs[0].region;
     const stats = statsForPlayer(region, player);

@@ -183,6 +183,16 @@ body {
     font-size: 1.0em;
 }
 
+.player-stat-col-header {
+    font-weight: 800;
+    font-size: 1.0em;
+}
+
+.player-stat-row {
+    font-weight: 800;
+    font-size: 1.0em;
+}
+
 .posick {
     font-weight: 600;
     font-size: 1.6rem;
