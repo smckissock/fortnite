@@ -112,7 +112,7 @@ export function eventChart(id) {
                 const left = xScale(event.firstWeek) - 4;
                 const width = xScale(event.lastWeek) - left - 5;
 
-                text(svg, "event-name", left + 10, 30, event.name)
+                text(event.name, svg, "event-name", left + 10, 30)
                 svg.append("rect")
                     .attr("x", left)
                     .attr("y", 10)
@@ -129,7 +129,7 @@ export function eventChart(id) {
         let formatNum = 0;
         events.forEach(function (format) {
 
-            text(svg, "checkbox-label", 10, formatNum * 35 + 27 + top, format.format)
+            text(format.format, svg, "checkbox-label", 10, formatNum * 35 + 27 + top)
             let formatCheckBox = new checkBox(format.format);
             formatCheckBox
                 .size(25)
@@ -180,7 +180,7 @@ export function eventChart(id) {
                     let x = week.num != "W10" ? xScale(week.weekNum) + 9 : xScale(week.weekNum) + 5;
                     if (week.num == "F")
                         x = xScale(week.weekNum) + 17;
-                    text(svg, "week-label", x, formatNum * 35 + 26 + top, week.num);
+                    text(week.num, svg, "week-label", x, formatNum * 35 + 26 + top);
                 })
 
             formatNum++;

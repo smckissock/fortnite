@@ -96,11 +96,12 @@ export const colors = {
 
 }
 
-export function text(svg, style, x, y, text) {
-    svg.append("text")
-    .attr("x", x)
-    .attr("y", y)
-    .attr("pointer-events", "none")
-    .text(text)
-    .classed(style, true)
+// Writes stats to an svg, but must have a css class
+export function text(text, svg, style, x, y) {
+    return svg.append("text")
+        .attr("x", x)
+        .attr("y", y)
+        .attr("pointer-events", "none")
+        .text(text)
+        .classed(style, true)
 }

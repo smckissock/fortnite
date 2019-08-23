@@ -120,7 +120,6 @@ body {
 .tick {
     font-weight: 500;
     font-size: 20px;
-
 }
 
 
@@ -135,6 +134,38 @@ body {
     font-weight: 400;
     font-size: 1.5em;
     text-align: right;
+}
+
+.player-info {
+    font-weight: 600;
+    font-size: 1.4rem;
+    text-align: right;
+}
+
+.big-fortnite {
+    font-size: 1.1em;
+    letter-spacing: .2rem;
+    font-family: "Burbank";
+}
+
+.big-ping {
+    font-weight: 900;
+    font-size: 1.2em;
+    letter-spacing: .03rem;
+}
+
+.little-fortnite {
+    font-size: 1.7em;
+    letter-spacing: .2rem;
+    font-family: "Burbank";
+    fill-opacity : .4;
+}
+
+.little-ping {
+    font-weight: 900;
+    font-size: 1.7rem;
+    letter-spacing: .05rem;
+    fill-opacity : .4;
 }
 
 .checkbox-label {

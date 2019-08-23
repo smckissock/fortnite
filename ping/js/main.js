@@ -178,24 +178,8 @@ function title(width) {
         .attr("width", width + "px")
         .attr("height", "100px");
 
-    svg.append("text")
-        .attr("x", 0)
-        .attr("y", 55)
-        .text("FORTNITE")
-        .attr("letter-spacing", ".2rem")
-        .attr("font-size", "1.1em")
-        .style("font-family", "Burbank")
-        .attr("fill", "black");
-
-    svg.append("text")
-        .attr("x", 220)
-        .attr("y", 55)
-        .text("ping")
-        .attr("font-size", "1.2em")
-        .attr("letter-spacing", "0.4rem")
-        .attr("font-weight", "900")
-        .style("font-family", "Source Sans Pro, sans-serif")
-        .attr("fill", "black");
+    text("FORTNITE", svg, "big-fortnite", 0, 55, );     
+    text("ping", svg, "big-ping", 220, 55, );     
 
     svg.append("text")
         .attr("x", 0)
@@ -260,8 +244,8 @@ function title(width) {
 
 function posickLabel(svg) {
     const left = 460
-    text(svg, "posick", left, 43, "Use code");
-    text(svg, "posick", left, 72, '"Posick"');
+    text("Use code", svg, "posick", left, 43);
+    text('"Posick"', svg, "posick", left, 72, );
 }
 
 function searchLabel(svg) {
