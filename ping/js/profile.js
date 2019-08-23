@@ -184,7 +184,7 @@ export function profile(player) {
             const rowHeight = 30;
 
             svg.selectAll("g").data(recs).enter().append("g")
-                .each(function (row, rowNum) {
+                .each((row, rowNum) => {
                     text(row.week, svg, "player-stat-row", 10, 240 + rowHeight * rowNum); 
                     cols.forEach((col, colNum) => text(row[col.field], svg, "player-stat-row", 100 + colNum * colWidth, 240 + rowHeight * rowNum))
                     console.log(row.week);    
