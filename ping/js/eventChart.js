@@ -24,21 +24,21 @@ export function eventChart(id) {
     const events = [
         {
             format: "Solos", items: [
-                { num: "W1", weekNum: 1, name: "Week 1", type: "World Cup", date: "April 14", done: true },
-                { num: "W3", weekNum: 3, name: "Week 3", type: "World Cup", date: "April 28", done: true },
-                { num: "W5", weekNum: 5, name: "Week 5", type: "World Cup", date: "May 12", done: true },
-                { num: "W7", weekNum: 7, name: "Week 7", type: "World Cup", date: "May 26", done: true },
-                { num: "W9", weekNum: 9, name: "Week 9", type: "World Cup", date: "June 9", done: true },
+                { num: "W1", weekNum: 1, name: "WC Week 1", type: "World Cup", date: "April 14", done: true },
+                { num: "W3", weekNum: 3, name: "WC Week 3", type: "World Cup", date: "April 28", done: true },
+                { num: "W5", weekNum: 5, name: "WC Week 5", type: "World Cup", date: "May 12", done: true },
+                { num: "W7", weekNum: 7, name: "WC Week 7", type: "World Cup", date: "May 26", done: true },
+                { num: "W9", weekNum: 9, name: "WC Week 9", type: "World Cup", date: "June 9", done: true },
                 { num: "F", weekNum: 11, name: "Finals", type: "World Cup", date: "June 9", done: false }
             ]
         },
         {
             format: "Duos", items: [
-                { num: "W2", weekNum: 2, name: "Week 2", type: "World Cup", date: "April 21", done: true },
-                { num: "W4", weekNum: 4, name: "Week 4", type: "World Cup", date: "May 5", done: true },
-                { num: "W6", weekNum: 6, name: "Week 6", type: "World Cup", date: "May 19", done: true },
-                { num: "W8", weekNum: 8, name: "Week 8", type: "World Cup", date: "June 2", done: true },
-                { num: "W10", weekNum: 10, name: "Week 10", type: "World Cup", date: "June 21", done: true },
+                { num: "W2", weekNum: 2, name: "WC Week 2", type: "World Cup", date: "April 21", done: true },
+                { num: "W4", weekNum: 4, name: "WC Week 4", type: "World Cup", date: "May 5", done: true },
+                { num: "W6", weekNum: 6, name: "WC Week 6", type: "World Cup", date: "May 19", done: true },
+                { num: "W8", weekNum: 8, name: "WC Week 8", type: "World Cup", date: "June 2", done: true },
+                { num: "W10", weekNum: 10, name: "WC Week 10", type: "World Cup", date: "June 21", done: true },
                 { num: "F", weekNum: 11, name: "Finals", type: "World Cup", date: "June 21", done: false }
             ]
         },
@@ -200,7 +200,8 @@ export function eventChart(id) {
         filters.soloOrDuo = "";
         //clearSoloAndDuo();
 
-        const newFilter = "Week " + data.weekNum;
+        //const newFilter = "Week " + data.weekNum;
+        const newFilter = data.name;
 
         // 5 things need to happen:
 

@@ -135,12 +135,12 @@ d3.json('ping/data/data.json').then(function (dataArray) {
 function makeQualifications(data) {
     data.forEach(function (placement) {
         if (placement.soloQual != 0) {
-            soloQualifications.push({ player: placement.player, week: placement.week.replace("Week ", "") });
+            soloQualifications.push({ player: placement.player, week: placement.week.replace("WC Week ", "") });
             qualifierNames[placement.player] = "";
             return;
         }
         if (placement.duoQual != 0) {
-            duoQualifications.push({ player: placement.player, week: placement.week.replace("Week ", "") });
+            duoQualifications.push({ player: placement.player, week: placement.week.replace("WC Week ", "") });
             qualifierNames[placement.player] = "";
             return;
         }

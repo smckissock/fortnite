@@ -27,10 +27,10 @@ namespace FortniteJson {
             //Python.Run(@"c:\fortnite\python\03import_wc_duo_loaderboard.py", "");
 
             //PlayersUpdatedFromAirtable.Import();
-            //Fortnite.MakeJsonArray();
+            Fortnite.MakeJsonArray();
 
 
-            Python.Run(@"c:\project\fortnite\python\champion_series\01scrape_tracker.py", "");
+            //  Python.Run(@"c:\project\fortnite\python\champion_series\01scrape_tracker.py", "");
 
             //Fortnite.MakeGames();
 
