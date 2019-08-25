@@ -76,6 +76,7 @@ JOIN Region r ON p.RegionID = r.ID
 JOIN PlayerPlacement pp ON pp.PlacementID = p.ID 
 JOIN PlayerView pl ON pp.PlayerID = pl.ID 
 WHERE Payout > 0
+AND pl.Name <> '' -- This is a problem I don't have time to solve right now!! 
 GO
 
 
