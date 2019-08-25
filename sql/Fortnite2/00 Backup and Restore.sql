@@ -68,3 +68,10 @@ GO
 RESTORE FILELISTONLY
 FROM DISK = N'd:\fortnite\fortnitedb\August 19.bak'
 GO
+
+-- August 24, 2019  Before importing Trios week 1
+RESTORE DATABASE Fortnite
+FROM DISK = N'd:\fortnite\fortnitedb\August 19.bak'
+WITH MOVE 'Fortnite2' TO 'd:\fortnite\fortnitedb\Fortnite_.mdf',
+MOVE 'Fortnite2_log' TO 'd:\fortnite\fortnitedb\Fortnite_log_.ldf'
+

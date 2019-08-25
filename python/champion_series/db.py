@@ -3,8 +3,6 @@ import pyodbc
 conn = pyodbc.connect(
     r'DRIVER={SQL Server Native Client 11.0};'
     r'SERVER=DESKTOP-S1K43CL\SQLExpress;'
-    #r'SERVER=PC\SQLExpress;'
-    # r'DATABASE=RussiaNews;'
     r'DATABASE=Fortnite;'
     r'Trusted_Connection=yes;'
 )
@@ -19,6 +17,7 @@ def cmd(sql):
         cursor.execute(sql)
         conn.commit()
     except Exception as e:
+        cursor.execute("INSERT INTO ImportError VALUES (?, ?)", sql, '')
         print(sql)
         str(e)
 
@@ -29,9 +28,9 @@ def max_id(table):
     return rows[0][0]
 
 
-def write_error(step, id, message):
+def write_error(sql, message):
     cursor.execute(
-        "INSERT INTO PipelineError VALUES (?, ?, ?, GetDate(), '')", step, id, message)
+        "INSERT INTO ImportError VALUES (?, ?)", sql, message)
     conn.commit
 
 

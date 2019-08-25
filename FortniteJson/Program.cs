@@ -14,10 +14,9 @@ namespace FortniteJson {
             //Python.Run(@"c:\fortnite\python\import_tracker.py", "");
             
             //Fortnite2FixUp.FixCurrentName();
-            //Fortnite2FixUp.FixPlacementPayout();
-            //Fortnite2FixUp.FixPlacementElims();
-            //Fortnite2FixUp.UpdateWins();
-            //Fortnite.MakeJson();
+            
+            
+            
             //Fortnite2FixUp.FixQualifications();
 
             Console.WriteLine("Running..");
@@ -27,13 +26,23 @@ namespace FortniteJson {
             //Python.Run(@"c:\fortnite\python\03import_wc_duo_loaderboard.py", "");
 
             //PlayersUpdatedFromAirtable.Import();
-            Fortnite.MakeJsonArray();
 
-
-            //  Python.Run(@"c:\project\fortnite\python\champion_series\01scrape_tracker.py", "");
-
+            // For World Cup Finals
             //Fortnite.MakeGames();
 
+
+            // Steps for Trio Follow: Update Week and Week ID in Python code
+
+            //Python.Run(@"c:\project\fortnite\python\champion_series\02import_player_playerWeek.py", "");
+            //Python.Run(@"c:\project\fortnite\python\champion_series\03import_leaderboard.py", "");
+            //Python.Run(@"c:\project\fortnite\python\champion_series\04import_tiers.py", "");
+
+            //Fortnite2FixUp.FixPlacementPayout();
+            //Fortnite2FixUp.FixPlacementElims();
+            //Fortnite2FixUp.UpdateWins();
+
+            Fortnite.MakeJsonArray();
+            
 
             Console.Write("DONE");
             Console.Read();

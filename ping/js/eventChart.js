@@ -8,19 +8,6 @@ export let showPlayerOnWeekChart2;
 
 export function eventChart(id) {
 
-    const weeks = [
-        { num: 1, name: "Week 1", type: "Solo", done: true },
-        { num: 2, name: "Week 2", type: "Duo", done: true },
-        { num: 3, name: "Week 3", type: "Solo", done: true },
-        { num: 4, name: "Week 4", type: "Duo", done: true },
-        { num: 5, name: "Week 5", type: "Solo", done: true },
-        { num: 6, name: "Week 6", type: "Duo", done: true },
-        { num: 7, name: "Week 7", type: "Solo", done: true },
-        { num: 8, name: "Week 8", type: "Duo", done: true },
-        { num: 9, name: "Week 9", type: "Solo", done: true },
-        { num: 10, name: "Week 10", type: "Duo", done: true },
-    ];
-
     const events = [
         {
             format: "Solos", items: [
