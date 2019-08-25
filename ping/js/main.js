@@ -178,16 +178,16 @@ function title(width) {
         .attr("width", width + "px")
         .attr("height", "100px");
 
-    text("FORTNITE", svg, "big-fortnite", 0, 55, );     
-    text("ping", svg, "big-ping", 220, 55, );     
+    text("FORTNITE", svg, "big-fortnite", 0, 55);     
+    text("ping", svg, "big-ping", 205, 55);     
 
     svg.append("text")
         .attr("x", 0)
         .attr("y", 90)
         .text("Competitive Battle Royale Stats")
-        .attr("font-size", ".5em")
-        .attr("letter-spacing", ".03rem")
-        .attr("font-weight", "800")
+        .attr("font-size", ".4em")
+        .attr("letter-spacing", ".1rem")
+        .attr("font-weight", "900")
         .style("font-family", "Source Sans Pro, sans-serif")
         .attr("fill", "black");
 
