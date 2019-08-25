@@ -11,6 +11,8 @@ export function profile(player) {
     const svgWidth = 1000;
     const svgHeight = 700;
 
+    const leftMargin = 40;
+
     function enableSvgs (enabled) {
         const val = enabled ? "auto" : "none"
         d3.selectAll("svg")
@@ -33,15 +35,16 @@ export function profile(player) {
         const div = d3.select("#chart-player");
         svg = div.append("svg")            
             .attr("width", svgWidth + 6)
-            .attr("height", svgHeight + 7)
+            .attr("height", svgHeight + 6)
             .attr("transform", "translate(-150,-1290)")
             .attr("fill", "black")
 
+        const top = 84;    
         rect = svg.append("rect")
             .attr("x", 3)
-            .attr("y", 84)
+            .attr("y", top)
             .attr("width", svgWidth)
-            .attr("height", svgHeight)
+            .attr("height", svgHeight - top)
             .attr("opacity", 1.0)
             .attr("fill-opacity", 1.0)
             .attr("fill", "#F0F8FF")
@@ -89,9 +92,6 @@ export function profile(player) {
 
     
     function makePlayerHeader(stats, region) {
-        let team = "";
-        let nationality = "";
-        let age = "";
         let playerInfoLabel = "";
         const players = playerInfos.filter(d => d.name === player);
         if (players.length > 0) {
@@ -108,10 +108,9 @@ export function profile(player) {
             playerInfoLabel = "19 | Free Agent | Arlington, Virginia"
 
         // Player Name
-        const left = 24;
         svg.append("text")
             .classed("player-summary", true)
-            .attr("x", left)
+            .attr("x", leftMargin)
             .attr("y", 122)
             .text(player)
             .attr("fill", "black")
@@ -122,12 +121,15 @@ export function profile(player) {
             .attr("font-size", (player.length < 16) ? "2.4em" : "1.8em")
 
         // Player team, nationality & age, if any 
-        text(playerInfoLabel, svg, "player-info", left, 165);
+        text(playerInfoLabel, svg, "player-info", leftMargin, 165);
     }
 
     function makeStats() {
 
         const colWidth = 100;
+        const rowHeaderWidth = 340;
+        const topRowY = 240;
+
         const cols = [
             {name: "Payout", field: "payout"},
             {name: "Points", field: "points"},
@@ -138,40 +140,10 @@ export function profile(player) {
             {name: "Qual %", field: "placementPoints"}
         ];
 
-        function writeNumber(x, y, text) {
-            svg.append("text")
-                .classed("player-summary", true)
-                .classed("player-stat", true)
-                .attr("x", x)
-                .attr("y", y)
-                .text(text)
-        }
-    
-        function writeRank(x, y, text) {
-            svg.append("text")
-                .classed("player-summary", true)
-                .classed("player-rank", true)
-                //.attr("x", x + 40 - (text.length * 9)) // Don't attempt to right-justify
-                .attr("x", x)
-                .attr("y", y)
-                .text("#" + text)
-        }
-    
-        function writeText(x, y, text) {
-            svg.append("text")
-                .classed("player-summary", true)
-                .classed("player-stat-label", true)
-                .attr("x", x)
-                .attr("y", y)
-                .attr("font-family", "Helvetica, Arial, sans-serif")
-                .text(text)
-        }
-        
-
         function columnHeaders() {            
             const rowHeaderWidth = 100;
             svg.selectAll(".player-stat-col-header").data(cols).enter().append("text")
-                .attr("x", (d, i) => rowHeaderWidth + i * colWidth)
+                .attr("x", (d, i) => rowHeaderWidth + ((i + 2) * colWidth) - 30)
                 .attr("y", 200)
                 .attr("pointer-events", "none")
                 .classed("player-stat-col-header", true)
@@ -180,27 +152,20 @@ export function profile(player) {
         }
         
         function rows(recs) {
-            const rowHeaderWidth = 100;
             const rowHeight = 30;
-
             svg.selectAll("g").data(recs).enter().append("g")
                 .each((row, rowNum) => {
-                    text(row.week, svg, "player-stat-row", 10, 240 + rowHeight * rowNum); 
-                    cols.forEach((col, colNum) => text(row[col.field], svg, "player-stat-row", 100 + colNum * colWidth, 240 + rowHeight * rowNum))
-                    console.log(row.week);    
+                    // Row header
+                    text(row.week, svg, "player-stat-row", leftMargin, topRowY + (rowHeight * rowNum)); 
+                    // Numeric columns 
+                    cols.forEach((col, colNum) => text(
+                        row[col.field], 
+                        svg, 
+                        "player-stat-row", 
+                        rowHeaderWidth + (colNum * colWidth) - (row[col.field].toString().length * 9), // Last bit tries to right justify 
+                        topRowY + (rowHeight * rowNum)))
                 });
         }
-
-        const x0 = 10;
-        const x1 = 75;
-        const x2 = 150;
-        const x3 = 225;
-        const yStep = 38;
-        const yRank = 16;
-
-        //writeText(x1 + 5, 189, "Solo");
-        //writeText(x2 + 5, 189, "Duo");
-        //writeText(x3, 189, "Total");
 
         const recs = facts.all().filter(x => x.player === player);
         const matches = recs.filter(x => "Week 1" === x.week);

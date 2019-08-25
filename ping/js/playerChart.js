@@ -1200,12 +1200,13 @@ export function playerChart(id) {
             //let fillColor = colors[row.color];
             let fillColor = row.color;
             if (filters.regions.length === 1) {
-                if (filters.region === "NA East") fillColor = '#56af5a';
-                if (filters.region === "NA West") fillColor = '#ad76c1';
-                if (filters.region === "Europe") fillColor = '#4C51F7';
-                if (filters.region === "Oceania") fillColor = '#e25856';
-                if (filters.region === "Brazil") fillColor = '#3E93BC';
-                if (filters.region === "Asia") fillColor = '#987654';
+                if (filters.region === "NA East") fillColor = colors.green;
+                if (filters.region === "NA West") fillColor = colors.orange;
+                if (filters.region === "Europe") fillColor = colors.blue;
+                if (filters.region === "Oceania") fillColor = colors.red;
+                if (filters.region === "Brazil") fillColor = colors.teal;
+                if (filters.region === "Asia") fillColor = colors.yellow;
+                if (filters.region === "Middle East") fillColor = colors.grey;
             }
 
             rowSelection
