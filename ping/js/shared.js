@@ -93,7 +93,6 @@ export const colors = {
     yellow: '#ffea3f',
     lime: '#3CFF3E', // not used
     grey: '#B3B3B3', // not used
-
 }
 
 // Writes stats to an svg, but must have a css class
