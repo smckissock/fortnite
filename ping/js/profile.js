@@ -130,14 +130,22 @@ export function profile(player) {
         const rowHeaderWidth = 340;
         const topRowY = 240;
 
+        const noFormat = function (d) { return d; }
+        const commaFormat = d3.format(",");
+        const pctFormat = d3.format(",.1%");
+        const pctAxisFormat = d3.format(",.0%");
+        const moneyFormat = function (d) { return "$" + d3.format(",")(d); };
+        const moneyKFormat = d3.format(".2s");
+    
+
         const cols = [
-            {name: "Payout", field: "payout"},
-            {name: "Points", field: "points"},
-            {name: "Wins", field: "wins"},
-            {name: "Elim Points", field: "elims"},
-            {name: "Elim %", field: "elims"},
-            {name: "Qual Points", field: "placementPoints"},
-            {name: "Qual %", field: "placementPoints"}
+            {name: "Payout", field: "payout", format: commaFormat},
+            {name: "Points", field: "points", format: noFormat},
+            {name: "Wins", field: "wins", format: noFormat},
+            {name: "Elim Points", field: "elims", format: noFormat},
+            {name: "Elim %", field: "elimPct", format: pctFormat},
+            {name: "Qual Points", field: "placementPoints", format: noFormat},
+            {name: "Qual %", field: "placementPct", format: pctFormat}
         ];
 
         function columnHeaders() {            
@@ -158,17 +166,28 @@ export function profile(player) {
                     // Row header
                     text(row.week, svg, "player-stat-row", leftMargin, topRowY + (rowHeight * rowNum)); 
                     // Numeric columns 
-                    cols.forEach((col, colNum) => text(
-                        row[col.field], 
-                        svg, 
-                        "player-stat-row", 
-                        rowHeaderWidth + (colNum * colWidth) - (row[col.field].toString().length * 9), // Last bit tries to right justify 
-                        topRowY + (rowHeight * rowNum)))
+                    cols.forEach(function (col, colNum) { 
+                        const toShow = col.format(row[col.field]).toString()
+                        text(
+                            toShow, 
+                            svg, 
+                            "player-stat-row", 
+                            rowHeaderWidth + (colNum * colWidth) - 
+                                // Source Sans Pro has monospaced numbers, but commas are narrower than numbers
+                                (toShow.length * 9) +                         
+                                ((toShow.match(/,/g) || []).length) * 4, 
+                            topRowY + (rowHeight * rowNum))
+                    });
                 });
         }
 
         const recs = facts.all().filter(x => x.player === player);
-        const matches = recs.filter(x => "Week 1" === x.week);
+        recs.forEach(function(d) {
+            d.elimPct =  d.elims / d.points;
+            d.placementPct =  d.placementPoints / d.points;
+        })
+
+        //const matches = recs.filter(x => "Week 1" === x.week);
         columnHeaders();
         rows(recs);
     }
