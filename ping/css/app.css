@@ -21,7 +21,7 @@ body {
         "left-margin    title       info      gap       search"
         "left-margin    region      team      event     event"
         "left-margin    region      team      player    player";
-    grid-template-columns: 10px var(--left-width) var(--team-width) 300px 700px;
+    grid-template-columns: 10px var(--left-width) var(--team-width) 200px 800px;
     grid-template-rows: 100px 150px auto; 
     grid-gap: 12px;
     margin: 0px;

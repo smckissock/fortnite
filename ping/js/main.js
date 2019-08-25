@@ -244,8 +244,8 @@ function title(width) {
 
 function posickLabel(svg) {
     const left = 460
-    text("Use code", svg, "posick", left, 43);
-    text('"Posick"', svg, "posick", left, 72, );
+    text("Use code", svg, "posick", left - 50, 43);
+    text('"Posick"', svg, "posick", left - 50, 72, );
 }
 
 function searchLabel(svg) {
@@ -273,7 +273,7 @@ function disclaimer(svg) {
 }
 
 function filtersAndCount(svg, screenWidth) {
-    const fromRight = 574;
+    const fromRight = 674;
     svg.append("text")
         .attr("x", screenWidth - fromRight)
         .attr("y", 56)
