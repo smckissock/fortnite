@@ -35,7 +35,8 @@ def insert_payout_tiers(payoutTiers, scoringTiers, week, region):
 
 
 regions = ["NAE", "NAW", "EU", "OCE", "ASIA", "BR", "ME"]
-weeks = ["1"]
+weeks = ["2"]
+week_id = "14" 
 
 for region in regions:
     print(region)
@@ -71,7 +72,7 @@ for region in regions:
             # Watch out - the may change the structure of tiers 
             # Use http://jsonviewer.stack.hu/ to see json in tree view  
             round = 2 # round 3
-            week_id = "13"
+            #week_id = "13"
             insert_payout_tiers(doc[round]["payoutTable"][1]["ranks"],
                                 doc[round]["scoringRules"][1]["rewardTiers"],
                                 week_id, region)

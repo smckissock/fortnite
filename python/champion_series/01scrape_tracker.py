@@ -8,7 +8,7 @@ from db import cmd, cursor, conn, max_id
 
 
 regions = ["NAE", "NAW", "EU", "OCE", "ASIA", "BR", "ME"]
-weeks = ["Week1"]
+weeks = ["Week2"]
 
 # Fortnitw Champion Series
 match = "S10_FNCS"

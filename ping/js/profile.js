@@ -142,16 +142,16 @@ export function profile(player) {
             {name: "Payout", field: "payout", format: commaFormat},
             {name: "Points", field: "points", format: noFormat},
             {name: "Wins", field: "wins", format: noFormat},
-            {name: "Elim Points", field: "elims", format: noFormat},
+            {name: "Elim Pts", field: "elims", format: noFormat},
             {name: "Elim %", field: "elimPct", format: pctFormat},
-            {name: "Qual Points", field: "placementPoints", format: noFormat},
+            {name: "Qual Pts", field: "placementPoints", format: noFormat},
             {name: "Qual %", field: "placementPct", format: pctFormat}
         ];
 
         function columnHeaders() {            
             const rowHeaderWidth = 100;
             svg.selectAll(".player-stat-col-header").data(cols).enter().append("text")
-                .attr("x", (d, i) => rowHeaderWidth + ((i + 2) * colWidth) - 30)
+                .attr("x", (d, i) => rowHeaderWidth + ((i + 2) * colWidth) - 10)
                 .attr("y", 200)
                 .attr("pointer-events", "none")
                 .classed("player-stat-col-header", true)
@@ -174,7 +174,7 @@ export function profile(player) {
                             "player-stat-row", 
                             rowHeaderWidth + (colNum * colWidth) - 
                                 // Source Sans Pro has monospaced numbers, but commas are narrower than numbers
-                                (toShow.length * 9) +                         
+                                (toShow.length * 10) +                         
                                 ((toShow.match(/,/g) || []).length) * 4, 
                             topRowY + (rowHeight * rowNum))
                     });

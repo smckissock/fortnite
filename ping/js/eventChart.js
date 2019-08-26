@@ -32,7 +32,7 @@ export function eventChart(id) {
         {
             format: "Trios", items: [
                 { num: "W1", weekNum: 12, name: "CS Week 1", type: "Champion Series", date: "August 18", done: true },
-                { num: "W2", weekNum: 13, name: "CS Week 2", type: "Champion Series", date: "August 25", done: false },
+                { num: "W2", weekNum: 13, name: "CS Week 2", type: "Champion Series", date: "August 25", done: true },
                 { num: "W3", weekNum: 14, name: "CS Week 3", type: "Champion Series", date: "September 1", done: false },
                 { num: "W4", weekNum: 15, name: "CS Week 4", type: "Champion Series", date: "September 8", done: false },
                 { num: "W5", weekNum: 16, name: "CS Week 5", type: "Champion Series", date: "September 15", done: false },

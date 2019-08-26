@@ -75,3 +75,20 @@ FROM DISK = N'd:\fortnite\fortnitedb\August 19.bak'
 WITH MOVE 'Fortnite2' TO 'd:\fortnite\fortnitedb\Fortnite_.mdf',
 MOVE 'Fortnite2_log' TO 'd:\fortnite\fortnitedb\Fortnite_log_.ldf'
 
+
+
+-- August 26, 2019  Before importing Trios week 2
+BACKUP DATABASE Fortnite
+TO DISK = N'd:\Fortnite\Fortnitedb\August 26.bak' WITH NOFORMAT, NOINIT, NAME = N'Full Database Backup', SKIP, NOREWIND, NOUNLOAD, STATS = 10
+GO
+
+RESTORE FILELISTONLY
+FROM DISK = N'd:\fortnite\fortnitedb\August 26.bak'
+GO
+
+
+RESTORE DATABASE Fortnite
+FROM DISK = N'd:\fortnite\fortnitedb\August 26.bak'
+WITH MOVE 'Fortnite2' TO 'd:\fortnite\fortnitedb\Fortnite__.mdf',
+MOVE 'Fortnite2_log' TO 'd:\fortnite\fortnitedb\Fortnite_log__.ldf'
+

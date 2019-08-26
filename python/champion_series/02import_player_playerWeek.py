@@ -36,7 +36,8 @@ def insert_player_guid(player, week_id, region_code):
 
 
 regions = ["NAE", "NAW", "EU", "OCE", "ASIA", "BR", "ME"]
-weeks = ["1"]
+weeks = ["2"]
+week_id = "14"
 last_page = 31
 
 for region in regions:
@@ -70,8 +71,7 @@ for region in regions:
                 print(json_text)
                 exit()
 
-            # Note the 13 for week...
             for player in players:
-                insert_player_guid(player, "13", region)
+                insert_player_guid(player, week_id, region)
 
 val = input("Done")

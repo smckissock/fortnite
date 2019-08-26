@@ -16,7 +16,6 @@ namespace FortniteJson {
             //Fortnite2FixUp.FixCurrentName();
             
             
-            
             //Fortnite2FixUp.FixQualifications();
 
             Console.WriteLine("Running..");
@@ -33,10 +32,13 @@ namespace FortniteJson {
 
             // Steps for Trio Follow: Update Week and Week ID in Python code
 
+
+            //Python.Run(@"c:\project\fortnite\python\champion_series\01scrape_tracker.py", ""); 
             //Python.Run(@"c:\project\fortnite\python\champion_series\02import_player_playerWeek.py", "");
             //Python.Run(@"c:\project\fortnite\python\champion_series\03import_leaderboard.py", "");
             //Python.Run(@"c:\project\fortnite\python\champion_series\04import_tiers.py", "");
 
+            // These all need to filter their queries to only update the latest week.  Otherwise it take 30 minutes
             //Fortnite2FixUp.FixPlacementPayout();
             //Fortnite2FixUp.FixPlacementElims();
             //Fortnite2FixUp.UpdateWins();

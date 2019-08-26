@@ -57,8 +57,9 @@ def insert_placement(placement, week, region):
 
 
 regions = ["NAE", "NAW", "EU", "OCE", "ASIA", "BR", "ME"]
-weeks = ["1"]
-last_page = 21
+weeks = ["2"]
+week_id = "14"
+last_page = 31
 
 for region in regions:
     print(region)
@@ -90,6 +91,6 @@ for region in regions:
                 exit()
 
             for placement in doc["entries"]:
-                insert_placement(placement, "13", region)
+                insert_placement(placement, week_id, region)
 
 val = input("Done")
