@@ -121,7 +121,7 @@ export function profile(player) {
             .attr("font-size", (player.length < 16) ? "2.4em" : "1.8em")
 
         // Player team, nationality & age, if any 
-        text(playerInfoLabel, svg, "player-info", leftMargin, 165);
+        text(playerInfoLabel, svg, "player-info", leftMargin, 170);
     }
 
     function makeStats() {
@@ -135,8 +135,7 @@ export function profile(player) {
         const pctFormat = d3.format(",.1%");
         const pctAxisFormat = d3.format(",.0%");
         const moneyFormat = function (d) { return "$" + d3.format(",")(d); };
-        const moneyKFormat = d3.format(".2s");
-    
+        const moneyKFormat = d3.format(".2s");    
 
         const cols = [
             {name: "Payout", field: "payout", format: commaFormat},
@@ -152,7 +151,7 @@ export function profile(player) {
             const rowHeaderWidth = 100;
             svg.selectAll(".player-stat-col-header").data(cols).enter().append("text")
                 .attr("x", (d, i) => rowHeaderWidth + ((i + 2) * colWidth) - 10)
-                .attr("y", 200)
+                .attr("y", topRowY - 30)
                 .attr("pointer-events", "none")
                 .classed("player-stat-col-header", true)
                 .text(d => d.name)

@@ -2,50 +2,43 @@
 <html lang="en">
 
 <head>
-    <meta name="copyright" content="Scott McKissock">
+    <meta name="copyright" year="2019" content="Fortnite Ping LLC">
     <meta charset="UTF-8">
 
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-141290996-1"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag() { dataLayer.push(arguments); }
-        gtag('js', new Date());
+    <title>Fortnite Ping</title>
 
-        gtag('config', 'UA-141290996-1');
-    </script>
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600,900&display=swap" rel="stylesheet">
 
-    <title>Fortnite World Cup</title>
+    <link rel="stylesheet" type="text/css" href="ping/css/dc.css" />
+    <link rel="stylesheet" type="text/css" href="ping/css/app.css" />
 
-    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro&display=swap" rel="stylesheet">
+    <script type="text/javascript" src="ping/lib/d3.min.js"></script>
+    <script type="text/javascript" src="ping/lib/crossfilter.js"></script>
+    <script type="text/javascript" src="ping/lib/dc.js"></script>
 
-    <link rel="stylesheet" type="text/css" href="fwc/css/dc.css" />
-    <link rel="stylesheet" type="text/css" href="fwc/css/app.css" />
-
-    <script type="text/javascript" src="fwc/lib/d3.min.js"></script>
-    <script type="text/javascript" src="fwc/lib/crossfilter.js"></script>
-    <script type="text/javascript" src="fwc/lib/dc.js"></script>
-
-    <script type="module" src="fwc/js/shared.js"></script>
-    <script type="module" src="fwc/js/d3CheckBox.js"></script>
-    <script type="module" src="fwc/js/playerChart.js"></script>
-    <script type="module" src="fwc/js/regionChart.js"></script>
-    <script type="module" src="fwc/js/weekChart.js"></script>
-    <script type="module" src="fwc/js/main.js"></script>
+    <script type="module" src="ping/js/shared.js"></script>
+    <script type="module" src="ping/js/checkBox.js"></script>
+    <script type="module" src="ping/js/profile.js"></script>
+    <script type="module" src="ping/js/playerChart.js"></script>
+    <script type="module" src="ping/js/regionChart.js"></script>
+    <script type="module" src="ping/js/eventChart.js"></script>
+    <script type="module" src="ping/js/main.js"></script>
 </head>
 
 <body>
-
     <div class="grid gradient">
         <div class="title"></div>
-        <div class="search-box">
-            <input id="search-input" class="search-input" placeholder=" Player" spellcheck="false" size=10>
+        <div class="info"></div>
+
+        <div class="search">
+            <div class="search-box">
+                <input style="height:30px;font-size:1.4rem;" id="search-input" class="search-input" placeholder=" Player"
+                    spellcheck="false" size=12>
+            </div>
         </div>
         <div class="player" id="chart-player"></div>
         <div class="region" id="chart-region"></div>
-        <div class="weeks" id="chart-weeks"></div>
-        <div class="weeks-player" id="chart-weeks-player"></div>
+        <div class="event" id="chart-event"></div>
         <div class="team" id="chart-team"></div>
     </div>
-
 </body>

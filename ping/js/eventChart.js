@@ -164,10 +164,10 @@ export function eventChart(id) {
                 .each(function (week) {
                     weekRects.push(d3.select(this));
 
-                    let x = week.num != "W10" ? xScale(week.weekNum) + 9 : xScale(week.weekNum) + 5;
+                    let x = week.num != "W10" ? xScale(week.weekNum) + 11 : xScale(week.weekNum) + 7;
                     if (week.num == "F")
                         x = xScale(week.weekNum) + 17;
-                    text(week.num, svg, "week-label", x, formatNum * 35 + 26 + top);
+                    text(week.num, svg, "week-label", x, formatNum * 35 + 25 + top);
                 })
 
             formatNum++;
