@@ -391,7 +391,7 @@ export function playerChart(id) {
             numOrRankRect
                 .attr("stroke-width", (filters.week && (filters.sort === "rank")) ? thickBorder : 0);
 
-        drawWorldCupOnly();
+        //drawWorldCupOnly();
     }
 
     function drawWorldCupOnly() {
