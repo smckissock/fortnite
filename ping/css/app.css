@@ -70,6 +70,7 @@ body {
 
 .team {
     grid-area: team;
+    overflow: auto;
 }
 
 .player {
