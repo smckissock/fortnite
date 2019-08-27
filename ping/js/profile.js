@@ -157,13 +157,16 @@ export function profile(player) {
                 .text(d => d.name)
         }
 
-        function rows(format, priorRowsHeight) {
+        function rows(formatWeeks, formatSummary, priorRowsHeight) {
             const rowHeight = 26;
+            const summaryRowHeight = 36;
 
-            format.values.forEach((format, rowNum) => {
-                const y = + priorRowsHeight + (rowHeight * rowNum);
+            // Summary row
+            text(formatWeeks.key, svg, "player-stat-summary", leftMargin, priorRowsHeight + 8);
+
+            formatWeeks.values.forEach((format, rowNum) => {
+                const y = + priorRowsHeight + summaryRowHeight + (rowHeight * rowNum);
                 text(format.week, svg, "player-stat-row", leftMargin, y);
-
 
                 cols.forEach(function (col, colNum) {
                     const toShow = col.format(format[col.field]).toString()
@@ -178,8 +181,10 @@ export function profile(player) {
                         y)
                 });
             });
-            return priorRowsHeight + (format.values.length * rowHeight);
+            return priorRowsHeight + summaryRowHeight + (formatWeeks.values.length * rowHeight);
         }
+
+        columnHeaders();
 
         const recs = facts.all().filter(x => x.player === player);
         recs.forEach(function (d) {
@@ -187,18 +192,33 @@ export function profile(player) {
             d.placementPct = d.placementPoints / d.points;
         })
 
-        let formats = d3.nest()
+        const formats = d3.nest()
             .key(function (d) { return d.soloOrDuo; })
             .entries(recs);
 
-        columnHeaders();
+        const formatSummaries = d3.nest()
+            .key(function (d) { return d.soloOrDuo; })
+            .rollup(function (v) {
+                return {
+                    payout: d3.sum(v, function (d) { return d.payout; }),
+                    points: d3.sum(v, function (d) { return d.points; }),
+                    wins: d3.sum(v, function (d) { return d.wins; }),
+                    elims: d3.sum(v, function (d) { return d.elims; }),
+                    elimPct: d3.sum(v, function (d) { return d.elims; }),
+                    //elimPct: d3.sum(v, function (d) { return d.elims }) / d3.sum(v, function (d) { return d.elimPoints })
+                    placementPoints: d3.sum(v, function (d) { return d.placementPoints; }),
+                    placementPct: d3.sum(v, function (d) { return d.placementPoints; }),
+                };
+            })
+            .entries(recs);
+        console.log(formatSummaries);
+
 
         let priorRowsHeight = topRowY;
 
-        const formatGap = 20
-        priorRowsHeight = rows(formats[2], priorRowsHeight);
-        priorRowsHeight = rows(formats[1], priorRowsHeight + formatGap);
-        priorRowsHeight = rows(formats[0], priorRowsHeight + formatGap);
+        priorRowsHeight = rows(formats[2], formatSummaries[2], priorRowsHeight);
+        priorRowsHeight = rows(formats[1], formatSummaries[1], priorRowsHeight);
+        rows(formats[0], formatSummaries[0], priorRowsHeight);
     }
 
     const num = d3.format(",d");
