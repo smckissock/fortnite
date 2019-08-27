@@ -13,13 +13,13 @@ export function profile(player) {
 
     const leftMargin = 40;
 
-    function enableSvgs (enabled) {
+    function enableSvgs(enabled) {
         const val = enabled ? "auto" : "none"
         d3.selectAll("svg")
-        .each(function() {
-            d3.select(this)
-                .attr("pointer-events", val);
-        })
+            .each(function () {
+                d3.select(this)
+                    .attr("pointer-events", val);
+            })
     }
 
     function hide() {
@@ -31,15 +31,15 @@ export function profile(player) {
             .on("end", () => svg.remove());
     }
 
-    function makeSvg () {
+    function makeSvg() {
         const div = d3.select("#chart-player");
-        svg = div.append("svg")            
+        svg = div.append("svg")
             .attr("width", svgWidth + 6)
             .attr("height", svgHeight + 6)
             .attr("transform", "translate(-150,-1290)")
             .attr("fill", "black")
 
-        const top = 84;    
+        const top = 84;
         rect = svg.append("rect")
             .attr("x", 3)
             .attr("y", top)
@@ -80,7 +80,7 @@ export function profile(player) {
             .on('click', function (d) {
                 hide();
             });
-    
+
         svg.append("text")
             .attr("x", screenWidth - 38)
             .attr("y", 128)
@@ -90,7 +90,7 @@ export function profile(player) {
             .attr("pointer-events", "none");
     }
 
-    
+
     function makePlayerHeader(stats, region) {
         let playerInfoLabel = "";
         const players = playerInfos.filter(d => d.name === player);
@@ -135,19 +135,19 @@ export function profile(player) {
         const pctFormat = d3.format(",.1%");
         const pctAxisFormat = d3.format(",.0%");
         const moneyFormat = function (d) { return "$" + d3.format(",")(d); };
-        const moneyKFormat = d3.format(".2s");    
+        const moneyKFormat = d3.format(".2s");
 
         const cols = [
-            {name: "Payout", field: "payout", format: commaFormat},
-            {name: "Points", field: "points", format: noFormat},
-            {name: "Wins", field: "wins", format: noFormat},
-            {name: "Elim Pts", field: "elims", format: noFormat},
-            {name: "Elim %", field: "elimPct", format: pctFormat},
-            {name: "Qual Pts", field: "placementPoints", format: noFormat},
-            {name: "Qual %", field: "placementPct", format: pctFormat}
+            { name: "Payout", field: "payout", format: commaFormat },
+            { name: "Points", field: "points", format: noFormat },
+            { name: "Wins", field: "wins", format: noFormat },
+            { name: "Elim Pts", field: "elims", format: noFormat },
+            { name: "Elim %", field: "elimPct", format: pctFormat },
+            { name: "Qual Pts", field: "placementPoints", format: noFormat },
+            { name: "Qual %", field: "placementPct", format: pctFormat }
         ];
 
-        function columnHeaders() {            
+        function columnHeaders() {
             const rowHeaderWidth = 100;
             svg.selectAll(".player-stat-col-header").data(cols).enter().append("text")
                 .attr("x", (d, i) => rowHeaderWidth + ((i + 2) * colWidth) - 10)
@@ -155,54 +155,62 @@ export function profile(player) {
                 .attr("pointer-events", "none")
                 .classed("player-stat-col-header", true)
                 .text(d => d.name)
-                .each(d => console.log(d))
         }
-        
-        function rows(recs) {
-            const rowHeight = 30;
-            svg.selectAll("g").data(recs).enter().append("g")
-                .each((row, rowNum) => {
-                    // Row header
-                    text(row.week, svg, "player-stat-row", leftMargin, topRowY + (rowHeight * rowNum)); 
-                    // Numeric columns 
-                    cols.forEach(function (col, colNum) { 
-                        const toShow = col.format(row[col.field]).toString()
-                        text(
-                            toShow, 
-                            svg, 
-                            "player-stat-row", 
-                            rowHeaderWidth + (colNum * colWidth) - 
-                                // Source Sans Pro has monospaced numbers, but commas are narrower than numbers
-                                (toShow.length * 10) +                         
-                                ((toShow.match(/,/g) || []).length) * 4, 
-                            topRowY + (rowHeight * rowNum))
-                    });
+
+        function rows(format, priorRowsHeight) {
+            const rowHeight = 26;
+
+            format.values.forEach((format, rowNum) => {
+                const y = + priorRowsHeight + (rowHeight * rowNum);
+                text(format.week, svg, "player-stat-row", leftMargin, y);
+
+
+                cols.forEach(function (col, colNum) {
+                    const toShow = col.format(format[col.field]).toString()
+                    text(
+                        toShow,
+                        svg,
+                        "player-stat-row",
+                        rowHeaderWidth + (colNum * colWidth) -
+                        // Source Sans Pro has monospaced numbers, but commas are narrower than numbers
+                        (toShow.length * 10) +
+                        ((toShow.match(/,/g) || []).length) * 4,
+                        y)
                 });
+            });
+            return priorRowsHeight + (format.values.length * rowHeight);
         }
 
         const recs = facts.all().filter(x => x.player === player);
-        recs.forEach(function(d) {
-            d.elimPct =  d.elims / d.points;
-            d.placementPct =  d.placementPoints / d.points;
+        recs.forEach(function (d) {
+            d.elimPct = d.elims / d.points;
+            d.placementPct = d.placementPoints / d.points;
         })
 
-        //const matches = recs.filter(x => "Week 1" === x.week);
+        let formats = d3.nest()
+            .key(function (d) { return d.soloOrDuo; })
+            .entries(recs);
+
         columnHeaders();
-        rows(recs);
+
+        let priorRowsHeight = topRowY;
+
+        const formatGap = 20
+        priorRowsHeight = rows(formats[2], priorRowsHeight);
+        priorRowsHeight = rows(formats[1], priorRowsHeight + formatGap);
+        priorRowsHeight = rows(formats[0], priorRowsHeight + formatGap);
     }
 
     const num = d3.format(",d");
-            
 
     const recs = facts.all().filter(x => x.player === player);
     if (recs.length == 0)
         return;
 
-
     enableSvgs(false);
     makeSvg();
-    makeHelpButton(svg, svgWidth) 
-        
+    makeHelpButton(svg, svgWidth)
+
     const region = recs[0].region;
     const stats = statsForPlayer(region, player);
     makePlayerHeader(stats, region);
