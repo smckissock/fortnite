@@ -128,7 +128,7 @@ export function profile(player) {
 
         const colWidth = 100;
         const rowHeaderWidth = 540;
-        const topRowY = 240;
+        const topRowY = 270;
 
         const noFormat = function (d) { return d; }
         const commaFormat = d3.format(",");
@@ -151,10 +151,27 @@ export function profile(player) {
             const rowHeaderWidth = 300;
             svg.selectAll(".player-stat-col-header").data(cols).enter().append("text")
                 .attr("x", (d, i) => rowHeaderWidth + ((i + 2) * colWidth) - 10)
-                .attr("y", topRowY - 30)
+                .attr("y", topRowY - 70)
                 .attr("pointer-events", "none")
                 .classed("player-stat-col-header", true)
                 .text(d => d.name)
+        }
+
+        function totals(totals) {
+            const y = topRowY - 37;
+            text("Cumulative", svg, "player-stat-summary", leftMargin, y);
+            cols.forEach(function (col, colNum) {
+                const toShow = col.format(totals[col.field]).toString()
+                text(
+                    toShow,
+                    svg,
+                    "player-stat-summary",
+                    rowHeaderWidth + (colNum * colWidth) -
+                    // Source Sans Pro has monospaced numbers, but commas are narrower than numbers
+                    (toShow.length * 10) +
+                    ((toShow.match(/,/g) || []).length) * 4,
+                    y)
+            });
         }
 
         function rows(formatWeeks, formatSummary, priorRowsHeight) {
@@ -196,8 +213,6 @@ export function profile(player) {
             return priorRowsHeight + summaryRowHeight + (formatWeeks.values.length * rowHeight);
         }
 
-        columnHeaders();
-
         const recs = facts.all().filter(x => x.player === player);
         recs.forEach(function (d) {
             d.elimPct = d.elims / d.points;
@@ -212,30 +227,33 @@ export function profile(player) {
             .key(function (d) { return d.soloOrDuo; })
             .rollup(function (v) {
                 return {
-                    payout: d3.sum(v, function (d) { return d.payout; }),
-                    points: d3.sum(v, function (d) { return d.points; }),
-                    wins: d3.sum(v, function (d) { return d.wins; }),
-                    elims: d3.sum(v, function (d) { return d.elims; }),
-                    //elimPct: d3.sum(v, function (d) { return d.elims; }),
-                    //elimPct: d3.sum(v, function (d) { return d.elims }) / d3.sum(v, function (d) { return d.elimPoints })
-                    placementPoints: d3.sum(v, function (d) { return d.placementPoints; }),
-                    //placementPct: d3.sum(v, function (d) { return d.placementPoints; }),
+                    payout: d3.sum(v, d => d.payout),
+                    points: d3.sum(v, d => d.points),
+                    wins: d3.sum(v, d => d.wins),
+                    elims: d3.sum(v, d => d.elims),
+                    placementPoints: d3.sum(v, d => d.placementPoints),
                 };
             })
             .entries(recs);
 
-        console.log(formatSummaries);
         formatSummaries.forEach(function (d) {
             d.value.elimPct = d.value.elims / d.value.points;
             d.value.placementPct = d.value.placementPoints / d.value.points;
         })
-        //formatSummaries.values.elimPct = formatSummaries.value.elims / formatSummaries.value.points
-        //formatSummaries.values.placementPct = formatSummaries.value.placementPoints / formatSummaries.value.points
 
-        console.log(formatSummaries);
+        let total = {};
+        total.payout = d3.sum(recs, d => d.payout);
+        total.points = d3.sum(recs, d => d.points);
+        total.wins = d3.sum(recs, d => d.wins);
+        total.elims = d3.sum(recs, d => d.elims);
+        total.elimPct = d3.sum(recs, d => d.elims) / d3.sum(recs, d => d.points);
+        total.placementPoints = d3.sum(recs, d => d.placementPoints);
+        total.placementPct = d3.sum(recs, d => d.placementPoints) / d3.sum(recs, d => d.points);
+
+        columnHeaders();
+        totals(total);
 
         let priorRowsHeight = topRowY;
-
         priorRowsHeight = rows(formatWeeks[2], formatSummaries[2], priorRowsHeight);
         priorRowsHeight = rows(formatWeeks[1], formatSummaries[1], priorRowsHeight);
         rows(formatWeeks[0], formatSummaries[0], priorRowsHeight);
