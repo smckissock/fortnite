@@ -8,8 +8,8 @@ export function profile(player) {
     let svg;
     let rect;
 
-    const svgWidth = 1000;
-    const svgHeight = 700;
+    const svgWidth = 1200;
+    const svgHeight = 900;
 
     const leftMargin = 40;
 
@@ -36,7 +36,7 @@ export function profile(player) {
         svg = div.append("svg")
             .attr("width", svgWidth + 6)
             .attr("height", svgHeight + 6)
-            .attr("transform", "translate(-150,-1290)")
+            .attr("transform", "translate(-250,-1327)")
             .attr("fill", "black")
 
         const top = 84;
@@ -127,7 +127,7 @@ export function profile(player) {
     function makeStats() {
 
         const colWidth = 100;
-        const rowHeaderWidth = 340;
+        const rowHeaderWidth = 540;
         const topRowY = 240;
 
         const noFormat = function (d) { return d; }
@@ -148,7 +148,7 @@ export function profile(player) {
         ];
 
         function columnHeaders() {
-            const rowHeaderWidth = 100;
+            const rowHeaderWidth = 300;
             svg.selectAll(".player-stat-col-header").data(cols).enter().append("text")
                 .attr("x", (d, i) => rowHeaderWidth + ((i + 2) * colWidth) - 10)
                 .attr("y", topRowY - 30)
@@ -159,17 +159,29 @@ export function profile(player) {
 
         function rows(formatWeeks, formatSummary, priorRowsHeight) {
             const rowHeight = 26;
-            const summaryRowHeight = 36;
+            const summaryRowHeight = 40;
 
             // Summary row
-            text(formatWeeks.key, svg, "player-stat-summary", leftMargin, priorRowsHeight + 8);
+            text(formatSummary.key, svg, "player-stat-summary", leftMargin, priorRowsHeight + 14);
+            cols.forEach(function (col, colNum) {
+                const toShow = col.format(formatSummary.value[col.field]).toString()
+                text(
+                    toShow,
+                    svg,
+                    "player-stat-summary",
+                    rowHeaderWidth + (colNum * colWidth) -
+                    // Source Sans Pro has monospaced numbers, but commas are narrower than numbers
+                    (toShow.length * 10) +
+                    ((toShow.match(/,/g) || []).length) * 4,
+                    priorRowsHeight + 8)
+            });
 
-            formatWeeks.values.forEach((format, rowNum) => {
+            formatWeeks.values.forEach((week, rowNum) => {
                 const y = + priorRowsHeight + summaryRowHeight + (rowHeight * rowNum);
-                text(format.week, svg, "player-stat-row", leftMargin, y);
+                text(week.week, svg, "player-stat-row", leftMargin + 16, y);
 
                 cols.forEach(function (col, colNum) {
-                    const toShow = col.format(format[col.field]).toString()
+                    const toShow = col.format(week[col.field]).toString()
                     text(
                         toShow,
                         svg,
@@ -192,7 +204,7 @@ export function profile(player) {
             d.placementPct = d.placementPoints / d.points;
         })
 
-        const formats = d3.nest()
+        const formatWeeks = d3.nest()
             .key(function (d) { return d.soloOrDuo; })
             .entries(recs);
 
@@ -204,21 +216,29 @@ export function profile(player) {
                     points: d3.sum(v, function (d) { return d.points; }),
                     wins: d3.sum(v, function (d) { return d.wins; }),
                     elims: d3.sum(v, function (d) { return d.elims; }),
-                    elimPct: d3.sum(v, function (d) { return d.elims; }),
+                    //elimPct: d3.sum(v, function (d) { return d.elims; }),
                     //elimPct: d3.sum(v, function (d) { return d.elims }) / d3.sum(v, function (d) { return d.elimPoints })
                     placementPoints: d3.sum(v, function (d) { return d.placementPoints; }),
-                    placementPct: d3.sum(v, function (d) { return d.placementPoints; }),
+                    //placementPct: d3.sum(v, function (d) { return d.placementPoints; }),
                 };
             })
             .entries(recs);
-        console.log(formatSummaries);
 
+        console.log(formatSummaries);
+        formatSummaries.forEach(function (d) {
+            d.value.elimPct = d.value.elims / d.value.points;
+            d.value.placementPct = d.value.placementPoints / d.value.points;
+        })
+        //formatSummaries.values.elimPct = formatSummaries.value.elims / formatSummaries.value.points
+        //formatSummaries.values.placementPct = formatSummaries.value.placementPoints / formatSummaries.value.points
+
+        console.log(formatSummaries);
 
         let priorRowsHeight = topRowY;
 
-        priorRowsHeight = rows(formats[2], formatSummaries[2], priorRowsHeight);
-        priorRowsHeight = rows(formats[1], formatSummaries[1], priorRowsHeight);
-        rows(formats[0], formatSummaries[0], priorRowsHeight);
+        priorRowsHeight = rows(formatWeeks[2], formatSummaries[2], priorRowsHeight);
+        priorRowsHeight = rows(formatWeeks[1], formatSummaries[1], priorRowsHeight);
+        rows(formatWeeks[0], formatSummaries[0], priorRowsHeight);
     }
 
     const num = d3.format(",d");
