@@ -19,8 +19,8 @@ export let qualifierNames = {};
 
 export let teamMembers = [];
 
+export let data;
 export let facts;
-
 
 export let filters = {
     weeks: [],
@@ -82,7 +82,7 @@ d3.json('ping/data/data.json').then(function (dataArray) {
     posickLabel(titleSvg);
     //disclaimer(titleSvg);
 
-    let data = [];
+    data = [];
     dataArray.forEach(function (d) {
         let rec = {};
         rec.week = d[0];
@@ -178,8 +178,8 @@ function title(width) {
         .attr("width", width + "px")
         .attr("height", "100px");
 
-    text("FORTNITE", svg, "big-fortnite", 0, 55);     
-    text("ping", svg, "big-ping", 205, 55);     
+    text("FORTNITE", svg, "big-fortnite", 0, 55);
+    text("ping", svg, "big-ping", 205, 55);
 
     svg.append("text")
         .attr("x", 0)
@@ -245,7 +245,7 @@ function title(width) {
 function posickLabel(svg) {
     const left = 460
     text("Use code", svg, "posick", left - 50, 43);
-    text('"Posick"', svg, "posick", left - 50, 72, );
+    text('"Posick"', svg, "posick", left - 50, 72);
 }
 
 function searchLabel(svg) {

@@ -1,5 +1,5 @@
 //import { playerTableWidth } from "./playerChart.js";
-import { cornerRadius, filters, facts, updateCounts, statsForPlayer, playerInfos } from "./main.js";
+import { facts, statsForPlayer, playerInfos, data } from "./main.js";
 
 import { text } from "./shared.js";
 
@@ -55,8 +55,9 @@ export function profile(player) {
     }
 
     function makeHelpButton(svg, screenWidth) {
-        //text("Fortnite", svg, "little-fortnite", screenWidth - 280, 126);
-        text("fortniteping.com", svg, "little-ping", screenWidth - 285, 127);
+        text("World Cup Finals not included", svg, "player-stat-row", screenWidth - 730, 120);
+
+        text("fortniteping.com", svg, "little-ping", screenWidth - 330, 127);
 
         svg.append("circle")
             .attr("cx", screenWidth - 30)
@@ -154,12 +155,15 @@ export function profile(player) {
                 .attr("y", topRowY - 70)
                 .attr("pointer-events", "none")
                 .classed("player-stat-col-header", true)
-                .text(d => d.name)
+                .text(d => d.name);
+
+            text("Partners", svg, "player-stat-col-header", leftMargin + 200, topRowY - 70);
         }
 
         function totals(totals) {
             const y = topRowY - 37;
             text("Cumulative", svg, "player-stat-summary", leftMargin, y);
+
             cols.forEach(function (col, colNum) {
                 const toShow = col.format(totals[col.field]).toString()
                 text(
@@ -178,7 +182,7 @@ export function profile(player) {
             const rowHeight = 26;
             const summaryRowHeight = 40;
 
-            // Summary row
+            // Summary row for Trio / Solo / Duo
             text(formatSummary.key, svg, "player-stat-summary", leftMargin, priorRowsHeight + 14);
             cols.forEach(function (col, colNum) {
                 const toShow = col.format(formatSummary.value[col.field]).toString()
@@ -193,10 +197,21 @@ export function profile(player) {
                     priorRowsHeight + 8)
             });
 
+            // Week rows
             formatWeeks.values.forEach((week, rowNum) => {
                 const y = + priorRowsHeight + summaryRowHeight + (rowHeight * rowNum);
                 text(week.week, svg, "player-stat-row", leftMargin + 16, y);
 
+                let partners = []
+                if (week.soloOrDuo != "Solo")
+                    partners = getPartners(week.region, week.rank, week.week, week.player);
+
+                if (partners.length === 1)
+                    text(partners[0].player, svg, "player-stat-row", leftMargin + 140, y);
+                if (partners.length === 2)
+                    text(partners[0].player + " & " + partners[1].player, svg, "player-stat-row", leftMargin + 140, y);
+
+                // console.log(partners);
                 cols.forEach(function (col, colNum) {
                     const toShow = col.format(week[col.field]).toString()
                     text(
@@ -212,6 +227,14 @@ export function profile(player) {
             });
             return priorRowsHeight + summaryRowHeight + (formatWeeks.values.length * rowHeight);
         }
+
+        function getPartners(region, rank, week, player) {
+            console.log(region + " " + rank + " " + week);
+
+            // Could be made faster, but fine for now
+            return data.filter(d => (d.region === region) && (d.rank === rank) && (d.week === week) && (d.player != player));
+        }
+
 
         const recs = facts.all().filter(x => x.player === player);
         recs.forEach(function (d) {
