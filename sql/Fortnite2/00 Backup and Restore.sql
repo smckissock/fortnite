@@ -92,3 +92,30 @@ FROM DISK = N'd:\fortnite\fortnitedb\August 26.bak'
 WITH MOVE 'Fortnite2' TO 'd:\fortnite\fortnitedb\Fortnite__.mdf',
 MOVE 'Fortnite2_log' TO 'd:\fortnite\fortnitedb\Fortnite_log__.ldf'
 
+
+
+-- August 26, 2019  After importing Trios week 2
+BACKUP DATABASE Fortnite
+TO DISK = N'd:\Fortnite\Fortnitedb\August 26b.bak' WITH NOFORMAT, NOINIT, NAME = N'Full Database Backup', SKIP, NOREWIND, NOUNLOAD, STATS = 10
+GO
+
+RESTORE FILELISTONLY
+FROM DISK = N'd:\fortnite\fortnitedb\August 26b.bak'
+GO
+
+
+
+
+-- August 29, 2019  After Adding payouts to WC placements
+BACKUP DATABASE Fortnite
+TO DISK = N'd:\Fortnite\Fortnitedb\August 29.bak' WITH NOFORMAT, NOINIT, NAME = N'Full Database Backup', SKIP, NOREWIND, NOUNLOAD, STATS = 10
+GO
+
+RESTORE FILELISTONLY
+FROM DISK = N'd:\fortnite\fortnitedb\August 29.bak'
+GO
+
+
+
+
+

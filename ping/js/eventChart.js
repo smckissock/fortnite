@@ -16,7 +16,7 @@ export function eventChart(id) {
                 { num: "W5", weekNum: 5, name: "WC Week 5", type: "World Cup", date: "May 12", done: true },
                 { num: "W7", weekNum: 7, name: "WC Week 7", type: "World Cup", date: "May 26", done: true },
                 { num: "W9", weekNum: 9, name: "WC Week 9", type: "World Cup", date: "June 9", done: true },
-                { num: "F", weekNum: 11, name: "Finals", type: "World Cup", date: "June 9", done: false }
+                { num: "F", weekNum: 12, name: "Solo Final", type: "World Cup", date: "July 28", done: true }
             ]
         },
         {
@@ -26,7 +26,7 @@ export function eventChart(id) {
                 { num: "W6", weekNum: 6, name: "WC Week 6", type: "World Cup", date: "May 19", done: true },
                 { num: "W8", weekNum: 8, name: "WC Week 8", type: "World Cup", date: "June 2", done: true },
                 { num: "W10", weekNum: 10, name: "WC Week 10", type: "World Cup", date: "June 21", done: true },
-                { num: "F", weekNum: 11, name: "Finals", type: "World Cup", date: "June 21", done: false }
+                { num: "F", weekNum: 11, name: "Duo Final", type: "World Cup", date: "July 27", done: true }
             ]
         },
         {
@@ -237,7 +237,6 @@ export function eventChart(id) {
         updateCounts();
     }
 
-
     function drawWeekBorders() {
         weekRects.forEach(function (week) {
             const data = week.data()[0];
@@ -250,7 +249,6 @@ export function eventChart(id) {
                 .attr("stroke-width", strokeWidth);
         });
     }
-
 
     function clearSoloAndDuo() {
         filters.soloOrDuo = "";

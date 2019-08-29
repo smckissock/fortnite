@@ -38,13 +38,17 @@ namespace FortniteJson {
             //Python.Run(@"c:\project\fortnite\python\champion_series\03import_leaderboard.py", "");
             //Python.Run(@"c:\project\fortnite\python\champion_series\04import_tiers.py", "");
 
-            // These all need to filter their queries to only update the latest week.  Otherwise it take 30 minutes
+            // These all need to filter their queries to only update the latest week.  Otherwise it take 20 minutes
             //Fortnite2FixUp.FixPlacementPayout();
             //Fortnite2FixUp.FixPlacementElims();
             //Fortnite2FixUp.UpdateWins();
 
-            Fortnite.MakeJsonArray();
-            
+            // Prior step wipes out Finals payouts. Rerun 03 Payouts for Finals.sql to put them back (or add a week filter)  
+
+
+            Fortnite.MakeJsonArray();   
+
+
 
             Console.Write("DONE");
             Console.Read();

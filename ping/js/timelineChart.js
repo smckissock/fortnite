@@ -335,7 +335,7 @@ function drawHeader() {
             .text("Qualifiers")
             .attr("font-family", "Source Sans Pro, sans-serif")
             .attr("font-size", "1.2rem")
-            .attr("pointer-events", "none")
+            .attr("pointer-events", "none")           
     }
 
     const headerHeight = 86;
@@ -370,6 +370,17 @@ function drawHeader() {
         .attr("font-family", "Source Sans Pro, sans-serif")
         .attr("font-size", "1.4rem")
     //.classed("player", true);
+
+    // NOT IMPLEMENTED - If we use the game view, it would be nice to add a key to show what a win, elim point or placement point looks like.
+    // Key stuff follows
+/*     let winRect = svg.append("rect")
+        .attr("x", 130)
+        .attr("y", 100)
+        .attr("width", 70)
+        .attr("height", 50)
+        .attr("fill", "white")
+        .attr("stroke", "black")
+        .attr("stroke-width", 5) */
 
     drawButtons();
 }

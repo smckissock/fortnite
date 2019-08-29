@@ -112,7 +112,10 @@ namespace FortniteJson {
                 record.Add(reader["elims"].ToString());
                 record.Add(reader["PlacementPoints"].ToString());
                 record.Add(reader["EarnedQualification"].ToString());
-               
+
+                //if (reader["week"].ToString() == "Solo Final")
+                //    record[0] = record[0];
+
                 list.Add(record);
             }
             reader.Close();
