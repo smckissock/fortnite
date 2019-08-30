@@ -180,6 +180,10 @@ body {
     font-size: 1.0em;
 }
 
+.g-header {
+    font-weight: 800;
+    font-size: 2.0em;
+}
 
 .profile-player {
     font-weight: 800;
@@ -187,7 +191,7 @@ body {
 }
 
 .player-stat-col-header {
-    font-weight: 800;
+    font-weight: 600;
     font-size: 1.3em;
 }
 

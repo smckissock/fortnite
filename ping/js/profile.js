@@ -12,12 +12,10 @@ export function profile(player) {
     let trendG;
     let matchG;  
 
-    let rect;
-
     const svgWidth = 1200;
     const svgHeight = 1200;
 
-    const leftMargin = 40;
+    const leftMargin = 160;
 
     function enableSvgs(enabled) {
         const val = enabled ? "auto" : "none"
@@ -113,6 +111,8 @@ export function profile(player) {
         }
 
         function makePlayerInfo(stats) {
+            const left = 30;
+
             let playerInfoLabel = "";
             const players = playerInfos.filter(d => d.name === player);
             if (players.length > 0) {
@@ -131,30 +131,29 @@ export function profile(player) {
             // Player Name
             headerG.append("text")
                 .classed("player-summary", true)
-                .attr("x", leftMargin)
-                .attr("y", 122)
+                .attr("x", left)
+                .attr("y", 130)
                 .text(player)
                 .attr("fill", "black")
                 .attr("font-size", 0)
                 .transition()
                 .duration(140)
-                .attr("y", 50)
-                .attr("font-size", (player.length < 16) ? "2.8em" : "2.2em")
+                .attr("y", 60)
+                .attr("font-size", (player.length < 16) ? "3.2em" : "2.6em")
     
             // Player team, nationality & age, if any 
-            text(playerInfoLabel, headerG, "player-info", leftMargin, 80);
+            text(playerInfoLabel, headerG, "player-info", left, 90);
         }
 
         makePlayerInfo(); 
         makeHelpButton(svg, svgWidth);
     }
 
-    function makeStats() {
+    function makeMatches() {
 
-        const colWidth = 90;
-        const rowHeaderWidth = 280;
-        const topRowY = 370;
-
+        const colWidth = 80;
+        const rowHeaderWidth = 420; // 280
+        
         const noFormat = function (d) { return d; }
         const commaFormat = d3.format(",");
         const pctFormat = d3.format(",.1%");
@@ -173,30 +172,29 @@ export function profile(player) {
         ];
 
         function columnHeaders() {
-            const rowHeaderWidth = 60;
+            const rowHeaderWidth = 220;
             matchG.selectAll(".player-stat-col-header").data(cols).enter().append("text")
                 .attr("x", (d, i) => rowHeaderWidth + ((i + 2) * colWidth) - 10)
-                .attr("y", topRowY - 70)
-                .attr("y", 20)
+                .attr("y", 30)
                 .attr("pointer-events", "none")
                 .classed("player-stat-col-header", true)
                 .text(d => d.name);
         }
 
         function totals(totals) {
-            const y = topRowY - 37;
-            text("Cumulative", svg, "player-stat-summary", leftMargin, y);
+            const y = 63;
+            text("Cumulative", matchG, "player-stat-summary", leftMargin, y);
 
             cols.forEach(function (col, colNum) {
                 const toShow = col.format(totals[col.field]).toString()
                 text(
                     toShow,
-                    svg,
+                    matchG,
                     "player-stat-summary",
                     rowHeaderWidth + (colNum * colWidth) -
                     // Source Sans Pro has monospaced numbers, but commas are narrower than numbers
-                    (toShow.length * 10) +
-                    ((toShow.match(/,/g) || []).length) * 4,
+                    (toShow.length * 11) +
+                    ((toShow.match(/,/g) || []).length) * 6,
                     y)
             });
         }
@@ -206,46 +204,49 @@ export function profile(player) {
             const summaryRowHeight = 40;
 
             // Summary row for Trio / Solo / Duo
-            text(formatSummary.key, svg, "player-stat-summary", leftMargin, priorRowsHeight + 14);
+            if (!formatSummary)  // This is a bug..
+                return;
+
+            text(formatSummary.key, matchG, "player-stat-summary", leftMargin, priorRowsHeight + 14);
             cols.forEach(function (col, colNum) {
                 const toShow = col.format(formatSummary.value[col.field]).toString()
                 text(
                     toShow,
-                    svg,
+                    matchG,
                     "player-stat-summary",
                     rowHeaderWidth + (colNum * colWidth) -
                     // Source Sans Pro has monospaced numbers, but commas are narrower than numbers
-                    (toShow.length * 10) +
-                    ((toShow.match(/,/g) || []).length) * 4,
+                    (toShow.length * 11) +
+                    ((toShow.match(/,/g) || []).length) * 6,
                     priorRowsHeight + 8)
             });
 
             // Week rows
             formatWeeks.values.forEach((week, rowNum) => {
                 const y = + priorRowsHeight + summaryRowHeight + (rowHeight * rowNum);
-                text("# " + week.rank + " " + week.week, svg, "player-stat-row", leftMargin + 16, y);
+                text("# " + week.rank + " " + week.week, matchG, "player-stat-row", leftMargin + 16, y);
 
-                const left = rowHeaderWidth + (cols.length * colWidth) - 40;
+                const left = rowHeaderWidth + (cols.length * colWidth) - 60;
 
                 let partners = []
                 if (week.soloOrDuo != "Solo")
                     partners = getPartners(week.region, week.rank, week.week, week.player);
 
                 if (partners.length === 1)
-                    text("w / " + partners[0].player, svg, "player-stat-row", left, y);
+                    text("w / " + partners[0].player, matchG, "player-stat-row", left, y);
                 if (partners.length === 2)
-                    text("w / " + partners[0].player + " & " + partners[1].player, svg, "player-stat-row", left, y);
+                    text("w / " + partners[0].player + " & " + partners[1].player, matchG, "player-stat-row", left, y);
 
                 cols.forEach(function (col, colNum) {
                     const toShow = col.format(week[col.field]).toString()
                     text(
                         toShow,
-                        svg,
+                        matchG,
                         "player-stat-row",
                         rowHeaderWidth + (colNum * colWidth) -
                         // Source Sans Pro has monospaced numbers, but commas are narrower than numbers
-                        (toShow.length * 10) +
-                        ((toShow.match(/,/g) || []).length) * 4,
+                        (toShow.length * 9.5) +
+                        ((toShow.match(/,/g) || []).length) * 6.2,
                         y)
                 });
             });
@@ -297,13 +298,16 @@ export function profile(player) {
         total.placementPoints = d3.sum(recs, d => d.placementPoints);
         total.placementPct = d3.sum(recs, d => d.placementPoints) / d3.sum(recs, d => d.points);
 
+        text("Match", matchG, "g-header", 30, 40);
+
         columnHeaders();
         totals(total);
 
-        let priorRowsHeight = topRowY;
+        let priorRowsHeight = 100;
         priorRowsHeight = rows(formatWeeks[2], formatSummaries[2], priorRowsHeight);
         priorRowsHeight = rows(formatWeeks[1], formatSummaries[1], priorRowsHeight);
         rows(formatWeeks[0], formatSummaries[0], priorRowsHeight);
+        
     }
 
     const num = d3.format(",d");
@@ -319,6 +323,5 @@ export function profile(player) {
     const stats = statsForPlayer(region, player);  // In main
 
     makeHeader(stats);
-    
-    makeStats(svg, svgWidth, stats);
+    makeMatches();
 }

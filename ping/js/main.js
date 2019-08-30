@@ -40,14 +40,11 @@ export let filters = {
 
 
 export let statsForPlayer;
-
 export let playerInfos = [];
-
 
 let playerStatsGroup;
 
 const LeftSideWidth = 340;
-//let PlayerTableWidth = 240 + (9 * 80); // Player + other cols
 
 let titleSvg;
 let filterTextDisplayed;
@@ -62,7 +59,6 @@ d3.json('ping/data/players.json').then(function (players) {
         rec.age = d[3];
         playerInfos.push(rec);
     });
-    console.log("Players");
 });
 
 d3.json('ping/data/data.json').then(function (dataArray) {
