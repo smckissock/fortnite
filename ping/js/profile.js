@@ -6,6 +6,12 @@ import { text } from "./shared.js";
 export function profile(player) {
 
     let svg;
+
+    let headerG;
+    let rankG;
+    let trendG;
+    let matchG;  
+
     let rect;
 
     const svgWidth = 1200;
@@ -24,7 +30,7 @@ export function profile(player) {
 
     function hide() {
         enableSvgs(true);
-        rect.transition()
+        headerG.transition()
             .duration(100)
             .attr("fill-opacity", .0)
             .attr("opacity", .0)
@@ -39,7 +45,24 @@ export function profile(player) {
             .attr("transform", "translate(-250,-1327)")
             .attr("fill", "black")
 
-        const top = 84;
+        headerG = 
+            svg.append("g")
+                .attr("transform", "translate(0,80)")
+              
+        headerG.append("rect")
+                .attr("x", 0)
+                .attr("y", 0)
+                .attr("width", svgWidth)
+                .attr("height", 200)
+                .attr("opacity", 1.0) 
+                .attr("fill", "#F0F8FF")  
+            
+        
+        rankG = svg.append("g");
+        trendG = svg.append("g");
+        matchG = svg.append("g"); 
+
+        /* const top = 84;
         rect = svg.append("rect")
             .attr("x", 3)
             .attr("y", top)
@@ -51,48 +74,88 @@ export function profile(player) {
             .attr("stroke", "black")
             .attr("stroke-width", 9)
             .attr("rx", 6)
-            .attr("ry", 6)
-    }
-
-    function makeHelpButton(svg, screenWidth) {
-        //text("World Cup Finals not included", svg, "player-stat-row", screenWidth - 730, 120);
-
-        text("fortniteping.com", svg, "little-ping", screenWidth - 330, 127);
-
-        svg.append("circle")
-            .attr("cx", screenWidth - 30)
-            .attr("cy", 120)
-            .attr("r", 22)
-            .attr("fill", "lightblue")
-            .attr("stroke", "black")
-            .attr("stroke-width", 0)
-            .on('mouseover', function (d) {
-                d3.select(this)
-                    .transition()
-                    .duration(50)
-                    .attr("stroke-width", 6)
-            })
-            .on('mouseout', function (d) {
-                d3.select(this)
-                    .transition()
-                    .duration(50)
-                    .attr("stroke-width", 0);
-            })
-            .on('click', function (d) {
-                hide();
-            });
-
-        svg.append("text")
-            .attr("x", screenWidth - 38)
-            .attr("y", 128)
-            .text("X")
-            .attr("font-size", "1.7em")
-            .attr("fill", "black")
-            .attr("pointer-events", "none");
+            .attr("ry", 6) */
     }
 
 
-    function makePlayerHeader(stats, region) {
+    function makeHeader() {
+
+        function makeHelpButton(svg, screenWidth, stats) {
+            //text("World Cup Finals not included", svg, "player-stat-row", screenWidth - 730, 120);
+
+            text("fortniteping.com", svg, "little-ping", screenWidth - 300, 117);
+
+            headerG.append("circle")
+                .attr("cx", screenWidth - 30)
+                .attr("cy", 30)
+                .attr("r", 22)
+                .attr("fill", "lightblue")
+                .attr("stroke", "black")
+                .attr("stroke-width", 0)
+                .on('mouseover', function (d) {
+                    d3.select(this)
+                        .transition()
+                        .duration(50)
+                        .attr("stroke-width", 6)
+                })
+                .on('mouseout', function (d) {
+                    d3.select(this)
+                        .transition()
+                        .duration(50)
+                        .attr("stroke-width", 0);
+                })
+                .on('click', function (d) {
+                    hide();
+                });
+
+            headerG.append("text")
+                .attr("x", screenWidth - 38)
+                .attr("y", 39)
+                .text("X")
+                .attr("font-size", "1.7em")
+                .attr("fill", "black")
+                .attr("pointer-events", "none");
+        }
+
+        function makePlayerInfo(stats) {
+            let playerInfoLabel = "";
+            const players = playerInfos.filter(d => d.name === player);
+            if (players.length > 0) {
+                let info = [];
+                info.push(players[0].age == "" ? "" : "Age " + players[0].age);
+                info.push(players[0].team);
+                info.push(players[0].nationality);
+    
+                info = info.filter(d => d != "");
+                playerInfoLabel = info.join(" | ");
+            }
+    
+            if (player === "Posick")
+                playerInfoLabel = "19 | Free Agent | Arlington, Virginia"
+    
+            // Player Name
+            svg.append("text")
+                .classed("player-summary", true)
+                .attr("x", leftMargin)
+                .attr("y", 122)
+                .text(player)
+                .attr("fill", "black")
+                .attr("font-size", 0)
+                .transition()
+                .duration(140)
+                .attr("y", 135)
+                .attr("font-size", (player.length < 16) ? "2.8em" : "2.2em")
+    
+            // Player team, nationality & age, if any 
+            text(playerInfoLabel, svg, "player-info", leftMargin, 170);
+        }
+
+        makePlayerInfo(); 
+        makeHelpButton(svg, svgWidth);
+    }
+
+
+    /* function makePlayerHeader(stats, region) {
         let playerInfoLabel = "";
         const players = playerInfos.filter(d => d.name === player);
         if (players.length > 0) {
@@ -123,7 +186,7 @@ export function profile(player) {
 
         // Player team, nationality & age, if any 
         text(playerInfoLabel, svg, "player-info", leftMargin, 170);
-    }
+    } */
 
     function makeStats() {
 
@@ -291,10 +354,9 @@ export function profile(player) {
 
     enableSvgs(false);
     makeSvg();
-    makeHelpButton(svg, svgWidth)
 
     const region = recs[0].region;
     const stats = statsForPlayer(region, player);
-    makePlayerHeader(stats, region);
-    makeStats();
+
+    makeHeader(svg, svgWidth, stats);
 }

@@ -31,7 +31,7 @@ export function setupStats(data) {
         stats.soloElimsRank = 1;
         stats.duoElimsRank = 1;
         stats.totalElimsRank = 1;
-
+        
         stats.soloPayoutRank = 1;
         stats.duoPayoutRank = 1;
         stats.totalPayoutRank = 1;
@@ -95,7 +95,7 @@ export const colors = {
     grey: '#B3B3B3', // not used
 }
 
-// Writes stats to an svg, but must have a css class
+// Writes stats to an svg, but pass in a css class
 export function text(text, svg, style, x, y) {
     return svg.append("text")
         .attr("x", x)
