@@ -39,7 +39,7 @@ export function profile(player) {
 
         const headerTop = 80;
         const rankTop = 180;
-        const trendTop = 200;
+        const trendTop = 380;
         const matchTop = 400;
 
         const div = d3.select("#chart-player");
@@ -65,10 +65,10 @@ export function profile(player) {
             return g;    
         }    
 
-        headerG = makeG(headerTop, rankTop, "purple");
-        rankG = makeG(rankTop, trendTop, "red");
-        trendG = makeG(trendTop, matchTop, "green");
-        matchG = makeG(matchTop, matchTop + 600, "yellow   ");
+        headerG = makeG(headerTop, rankTop, "white");
+        rankG = makeG(rankTop, trendTop, "lightblue");
+        trendG = makeG(trendTop, matchTop, "white");
+        matchG = makeG(matchTop, matchTop + 600, "lightblue");
     }
 
 
@@ -147,6 +147,27 @@ export function profile(player) {
 
         makePlayerInfo(); 
         makeHelpButton(svg, svgWidth);
+    }
+
+    function makeRanks(stats) {
+        text("Rank", rankG, "g-header", 30, 40);
+
+        [   {name: "Total", x: 300},
+            {name: "Solo", x: 500},
+            {name: "Duo", x: 700},
+            {name: "Trios", x: 900}  
+        ]
+            .forEach(function(d) {
+                text(d.name, rankG, "player-info", d.x, 40);
+                text(stats[d.name.toLowerCase() + "Payout"], rankG, "player-info", d.x, 80);
+                text("#" + stats[d.name.toLowerCase() + "PayoutRank"], rankG, "player-info", d.x, 120);
+
+                //console.log(d.name.toLowerCase() + "Payout");
+                //console.log(stats[d.name.toLowerCase() + "Payout"]);
+            });
+
+        
+        console.log(stats);
     }
 
     function makeMatches() {
@@ -254,7 +275,7 @@ export function profile(player) {
         }
 
         function getPartners(region, rank, week, player) {
-            console.log(region + " " + rank + " " + week);
+            //console.log(region + " " + rank + " " + week);
 
             // Could be made faster, but fine for now
             return data.filter(d => (d.region === region) && (d.rank === rank) && (d.week === week) && (d.player != player));
@@ -323,5 +344,6 @@ export function profile(player) {
     const stats = statsForPlayer(region, player);  // In main
 
     makeHeader(stats);
+    makeRanks(stats);
     makeMatches();
 }
