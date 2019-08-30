@@ -55,7 +55,7 @@ export function profile(player) {
     }
 
     function makeHelpButton(svg, screenWidth) {
-        text("World Cup Finals not included", svg, "player-stat-row", screenWidth - 730, 120);
+        //text("World Cup Finals not included", svg, "player-stat-row", screenWidth - 730, 120);
 
         text("fortniteping.com", svg, "little-ping", screenWidth - 330, 127);
 
@@ -127,9 +127,9 @@ export function profile(player) {
 
     function makeStats() {
 
-        const colWidth = 100;
-        const rowHeaderWidth = 540;
-        const topRowY = 270;
+        const colWidth = 90;
+        const rowHeaderWidth = 280;
+        const topRowY = 370;
 
         const noFormat = function (d) { return d; }
         const commaFormat = d3.format(",");
@@ -149,7 +149,7 @@ export function profile(player) {
         ];
 
         function columnHeaders() {
-            const rowHeaderWidth = 300;
+            const rowHeaderWidth = 60;
             svg.selectAll(".player-stat-col-header").data(cols).enter().append("text")
                 .attr("x", (d, i) => rowHeaderWidth + ((i + 2) * colWidth) - 10)
                 .attr("y", topRowY - 70)
@@ -157,7 +157,7 @@ export function profile(player) {
                 .classed("player-stat-col-header", true)
                 .text(d => d.name);
 
-            text("Partners", svg, "player-stat-col-header", leftMargin + 200, topRowY - 70);
+            //  text("Partners", svg, "player-stat-col-header", leftMargin + 200, topRowY - 70);
         }
 
         function totals(totals) {
@@ -202,16 +202,17 @@ export function profile(player) {
                 const y = + priorRowsHeight + summaryRowHeight + (rowHeight * rowNum);
                 text(week.week, svg, "player-stat-row", leftMargin + 16, y);
 
+                const left = rowHeaderWidth + (cols.length * colWidth) - 40;
+
                 let partners = []
                 if (week.soloOrDuo != "Solo")
                     partners = getPartners(week.region, week.rank, week.week, week.player);
 
                 if (partners.length === 1)
-                    text(partners[0].player, svg, "player-stat-row", leftMargin + 140, y);
+                    text(partners[0].player, svg, "player-stat-row", left, y);
                 if (partners.length === 2)
-                    text(partners[0].player + " & " + partners[1].player, svg, "player-stat-row", leftMargin + 140, y);
+                    text(partners[0].player + " & " + partners[1].player, svg, "player-stat-row", left, y);
 
-                // console.log(partners);
                 cols.forEach(function (col, colNum) {
                     const toShow = col.format(week[col.field]).toString()
                     text(

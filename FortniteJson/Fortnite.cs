@@ -53,7 +53,7 @@ namespace FortniteJson {
 
             var array = GetArray();
 
-            string fileName = @"c:\project\fortnite\ping\data\data.json";
+                string fileName = @"c:\project\fortnite\ping\data\data.json";
 
             string json = JsonConvert.SerializeObject(array);
             var niceJson = Newtonsoft.Json.Linq.JToken.Parse(json).ToString();
