@@ -264,4 +264,239 @@ UPDATE PlayerPlacement SET PlayerID = 43629 WHERE ID = 166635 -- Twizz
 
 
 
-SELECT * FROM Player WHERE CurrentName Like 'nrg%'
+SELECT 
+	'UPDATE Placement SET PlayerID =  WHERE ID = ' + CONVERT (varchar(20), pp.ID) + ' -- ' + CurrentName
+FROM PlayerPlacement pp
+JOIN Player p ON pp.PlayerID = p.ID
+JOIN Placement pl ON pp.PlacementID = pl.ID
+WHERE pl.WeekID in (11, 12)
+
+
+SELECT 'UPDATE Placement SET RegionID =  WHERE ID = ' + CONVERT (varchar(20), p.ID) + ' -- ' + pl.CurrentName 
+FROM Placement p
+JOIN PlayerPlacement pp ON p.ID = pp.placementID
+JOIN player pl ON pl.ID = pp.PlayerID
+WHERE p.WeekID IN (11,12)
+
+1	TBD	TBD
+2	Oceania	OCE
+3	NA East	NAE
+4	NA West	NAW
+5	Europe	EU
+6	Brazil	BR
+7	Asia	ASIA
+8	Middle East	ME
+
+UPDATE Placement SET RegionID = 3 WHERE ID = 125044 -- Liquid Vivid
+UPDATE Placement SET RegionID = 3 WHERE ID = 125024 -- MSF Clix
+UPDATE Placement SET RegionID = 3 WHERE ID = 124990 -- MSF Clix
+UPDATE Placement SET RegionID = 3 WHERE ID = 124985 -- coL Punisher
+UPDATE Placement SET RegionID = 3 WHERE ID = 124958 -- 100T Elevate
+UPDATE Placement SET RegionID = 3 WHERE ID = 124998 -- Envy LeNain
+UPDATE Placement SET RegionID = 3 WHERE ID = 125007 -- SEN Bughа
+UPDATE Placement SET RegionID = 3 WHERE ID = 125001 -- RoAtDW
+UPDATE Placement SET RegionID = 3 WHERE ID = 125001 -- E11 BlooTea
+UPDATE Placement SET RegionID = 3 WHERE ID = 124985 -- coL Lanjok
+UPDATE Placement SET RegionID = 3 WHERE ID = 125041 -- RogueShark_
+UPDATE Placement SET RegionID = 3 WHERE ID = 124972 -- woofgang crimz
+UPDATE Placement SET RegionID = 3 WHERE ID = 124983 -- code ronaldo
+UPDATE Placement SET RegionID = 3 WHERE ID = 124970 -- KeysFN
+UPDATE Placement SET RegionID = 3 WHERE ID = 125062 -- RS clarityG
+UPDATE Placement SET RegionID = 3 WHERE ID = 125073 -- Tfue
+UPDATE Placement SET RegionID = 3 WHERE ID = 125010 -- LZR Kreo
+UPDATE Placement SET RegionID = 3 WHERE ID = 125083 -- Thiccboy Luneze
+UPDATE Placement SET RegionID = 3 WHERE ID = 124983 -- XXiF
+UPDATE Placement SET RegionID = 3 WHERE ID = 124986 -- FaZe Funk
+UPDATE Placement SET RegionID = 3 WHERE ID = 125105 -- FaZe Funk
+UPDATE Placement SET RegionID = 3 WHERE ID = 124986 -- Nate Hill
+UPDATE Placement SET RegionID = 3 WHERE ID = 125095 -- Legedien
+UPDATE Placement SET RegionID = 3 WHERE ID = 125034 -- 100T Klass
+UPDATE Placement SET RegionID = 3 WHERE ID = 125067 -- CODE SEN-Aspect
+UPDATE Placement SET RegionID = 3 WHERE ID = 125098 -- Nittle
+UPDATE Placement SET RegionID = 3 WHERE ID = 124989 -- Tetchra
+UPDATE Placement SET RegionID = 3 WHERE ID = 124989 -- Eclipsae
+UPDATE Placement SET RegionID = 3 WHERE ID = 124970 -- Slackes
+UPDATE Placement SET RegionID = 3 WHERE ID = 124998 -- LG Tyler15
+UPDATE Placement SET RegionID = 4 WHERE ID = 124959 -- Ghost Saf
+UPDATE Placement SET RegionID = 3 WHERE ID = 124991 -- Tempo Brush
+UPDATE Placement SET RegionID = 5 WHERE ID = 124990 -- MSF Sceptic
+UPDATE Placement SET RegionID = 3 WHERE ID = 124991 -- Tempo CizLucky
+UPDATE Placement SET RegionID = 3 WHERE ID = 124958 -- 100T Ceice
+UPDATE Placement SET RegionID = 3 WHERE ID = 125066 -- 100T Ceice
+UPDATE Placement SET RegionID = 3 WHERE ID = 125029 -- Ghost Bizzle
+UPDATE Placement SET RegionID = 3 WHERE ID = 125042 -- NRG Zayt
+UPDATE Placement SET RegionID = 3 WHERE ID = 124959 -- NRG Zayt
+UPDATE Placement SET RegionID = 3 WHERE ID = 125093 -- Astonishㅤㅤㅤㅤ
+UPDATE Placement SET RegionID = 3 WHERE ID = 124971 -- coL MackWood
+UPDATE Placement SET RegionID = 4 WHERE ID = 124964 -- TSM.Vinny1x
+UPDATE Placement SET RegionID = 3 WHERE ID = 124964 -- TSM_Zexrow
+UPDATE Placement SET RegionID = 3 WHERE ID = 125070 -- Envy Bucke
+UPDATE Placement SET RegionID = 3 WHERE ID = 124962 -- FaZe Dubs.
+UPDATE Placement SET RegionID = 3 WHERE ID = 125021 -- FaZe Dubs.
+UPDATE Placement SET RegionID = 3 WHERE ID = 125014 -- Naytt YT
+UPDATE Placement SET RegionID = 3 WHERE ID = 124962 -- FaZe Megga.
+UPDATE Placement SET RegionID = 3 WHERE ID = 125068 -- FaZe Megga.
+UPDATE Placement SET RegionID = 3 WHERE ID = 125056 -- Chenkinz.tv
+UPDATE Placement SET RegionID = 3 WHERE ID = 125016 -- Fatch.
+UPDATE Placement SET RegionID = 3 WHERE ID = 125076 -- Kawzmik
+UPDATE Placement SET RegionID = 3 WHERE ID = 125082 -- Touzii
+UPDATE Placement SET RegionID = 3 WHERE ID = 125048 -- RS kolorful
+UPDATE Placement SET RegionID = 4 WHERE ID = 125008 -- CLG psalm
+UPDATE Placement SET RegionID = 4 WHERE ID = 125022 -- 1400 Pika
+UPDATE Placement SET RegionID = 4 WHERE ID = 125015 -- Liquid Riversan
+UPDATE Placement SET RegionID = 4 WHERE ID = 125017 -- WBG Rhux
+UPDATE Placement SET RegionID = 4 WHERE ID = 124960 -- Arkhram1x
+UPDATE Placement SET RegionID = 4 WHERE ID = 125059 -- Arkhram1x
+UPDATE Placement SET RegionID = 4 WHERE ID = 124967 -- KNG EpikWhale
+UPDATE Placement SET RegionID = 4 WHERE ID = 125009 -- KNG EpikWhale
+UPDATE Placement SET RegionID = 4  WHERE ID = 124993 -- KNG little
+UPDATE Placement SET RegionID = 4 WHERE ID = 124967 -- 4DRStorm.
+UPDATE Placement SET RegionID = 4 WHERE ID = 125045 -- 4DRStorm.
+UPDATE Placement SET RegionID = 4 WHERE ID = 124996 -- KNG Barl
+UPDATE Placement SET RegionID = 4 WHERE ID = 124993 -- KNG Jay.
+UPDATE Placement SET RegionID = 4 WHERE ID = 124992 -- Ghost Sean
+UPDATE Placement SET RegionID = 4 WHERE ID = 124960 -- Bloom Falconer
+UPDATE Placement SET RegionID = 4 WHERE ID = 124992 -- Ghost Aydan
+UPDATE Placement SET RegionID = 4 WHERE ID = 124996 -- KNG Leno
+UPDATE Placement SET RegionID = 4 WHERE ID = 125040 -- USE CODE PZUHS
+UPDATE Placement SET RegionID = 5 WHERE ID = 124980 -- E11 Tschiiinken
+UPDATE Placement SET RegionID = 5 WHERE ID = 124976 -- SNG Th0masHD
+UPDATE Placement SET RegionID = 5 WHERE ID = 124980 -- E11 Stompy
+UPDATE Placement SET RegionID = 5 WHERE ID = 125020 -- E11 Stompy
+UPDATE Placement SET RegionID = 5 WHERE ID = 124963 -- Derox.
+UPDATE Placement SET RegionID = 5 WHERE ID = 125023 -- hREDS BELAEU
+UPDATE Placement SET RegionID = 5 WHERE ID = 125055 -- TTVCoreGamingg
+UPDATE Placement SET RegionID = 5 WHERE ID = 125058 -- AGO JarkoS
+UPDATE Placement SET RegionID = 5 WHERE ID = 125031 -- NRG benjуfishу
+UPDATE Placement SET RegionID = 5 WHERE ID = 124969 -- NRG benjуfishу
+UPDATE Placement SET RegionID = 5 WHERE ID = 124969 -- NRG MrSavageM
+UPDATE Placement SET RegionID = 5 WHERE ID = 125035 -- NRG MrSavageM
+UPDATE Placement SET RegionID = 5 WHERE ID = 124961 -- Atlantis Mitr0
+UPDATE Placement SET RegionID = 5 WHERE ID = 125043 -- Ghost Issa
+UPDATE Placement SET RegionID = 5 WHERE ID = 124963 -- E11 itemm
+UPDATE Placement SET RegionID = 5 WHERE ID = 124966 -- GO M11Z
+UPDATE Placement SET RegionID = 5 WHERE ID = 124956 -- COOLER aquaㅤㅤ
+UPDATE Placement SET RegionID = 5 WHERE ID = 125100 -- COOLER aquaㅤㅤ
+UPDATE Placement SET RegionID = 5 WHERE ID = 124968 -- BTL 4zr
+UPDATE Placement SET RegionID = 5 WHERE ID = 124978 -- Solary Kinstaar
+UPDATE Placement SET RegionID = 5 WHERE ID = 125032 -- Solary Kinstaar
+UPDATE Placement SET RegionID = 5 WHERE ID = 125019 -- Secret_Mongraal
+UPDATE Placement SET RegionID = 5 WHERE ID = 124961 -- Secret_Mongraal
+UPDATE Placement SET RegionID = 5 WHERE ID = 125046 -- DiegoGB uwu
+UPDATE Placement SET RegionID = 5 WHERE ID = 124978 -- Solary Hunter
+UPDATE Placement SET RegionID = 5 WHERE ID = 124957 -- Wolfiеz
+UPDATE Placement SET RegionID = 5 WHERE ID = 124976 -- Klusiabtw
+UPDATE Placement SET RegionID = 5 WHERE ID = 125053 -- Klusiabtw
+UPDATE Placement SET RegionID = 5 WHERE ID = 125087 -- TrainH BlastRR
+UPDATE Placement SET RegionID = 5 WHERE ID = 125012 -- VHV Crue
+UPDATE Placement SET RegionID = 5 WHERE ID = 124977 -- VHV Crue
+UPDATE Placement SET RegionID = 5 WHERE ID = 125000 -- Lootboy Skram
+UPDATE Placement SET RegionID = 5 WHERE ID = 125036 -- Atlantis K1nzell
+UPDATE Placement SET RegionID = 5 WHERE ID = 125085 -- LeStream Blaxou
+UPDATE Placement SET RegionID = 5 WHERE ID = 125000 -- Lootboy Mexe
+UPDATE Placement SET RegionID = 5 WHERE ID = 124987 -- Gambit.letw1k3
+UPDATE Placement SET RegionID = 5 WHERE ID = 125065 -- Gambit.letw1k3
+UPDATE Placement SET RegionID = 5 WHERE ID = 124984 -- Solary Airwaks
+UPDATE Placement SET RegionID = 5 WHERE ID = 124987 -- Gambit.fwexY
+UPDATE Placement SET RegionID = 5 WHERE ID = 125037 -- Gambit.fwexY
+UPDATE Placement SET RegionID = 5 WHERE ID = 124956 -- COOLER Nyhrox
+UPDATE Placement SET RegionID = 5 WHERE ID = 124977 -- VHV Chapix
+UPDATE Placement SET RegionID = 5 WHERE ID = 125064 -- lolb0om
+UPDATE Placement SET RegionID = 5 WHERE ID = 125028 -- Skāilereu
+UPDATE Placement SET RegionID = 5 WHERE ID = 125049 -- dMIND.teeq
+UPDATE Placement SET RegionID = 5 WHERE ID = 125054 -- Eon wakie
+UPDATE Placement SET RegionID = 5 WHERE ID = 125094 -- Snayzy
+UPDATE Placement SET RegionID = 5 WHERE ID = 125088 -- luKi tjk
+UPDATE Placement SET RegionID = 5 WHERE ID = 124999 -- Lnuef
+UPDATE Placement SET RegionID = 5 WHERE ID = 124988 -- VP JAMSIDE
+UPDATE Placement SET RegionID = 5 WHERE ID = 124965 -- LeStream Skite
+UPDATE Placement SET RegionID = 5 WHERE ID = 125013 -- LeStream Skite
+UPDATE Placement SET RegionID = 5 WHERE ID = 125050 -- Fnatic smeef
+UPDATE Placement SET RegionID = 5 WHERE ID = 124974 -- Oslo.
+UPDATE Placement SET RegionID = 5 WHERE ID = 125069 -- Fledermoys
+UPDATE Placement SET RegionID = 5 WHERE ID = 124988 -- VP 7ssk7
+UPDATE Placement SET RegionID = 5 WHERE ID = 124965 -- LeStream Vato
+UPDATE Placement SET RegionID = 5 WHERE ID = 124981 -- Atlantis Tuckz
+UPDATE Placement SET RegionID = 5 WHERE ID = 124979 -- Eon RedRush
+UPDATE Placement SET RegionID = 5 WHERE ID = 124974 -- Not BadSniper
+UPDATE Placement SET RegionID = 3 WHERE ID = 125018 -- Tchub_
+UPDATE Placement SET RegionID = 5 WHERE ID = 124981 -- FaZe Vorwenn
+UPDATE Placement SET RegionID = 5 WHERE ID = 125038 -- Atlantis Lеtshe
+UPDATE Placement SET RegionID = 5 WHERE ID = 125047 -- RBK LeftEye
+UPDATE Placement SET RegionID = 5 WHERE ID = 125027 -- Secret_Domentos
+UPDATE Placement SET RegionID = 5 WHERE ID = 125030 -- Xypher Endretta
+UPDATE Placement SET RegionID = 5 WHERE ID = 124968 -- Noward.
+UPDATE Placement SET RegionID = 5 WHERE ID = 125092 -- TrainH Robabz
+UPDATE Placement SET RegionID = 5 WHERE ID = 125078 -- Erouce
+UPDATE Placement SET RegionID = 5 WHERE ID = 125086 -- LYGHT ツ
+UPDATE Placement SET RegionID = 5 WHERE ID = 124979 -- Eon znappy
+UPDATE Placement SET RegionID = 2 WHERE ID = 125102 -- twins iwnl
+UPDATE Placement SET RegionID = 2 WHERE ID = 124973 -- BES Serpennt
+UPDATE Placement SET RegionID = 2 WHERE ID = 125089 -- Linkㅤㅤㅤ
+UPDATE Placement SET RegionID = 2 WHERE ID = 125005 -- Code Twizz
+UPDATE Placement SET RegionID = 2 WHERE ID = 125101 -- Cat 夢
+UPDATE Placement SET RegionID = 2 WHERE ID = 124973 -- BES Hype
+UPDATE Placement SET RegionID = 2 WHERE ID = 125005 -- CoverH
+UPDATE Placement SET RegionID = 2 WHERE ID = 124995 -- Code Volx
+UPDATE Placement SET RegionID = 7 WHERE ID = 124975 -- CODE CR-Scarlet
+UPDATE Placement SET RegionID = 7 WHERE ID = 125039 -- CR.がちがち TAKAMURA
+UPDATE Placement SET RegionID = 7 WHERE ID = 124975 -- CR.がちがち bell
+UPDATE Placement SET RegionID = 7 WHERE ID = 125004 -- NewbeeXXM
+UPDATE Placement SET RegionID = 7 WHERE ID = 125079 -- TOP_がちがち FaxFox
+UPDATE Placement SET RegionID = 7 WHERE ID = 125061 -- Meta Hood.J
+UPDATE Placement SET RegionID = 7 WHERE ID = 125106 -- T1 Arius iwnl
+UPDATE Placement SET RegionID = 7 WHERE ID = 125071 -- TOP_Banny iwnl
+UPDATE Placement SET RegionID = 7 WHERE ID = 125004 -- Newbee_xMende
+UPDATE Placement SET RegionID = 7 WHERE ID = 125097 -- Maufin xd
+UPDATE Placement SET RegionID = 7 WHERE ID = 125025 -- Meta Peterpan
+UPDATE Placement SET RegionID = 6 WHERE ID = 125057 -- CODE NICKSSS
+UPDATE Placement SET RegionID = 6 WHERE ID = 125002 -- CODE NICKSSS
+UPDATE Placement SET RegionID = 6 WHERE ID = 125002 -- pfzin
+UPDATE Placement SET RegionID = 6 WHERE ID = 125033 -- kurтz
+UPDATE Placement SET RegionID = 6 WHERE ID = 125077 -- Lasers s2 Igo
+UPDATE Placement SET RegionID = 6 WHERE ID = 125063 -- CODE leleo
+UPDATE Placement SET RegionID = 6 WHERE ID = 125104 -- Clipnode
+UPDATE Placement SET RegionID = 6 WHERE ID = 125003 -- GusTavox8
+UPDATE Placement SET RegionID = 6 WHERE ID = 125011 -- 9z kıng
+UPDATE Placement SET RegionID = 6 WHERE ID = 124994 -- xown iwnl-
+UPDATE Placement SET RegionID = 6 WHERE ID = 125003 -- wisheydp
+--UPDATE Placement SET RegionID =  WHERE ID = 124971 -- Calculator
+UPDATE Placement SET RegionID = 7 WHERE ID = 124997 -- Puzz
+UPDATE Placement SET RegionID = 6 WHERE ID = 124994 -- KING
+UPDATE Placement SET RegionID = 6 WHERE ID = 124957 -- Rojo
+--UPDATE Placement SET RegionID =  WHERE ID = 124966 -- Deadra
+--UPDATE Placement SET RegionID =  WHERE ID = 124972 -- Spades
+--UPDATE Placement SET RegionID =  WHERE ID = 124982 -- KBB
+--UPDATE Placement SET RegionID =  WHERE ID = 124982 -- YuWang
+--UPDATE Placement SET RegionID =  WHERE ID = 124984 -- Nikof
+--UPDATE Placement SET RegionID =  WHERE ID = 124995 -- parpy
+UPDATE Placement SET RegionID = 7 WHERE ID = 124997 -- Ming
+UPDATE Placement SET RegionID = 4 WHERE ID = 124999 -- Quinten
+--UPDATE Placement SET RegionID =  WHERE ID = 125026 -- commandment
+UPDATE Placement SET RegionID = 6 WHERE ID = 125051 -- DRG
+UPDATE Placement SET RegionID = 6 WHERE ID = 125052 -- PrisiOn3rO
+UPDATE Placement SET RegionID = 5 WHERE ID = 125060 -- Evilmare
+UPDATE Placement SET RegionID = 5 WHERE ID = 125072 -- Emqu
+UPDATE Placement SET RegionID = 5 WHERE ID = 125074 -- sozmann
+--UPDATE Placement SET RegionID =  WHERE ID = 125075 -- UnknownxArmy
+--UPDATE Placement SET RegionID =  WHERE ID = 125080 -- snow
+--UPDATE Placement SET RegionID =  WHERE ID = 125081 -- drakiNz
+--UPDATE Placement SET RegionID =  WHERE ID = 125084 -- slaya
+--UPDATE Placement SET RegionID =  WHERE ID = 125090 -- marteen
+--UPDATE Placement SET RegionID =  WHERE ID = 125091 -- karhu
+UPDATE Placement SET RegionID = 3 WHERE ID = 125096 -- Revers2k
+UPDATE Placement SET RegionID = 3 WHERE ID = 125099 -- Hornet
+--UPDATE Placement SET RegionID =  WHERE ID = 125103 -- Herrions
+
+
+--2	Oceania	OCE
+--3	NA East	NAE
+--4	NA West	NAW
+--5	Europe	EU
+--6	Brazil	BR
+--7	Asia	ASIA
+--8	Middle East	ME
+
+
+
+

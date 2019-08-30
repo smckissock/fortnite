@@ -15,7 +15,7 @@ export function profile(player) {
     let rect;
 
     const svgWidth = 1200;
-    const svgHeight = 900;
+    const svgHeight = 1200;
 
     const leftMargin = 40;
 
@@ -38,6 +38,12 @@ export function profile(player) {
     }
 
     function makeSvg() {
+
+        const headerTop = 80;
+        const rankTop = 180;
+        const trendTop = 200;
+        const matchTop = 400;
+
         const div = d3.select("#chart-player");
         svg = div.append("svg")
             .attr("width", svgWidth + 6)
@@ -45,48 +51,37 @@ export function profile(player) {
             .attr("transform", "translate(-250,-1327)")
             .attr("fill", "black")
 
-        headerG = 
-            svg.append("g")
-                .attr("transform", "translate(0,80)")
-              
-        headerG.append("rect")
+        function makeG(top, nextTop, color) {
+            const g = 
+                svg.append("g")
+                    .attr("transform", 'translate(0,' + top + ')')
+            
+            g.append("rect")
                 .attr("x", 0)
                 .attr("y", 0)
                 .attr("width", svgWidth)
-                .attr("height", 200)
+                .attr("height", nextTop - top)
                 .attr("opacity", 1.0) 
-                .attr("fill", "#F0F8FF")  
-            
-        
-        rankG = svg.append("g");
-        trendG = svg.append("g");
-        matchG = svg.append("g"); 
+                .attr("fill", color)
 
-        /* const top = 84;
-        rect = svg.append("rect")
-            .attr("x", 3)
-            .attr("y", top)
-            .attr("width", svgWidth)
-            .attr("height", svgHeight - top)
-            .attr("opacity", 1.0)
-            .attr("fill-opacity", 1.0)
-            .attr("fill", "#F0F8FF")
-            .attr("stroke", "black")
-            .attr("stroke-width", 9)
-            .attr("rx", 6)
-            .attr("ry", 6) */
+            return g;    
+        }    
+
+        headerG = makeG(headerTop, rankTop, "purple");
+        rankG = makeG(rankTop, trendTop, "red");
+        trendG = makeG(trendTop, matchTop, "green");
+        matchG = makeG(matchTop, matchTop + 600, "yellow   ");
     }
 
 
     function makeHeader() {
 
-        function makeHelpButton(svg, screenWidth, stats) {
+        function makeHelpButton(stats) {
             //text("World Cup Finals not included", svg, "player-stat-row", screenWidth - 730, 120);
-
-            text("fortniteping.com", svg, "little-ping", screenWidth - 300, 117);
+            text("fortniteping.com", svg, "little-ping", svgWidth - 300, 117);
 
             headerG.append("circle")
-                .attr("cx", screenWidth - 30)
+                .attr("cx", svgWidth - 30)
                 .attr("cy", 30)
                 .attr("r", 22)
                 .attr("fill", "lightblue")
@@ -109,7 +104,7 @@ export function profile(player) {
                 });
 
             headerG.append("text")
-                .attr("x", screenWidth - 38)
+                .attr("x", svgWidth - 38)
                 .attr("y", 39)
                 .text("X")
                 .attr("font-size", "1.7em")
@@ -134,7 +129,7 @@ export function profile(player) {
                 playerInfoLabel = "19 | Free Agent | Arlington, Virginia"
     
             // Player Name
-            svg.append("text")
+            headerG.append("text")
                 .classed("player-summary", true)
                 .attr("x", leftMargin)
                 .attr("y", 122)
@@ -143,50 +138,16 @@ export function profile(player) {
                 .attr("font-size", 0)
                 .transition()
                 .duration(140)
-                .attr("y", 135)
+                .attr("y", 50)
                 .attr("font-size", (player.length < 16) ? "2.8em" : "2.2em")
     
             // Player team, nationality & age, if any 
-            text(playerInfoLabel, svg, "player-info", leftMargin, 170);
+            text(playerInfoLabel, headerG, "player-info", leftMargin, 80);
         }
 
         makePlayerInfo(); 
         makeHelpButton(svg, svgWidth);
     }
-
-
-    /* function makePlayerHeader(stats, region) {
-        let playerInfoLabel = "";
-        const players = playerInfos.filter(d => d.name === player);
-        if (players.length > 0) {
-            let info = [];
-            info.push(players[0].age == "" ? "" : "Age " + players[0].age);
-            info.push(players[0].team);
-            info.push(players[0].nationality);
-
-            info = info.filter(d => d != "");
-            playerInfoLabel = info.join(" | ");
-        }
-
-        if (player === "Posick")
-            playerInfoLabel = "19 | Free Agent | Arlington, Virginia"
-
-        // Player Name
-        svg.append("text")
-            .classed("player-summary", true)
-            .attr("x", leftMargin)
-            .attr("y", 122)
-            .text(player)
-            .attr("fill", "black")
-            .attr("font-size", 0)
-            .transition()
-            .duration(140)
-            .attr("y", 135)
-            .attr("font-size", (player.length < 16) ? "2.8em" : "2.2em")
-
-        // Player team, nationality & age, if any 
-        text(playerInfoLabel, svg, "player-info", leftMargin, 170);
-    } */
 
     function makeStats() {
 
@@ -213,14 +174,13 @@ export function profile(player) {
 
         function columnHeaders() {
             const rowHeaderWidth = 60;
-            svg.selectAll(".player-stat-col-header").data(cols).enter().append("text")
+            matchG.selectAll(".player-stat-col-header").data(cols).enter().append("text")
                 .attr("x", (d, i) => rowHeaderWidth + ((i + 2) * colWidth) - 10)
                 .attr("y", topRowY - 70)
+                .attr("y", 20)
                 .attr("pointer-events", "none")
                 .classed("player-stat-col-header", true)
                 .text(d => d.name);
-
-            //  text("Partners", svg, "player-stat-col-header", leftMargin + 200, topRowY - 70);
         }
 
         function totals(totals) {
@@ -356,7 +316,9 @@ export function profile(player) {
     makeSvg();
 
     const region = recs[0].region;
-    const stats = statsForPlayer(region, player);
+    const stats = statsForPlayer(region, player);  // In main
 
-    makeHeader(svg, svgWidth, stats);
+    makeHeader(stats);
+    
+    makeStats(svg, svgWidth, stats);
 }
