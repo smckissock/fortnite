@@ -122,9 +122,9 @@ export function teamChart(id, teamDim, teamGroup) {
                 .attr("x", 8)
                 .attr("y", titleHeight + (n * barHeight) + 15)
                 .text("")
-                .attr("font-weight", 600)
+                .attr("font-weight", 400)
                 .style("font-family", "Helvetica, Arial, sans-serif")
-                .attr("font-size", ".8em")
+                .attr("font-size", "0.8em")
                 .attr("fill", "black")
                 .attr("pointer-events", "none")
                 .classed("teamText" + n, true);

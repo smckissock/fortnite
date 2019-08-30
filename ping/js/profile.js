@@ -119,7 +119,7 @@ export function profile(player) {
             .transition()
             .duration(140)
             .attr("y", 135)
-            .attr("font-size", (player.length < 16) ? "2.4em" : "1.8em")
+            .attr("font-size", (player.length < 16) ? "2.8em" : "2.2em")
 
         // Player team, nationality & age, if any 
         text(playerInfoLabel, svg, "player-info", leftMargin, 170);
@@ -200,7 +200,7 @@ export function profile(player) {
             // Week rows
             formatWeeks.values.forEach((week, rowNum) => {
                 const y = + priorRowsHeight + summaryRowHeight + (rowHeight * rowNum);
-                text(week.week, svg, "player-stat-row", leftMargin + 16, y);
+                text("# " + week.rank + " " + week.week, svg, "player-stat-row", leftMargin + 16, y);
 
                 const left = rowHeaderWidth + (cols.length * colWidth) - 40;
 
@@ -209,9 +209,9 @@ export function profile(player) {
                     partners = getPartners(week.region, week.rank, week.week, week.player);
 
                 if (partners.length === 1)
-                    text(partners[0].player, svg, "player-stat-row", left, y);
+                    text("w / " + partners[0].player, svg, "player-stat-row", left, y);
                 if (partners.length === 2)
-                    text(partners[0].player + " & " + partners[1].player, svg, "player-stat-row", left, y);
+                    text("w / " + partners[0].player + " & " + partners[1].player, svg, "player-stat-row", left, y);
 
                 cols.forEach(function (col, colNum) {
                     const toShow = col.format(week[col.field]).toString()

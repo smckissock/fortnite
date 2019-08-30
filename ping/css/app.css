@@ -1,6 +1,6 @@
 :root {
-    --left-width: 180px;
-    --team-width: 180px;
+    --left-width: 165px;
+    --team-width: 196px;
 }
 
 
@@ -178,6 +178,12 @@ body {
 .week-label {
     font-weight: 800;
     font-size: 1.0em;
+}
+
+
+.profile-player {
+    font-weight: 800;
+    font-size: 1.3em;
 }
 
 .player-stat-col-header {

@@ -1182,7 +1182,10 @@ export function playerChart(id) {
                     if (i === 1)
                         moveRight -= 18;
 
-                    return playerColWidth + moveRight + headerPos.gap + 10 + (headerPos.width * (i - 1))
+                    const width = playerColWidth + moveRight + headerPos.gap + 10 + (headerPos.width * (i - 1));
+                    
+                    // Payouts can be huge, so shift to right
+                    return width + ((d.name === "Payout") ? 20 : 0);
                 })
                 .attr("y", top + (rowNum * rowHeight) + 21)
                 .text(function (d, i) {
@@ -1190,7 +1193,7 @@ export function playerChart(id) {
                 })
                 .attr('fill', "black")
 
-                .attr("font-size", d => (d.code === filters.sort) ? "1.5em" : "1.3em")
+                .attr("font-size", d => (d.code === filters.sort) ? "1.3em" : "1.2em")
                 .attr("pointer-events", "none")
                 .attr("font-weight", d => (d.code === filters.sort) ? 600 : 260);
 
