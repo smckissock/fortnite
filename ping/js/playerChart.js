@@ -1203,13 +1203,13 @@ export function playerChart(id) {
             //let fillColor = colors[row.color];
             let fillColor = row.color;
             if (filters.regions.length === 1) {
-                if (filters.region === "NA East") fillColor = colors.green;
-                if (filters.region === "NA West") fillColor = colors.orange;
-                if (filters.region === "Europe") fillColor = colors.blue;
-                if (filters.region === "Oceania") fillColor = colors.red;
-                if (filters.region === "Brazil") fillColor = colors.teal;
-                if (filters.region === "Asia") fillColor = colors.yellow;
-                if (filters.region === "Middle East") fillColor = colors.grey;
+                if (filters.regions[0] === "NA East") fillColor = colors.green;
+                if (filters.regions[0] === "NA West") fillColor = colors.orange;
+                if (filters.regions[0] === "Europe") fillColor = colors.blue;
+                if (filters.regions[0] === "Oceania") fillColor = colors.pink;
+                if (filters.regions[0] === "Brazil") fillColor = colors.teal;
+                if (filters.regions[0] === "Asia") fillColor = colors.yellow;
+                if (filters.regions[0] === "Middle East") fillColor = colors.grey;
             }
 
             rowSelection
