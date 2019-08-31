@@ -50,11 +50,10 @@ export function eventChart(id) {
 
     const width = 135;
     const height = 103;
-    const strokeWidthThick = 6;
-    const strokeWidthThin = 3;
+    const strokeWidthThick = 4;
+    const strokeWidthThin = 2;
 
     const bigLabel = { x: 25, y: 59, size: "2em" };
-
 
     let checkBoxSolos;
     let checkBoxDuos;
@@ -108,8 +107,8 @@ export function eventChart(id) {
                     .attr("fill-opacity", "0.0")
                     .attr("stroke", "black")
                     .attr("stroke-width", 1)
-                    .attr("rx", 8)
-                    .attr("ry", 8)
+                    //.attr("rx", 8)
+                    //.attr("ry", 8)
             });
 
         const top = 40;
@@ -141,8 +140,8 @@ export function eventChart(id) {
                 .attr("fill", d => d.done == true ? "cornflowerblue" : "#888888")
                 .attr("stroke", "black")
                 .attr("stroke-width", 0)
-                .attr("rx", 5)
-                .attr("ry", 5)
+                //.attr("rx", 5)
+                //.attr("ry", 5)
                 .classed(format.format, true)
                 .on('mouseover', function (d) {
                     if (!d.done)

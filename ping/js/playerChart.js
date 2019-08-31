@@ -249,7 +249,7 @@ export function playerChart(id) {
         cursor
             .transition()
             .ease(d3.easeBack)
-            .duration(600)
+            .duration(800)
             .attr("x", x)
             .attr("y", y);
     }
@@ -838,7 +838,7 @@ export function playerChart(id) {
                     if (d.code === sort)
                         d3.select(this)
                             .transition()
-                            .duration(100)
+                            .duration(200)
                             .attr("stroke-width", strokeWidth);
                 }
             });

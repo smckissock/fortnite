@@ -85,8 +85,8 @@ export function teamChart(id, teamDim, teamGroup) {
                 .attr("fill", "lightblue")
                 .attr("stroke", "black")
                 .style("stroke-width", 0)
-                .attr("rx", 5)
-                .attr("ry", 5)
+                //.attr("rx", 5)
+                //.attr("ry", 5)
                 .classed("teamRect" + n, true)
                 .on("mouseover", function () {
                     const node = d3.select(this);

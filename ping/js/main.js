@@ -9,7 +9,7 @@ import { regionChart } from "./regionChart.js";
 import { teamChart, clearTeam } from "./teamChart.js";
 
 
-export const cornerRadius = 6;
+export const cornerRadius = 0;
 export let playerColors;
 export let playerDim;
 
@@ -179,7 +179,7 @@ function title(width) {
 
     svg.append("text")
         .attr("x", 0)
-        .attr("y", 90)
+        .attr("y", 82)
         .text("Competitive Battle Royale Stats")
         .attr("font-size", ".4em")
         .attr("letter-spacing", ".1rem")

@@ -24,8 +24,9 @@ export function regionChart(id) {
     let regionRects = [];
     
     
-    const strokeWidthThick = 8;
-    const strokeWidthThin = 4;
+    const strokeWidthThick = 6;
+    const strokeWidthThin = 3;
+    const strokeDuration = 400;
 
     //const height = 80;
 
@@ -67,7 +68,7 @@ export function regionChart(id) {
     
             d3.select(this)
                 .transition()
-                .duration(100)
+                .duration(strokeDuration)
                 .attr("stroke-width", strokeWidthThin)
         })
         .on('mouseout', function (d) {
@@ -75,7 +76,7 @@ export function regionChart(id) {
             //if (filters.regions.indexOf(dom.attr("data")) != -1)
             dom
                 .transition()
-                .duration(100)
+                .duration(strokeDuration)
                 .attr("stroke-width", (filters.regions.indexOf(dom.attr("data")) == -1) ? 0 : strokeWidthThick);
         })
         .on('click', function (d) {
@@ -113,7 +114,7 @@ export function regionChart(id) {
             _chart.filter(filters.regions[0]);
             rect
                 .transition()
-                .duration(100)
+                .duration(strokeDuration)
                 .attr("stroke-width", strokeWidthThick);
 
             _chart.redrawGroup();
@@ -126,7 +127,7 @@ export function regionChart(id) {
             _chart.filter([[newFilter]]);
             rect
                 .transition()
-                .duration(100)
+                .duration(strokeDuration)
                 .attr("stroke-width", strokeWidthThick);
 
             _chart.redrawGroup();
@@ -138,7 +139,7 @@ export function regionChart(id) {
         _chart.filter([[newFilter]]);
         rect
             .transition()
-            .duration(100)
+            .duration(strokeDuration)
             .attr("stroke-width", 0);
 
         _chart.redrawGroup();
