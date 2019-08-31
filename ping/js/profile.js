@@ -1,7 +1,7 @@
 //import { playerTableWidth } from "./playerChart.js";
 import { facts, statsForPlayer, playerInfos, data } from "./main.js";
 
-import { text } from "./shared.js";
+import { text, centeredText } from "./shared.js";
 
 export function profile(player) {
 
@@ -37,10 +37,15 @@ export function profile(player) {
 
     function makeSvg() {
 
+        const headerHeight = 120;
+        const rankHeight = 140;
+        const trendHeight = 3;
+        const matchHeight = 600
+
         const headerTop = 80;
-        const rankTop = 180;
-        const trendTop = 380;
-        const matchTop = 400;
+        const rankTop = headerTop + headerHeight;
+        const trendTop = rankTop + rankHeight;
+        const matchTop = trendTop + trendHeight;
 
         const div = d3.select("#chart-player");
         svg = div.append("svg")
@@ -49,7 +54,7 @@ export function profile(player) {
             .attr("transform", "translate(-250,-1327)")
             .attr("fill", "black")
 
-        function makeG(top, nextTop, color) {
+        function makeG(top, height, color) {
             const g = 
                 svg.append("g")
                     .attr("transform", 'translate(0,' + top + ')')
@@ -58,17 +63,15 @@ export function profile(player) {
                 .attr("x", 0)
                 .attr("y", 0)
                 .attr("width", svgWidth)
-                .attr("height", nextTop - top)
+                .attr("height", height + 1)
                 .attr("opacity", 1.0) 
                 .attr("fill", color)
-
             return g;    
         }    
-
-        headerG = makeG(headerTop, rankTop, "white");
-        rankG = makeG(rankTop, trendTop, "lightblue");
-        trendG = makeG(trendTop, matchTop, "white");
-        matchG = makeG(matchTop, matchTop + 600, "lightblue");
+        headerG = makeG(headerTop, headerHeight, "white");
+        rankG = makeG(rankTop, rankHeight, "white");
+        trendG = makeG(trendTop, trendTop, "white");
+        matchG = makeG(matchTop, matchHeight, "white"); 
     }
 
 
@@ -149,34 +152,28 @@ export function profile(player) {
         makeHelpButton(svg, svgWidth);
     }
 
-    function makeRanks(stats) {
+    function makeRanks(statsm, region) {
         text("Rank", rankG, "g-header", 30, 40);
 
+        const rectWidth = 220;
         stats.totalPayout = stats.soloPayout + stats.duoPayout + stats.trioPayout;  
-        [   {name: "Total", x: 300},
-            {name: "Solo", x: 500},
-            {name: "Duo", x: 700},
-            {name: "Trio", x: 900}  
-        ]
-            .forEach(function(d) {
-                rankG.append("rect")
-                    .attr("x", d.x)
-                    .attr("y", 0)
-                    .attr("width", 180)
-                    .attr("height", 120)
-                    .attr("opacity", 1.0) 
-                    .attr("fill", "lightgrey")
-
-                text(d.name, rankG, "player-info", d.x, 30);
-                text("$" + num(stats[d.name.toLowerCase() + "Payout"]), rankG, "player-info", d.x, 80);
-                text("#" + stats[d.name.toLowerCase() + "PayoutRank"], rankG, "player-info", d.x, 120);
-
-                //console.log(d.name.toLowerCase() + "Payout");
-                //console.log(stats[d.name.toLowerCase() + "Payout"]);
-            });
-
-        
-        console.log(stats);
+        [   {name: "Total", x: leftMargin},
+            {name: "Solo", x: leftMargin + (rectWidth + 20)},
+            {name: "Duo", x: leftMargin + (rectWidth + 20) * 2},
+            {name: "Trio", x: leftMargin + (rectWidth + 20) * 3}  
+        ].forEach(function(d) {
+            const rect = rankG.append("rect")
+                .attr("x", d.x)
+                .attr("y", 0)
+                .attr("width", rectWidth)
+                .attr("height", 120)
+                .attr("opacity", 1.0) 
+                .attr("fill", "lightgrey") 
+            
+            centeredText(d.name, rankG, "player-info", d.x, rectWidth, 34);
+            centeredText("$" + num(stats[d.name.toLowerCase() + "Payout"]), rankG, "player-info", d.x, rectWidth, 66);
+            centeredText("#" + stats[d.name.toLowerCase() + "PayoutRank"] + " " + region, rankG, "player-info", d.x, rectWidth, 100);
+        });
     }
 
     function makeMatches() {
@@ -284,8 +281,6 @@ export function profile(player) {
         }
 
         function getPartners(region, rank, week, player) {
-            //console.log(region + " " + rank + " " + week);
-
             // Could be made faster, but fine for now
             return data.filter(d => (d.region === region) && (d.rank === rank) && (d.week === week) && (d.player != player));
         }
@@ -337,7 +332,6 @@ export function profile(player) {
         priorRowsHeight = rows(formatWeeks[2], formatSummaries[2], priorRowsHeight);
         priorRowsHeight = rows(formatWeeks[1], formatSummaries[1], priorRowsHeight);
         rows(formatWeeks[0], formatSummaries[0], priorRowsHeight);
-        
     }
 
     const num = d3.format(",d");
@@ -353,6 +347,6 @@ export function profile(player) {
     const stats = statsForPlayer(region, player);  // In main
 
     makeHeader(stats);
-    makeRanks(stats);
+    makeRanks(stats, region);
     makeMatches();
 }

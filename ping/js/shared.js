@@ -20,7 +20,7 @@ export function setupStats(data) {
 
                 soloPoints: d3.sum(values, d => (d.soloOrDuo === "Solo") ? d.points : 0),
                 duoPoints: d3.sum(values, d => (d.soloOrDuo === "Duo") ? d.points : 0),
-                trioPoints: d3.sum(values, d => (d.trioOrDuo === "Duo") ? d.points : 0)
+                trioPoints: d3.sum(values, d => (d.trioOrDuo === "Trio") ? d.points : 0)
             };
         })
         .entries(data);
@@ -115,3 +115,13 @@ export function text(text, svg, style, x, y) {
         .text(text)
         .classed(style, true)
 }
+
+// Writes stats to an svg, but pass in a css class
+export function centeredText(text, svg, style, x1, width, y) {
+    svg.append("text")
+        .attr("x", x1 + (width / 2))
+        .attr("y", y)
+        .attr("text-anchor", "middle")
+        .text(text)
+        .classed(style, true);
+} 
