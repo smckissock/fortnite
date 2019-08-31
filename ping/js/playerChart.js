@@ -1096,9 +1096,6 @@ export function playerChart(id) {
     function renderPlayerPage() {
 
         if (showingScatterplot) {
-            //svg.selectAll(".scatter")
-            //    .remove();
-
             updateScatterplot();
             return;
         }
@@ -1113,7 +1110,7 @@ export function playerChart(id) {
                 return columns[i].format(value);
 
             // First number column is weird - if week is selected, it should be the ranking for that week. Otherwise, it should just be the row number    
-            return (filters.week === "") ? first + rowNum + 1 : value;
+            return (filters.weeks.length != 1 ) ? first + rowNum + 1 : value;
         }
 
         // Make a list of 20. Zero based page, zero based slices
@@ -1200,7 +1197,6 @@ export function playerChart(id) {
             const rowSelection = svg.select(".row" + rowNum);
 
             // Ugh - override whatever color the person has if a region is selected
-            //let fillColor = colors[row.color];
             let fillColor = row.color;
             if (filters.regions.length === 1) {
                 if (filters.regions[0] === "NA East") fillColor = colors.green;
@@ -1284,11 +1280,12 @@ export function playerChart(id) {
     }
 
     function setRowRankColumn() {
-        if (filters.week === "") {
+        //if (filters.week === "") {
+        if (filters.weeks.length != 1) {
             numOrRankText
                 .text("#")
                 .attr("x", playerColWidth + headerPos.gap + columns[1].x + 12)
-                .attr("y", 59)
+                .attr("y", 52)
                 .attr("font-size", "2.6em");
 
             numOrRankRect
@@ -1296,7 +1293,7 @@ export function playerChart(id) {
                 .attr("pointer-events", "none")
                 .attr("stroke-width", 0);
 
-            // Need to shift move sord away from rank when it doesn't make any sense.    
+        // Need to shift move sort away from rank when it doesn't make any sense.    
         } else {
             numOrRankText.text("Rank");
             numOrRankRect
