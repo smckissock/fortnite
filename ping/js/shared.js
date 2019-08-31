@@ -108,6 +108,9 @@ export const colors = {
 
 // Writes stats to an svg, but pass in a css class
 export function text(text, svg, style, x, y) {
+    //if (!y)
+    //    debugger;
+
     return svg.append("text")
         .attr("x", x)
         .attr("y", y)

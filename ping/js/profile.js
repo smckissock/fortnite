@@ -232,7 +232,7 @@ export function profile(player) {
 
             // Summary row for Trio / Solo / Duo
             if (!formatSummary)  // This is a bug..
-                return;
+                return priorRowsHeight + summaryRowHeight;
 
             text(formatSummary.key, matchG, "player-stat-summary", leftMargin, priorRowsHeight + 14);
             cols.forEach(function (col, colNum) {
