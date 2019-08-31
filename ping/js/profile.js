@@ -152,14 +152,23 @@ export function profile(player) {
     function makeRanks(stats) {
         text("Rank", rankG, "g-header", 30, 40);
 
+        stats.totalPayout = stats.soloPayout + stats.duoPayout + stats.trioPayout;  
         [   {name: "Total", x: 300},
             {name: "Solo", x: 500},
             {name: "Duo", x: 700},
-            {name: "Trios", x: 900}  
+            {name: "Trio", x: 900}  
         ]
             .forEach(function(d) {
-                text(d.name, rankG, "player-info", d.x, 40);
-                text(stats[d.name.toLowerCase() + "Payout"], rankG, "player-info", d.x, 80);
+                rankG.append("rect")
+                    .attr("x", d.x)
+                    .attr("y", 0)
+                    .attr("width", 180)
+                    .attr("height", 120)
+                    .attr("opacity", 1.0) 
+                    .attr("fill", "lightgrey")
+
+                text(d.name, rankG, "player-info", d.x, 30);
+                text("$" + num(stats[d.name.toLowerCase() + "Payout"]), rankG, "player-info", d.x, 80);
                 text("#" + stats[d.name.toLowerCase() + "PayoutRank"], rankG, "player-info", d.x, 120);
 
                 //console.log(d.name.toLowerCase() + "Payout");
@@ -204,7 +213,7 @@ export function profile(player) {
 
         function totals(totals) {
             const y = 63;
-            text("Cumulative", matchG, "player-stat-summary", leftMargin, y);
+            text("Total", matchG, "player-stat-summary", leftMargin, y);
 
             cols.forEach(function (col, colNum) {
                 const toShow = col.format(totals[col.field]).toString()

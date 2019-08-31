@@ -1,6 +1,3 @@
-// @language_out ecmascript5
-
-
 
 export function setupStats(data) {
 
@@ -11,15 +8,19 @@ export function setupStats(data) {
             return {
                 soloElims: d3.sum(values, d => (d.soloOrDuo === "Solo") ? d.elims : 0),
                 duoElims: d3.sum(values, d => (d.soloOrDuo === "Duo") ? d.elims : 0),
+                trioElims: d3.sum(values, d => (d.soloOrDuo === "Trio") ? d.elims : 0),
 
                 soloPayout: d3.sum(values, d => (d.soloOrDuo === "Solo") ? d.payout : 0),
                 duoPayout: d3.sum(values, d => (d.soloOrDuo === "Duo") ? d.payout : 0),
+                trioPayout: d3.sum(values, d => (d.soloOrDuo === "Trio") ? d.payout : 0),
 
                 soloWins: d3.sum(values, d => (d.soloOrDuo === "Solo") ? d.wins : 0),
                 duoWins: d3.sum(values, d => (d.soloOrDuo === "Duo") ? d.wins : 0),
+                trioWins: d3.sum(values, d => (d.soloOrDuo === "Trio") ? d.wins : 0),
 
                 soloPoints: d3.sum(values, d => (d.soloOrDuo === "Solo") ? d.points : 0),
-                duoPoints: d3.sum(values, d => (d.soloOrDuo === "Duo") ? d.points : 0)
+                duoPoints: d3.sum(values, d => (d.soloOrDuo === "Duo") ? d.points : 0),
+                trioPoints: d3.sum(values, d => (d.trioOrDuo === "Duo") ? d.points : 0)
             };
         })
         .entries(data);
