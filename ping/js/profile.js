@@ -342,8 +342,16 @@ export function profile(player) {
             if (!formatSummary)  // This is a bug..
                 return priorRowsHeight + summaryRowHeight;
 
-            text(formatSummary.key, matchG, "player-stat-summary", leftMargin, priorRowsHeight + 14);
+            matchG.append("rect")
+                .attr("x", leftMargin)
+                .attr("y", priorRowsHeight - 12)
+                .attr("width", svgWidth - leftMargin - 100)
+                .attr("height", formatWeeks.values.length * rowHeight + summaryRowHeight - 6)
+                .attr("fill", (formatSummary.key == "Total") ? formatColor[formatSummary.key] : formatColor[formatSummary.key + "s"])
+
+            text(formatSummary.key, matchG, "player-stat-summary", leftMargin + 8, priorRowsHeight + 14);
             cols.forEach(function (col, colNum) {
+
                 const toShow = col.format(formatSummary.value[col.field]).toString()
                 text(
                     toShow,
