@@ -178,8 +178,6 @@ export function profile(player) {
                 .attr("height", 120)
                 .attr("opacity", 1.0) 
                 .attr("fill", (d.name == "Total") ? formatColor[d.name] : formatColor[d.name + "s"])  // Good Lord. Need to make it always "Solos" 
-
-                console.log(d.name + "s");
             
             centeredText(d.name, rankG, "player-info", d.x, rectWidth, 34);
             centeredText("$" + num(stats[d.name.toLowerCase() + "Payout"]), rankG, "player-info", d.x, rectWidth, 66);
@@ -196,7 +194,7 @@ export function profile(player) {
             formatList.items.forEach(function(event) {
                 event.format = formatList.format;
                 
-                event.payout = 0;
+                event.payout = 0.1;
                 const matches = recs.filter(d => d.week === event.name);
                 // Add the player-specific results
                 if (matches.length != 0) {
@@ -211,21 +209,29 @@ export function profile(player) {
             .domain([0, data.length - 1])
             .range([40, svgWidth - 100]);
             
-        //const ySacle = d3.scalePow()
-        //    .exponent(k)
-        const chartHeight = 120;
-        const yScale = d3.scaleLinear()
-            .domain(d3.extent(data, d => d.payout))
-            .range([0, chartHeight - 20])
-
-        //for (let i=0; i < 14; i++)
-        //    console.log(xScale(i));   
-
       
+        const chartHeight = 120;
+        //const yScale = d3.scaleLinear()
+        //    .domain(d3.extent(data, d => d.payout))
+        //    .range([0, chartHeight - 20])
+
+        const yExtent = d3.extent(data, d => d.payout)
+        const power = (yExtent[1] > 40000) ? 0.25 : 0.55;
+        var yScale = d3.scalePow()
+            .exponent(power)
+            .domain(d3.extent(yExtent))
+            .range([0, chartHeight - 20 ]);
+
+
+        ///const pow ()= 0.20    
+        //for (let i=0; i < domain.length; i++) 
+        //    console.log(domain[i] + " " + logScale(domain[i])); 
+        
         trendG.selectAll("rect").data(data).enter().append("rect")
             .attr("x", d => xScale(d.weekNum))
             .attr("y", d => chartHeight - yScale(d.payout))
             .attr("width", 50)
+            //.attr("height", d => logScale(d.payout) === NaN ? 0 : logScale(d.payout))\
             .attr("height", d => yScale(d.payout))
             .attr("fill", d => formatColor[d.format]) 
     }
