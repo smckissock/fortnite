@@ -14,8 +14,14 @@ export function profile(player) {
 
     const svgWidth = 1200;
     const svgHeight = 1200;
-
     const leftMargin = 160;
+
+    const noFormat = function (d) { return d; }
+    const commaFormat = d3.format(",");
+    const pctFormat = d3.format(",.1%");
+    const pctAxisFormat = d3.format(",.0%");
+    const moneyFormat = function (d) { return "$" + d3.format(",")(d); };
+    const moneyKFormat = d3.format(".2s");
 
     const formatColor = 
         { 
@@ -48,7 +54,7 @@ export function profile(player) {
 
         const headerHeight = 120;
         const rankHeight = 140;
-        const trendHeight = 160;
+        const trendHeight = 180;
         const matchHeight = 600
 
         const headerTop = 80;
@@ -186,6 +192,7 @@ export function profile(player) {
     }
 
     function makeTrends(recs) {
+
         text("Trend", trendG, "g-header", 30, 40);
 
         // Un-nest the events
@@ -201,39 +208,87 @@ export function profile(player) {
                     event.payout = matches[0].payout;
                     event.data = matches[0];
                 }
-                data.push(event);
+
+                // Ugh, the world cup solos and duos are the same week, so "insert" another week 
+                event.uniqueWeekNum = (event.weekNum < 12 & event.name != "Duo Final") ? event.weekNum : event.weekNum + 1;
+
+                if (event.done)
+                    data.push(event);
             })
         })
 
+        const xRange = [leftMargin, svgWidth - 225];  
         const xScale = d3.scaleLinear()
-            .domain([0, data.length - 1])
-            .range([40, svgWidth - 100]);
-            
+            .domain([1, data.length - 1])
+            .range(xRange);
+        
+        const weekWidth = ((xRange[1] - xRange[0]) / data.length);
+        const barWidth = weekWidth - 3;                    
       
-        const chartHeight = 120;
+        const chartHeight = 140;
         //const yScale = d3.scaleLinear()
         //    .domain(d3.extent(data, d => d.payout))
         //    .range([0, chartHeight - 20])
 
         const yExtent = d3.extent(data, d => d.payout)
-        const power = (yExtent[1] > 40000) ? 0.25 : 0.55;
+        // Scale world cup qualifiers differently 
+        const power = (yExtent[1] > 49000) ? 0.25 : 0.55;
         var yScale = d3.scalePow()
             .exponent(power)
             .domain(d3.extent(yExtent))
-            .range([0, chartHeight - 20 ]);
-
-
-        ///const pow ()= 0.20    
-        //for (let i=0; i < domain.length; i++) 
-        //    console.log(domain[i] + " " + logScale(domain[i])); 
+            .range([0, chartHeight - 50]);
         
-        trendG.selectAll("rect").data(data).enter().append("rect")
-            .attr("x", d => xScale(d.weekNum))
+        trendG.selectAll("rect.bar").data(data).enter().append("rect")
+            .attr("x", d => xScale(d.uniqueWeekNum))
             .attr("y", d => chartHeight - yScale(d.payout))
-            .attr("width", 50)
-            //.attr("height", d => logScale(d.payout) === NaN ? 0 : logScale(d.payout))\
+            .attr("width", barWidth)
             .attr("height", d => yScale(d.payout))
-            .attr("fill", d => formatColor[d.format]) 
+            .attr("fill", d => formatColor[d.format])
+            .classed("bar", true) 
+            
+        data.forEach(function (d) {
+            centeredText(
+                d.payout === 0.1 ? "" : moneyFormat(d.payout), 
+                trendG, "bar-chart-text", 
+                xScale(d.uniqueWeekNum), 
+                barWidth, 
+                chartHeight - yScale(d.payout) - 8);
+            
+            const text = (d.uniqueWeekNum === 11) | (d.uniqueWeekNum === 12) ? d.name : d.num;
+            centeredText(
+                text, 
+                trendG, "bar-chart-text", 
+                xScale(d.uniqueWeekNum), 
+                barWidth, 
+                chartHeight + 18);    
+        });
+
+        const y = 0;
+        [   {name: "World Cup", x1: leftMargin, width: (13 * (weekWidth + 3.6))},
+            {name: "Champion Series", x1: leftMargin + (14 * weekWidth), width: (weekWidth + 4) * 2} 
+        ].forEach(function(d) {
+            trendG.append("rect")
+                .attr("x", d.x1)
+                .attr("y", y)
+                .attr("width", d.width)
+                .attr("height", 23)
+                .attr("fill", "lightblue")
+
+            centeredText(
+                d.name,
+                trendG, "bar-chart-text", 
+                d.x1, d.width, 
+                y + 17)
+        }) 
+
+        // Worth a try...
+/*      var yAxis = d3.axisLeft()
+            .scale(yScale)
+            .ticks(5)
+        trendG.append("g")
+            .classed("y-axis", true)
+            .attr("transform", "translate(210,36)")
+            .call(yAxis); */
     }
 
     function makeMatches(recs) {
@@ -241,13 +296,6 @@ export function profile(player) {
         const colWidth = 80;
         const rowHeaderWidth = 420; // 280
         
-        const noFormat = function (d) { return d; }
-        const commaFormat = d3.format(",");
-        const pctFormat = d3.format(",.1%");
-        const pctAxisFormat = d3.format(",.0%");
-        const moneyFormat = function (d) { return "$" + d3.format(",")(d); };
-        const moneyKFormat = d3.format(".2s");
-
         const cols = [
             { name: "Payout", field: "payout", format: commaFormat },
             { name: "Points", field: "points", format: noFormat },

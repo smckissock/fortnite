@@ -186,6 +186,18 @@ body {
     fill: darkgrey;
 }
 
+.bar-chart-text {
+    font-weight: 200;
+    font-size: 1.0em;
+    /* fill: darkgrey; */
+}
+
+.y-axis text {
+    font-weight: 200;
+    font-size: 0.6em;
+}
+
+
 .profile-player {
     font-weight: 800;
     font-size: 1.3em;
