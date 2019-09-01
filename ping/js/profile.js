@@ -312,20 +312,28 @@ export function profile(player) {
             { name: "Payout", field: "payout", format: commaFormat },
             { name: "Points", field: "points", format: noFormat },
             { name: "Wins", field: "wins", format: noFormat },
-            { name: "Elim Pts", field: "elims", format: noFormat },
+            { name: "Elim Points", field: "elims", format: noFormat },
             { name: "Elim %", field: "elimPct", format: pctFormat },
-            { name: "Qual Pts", field: "placementPoints", format: noFormat },
-            { name: "Qual %", field: "placementPct", format: pctFormat }
+            { name: "Plcmnt Points", field: "placementPoints", format: noFormat },
+            { name: "Plcmnt %", field: "placementPct", format: pctFormat }
         ];
 
         function columnHeaders() {
-            const rowHeaderWidth = 220;
-            matchG.selectAll(".player-stat-col-header").data(cols).enter().append("text")
-                .attr("x", (d, i) => rowHeaderWidth + ((i + 2) * colWidth) - 10)
-                .attr("y", 30)
-                .attr("pointer-events", "none")
-                .classed("player-stat-col-header", true)
-                .text(d => d.name);
+
+            function write(text, i, y) {
+                const rowHeaderWidth = 220;
+                centeredText(text, matchG, "player-stat-col-header", rowHeaderWidth + ((i + 2) * colWidth) - 30, colWidth, y);
+            }
+            
+            cols.forEach(function (d, i) {
+                const terms = d.name.split(" ");
+                if (terms.length === 1)
+                    write(terms[0], i, 24);
+                else {
+                    write(terms[0], i, 14);
+                    write(terms[1], i, 34);
+                }    
+            });            
         }
 
         function totals(totals) {
