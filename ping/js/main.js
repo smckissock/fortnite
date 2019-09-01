@@ -122,6 +122,10 @@ d3.json('ping/data/data.json').then(function (dataArray) {
         dc.redrawAll();
     });
     updateCounts();
+
+    // So the search box once everything is loaded
+    d3.select("#search-input")
+        .style("visibility", "visible");
 });
 
 
