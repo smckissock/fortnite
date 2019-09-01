@@ -4,7 +4,7 @@ import { colors } from "./shared.js";
 
 import { cornerRadius, filters, playerDim, playerColors, soloQualifications, duoQualifications, qualifierNames, updateCounts, teamMembers } from "./main.js";
 import { checkBox } from "./checkBox.js";
-import { profile } from "./profile.js";
+import { profile, profileOpen } from "./profile.js";
 
 export let clearPlayer
 export let PlayerTableWidth;
@@ -1042,7 +1042,8 @@ export function playerChart(id) {
     }
 
     function showPlayerProfile(player) {
-        profile(player)
+        if (!profileOpen)
+            profile(player)
     }
 
 

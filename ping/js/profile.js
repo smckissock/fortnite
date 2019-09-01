@@ -2,8 +2,16 @@ import { facts, statsForPlayer, playerInfos, data } from "./main.js";
 import { text, centeredText, colors } from "./shared.js";
 import { events } from "./eventChart.js";
 
+// Flag to prevent multiple profiles opening
+export let profileOpen = false;
 
 export function profile(player) {
+
+    if (player === "")
+        return;
+
+    profileOpen = true;
+    console.log(profileOpen);
 
     let svg;
 
@@ -48,6 +56,9 @@ export function profile(player) {
             .attr("fill-opacity", .0)
             .attr("opacity", .0)
             .on("end", () => svg.remove());
+
+        profileOpen = false;
+        console.log(profileOpen);
     }
 
     function makeSvg() {
@@ -116,6 +127,7 @@ export function profile(player) {
                         .attr("stroke-width", 0);
                 })
                 .on('click', function (d) {
+                    //profileOpen = false;
                     hide();
                 });
 
@@ -317,7 +329,15 @@ export function profile(player) {
         }
 
         function totals(totals) {
-            const y = 63;
+
+            matchG.append("rect")
+                .attr("x", leftMargin)
+                .attr("y", 40)
+                .attr("width", svgWidth - leftMargin - 100)
+                .attr("height", 40)
+                .attr("fill", colors.grey)
+            
+            const y = 66;
             text("Total", matchG, "player-stat-summary", leftMargin, y);
 
             cols.forEach(function (col, colNum) {
@@ -361,7 +381,7 @@ export function profile(player) {
                     // Source Sans Pro has monospaced numbers, but commas are narrower than numbers
                     (toShow.length * 11) +
                     ((toShow.match(/,/g) || []).length) * 6,
-                    priorRowsHeight + 8)
+                    priorRowsHeight + 12)
             });
 
             // Week rows
