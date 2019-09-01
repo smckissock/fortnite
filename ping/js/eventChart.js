@@ -4,11 +4,44 @@ import { clearPlayer } from "./playerChart.js";
 import { checkBox } from "./checkBox.js";
 import { text } from "./shared.js";
 
-export let showPlayerOnWeekChart2;
+
+export const events = [
+    {
+        format: "Solos", items: [
+            { num: "W1", weekNum: 1, name: "WC Week 1", type: "World Cup", date: "April 14", done: true },
+            { num: "W3", weekNum: 3, name: "WC Week 3", type: "World Cup", date: "April 28", done: true },
+            { num: "W5", weekNum: 5, name: "WC Week 5", type: "World Cup", date: "May 12", done: true },
+            { num: "W7", weekNum: 7, name: "WC Week 7", type: "World Cup", date: "May 26", done: true },
+            { num: "W9", weekNum: 9, name: "WC Week 9", type: "World Cup", date: "June 9", done: true },
+            { num: "F", weekNum: 11, name: "Solo Final", type: "World Cup", date: "July 28", done: true }
+        ]
+    },
+    {
+        format: "Duos", items: [
+            { num: "W2", weekNum: 2, name: "WC Week 2", type: "World Cup", date: "April 21", done: true },
+            { num: "W4", weekNum: 4, name: "WC Week 4", type: "World Cup", date: "May 5", done: true },
+            { num: "W6", weekNum: 6, name: "WC Week 6", type: "World Cup", date: "May 19", done: true },
+            { num: "W8", weekNum: 8, name: "WC Week 8", type: "World Cup", date: "June 2", done: true },
+            { num: "W10", weekNum: 10, name: "WC Week 10", type: "World Cup", date: "June 21", done: true },
+            { num: "F", weekNum: 11, name: "Duo Final", type: "World Cup", date: "July 27", done: true }
+        ]
+    },
+    {
+        format: "Trios", items: [
+            { num: "W1", weekNum: 12, name: "CS Week 1", type: "Champion Series", date: "August 18", done: true },
+            { num: "W2", weekNum: 13, name: "CS Week 2", type: "Champion Series", date: "August 25", done: true },
+            { num: "W3", weekNum: 14, name: "CS Week 3", type: "Champion Series", date: "September 1", done: false },
+            { num: "W4", weekNum: 15, name: "CS Week 4", type: "Champion Series", date: "September 8", done: false },
+            { num: "W5", weekNum: 16, name: "CS Week 5", type: "Champion Series", date: "September 15", done: false },
+            { num: "F", weekNum: 17, name: "Season Finals", type: "Champion Series", date: "September 23", done: false }
+        ]
+    }
+];
+
 
 export function eventChart(id) {
 
-    const events = [
+    /* const events = [
         {
             format: "Solos", items: [
                 { num: "W1", weekNum: 1, name: "WC Week 1", type: "World Cup", date: "April 14", done: true },
@@ -16,7 +49,7 @@ export function eventChart(id) {
                 { num: "W5", weekNum: 5, name: "WC Week 5", type: "World Cup", date: "May 12", done: true },
                 { num: "W7", weekNum: 7, name: "WC Week 7", type: "World Cup", date: "May 26", done: true },
                 { num: "W9", weekNum: 9, name: "WC Week 9", type: "World Cup", date: "June 9", done: true },
-                { num: "F", weekNum: 12, name: "Solo Final", type: "World Cup", date: "July 28", done: true }
+                { num: "F", weekNum: 11, name: "Solo Final", type: "World Cup", date: "July 28", done: true }
             ]
         },
         {
@@ -39,7 +72,7 @@ export function eventChart(id) {
                 { num: "F", weekNum: 17, name: "Season Finals", type: "Champion Series", date: "September 23", done: false }
             ]
         }
-    ];
+    ]; */
 
     let weekSelections = [];
 
