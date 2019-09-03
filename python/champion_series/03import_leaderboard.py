@@ -57,8 +57,12 @@ def insert_placement(placement, week, region):
 
 
 regions = ["NAE", "NAW", "EU", "OCE", "ASIA", "BR", "ME"]
-weeks = ["2"]
-week_id = "14"
+
+
+# UPDATE THESE TWO
+weeks = ["3"]
+week_id = "15"
+
 last_page = 31
 
 for region in regions:

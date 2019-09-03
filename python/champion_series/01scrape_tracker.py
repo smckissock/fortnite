@@ -8,7 +8,7 @@ from db import cmd, cursor, conn, max_id
 
 
 regions = ["NAE", "NAW", "EU", "OCE", "ASIA", "BR", "ME"]
-weeks = ["Week2"]
+weeks = ["Week3"]
 
 # Fortnitw Champion Series
 match = "S10_FNCS"
@@ -17,7 +17,11 @@ event = "Event3"
 # Looking for this:
 # https://fortnitetracker.com/events/epicgames_S10_FNCS_Week1_NAE?window=S10_FNCS_Week1_NAE_Event3&page=0
 
+print("Start")
+
+
 for region in regions:
+    print(region)
     for week in weeks:
         for page in range(0, 21):
 

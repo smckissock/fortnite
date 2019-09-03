@@ -125,3 +125,18 @@ MOVE 'Fortnite2_log' TO 'd:\fortnite\fortnitedb\Fortnite_log8_26__.ldf'
 
 
 
+-- September 1, 2019 after WC fixes, before more WC fixes
+BACKUP DATABASE Fortnite
+TO DISK = N'd:\Fortnite\Fortnitedb\September 1.bak' WITH NOFORMAT, NOINIT, NAME = N'Full Database Backup', SKIP, NOREWIND, NOUNLOAD, STATS = 10
+GO
+
+RESTORE FILELISTONLY
+FROM DISK = N'd:\fortnite\fortnitedb\September 1.bak'
+GO
+
+
+
+
+
+
+

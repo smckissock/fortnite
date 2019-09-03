@@ -11,6 +11,8 @@ namespace FortniteJson {
 
     public static class Fortnite2FixUp {
 
+        private static string weekId = "15";
+
         public static void FixCurrentName() {
             return;
 
@@ -36,11 +38,12 @@ namespace FortniteJson {
 
         public static void FixPlacementPayout() {
             // Go though every placement to update payouts
-            var reader = SqlUtil.Query("SELECT ID, RegionID, WeekID, Rank FROM Placement WHERE ID <> 1");
+            //var reader = SqlUtil.Query("SELECT ID, RegionID, WeekID, Rank FROM Placement WHERE ID <> 1");
+            var reader = SqlUtil.Query("SELECT ID, RegionID, WeekID, Rank FROM Placement WHERE ID <> 1 AND WeekID = " + weekId);
             while (reader.Read()) {
                 var id = reader[0].ToString();
                 var regionId = reader[1].ToString();
-                var weekId = reader[2].ToString();
+                //var weekId = reader[2].ToString();
                 var rank = (int)reader[3];
 
                 int payout = 0;
@@ -63,7 +66,8 @@ namespace FortniteJson {
 
         public static void FixPlacementElims() {
             // Go though ever placement to update elims
-            var reader = SqlUtil.Query("SELECT ID, RegionID, WeekID, Rank FROM Placement WHERE ID <> 1");
+            // var reader = SqlUtil.Query("SELECT ID, RegionID, WeekID, Rank FROM Placement WHERE ID <> 1");
+            var reader = SqlUtil.Query("SELECT ID, RegionID, WeekID, Rank FROM Placement WHERE ID <> 1 AND WeekID = " + weekId);
             while (reader.Read()) {
                 var id = reader[0].ToString();
                 var regionId = reader[1].ToString();
@@ -97,7 +101,8 @@ namespace FortniteJson {
         }
 
         public static void UpdateWins() {
-            var reader = SqlUtil.Query("SELECT ID FROM Placement WHERE ID <> 1");
+            //var reader = SqlUtil.Query("SELECT ID FROM Placement WHERE ID <> 1");
+            var reader = SqlUtil.Query("SELECT ID FROM Placement WHERE ID <> 1  AND WeekID = " + weekId);
             while (reader.Read()) {
                 var id = reader[0].ToString();
 

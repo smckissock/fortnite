@@ -46,6 +46,22 @@ const LeftSideWidth = 340;
 let titleSvg;
 let filterTextDisplayed;
 
+let loadingSvg;
+
+function makeLoadingSvg() {
+    loadingSvg = d3.select("div.grid.gradient")
+        .append("svg");
+
+    loadingSvg.append("circle")
+        .attr("cx", 500)
+        .attr("cy", 500)
+        .attr("r", 200)
+        .attr("fill", "white")
+        .attr("stroke", "black")
+}
+
+makeLoadingSvg();
+
 d3.json('ping/data/players.json').then(function (players) {
     playerInfos = [];
     players.forEach(function (d) {
@@ -97,6 +113,7 @@ d3.json('ping/data/data.json').then(function (dataArray) {
         data.push(rec);
     });
 
+    
     statsForPlayer = setupStats(data);
 
     makeQualifications(data);

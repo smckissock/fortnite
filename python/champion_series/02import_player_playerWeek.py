@@ -9,6 +9,7 @@ from db import cmd, cursor, conn, max_id, write_error
 
 def insert_player_guid(player, week_id, region_code):
     account_id = player.get("accountId")
+    print (account_id)
     player = player.get("playerName")
     try:
         cursor.execute(
@@ -30,26 +31,31 @@ def insert_player_guid(player, week_id, region_code):
     # Ignoring this shouldn't break anything...
     except Exception as e:
         write_error("Error inserting into PlayerWeek", str(e))
-        print(week_id)
+        print("ERROR")
         #print("error inserting int player week")
         pass
 
 
 regions = ["NAE", "NAW", "EU", "OCE", "ASIA", "BR", "ME"]
-weeks = ["2"]
-week_id = "14"
+
+# UPDATE THESE TWO
+weeks = ["3"]
+week_id = "15"
+
 last_page = 31
 
 for region in regions:
     print(region)
     for week in weeks:  
         for page in range(0, last_page): 
-            print(page)
+            #print(page)
             fileName = region + "_Week" + str(week) + "_" + str(page) + ".html"
+            print(fileName)
             try:
                 file = open(
                     "d:\\fortnite\\fortnite-scrape\\champion-series\\" + fileName, encoding="utf-8")
             except Exception as e:
+                print("No File!")
                 continue
 
             html = file.read()
@@ -71,7 +77,9 @@ for region in regions:
                 print(json_text)
                 exit()
 
+            print(json_text)
             for player in players:
+                print("PLAYERS!")
                 insert_player_guid(player, week_id, region)
 
 val = input("Done")

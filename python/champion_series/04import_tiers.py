@@ -35,8 +35,12 @@ def insert_payout_tiers(payoutTiers, scoringTiers, week, region):
 
 
 regions = ["NAE", "NAW", "EU", "OCE", "ASIA", "BR", "ME"]
-weeks = ["2"]
-week_id = "14" 
+
+
+# UPDATE THESE TWO
+weeks = ["3"]
+week_id = "15"
+
 
 for region in regions:
     print(region)

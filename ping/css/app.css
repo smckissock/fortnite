@@ -188,7 +188,7 @@ body {
 
 .bar-chart-text {
     font-weight: 200;
-    font-size: 1.0em;
+    font-size: 0.9em;
     /* fill: darkgrey; */
 }
 
@@ -247,5 +247,4 @@ body {
     font-size: 1.2em;
     pointer-events: "none";
 } 
-
 

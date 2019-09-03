@@ -235,7 +235,7 @@ export function profile(player) {
             .range(xRange);
         
         const weekWidth = ((xRange[1] - xRange[0]) / data.length);
-        const barWidth = weekWidth - 3;                    
+        const barWidth = weekWidth - 1;                    
       
         const chartHeight = 140;
         //const yScale = d3.scaleLinear()
@@ -277,7 +277,7 @@ export function profile(player) {
 
         const y = 0;
         [   {name: "World Cup", x1: leftMargin, width: (13 * (weekWidth + 3.6))},
-            {name: "Champion Series", x1: leftMargin + (14 * weekWidth), width: (weekWidth + 4) * 2} 
+            {name: "Champion Series", x1: leftMargin + (14 * weekWidth), width: (weekWidth + 4) * 3} 
         ].forEach(function(d) {
             trendG.append("rect")
                 .attr("x", d.x1)
