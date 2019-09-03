@@ -136,6 +136,17 @@ GO
 
 
 
+-- September 2, 2019 after CS Week 3
+BACKUP DATABASE Fortnite
+TO DISK = N'd:\Fortnite\Fortnitedb\September 2.bak' WITH NOFORMAT, NOINIT, NAME = N'Full Database Backup', SKIP, NOREWIND, NOUNLOAD, STATS = 10
+GO
+
+RESTORE FILELISTONLY
+FROM DISK = N'd:\fortnite\fortnitedb\September 2.bak'
+GO
+
+
+
 
 
 
