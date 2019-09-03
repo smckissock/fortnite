@@ -292,7 +292,8 @@ export function profile(player) {
                 d.x1, d.width, 
                 y + 17)
         }) 
-
+        text("Non-linear scale", trendG, "tiny-grey", leftMargin, y + 40);
+        
         // Worth a try...
 /*      var yAxis = d3.axisLeft()
             .scale(yScale)
@@ -306,7 +307,7 @@ export function profile(player) {
     function makeMatches(recs) {
 
         const colWidth = 80;
-        const rowHeaderWidth = 420; // 280
+        const rowHeaderWidth = 400; 
         
         const cols = [
             { name: "Payout", field: "payout", format: commaFormat },
@@ -395,7 +396,9 @@ export function profile(player) {
             // Week rows
             formatWeeks.values.forEach((week, rowNum) => {
                 const y = + priorRowsHeight + summaryRowHeight + (rowHeight * rowNum);
-                text("# " + week.rank + " " + week.week, matchG, "player-stat-row", leftMargin + 16, y);
+
+                text("#" + week.rank, matchG, "player-stat-row", leftMargin + 16, y);
+                text(week.week, matchG, "player-stat-row", leftMargin + 70, y);
 
                 const left = rowHeaderWidth + (cols.length * colWidth) - 60;
 
@@ -487,7 +490,6 @@ export function profile(player) {
 
     const region = recs[0].region;
     const stats = statsForPlayer(region, player);  // In main
-
     
     makeHeader(stats);
     makeRanks(stats, region);
