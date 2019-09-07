@@ -10,12 +10,14 @@ export let clearPlayer
 export let PlayerTableWidth;
 export let playerData;
 
-export let showingScatterplot = false;
+export let showingCirclePack = false;
 
 export let playerChart_renderPlayerPage;
 
 
 export function playerChart(id) {
+
+    const showCirclePackButton = true;
 
     const noFormat = function (d) { return d; }
     const commaFormat = d3.format(",");
@@ -35,16 +37,6 @@ export function playerChart(id) {
         { name: "Elim %", code: "elimPercentage", x: 16, format: pctFormat, axisFormat: pctAxisFormat },
         { name: "Placement", code: "placementPoints", x: 0, format: noFormat, axisFormat: noFormat },
         { name: "Placement %", code: "placementPercentage", x: 0, format: pctFormat, axisFormat: pctAxisFormat }
-    ];
-
-    const regions = [
-        { color: colors.green, filter: "NA East" },
-        { color: colors.orange, filter: "NA West" },
-        { color: colors.blue, filter: "Europe" },
-        { color: colors.red, filter: "Oceania" },
-        { color: colors.teal, filter: "Brazil" },
-        { color: colors.yellow, filter: "Asia" },
-        { color: colors.grey, filter: "Middle East" }
     ];
 
     const headerPos = { left: 150, top: 0, height: 69, width: 80, gap: 5 };
@@ -67,7 +59,7 @@ export function playerChart(id) {
     let upArrowPolygon;
     let downArrowPolygon;
 
-    let scatterplotButton;
+    let circlePackButton;
 
     let svgWidth = PlayerTableWidth; //640;
 
@@ -114,14 +106,14 @@ export function playerChart(id) {
     drawHeaders(svg);
     drawRows(svg);
 
-    const scatterplotBox = svg.append("g");
-    const scatterplotSvg = scatterplotBox.append("svg")
+    const circlePackBox = svg.append("g");
+    const circlePackSvg = circlePackBox.append("svg")
         .attr("width", svgWidth + 4)
         .attr("height", 800)
         .attr("transform", "translate(0,200)")
 
     const corner = 6;
-    const scatterplotRect = scatterplotSvg.append("rect")
+    const circlePackRect = circlePackSvg.append("rect")
         .attr("x", 3)
         .attr("y", 84)
         .attr("width", svgWidth - 6)
@@ -135,7 +127,7 @@ export function playerChart(id) {
         .attr("pointer-events", "none");
 
 
-    function scatterplotButtonText() {
+    function circlePackButtonText() {
 
         function addText(x, y, text) {
             svg.append("text")
@@ -147,7 +139,7 @@ export function playerChart(id) {
                 .attr("font-size", "1.2em")
                 .attr("pointer-events", "none")
                 .attr("font-weight", 300)
-                .classed("scatterplotButton-" + text, true)
+                .classed("circlePackButton-" + text, true)
         }
     }
 
@@ -208,8 +200,8 @@ export function playerChart(id) {
                     .attr("stroke-width", 0);
             })
             .on('click', function (d) {
-                if (showingScatterplot)
-                    scatterplotHeaderClick(d, this);
+                if (showingCirclePack)
+                    circlePackHeaderClick(d, this);
                 else
                     tableHeaderClick(d, this);
             })
@@ -226,6 +218,9 @@ export function playerChart(id) {
         columnHeaderText();
         pageArrows();
 
+        if (showCirclePackButton)
+            makeCirclePackButton();
+
         drawColumnBorder("payout", thickBorder);
 
         // Make this after the the player rects so that always appears "on top"
@@ -241,6 +236,39 @@ export function playerChart(id) {
             .attr("rx", cornerRadius)
             .attr("ry", cornerRadius)
     }
+
+    // Button on top left to switch between table and circlePack
+    function makeCirclePackButton() {
+
+        circlePackButton = svg.append("rect")
+            .attr("x", playerColWidth - 236)
+            .attr("y", headerPos.top + 4)
+            .attr("width", headerPos.width - headerPos.gap - 3)
+            .attr("height", headerPos.height)
+            .attr("fill", "lightblue")
+            .attr("stroke", "black")
+            .attr("stroke-width", 1)
+            .attr("rx", cornerRadius)
+            .attr("ry", cornerRadius)
+            .on('mouseover', function (d) {
+                d3.select(this)
+                    .transition()
+                    .duration(100)
+                    .attr("stroke-width", thinBorder);
+            })
+            .on('mouseout', function (d) {
+                d3.select(this)
+                    .transition()
+                    .duration(100)
+                    .attr("stroke-width", 0);
+            })
+            .on('click', function (d) {
+                toggleTableAndCirclePack();
+            });
+
+        circlePackButtonText();
+    }
+
 
     function moveCursor(rect) {
         const x = rect.x.baseVal.value;
@@ -477,20 +505,20 @@ export function playerChart(id) {
     }
 
 
-    function updateScatterplot() {
+    function updateCirclePack() {
 
         const t = d3.transition()
             .duration(500);
 
-        function scatterplotMeasuresLabels() {
+        function circlePackMeasuresLabels() {
 
             // Update label in the left corner of the chart - measures
             const text = filters.yMeasure.name + " vs " + filters.xMeasure.name;
-            const label = scatterplotSvg.select(".scatterplotMeasuresLabel");
+            const label = circlePackSvg.select(".circlePackMeasuresLabel");
             if (!label.empty()) {
                 label.text(text);
             } else {
-                scatterplotSvg.append("text")
+                circlePackSvg.append("text")
                     .attr("x", 40)
                     //.attr("y", 157)
                     .attr("y", 200)
@@ -500,7 +528,7 @@ export function playerChart(id) {
                     .attr("font-size", "5.0em")
                     .attr("fill", "lightgrey")
                     .attr("pointer-events", "none")
-                    .classed("scatterplotMeasuresLabel", true)
+                    .classed("circlePackMeasuresLabel", true)
             }
 
             // Big diagonal label for week/solo/duo 
@@ -517,7 +545,7 @@ export function playerChart(id) {
             const yVal = solosOrDuos ? 10 : 10;
             const fontSize = solosOrDuos ? "22em" : "18em";
 
-            const weekLabel = scatterplotSvg.select(".weekLabel");
+            const weekLabel = circlePackSvg.select(".weekLabel");
             if (!weekLabel.empty()) {
                 weekLabel
                     .text(weekText)
@@ -527,7 +555,7 @@ export function playerChart(id) {
                     .attr("x", xVal)
                     .attr("y", yVal);
             } else {
-                scatterplotSvg.append("text")
+                circlePackSvg.append("text")
                     .text(weekText)
                     .attr("font-family", "burbank")
                     .attr("font-size", fontSize)
@@ -559,13 +587,13 @@ export function playerChart(id) {
                 filtersText = filterParts.join(" / ");
             }
 
-            const filtersLabel = scatterplotSvg.select(".scatterplotFiltersLabel");
+            const filtersLabel = circlePackSvg.select(".circlePackFiltersLabel");
             const xPos = 920 - (filtersText.length * 22.7);
             if (!filtersLabel.empty()) {
                 filtersLabel.text(filtersText)
                 filtersLabel.attr("x", xPos);
             } else {
-                scatterplotSvg.append("text")
+                circlePackSvg.append("text")
                     .attr("x", xPos)
                     .attr("y", 128)
                     .text(filtersText)
@@ -573,31 +601,31 @@ export function playerChart(id) {
                     .attr("font-size", "2.4em")
                     .attr("fill", "darkgrey")
                     .attr("pointer-events", "none")
-                    .classed("scatterplotFiltersLabel", true)
+                    .classed("circlePackFiltersLabel", true)
             }
 
             // X axis label
-            const xLabel = scatterplotSvg.select(".scatterplotXAxisLabel");
+            const xLabel = circlePackSvg.select(".circlePackXAxisLabel");
             if (xLabel.empty()) {
-                scatterplotSvg.append("text")
+                circlePackSvg.append("text")
                     .attr("x", 430)
                     .attr("y", 788)
                     .text(filters.xMeasure.name)
                     .attr("pointer-events", "none")
-                    .classed("scatterplotXAxisLabel", true);
+                    .classed("circlePackXAxisLabel", true);
             } else {
                 xLabel.text(filters.xMeasure.name);
             }
 
             // Y axis label
-            const yLabel = scatterplotSvg.select(".scatterplotYAxisLabel");
+            const yLabel = circlePackSvg.select(".circlePackYAxisLabel");
             if (yLabel.empty()) {
-                scatterplotSvg.append("text")
+                circlePackSvg.append("text")
                     .attr("x", 0)
                     .attr("y", 0)
                     .text(filters.yMeasure.name)
                     .attr("pointer-events", "none")
-                    .classed("scatterplotYAxisLabel", true)
+                    .classed("circlePackYAxisLabel", true)
                     .attr("transform", "translate(28, 490) rotate(-90)");
             } else {
                 yLabel.text(filters.yMeasure.name);
@@ -623,7 +651,7 @@ export function playerChart(id) {
                     .range([720, 180]);
 
                 xAxis = d3.axisBottom(xScale);
-                scatterplotBox.append("g")
+                circlePackBox.append("g")
                     .classed("x axis", true)
                     .attr("transform", "translate(0, 740)")
                     .call(xAxis);
@@ -706,7 +734,7 @@ export function playerChart(id) {
             });
         }
 
-        scatterplotMeasuresLabels();
+        circlePackMeasuresLabels();
 
         const data = getChartData();
         updateScalesAndAxes(data, t);
@@ -1096,8 +1124,8 @@ export function playerChart(id) {
     // Render the slice of playerData generated in updatePlayerData() based on filters.page 
     function renderPlayerPage() {
 
-        if (showingScatterplot) {
-            updateScatterplot();
+        if (showingCirclePack) {
+            updateCirclePack();
             return;
         }
 
@@ -1132,7 +1160,7 @@ export function playerChart(id) {
             });
 
         columnHeaderText();
-        scatterplotButtonText();
+        circlePackButtonText();
 
         let rowNum = 0;
         playerRows.forEach(function (row) {
@@ -1304,6 +1332,119 @@ export function playerChart(id) {
             //.attr("stroke-width", (numOrRankRect && filters.week) ? thickBorder : 0)                
         }
     }
+
+
+    // Show or hides scaterplot or table elements based on showingChart
+    function toggleTableAndCirclePack() {
+
+        function setMeasures() {
+            // Draw column header outlines
+            const xHeader = columns.filter(x => x.code === filters.xMeasure.code)[0].elm;
+            xHeader
+                .transition()
+                .duration(100)
+                .style("stroke-width", thickBorder);
+
+            const yHeader = columns.filter(x => x.code === filters.yMeasure.code)[0].elm;
+            yHeader
+                .transition()
+                .duration(100)
+                .style("stroke-width", thickBorder);
+        }
+
+        showingCirclePack = !showingCirclePack;
+        //ga('set', 'page', showingCirclePack ? "/circlePack" : "/listing");
+        //ga('send', 'pageview');
+
+
+        // GOING TO SHOW THE TABLE
+        if (!showingCirclePack) {
+            cursor.attr("stroke-width", thickBorder)
+
+            let circles = svg.selectAll(".scatter")
+            circles
+                .attr("r", 0)
+
+            circlePackRect
+                .transition()
+                .duration(250)
+                .style("opacity", 0);
+
+            circlePackButton.attr("stroke-width", 1)
+
+            d3.select(".y").attr("stroke-opacity", 0)
+            d3.select(".x").attr("stroke-opacity", 0)
+
+            // TO DO - Border on Sort, no border on xMeasure and yMeasure
+            columns.forEach(function (d) {
+                d.elm
+                    .transition()
+                    .style("stroke-width", 0);
+            })
+
+            renderPlayerPage();
+            return;
+        }
+
+        // GOING TO SHOW THE SCATTERPLOT
+
+        // Hide table rows and things on top
+
+        // Hide each row 
+        for (let row = 0; row < rowCount; row++) {
+            svg.select(".row" + row)
+                .attr("fill", "none")
+                .attr("stroke-width", 0);
+
+            // Hide qualification circles from hidden rows     
+            svg.select(".s" + row)
+                .style("fill-opacity", 0);
+            svg.select(".d" + row)
+                .style("fill-opacity", 0);
+
+            svg.select(".s" + "week" + row)
+                .transition()
+                .text("");
+        }
+
+        // Not awesome!    
+        svg.selectAll("text")
+            .each(function (d) {
+                if ((d != "w") && (d3.select(this).style("fill") != "currentColor"))
+                    d3.select(this).remove();
+            });
+
+        // Great - put back text we just deleted  
+        columnHeaderText();
+        circlePackButtonText();
+
+        // Make scatter plot visible
+        circlePackRect
+            .transition()
+            .duration(450)
+            .style("opacity", 1);
+
+        d3.select(".y").attr("stroke-opacity", 1)
+        d3.select(".x").attr("stroke-opacity", 1)
+
+        setMeasures();
+
+        // Hide table cursor
+        columns.forEach(function (d) {
+            if (((d.code != filters.xMeasure.code) && (d.code != filters.yMeasure.code)) && (d.code == filters.sort))
+                d.elm
+                    .transition()
+                    .style("stroke-width", 0);
+        })
+        cursor.attr("stroke-width", 0)
+
+        updateCirclePack();
+    }
+
+    function updateCirclePack() {
+        alert("Circle Pack!");
+    }
+
 
 
     // DC related stuff

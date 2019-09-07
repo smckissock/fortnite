@@ -3,7 +3,7 @@
 import { colors } from "./shared.js";
 
 import { filters, facts, updateCounts } from "./main.js";
-import { clearPlayer, showingScatterplot, playerChart_renderPlayerPage } from "./playerChart.js";
+import { clearPlayer, showingCirclePack, playerChart_renderPlayerPage } from "./playerChart.js";
 
 export let clearTeam;
 export let updateTeamBars;
@@ -163,7 +163,7 @@ export function teamChart(id, teamDim, teamGroup) {
                 .style("stroke-width", strokeWidthThick);
 
             // We don't want to filters non-team players out; we want to highlight players on the team    
-            if (showingScatterplot) {
+            if (showingCirclePack) {
                 playerChart_renderPlayerPage()
             } else {
                 _chart.filter(filters.team);

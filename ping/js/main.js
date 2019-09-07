@@ -307,7 +307,7 @@ function helpButton(svg, screenWidth) {
 
     svg.append("circle")
         .attr("cx", screenWidth - 30)
-        .attr("cy", 46)
+        .attr("cy", 34)
         .attr("r", 22)
         .attr("fill", "lightblue")
         .attr("stroke", "black")
@@ -330,7 +330,7 @@ function helpButton(svg, screenWidth) {
 
     svg.append("text")
         .attr("x", screenWidth - 38)
-        .attr("y", 58)
+        .attr("y", 46)
         .text("?")
         .attr("font-size", ".7em")
         .attr("fill", "black")
