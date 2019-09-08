@@ -5,6 +5,7 @@ import { colors } from "./shared.js";
 import { cornerRadius, filters, playerDim, playerColors, soloQualifications, duoQualifications, qualifierNames, updateCounts, teamMembers } from "./main.js";
 import { checkBox } from "./checkBox.js";
 import { profile, profileOpen } from "./profile.js";
+import { playerCirclePackChart } from "./playerCirclePackChart.js";
 
 export let clearPlayer
 export let PlayerTableWidth;
@@ -1438,13 +1439,8 @@ export function playerChart(id) {
         })
         cursor.attr("stroke-width", 0)
 
-        updateCirclePack();
+        playerCirclePackChart(svg, playerData);
     }
-
-    function updateCirclePack() {
-        alert("Circle Pack!");
-    }
-
 
 
     // DC related stuff
