@@ -1,9 +1,28 @@
 export function playerCirclePackChart(svg, players) {
     //const data = d3.json("https://raw.githubusercontent.com/d3/d3-hierarchy/v1.1.8/test/data/flare.json");
 
-    d3.json("https://raw.githubusercontent.com/d3/d3-hierarchy/v1.1.8/test/data/flare.json").then(function (data) {
-        draw(data);
-    });
+    const playerNodes = players.map(d => ( { key: d.key, parent: "root", value: 1, name: ""} ) ); 
+    playerNodes.unshift( {key: "root", parent: "", value: 1, name: "root" } );
+
+    console.log(playerNodes[0]);
+    
+    let stratify = d3
+        .stratify()
+        .id(function(d) { return d.key; })
+        .parentId(function(d) { return d.parent; })
+
+    // Makes a d3.hierarchy    
+    let root = stratify(playerNodes.slice(0, 10)); 
+
+    root
+        .sum(d => d.value)
+        .sort((a, b) => b.value - a.value)
+
+    draw(root);
+
+    //d3.json("https://raw.githubusercontent.com/d3/d3-hierarchy/v1.1.8/test/data/flare.json").then(function (data) {
+    //    draw(data);
+    //});
     
 
     function draw(data) {
@@ -16,12 +35,24 @@ export function playerCirclePackChart(svg, players) {
         let width = 800;
         let height = 700;
 
+        //let x = d3.hierarchy(data)
+        //    .sum(d => d.value)
+        //    .sort((a, b) => b.value - a.value)
+
         let pack = data => d3.pack()
             .size([width, height])
+            .padding(3)(data)
+            //    (d3.hierarchy(data)
+            //.sum(d => d.value)
+            //.sort((a, b) => b.value - a.value)) 
+
+        // My player data is already a hierarchy    
+/*         let pack = data => d3.pack()
+            .size([width, height])
             .padding(3)
-                (d3.hierarchy(data)
+                data
             .sum(d => d.value)
-            .sort((a, b) => b.value - a.value))
+            .sort((a, b) => b.value - a.value) */
 
         const root = pack(data);
         let focus = root;
