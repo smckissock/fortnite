@@ -1,10 +1,31 @@
 export function playerCirclePackChart(svg, players) {
-    //const data = d3.json("https://raw.githubusercontent.com/d3/d3-hierarchy/v1.1.8/test/data/flare.json");
+    let log = console.log;
+
+    let view;
+    let label;
+    let node;
+
+    const svgWidth = 800;
+    const svgHeight = 800; 
+
+    const div = d3.select("#chart-player");
+        svg = div.append("svg")
+            .attr("width", svgWidth)
+            .attr("height", svgHeight)
+            .attr("viewBox", `-${svgWidth / 2} -${svgHeight / 2} ${svgWidth} ${svgHeight}`)
+            .attr("transform", "translate(0 -1010)")
+        
+        let rect =  svg.append("rect") 
+            .attr("x", -(svgWidth / 2))
+            .attr("y", -(svgHeight / 2))
+            .attr("width", svgWidth)
+            .attr("height", svgHeight)   
+            .attr("fill", "red")
+            .attr("transform", `-${svgWidth / 2} -${svgHeight / 2} ${svgWidth} ${svgHeight}`)
 
     const playerNodes = players.map(d => ( { key: d.key, parent: "root", value: 1, name: ""} ) ); 
     playerNodes.unshift( {key: "root", parent: "", value: 1, name: "root" } );
 
-    console.log(playerNodes[0]);
     
     let stratify = d3
         .stratify()
@@ -18,49 +39,36 @@ export function playerCirclePackChart(svg, players) {
         .sum(d => d.value)
         .sort((a, b) => b.value - a.value)
 
-    draw(root);
-
-    //d3.json("https://raw.githubusercontent.com/d3/d3-hierarchy/v1.1.8/test/data/flare.json").then(function (data) {
-    //    draw(data);
-    //});
+    // Swap    
+    //draw(root);
+    d3.json("https://raw.githubusercontent.com/d3/d3-hierarchy/v1.1.8/test/data/flare.json").then(function (data) {
+        draw(data);
+    });
     
 
-    function draw(data) {
+    function draw(data) {   
 
         let color = d3.scaleLinear()
             .domain([0, 5])
             .range(["hsl(152,80%,80%)", "hsl(228,30%,40%)"])
             .interpolate(d3.interpolateHcl)
 
-        let width = 800;
-        let height = 700;
-
-        //let x = d3.hierarchy(data)
-        //    .sum(d => d.value)
-        //    .sort((a, b) => b.value - a.value)
+        // uncomment
+        let x = d3.hierarchy(data)
+            .sum(d => d.value)
+            .sort((a, b) => b.value - a.value)
 
         let pack = data => d3.pack()
-            .size([width, height])
-            .padding(3)(data)
-            //    (d3.hierarchy(data)
-            //.sum(d => d.value)
-            //.sort((a, b) => b.value - a.value)) 
-
-        // My player data is already a hierarchy    
-/*         let pack = data => d3.pack()
-            .size([width, height])
-            .padding(3)
-                data
-            .sum(d => d.value)
-            .sort((a, b) => b.value - a.value) */
+            .size([svgWidth, svgHeight])
+            .padding(3)(x)  // x or data
+           //     (d3.hierarchy(data)
+           // .sum(d => d.value)
+           // .sort((a, b) => b.value - a.value)) 
 
         const root = pack(data);
         let focus = root;
-        let view;
   
-        svg.on("click", () => zoom(root));
-  
-        const node = svg.append("g")
+        node = svg.append("g")
             .selectAll("circle")
             .data(root.descendants().slice(1))
             .enter()
@@ -71,7 +79,7 @@ export function playerCirclePackChart(svg, players) {
                 .on("mouseout", function() { d3.select(this).attr("stroke", null); })
                 .on("click", d => focus !== d && (zoom(d), d3.event.stopPropagation()));    
   
-        const label = svg.append("g")
+        label = svg.append("g")
             .style("font", "10px sans-serif")
             .attr("pointer-events", "none")
             .attr("text-anchor", "middle")
@@ -82,35 +90,29 @@ export function playerCirclePackChart(svg, players) {
                 .style("fill-opacity", d => d.parent === root ? 1 : 0)
                 .style("display", d => d.parent === root ? "inline" : "none")
                 .text(d => d.data.name);
-  
-        zoomTo([root.x - 500, root.y - 400, root.r * 2], label, node);
+                
+        zoomTo([root.x, root.y, root.r * 2], label, node);
     }
 
-    function zoomTo(v, label, node) {
-        let width = 800;  
-        const k = width / v[2];
-  
-        let view = v;
+    function zoomTo(v) {
+        const k = svgWidth / v[2];
+        view = v;
   
         label.attr("transform", d => `translate(${(d.x - v[0]) * k},${(d.y - v[1]) * k})`);
-        node.attr("transform", d => `translate(${(d.x - v[0]) * k},${(d.y - v[1]) * k})`);
+        node.attr("transform", d => `translate(${(d.x - v[0]) * k},${((d.y - v[1]) * k)})`);
         node.attr("r", d => d.r * k);
     }
   
-    function zoom(d) {
-        // why?
-        //const focus0 = focus;
-  
-        let focus = d;
-  
+    function zoom(focus) {
+        
         const transition = svg.transition()
             .duration(d3.event.altKey ? 7500 : 750)
-            .tween("zoom", d => {
-                const i = d3.interpolateZoom(view, [focus.x, focus.y, focus.r * 2]);
+            .tween("zoom", () => {
+                const i = d3.interpolateZoom(view, [focus.x , focus.y, focus.r * 2]);  
                 return t => zoomTo(i(t));
             });
   
-        label
+        label 
             .filter(function(d) { return d.parent === focus || this.style.display === "inline"; })
             .transition(transition)
                 .style("fill-opacity", d => d.parent === focus ? 1 : 0)
