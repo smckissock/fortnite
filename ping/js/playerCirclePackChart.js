@@ -1,4 +1,8 @@
 export function playerCirclePackChart(svg, players) {
+    
+    // Putting this aside for now
+    // Change makeCirclePackButton() in playerChart.js to make a button to see this...
+
     let log = console.log;
 
     let view;
@@ -20,20 +24,33 @@ export function playerCirclePackChart(svg, players) {
             .attr("y", -(svgHeight / 2))
             .attr("width", svgWidth)
             .attr("height", svgHeight)   
-            .attr("fill", "red")
+            .attr("fill", "white")
             //.attr("transform", `-${svgWidth / 2} -${svgHeight / 2} ${svgWidth} ${svgHeight}`)
 
     const playerNodes = 
         players.map(d => ({ 
             name: d.key, 
-            parent: "root", 
+            parent: d.color, 
             value: d.values[0].value.payout, 
-            color: d.color
+            color: d.color,
+            type: "player"
             //name: ""
         })); 
     
     // Add a root
-    playerNodes.unshift( {key: "root", parent: "", value: 1, name: "root" } );
+    //playerNodes.unshift( {key: "root", parent: "", value: 1, name: "root" } );
+    
+
+    // Order matters: parents must come before children
+    playerNodes.unshift({name: "#66c2a5", key: "#66c2a5", parent: "root", value: 1, color: "grey", type: "region" });
+    playerNodes.unshift({name: "#fc8d62", key: "#fc8d62", parent: "root", value: 1, color: "grey", type: "region" });
+    playerNodes.unshift({name: "#8da0cb", key: "#8da0cb", parent: "root", value: 1, color: "grey", type: "region" });
+    playerNodes.unshift({name: "#e78ac3", key: "#e78ac3", parent: "root", value: 1, color: "grey", type: "region" });
+    playerNodes.unshift({name: "#a6d854", key: "#a6d854", parent: "root", value: 1, color: "grey", type: "region" });
+    playerNodes.unshift({name: "#ffea3f", key: "#ffea3f", parent: "root", value: 1, color: "grey", type: "region" });
+    playerNodes.unshift({name: "#B3B3B3", key: "#B3B3B3", parent: "root", value: 1, color: "grey", type: "region" });
+    
+    playerNodes.unshift({key: "root", parent: "", value: 1 });
 
     
     let stratify = d3
@@ -88,7 +105,7 @@ export function playerCirclePackChart(svg, players) {
                 .on("mouseover", function() { d3.select(this).attr("stroke", "#000"); })
                 .on("mouseout", function() { d3.select(this).attr("stroke", null); })
                 .on("click", d => focus !== d && (zoom(d), d3.event.stopPropagation()))
-                .each(d => log(d));    
+                
   
         label = svg.append("g")
             .style("font", "10px sans-serif")
@@ -98,11 +115,14 @@ export function playerCirclePackChart(svg, players) {
             .data(root.descendants())
             .enter()
             .append("text")
-                .style("fill-opacity", d => d.parent === root ? 1 : 0)
+                //.style("fill-opacity", d => d.parent === root ? 1 : 0)
+                //.style("fill-opacity", d => d.parent === root ? 1 : 1)
                 //.style("display", d => d.parent === root ? "inline" : "none")
-                .style("display", "inline")
+                //.style("display", "none")
+                .attr("fill-opacity", d => d.data.type == "player" ? 1 : 0)
+                .attr("font-size", d => d.r/3 + "px")
                 .text(d => d.data.name)
-                //.each(d => log(d));
+                .each(d => log(d)); 
                 
         zoomTo([root.x, root.y, root.r * 2], label, node);
     }
@@ -128,7 +148,9 @@ export function playerCirclePackChart(svg, players) {
         label 
             .filter(function(d) { return d.parent === focus || this.style.display === "inline"; })
             .transition(transition)
-                .style("fill-opacity", d => d.parent === focus ? 1 : 0)
+               
+                //.style("fill-opacity", d => d.parent === focus ? 1 : 0)
+                //.style("fill-opacity", 0)
                 .on("start", function(d) { if (d.parent === focus) this.style.display = "inline"; })
                 .on("end", function(d) { if (d.parent !== focus) this.style.display = "none"; });
     }

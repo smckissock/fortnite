@@ -241,6 +241,9 @@ export function playerChart(id) {
     // Button on top left to switch between table and circlePack
     function makeCirclePackButton() {
 
+        // Circle pack doesn't work, but turn on this button to try it.
+        return;
+
         circlePackButton = svg.append("rect")
             .attr("x", playerColWidth - 236)
             .attr("y", headerPos.top + 4)
