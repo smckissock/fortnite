@@ -21,9 +21,18 @@ export function playerCirclePackChart(svg, players) {
             .attr("width", svgWidth)
             .attr("height", svgHeight)   
             .attr("fill", "red")
-            .attr("transform", `-${svgWidth / 2} -${svgHeight / 2} ${svgWidth} ${svgHeight}`)
+            //.attr("transform", `-${svgWidth / 2} -${svgHeight / 2} ${svgWidth} ${svgHeight}`)
 
-    const playerNodes = players.map(d => ( { key: d.key, parent: "root", value: 1, name: ""} ) ); 
+    const playerNodes = 
+        players.map(d => ({ 
+            name: d.key, 
+            parent: "root", 
+            value: d.values[0].value.payout, 
+            color: d.color
+            //name: ""
+        })); 
+    
+    // Add a root
     playerNodes.unshift( {key: "root", parent: "", value: 1, name: "root" } );
 
     
@@ -33,17 +42,17 @@ export function playerCirclePackChart(svg, players) {
         .parentId(function(d) { return d.parent; })
 
     // Makes a d3.hierarchy    
-    let root = stratify(playerNodes.slice(0, 10)); 
+    let root = stratify(playerNodes.slice(0, 100)); 
 
     root
         .sum(d => d.value)
         .sort((a, b) => b.value - a.value)
 
     // Swap    
-    //draw(root);
-    d3.json("https://raw.githubusercontent.com/d3/d3-hierarchy/v1.1.8/test/data/flare.json").then(function (data) {
-        draw(data);
-    });
+    draw(root);
+    //d3.json("https://raw.githubusercontent.com/d3/d3-hierarchy/v1.1.8/test/data/flare.json").then(function (data) {
+    //    draw(data);
+    //});
     
 
     function draw(data) {   
@@ -54,13 +63,13 @@ export function playerCirclePackChart(svg, players) {
             .interpolate(d3.interpolateHcl)
 
         // uncomment
-        let x = d3.hierarchy(data)
-            .sum(d => d.value)
-            .sort((a, b) => b.value - a.value)
+        //let x = d3.hierarchy(data)
+        //    .sum(d => d.value)
+        //    .sort((a, b) => b.value - a.value)
 
         let pack = data => d3.pack()
             .size([svgWidth, svgHeight])
-            .padding(3)(x)  // x or data
+            .padding(3)(data)  // x or data
            //     (d3.hierarchy(data)
            // .sum(d => d.value)
            // .sort((a, b) => b.value - a.value)) 
@@ -73,11 +82,13 @@ export function playerCirclePackChart(svg, players) {
             .data(root.descendants().slice(1))
             .enter()
             .append("circle")
-                .attr("fill", d => d.children ? color(d.depth) : "white")
+                //.attr("fill", d => d.children ? color(d.depth) : "white")
+                .attr("fill", d => d.data.color)
                 .attr("pointer-events", d => !d.children ? "none" : null)
                 .on("mouseover", function() { d3.select(this).attr("stroke", "#000"); })
                 .on("mouseout", function() { d3.select(this).attr("stroke", null); })
-                .on("click", d => focus !== d && (zoom(d), d3.event.stopPropagation()));    
+                .on("click", d => focus !== d && (zoom(d), d3.event.stopPropagation()))
+                .each(d => log(d));    
   
         label = svg.append("g")
             .style("font", "10px sans-serif")
@@ -88,8 +99,10 @@ export function playerCirclePackChart(svg, players) {
             .enter()
             .append("text")
                 .style("fill-opacity", d => d.parent === root ? 1 : 0)
-                .style("display", d => d.parent === root ? "inline" : "none")
-                .text(d => d.data.name);
+                //.style("display", d => d.parent === root ? "inline" : "none")
+                .style("display", "inline")
+                .text(d => d.data.name)
+                //.each(d => log(d));
                 
         zoomTo([root.x, root.y, root.r * 2], label, node);
     }
