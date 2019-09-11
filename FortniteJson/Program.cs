@@ -46,7 +46,15 @@ namespace FortniteJson {
             // Prior step wipes out Finals payouts. Rerun 03 Payouts for Finals.sql to put them back (or add a week filter)  
 
 
-            Fortnite.MakeJsonArray();   
+            //Scraper.Step1_GetFiles();
+            //Scraper.Step2_GetPlayersAndPlayerWeeks();
+            //Scraper.Step3_ImportLeaderboard();
+            Scraper.Step4_ImportTiers();
+
+
+
+
+            //Fortnite.MakeJsonArray();   
 
 
 

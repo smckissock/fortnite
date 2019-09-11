@@ -47,10 +47,10 @@ namespace FortniteJson {
                     ex.Data.Add("SQL", sql + " SQL ERROR: " + ex.Message);
 
                     // Log and keep going...
-                    using (TextWriter tw = new StreamWriter(sqlErrorPath + DateTime.Now.ToString("yyyyMMddHHmmss") + ".txt")) {
-                        foreach (DictionaryEntry data in ex.Data)
-                            tw.WriteLine(data.Key + ": " + data.Value);
-                    }
+                    //using (TextWriter tw = new StreamWriter(sqlErrorPath + DateTime.Now.ToString("yyyyMMddHHmmss") + ".txt")) {
+                    //    foreach (DictionaryEntry data in ex.Data)
+                    //        tw.WriteLine(data.Key + ": " + data.Value);
+                    
                     command.Connection.Close();
                     return false;
                 }
