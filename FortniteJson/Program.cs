@@ -51,12 +51,7 @@ namespace FortniteJson {
             //Scraper.Step3_ImportLeaderboard();
             Scraper.Step4_ImportTiers();
 
-
-
-
             //Fortnite.MakeJsonArray();   
-
-
 
             Console.Write("DONE");
             Console.Read();

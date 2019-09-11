@@ -127,6 +127,47 @@ namespace FortniteJson {
                     stats.PLACEMENT_STAT_INDEX + ", " + stats.TEAM_ELIMS_STAT_INDEX + ", " + stats.PLACEMENT_TIEBREAKER_STAT + ")");
             }
         }
+
+        public static void Step4_ImportTiers() {
+            foreach (string region in regions) {
+                foreach (string week in weeks) {
+                    for (int i = 0; i < 1; i++) {
+                        string page = i.ToString();
+
+                        string fileName = @"d:\\fortnite\\fortnite-scrape\\champion-series\\" + region + "_" + week + "_" + page + ".html";
+                        string html = "";
+                        try {
+                            html = System.IO.File.ReadAllText(fileName);
+                        } catch {
+                            //Console.WriteLine(fileName + " missing");
+                            continue;
+                        }
+
+                        if (html.Contains("var imp_leaderboard = null"))
+                            continue;
+
+                        int firstChar = html.IndexOf("var imp_templates = [") + 20;
+                        int lastChar = html.IndexOf("</script>", firstChar) - 1;
+                        string json_text = html.Substring(firstChar, lastChar - firstChar);
+
+                        dynamic json = JsonConvert.DeserializeObject(json_text);
+                        ;
+
+                        int round = 2; // round 3 
+                        Step4_InsertWeekRegionTiers(
+                            json[round].payoutTable[1].ranks,
+                            json[round].scoringRules[1].rewardTiers,
+                            weekId, region);
+                    }
+                }
+            }
+        }
+
+        private static void Step4_InsertWeekRegionTiers(dynamic payoutTiers, dynamic scoringTiers, string weekId, string region) {
+            Console.WriteLine(payoutTiers);
+            Console.WriteLine(scoringTiers);
+
+        }
     }
 }
 
