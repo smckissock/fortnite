@@ -164,9 +164,22 @@ namespace FortniteJson {
         }
 
         private static void Step4_InsertWeekRegionTiers(dynamic payoutTiers, dynamic scoringTiers, string weekId, string region) {
-            Console.WriteLine(payoutTiers);
-            Console.WriteLine(scoringTiers);
+            //Console.WriteLine(payoutTiers);
+            //Console.WriteLine(scoringTiers);
 
+            foreach (var tier in payoutTiers) {
+                var threshold = tier.threshold;
+                var payout = tier.payouts[0].quantity;
+                SqlUtil.Command("INSERT INTO RankPayoutTier (WeekID, RegionID, Rank, Payout) VALUES (" +
+                    weekId + ", (SELECT ID FROM Region WHERE EpicCode = '" + region + "')," + threshold + "," + payout + ")");
+            }
+
+            foreach (var tier in scoringTiers) {
+                var threshold = tier.keyValue;
+                var points = tier.pointsEarned;
+                SqlUtil.Command("INSERT INTO RankPointTier (WeekID, RegionID, Rank, Points) VALUES (" +
+                    weekId + ", (SELECT ID FROM Region WHERE EpicCode = '" + region + "')," + threshold + "," + points + ")");
+            }
         }
     }
 }

@@ -49,9 +49,14 @@ namespace FortniteJson {
             //Scraper.Step1_GetFiles();
             //Scraper.Step2_GetPlayersAndPlayerWeeks();
             //Scraper.Step3_ImportLeaderboard();
-            Scraper.Step4_ImportTiers();
+            //Scraper.Step4_ImportTiers();
 
-            //Fortnite.MakeJsonArray();   
+            // MAKE SURE TO UPDATE WEEK BEFORE RUNNING THIS
+            //Fortnite2FixUp.FixPlacementPayout();
+            //Fortnite2FixUp.FixPlacementElims();
+            //Fortnite2FixUp.UpdateWins();
+
+            Fortnite.MakeJsonArray();   
 
             Console.Write("DONE");
             Console.Read();

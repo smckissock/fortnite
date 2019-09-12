@@ -11,7 +11,7 @@ namespace FortniteJson {
 
     public static class Fortnite2FixUp {
 
-        private static string weekId = "15";
+        private static string weekId = "16";  // CHANGE THIS
 
         public static void FixCurrentName() {
             return;
