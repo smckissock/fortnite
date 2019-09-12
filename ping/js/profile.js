@@ -277,7 +277,7 @@ export function profile(player) {
 
         const y = 0;
         [   {name: "World Cup", x1: leftMargin, width: (13 * (weekWidth + 3.6))},
-            {name: "Champion Series", x1: leftMargin + (14 * weekWidth), width: (weekWidth + 4) * 3} 
+            {name: "Champion Series", x1: leftMargin + (14 * weekWidth), width: (weekWidth + 4) * 4} 
         ].forEach(function(d) {
             trendG.append("rect")
                 .attr("x", d.x1)
