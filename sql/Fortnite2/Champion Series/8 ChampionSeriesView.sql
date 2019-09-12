@@ -37,6 +37,7 @@ SELECT
 	p.Region,
 	STRING_AGG(player,', ') WITHIN GROUP (ORDER BY player) players,
 	MAX(p.Rank) Rank,
+	MAX(dbo.ChampionSeriesPoints(p.Rank)) ChampionSeriesRank,
 	MAX(p.Payout) Payout,
 	MAX(p.Points) Points,
 	MAX(p.Elims) Elims,
@@ -88,9 +89,22 @@ SELECT
 	Payout,
 	Points,
 	Wins,
-	Elims
+	Elims, 0
 FROM ChampionSeriesRankingView
-WHERE Region = 'NA East' AND PlayCount = 4 AND WorstRank < 101
+WHERE Region = 'NA West' AND PlayCount = 4 AND WorstRank < 101
 ORDER BY Region, AverageRank 
- 
+
+
+
+SELECT * FROM ChampionSeriesPlacementView WHERE Players LIKE '%FLY curney%'
+
+, FLY curney, FLY Faultur
+
+
+SELECT * FROM PlayerPlacement WHERE PlacementID = 126017
+
+
+SELECT * FROM Player WHERE ID IN (188
+,166563
+,95)
  

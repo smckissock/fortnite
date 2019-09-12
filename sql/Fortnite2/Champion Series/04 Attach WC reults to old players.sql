@@ -97,9 +97,14 @@ UPDATE PlayerPlacement SET PlayerID = 56631 WHERE ID = 166701 -- Banny
 UPDATE PlayerPlacement SET PlayerID = 165478 WHERE ID = 166702 -- Emqu
 UPDATE PlayerPlacement SET PlayerID = 82 WHERE ID = 166703 -- Tfue
 UPDATE PlayerPlacement SET PlayerID = 165480 WHERE ID = 166704 -- sozmann
-UPDATE PlayerPlacement SET PlayerID = 165481 WHERE ID = 166705 -- UnknownxArmy
+UPDATE PlayerPlacement SET PlayerID = 1170 WHERE ID = 166705 -- UnknownxArmy
 UPDATE PlayerPlacement SET PlayerID = 3683 WHERE ID = 166706 -- Kawzmik
 UPDATE PlayerPlacement SET PlayerID = 69066 WHERE ID = 166707 -- Lasers
+
+
+SELECT * FROM Player WHERE ID IN (165481, 166705) 
+SELECT * FROM PLayer WHERe CurrentName Like '%unknown%'
+
 
 
 UPDATE PlayerPlacement SET PlayerID = 32970 WHERE ID = 166708 -- Erouce
