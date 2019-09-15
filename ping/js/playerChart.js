@@ -280,7 +280,7 @@ export function playerChart(id) {
 
         cursor
             .transition()
-            .duration(800)
+            .duration(600)
             .attr("x", x)
             .attr("y", y);
     }
@@ -386,7 +386,7 @@ export function playerChart(id) {
                 .text(text)
                 .attr("font-size", otherSize)
                 .style("font-weight", 600)
-                .classed("pointer-events", "none");
+                .style("pointer-events", "none");
 
             if (text === "Rank")
                 numOrRankText = node;

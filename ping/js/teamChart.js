@@ -189,14 +189,14 @@ export function teamChart(id, teamDim, teamGroup) {
 
             filters.team = selectedTeam.name;
 
-            if (showingScatterplot) {
-                _chart.filter(null);
-                playerChart_renderPlayerPage()
-            } else {
+            //if (showingScatterplot) {
+            //    _chart.filter(null);
+            //    playerChart_renderPlayerPage()
+            //} else {
                 _chart.filter(null);
                 _chart.filter(filters.team);
                 _chart.redrawGroup();
-            }
+            //}
             updateCounts();
             return;
         }
