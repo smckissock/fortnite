@@ -89,7 +89,7 @@ export function regionChart(id) {
             .attr("y", d => d.y + 42)
             .text(d => d.name)
             .attr("font-size", "1.5em")
-            .attr("font-weight", "800")
+            .attr("font-weight", "400")
             .attr("fill", "black")
             .attr("pointer-events", "none"); 
 

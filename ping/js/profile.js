@@ -50,15 +50,20 @@ export function profile(player) {
     }
 
     function hide() {
+        
         enableSvgs(true);
-        headerG.transition()
-            .duration(100)
-            .attr("fill-opacity", .0)
-            .attr("opacity", .0)
+        
+        svg.transition()
+            .duration(400)
+            .style("fill-opacity", 0.0)
             .on("end", () => svg.remove());
 
         profileOpen = false;
-        console.log(profileOpen);
+
+        // Make the main screen white again
+        d3.select(".gradient")
+            .transition()
+            .style("background-color", "white")
     }
 
     function makeSvg() {
@@ -84,6 +89,7 @@ export function profile(player) {
             const g = 
                 svg.append("g")
                     .attr("transform", 'translate(0,' + top + ')')
+                    .classed("profileG", true)
             
             g.append("rect")
                 .attr("x", 0)
@@ -92,6 +98,8 @@ export function profile(player) {
                 .attr("height", height + 1)
                 .attr("opacity", 1.0) 
                 .attr("fill", color)
+                .classed("profileG", true)
+
             return g;    
         }    
         headerG = makeG(headerTop, headerHeight, "white");

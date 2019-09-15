@@ -60,7 +60,7 @@ function makeLoadingSvg() {
         .attr("stroke", "black")
 }
 
-makeLoadingSvg();
+//makeLoadingSvg();
 
 d3.json('ping/data/players.json').then(function (players) {
     playerInfos = [];
@@ -88,7 +88,7 @@ d3.json('ping/data/data.json').then(function (dataArray) {
     //goToFinalsButton(titleSvg);
 
     //searchLabel(titleSvg);
-    posickLabel(titleSvg);
+    //posickLabel(titleSvg);
     //disclaimer(titleSvg);
 
     data = [];
@@ -287,17 +287,17 @@ function disclaimer(svg) {
 }
 
 function filtersAndCount(svg, screenWidth) {
-    const fromRight = 674;
+    const fromRight = 880;
     svg.append("text")
         .attr("x", screenWidth - fromRight)
-        .attr("y", 56)
+        .attr("y", 54)
         .text("")
         .attr("id", "filterText1")
         .classed("filters-string", true);
 
     svg.append("text")
         .attr("x", screenWidth - fromRight)
-        .attr("y", 56)
+        .attr("y", 54)
         .text("")
         .attr("id", "filterText2")
         .classed("filters-string", true);

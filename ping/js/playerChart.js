@@ -51,8 +51,8 @@ export function playerChart(id) {
     const rowHeight = 36;
     const rowCount = 20;
 
-    const thinBorder = 3;
-    const thickBorder = 7;
+    const thinBorder = 2;
+    const thickBorder = 5;
 
     let numOrRankRect;
     let numOrRankText;
@@ -280,7 +280,6 @@ export function playerChart(id) {
 
         cursor
             .transition()
-            .ease(d3.easeBack)
             .duration(800)
             .attr("x", x)
             .attr("y", y);
@@ -1006,7 +1005,7 @@ export function playerChart(id) {
             playerCursor
                 .attr("stroke-width", thickBorder)
                 .transition()
-                .ease(d3.easeBack)
+                .ease(d3.quad)
                 .duration(300)
                 .attr("x", x)
                 .attr("y", y)
@@ -1074,8 +1073,13 @@ export function playerChart(id) {
     }
 
     function showPlayerProfile(player) {
-        if (!profileOpen)
+        if (!profileOpen) {
+            d3.select(".gradient")
+                .transition()
+                .style("background-color", "lightgrey")
+            
             profile(player)
+        }
     }
 
 
