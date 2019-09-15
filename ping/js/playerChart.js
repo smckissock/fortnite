@@ -303,17 +303,13 @@ export function playerChart(id) {
                     .attr("x", x + 8)
                     .attr("y", 34)
                     .text("Earned")
-                    .attr("font-size", smallFontSize)
-                    .attr("fill", "black")
-                    .attr("pointer-events", "none");
+                    .classed("column-button", true);
 
                 svg.append("text")
                     .attr("x", x + 12)
                     .attr("y", 58)
                     .text("Quals")
-                    .attr("font-size", smallFontSize)
-                    .attr("fill", "black")
-                    .attr("pointer-events", "none");
+                    .classed("column-button", true);
                 return;
             }
 
@@ -323,17 +319,13 @@ export function playerChart(id) {
                     .attr("x", x + 6)
                     .attr("y", 34)
                     .text("Elim")
-                    .attr("font-size", smallFontSize)
-                    .attr("fill", "black")
-                    .attr("pointer-events", "none");
+                    .classed("column-button", true);
 
                 svg.append("text")
                     .attr("x", x)
                     .attr("y", 56)
                     .text("Points")
-                    .attr("font-size", smallFontSize)
-                    .attr("fill", "black")
-                    .attr("pointer-events", "none");
+                    .classed("column-button", true);
                 return;
             }
 
@@ -343,17 +335,13 @@ export function playerChart(id) {
                     .attr("x", x + 3)
                     .attr("y", 35)
                     .text("Elim")
-                    .attr("font-size", smallFontSize)
-                    .attr("fill", "black")
-                    .attr("pointer-events", "none");
+                    .classed("column-button", true);
 
                 svg.append("text")
                     .attr("x", x + 10)
-                    .attr("y", 60)
+                    .attr("y", 57)
                     .text("%")
-                    .attr("font-size", "1.5em")
-                    .attr("fill", "black")
-                    .attr("pointer-events", "none");
+                    .classed("column-button", true);
                 return;
             }
 
@@ -363,17 +351,13 @@ export function playerChart(id) {
                     .attr("x", x + 16)
                     .attr("y", 34)
                     .text("Place")
-                    .attr("font-size", smallFontSize)
-                    .attr("fill", "black")
-                    .attr("pointer-events", "none");
+                    .classed("column-button", true);
 
                 svg.append("text")
                     .attr("x", x + 11)
                     .attr("y", 55)
                     .text("Points")
-                    .attr("font-size", smallFontSize)
-                    .attr("fill", "black")
-                    .attr("pointer-events", "none");
+                    .classed("column-button", true);
                 return;
             }
 
@@ -383,30 +367,26 @@ export function playerChart(id) {
                     .attr("x", x + 16)
                     .attr("y", 34)
                     .text("Place")
-                    .attr("font-size", smallFontSize)
-                    .attr("fill", "black")
-                    .attr("pointer-events", "none");
+                    .classed("column-button", true);
 
                 svg.append("text")
                     .attr("x", x + 25)
-                    .attr("y", 59)
+                    .attr("y", 57)
                     .text("%")
-                    .attr("font-size", "1.5em")
-                    .attr("fill", "black")
-                    .attr("pointer-events", "none");
+                    .classed("column-button", true);
                 return;
             }
 
             // Default case
-            const y = (i === 0) ? 37 : 44; // Player
+            const y = (i === 0) ? 55 : 44; // Player
             const otherSize = (i == 0) ? "2.3rem" : smallFontSize;
             const node = svg.append("text")
                 .attr("x", x)
                 .attr("y", y)
                 .text(text)
                 .attr("font-size", otherSize)
-                .attr("fill", "black")
-                .attr("pointer-events", "none");
+                .style("font-weight", 600)
+                .classed("pointer-events", "none");
 
             if (text === "Rank")
                 numOrRankText = node;

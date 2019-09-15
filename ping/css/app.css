@@ -132,7 +132,11 @@ body {
     font-weight: 700;
 }
 
-
+.column-button {
+    font-weight: 400;
+    font-size: 1.2em;
+    pointer-events: none;
+}
 
 .player-info {
     font-weight: 600;
@@ -167,17 +171,17 @@ body {
 }
 
 .checkbox-label {
-    font-weight: 600;
+    font-weight: 400;
     font-size: 1.2em;
 }
 
 .event-name {
-    font-weight: 800;
+    font-weight: 600;
     font-size: 1.2em;
 }
 
 .week-label {
-    font-weight: 800;
+    font-weight: 400;
     font-size: 1.0em;
 }
 
