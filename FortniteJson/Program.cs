@@ -58,6 +58,8 @@ namespace FortniteJson {
 
             Fortnite.MakeJsonArray();   
 
+            //Analytics.GetStats();
+
             Console.Write("DONE");
             Console.Read();
 
