@@ -62,7 +62,6 @@ d3.json('fwc/data/players.json').then(function (players) {
         rec.age = d[3];
         playerInfos.push(rec);
     });
-    console.log("Players");
 });
 
 d3.json('fwc/data/data.json').then(function (dataArray) {

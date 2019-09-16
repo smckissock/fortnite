@@ -9,10 +9,10 @@ namespace FortniteJson {
     class Scraper {
 
         private static List<string> regions = new List<string> { "NAE", "NAW", "EU", "OCE", "ASIA", "BR", "ME" };
-        private static List<string> weeks = new List<string> { "Week4" };  // UPDATE EACH WEEK
+        private static List<string> weeks = new List<string> { "Week5" };  // UPDATE EACH WEEK
         private static string match = "S10_FNCS";
         private static string theEvent = "Event3";
-        private static string weekId = "16"; // UPDATE EACH WEEK
+        private static string weekId = "17"; // UPDATE EACH WEEK
 
         public static void Step1_GetFiles() {
             foreach (string region in regions) {

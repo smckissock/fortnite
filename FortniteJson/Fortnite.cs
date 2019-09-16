@@ -19,7 +19,7 @@ namespace FortniteJson {
 
 
         // Used in GetPlacementPoints() below
-        public struct Tier {
+    public struct Tier {
         public int place, points;
 
         public Tier(int p1, int p2) {

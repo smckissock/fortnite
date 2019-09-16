@@ -159,4 +159,19 @@ GO
 
 
 
+-- September 16, 2019 before importing CS Week 5
+BACKUP DATABASE Fortnite
+TO DISK = N'd:\Fortnite\Fortnitedb\September 16.bak' WITH NOFORMAT, NOINIT, NAME = N'Full Database Backup', SKIP, NOREWIND, NOUNLOAD, STATS = 10
+GO
+
+RESTORE FILELISTONLY
+FROM DISK = N'd:\fortnite\fortnitedb\September 16.bak'
+GO
+
+
+
+
+
+
+
 

@@ -193,7 +193,7 @@ function title(width) {
         .attr("height", "100px");
 
     text("FORTNITE", svg, "big-fortnite", 0, 55);
-    text("ping", svg, "big-ping", 205, 55);
+    text("ping", svg, "big-ping", 205, 52);
 
     svg.append("text")
         .attr("x", 0)
