@@ -388,7 +388,7 @@ function downloadButton(svg, screenWidth) {
 }
 
 
-// Makes the string that displayse number of players and filters  
+// Makes the string that displays number of players and filters  
 export function updateCounts() {
 
     makePlayerStatsGroup(playerDim);
@@ -476,20 +476,21 @@ function draw(facts) {
     var teamDim = facts.dimension(dc.pluck("team"));
     var teamGroup = teamDim.group().reduceSum(dc.pluck("payout"));
 
-    let team = teamChart("#chart-team", teamDim, teamGroup)
-        .dimension(teamDim)
-        .group(teamGroup);
+    // Hide for now. Also re-register below
+    //let team = teamChart("#chart-team", teamDim, teamGroup)
+    //    .dimension(teamDim)
+    //    .group(teamGroup);
 
     let players = playerChart("#chart-player")
         .dimension(playerStatsGroup);
 
     const width = 1464;
     //downloadButton(titleSvg, width);
-    helpButton(titleSvg, width - 50);
+    helpButton(titleSvg, width - 50 - 200); // 200 for teams
     filtersAndCount(titleSvg, width);
 
     dc.registerChart(players, null);
-    dc.registerChart(team, null);
+    //dc.registerChart(team, null);
 
     dc.renderAll();
 }

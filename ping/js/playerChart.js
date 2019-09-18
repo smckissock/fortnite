@@ -440,7 +440,7 @@ export function playerChart(id) {
 
         upArrowPolygon = svg.append("polygon")
             .attr("points", (playerColWidth - width) + "," + (height - 2) + " " + playerColWidth + "," + (height - 2) + " " + (playerColWidth - (width / 2)) + "," + 4)
-            .style("fill", "#F0F8FF")
+            .style("fill", "darkgrey")
             .attr("pointer-events", "bounding-box")
             .attr("stroke", "black")
             .attr("stroke-width", 0)
@@ -458,7 +458,7 @@ export function playerChart(id) {
 
         downArrowPolygon = svg.append("polygon")
             .attr("points", (playerColWidth - width) + "," + (height + 5) + " " + playerColWidth + "," + (height + 5) + " " + (playerColWidth - (width / 2)) + "," + (height * 2))
-            .style("fill", "#F0F8FF")
+            .style("fill", "darkgrey")
             .attr("pointer-events", "bounding-box")
             .attr("stroke", "black")
             .attr("stroke-width", 0)
