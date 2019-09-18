@@ -477,9 +477,9 @@ function draw(facts) {
     var teamGroup = teamDim.group().reduceSum(dc.pluck("payout"));
 
     // Hide for now. Also re-register below
-    //let team = teamChart("#chart-team", teamDim, teamGroup)
-    //    .dimension(teamDim)
-    //    .group(teamGroup);
+    let team = teamChart("#chart-team", teamDim, teamGroup)
+        .dimension(teamDim)
+        .group(teamGroup);
 
     let players = playerChart("#chart-player")
         .dimension(playerStatsGroup);
