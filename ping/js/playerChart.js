@@ -2,7 +2,7 @@
 
 import { colors } from "./shared.js";
 
-import { cornerRadius, filters, playerDim, playerColors, soloQualifications, duoQualifications, qualifierNames, updateCounts, teamMembers } from "./main.js";
+import { cornerRadius, filters, playerDim, playerInfos, playerColors, soloQualifications, duoQualifications, qualifierNames, updateCounts, teamMembers } from "./main.js";
 import { checkBox } from "./checkBox.js";
 import { profile, profileOpen } from "./profile.js";
 import { playerCirclePackChart } from "./playerCirclePackChart.js";
@@ -26,6 +26,7 @@ export function playerChart(id) {
     const pctAxisFormat = d3.format(",.0%");
     const moneyFormat = function (d) { return "$" + d3.format(",")(d); };
     const moneyKFormat = d3.format(".2s");
+    const tenthsFormat = d3.format(".1f");
 
     const columns = [
         { name: "Players", code: "player", x: 10, format: noFormat, axisFormat: noFormat },
@@ -33,7 +34,7 @@ export function playerChart(id) {
         { name: "Payout", code: "payout", x: 9, format: commaFormat, format: commaFormat, axisFormat: moneyKFormat },
         { name: "Points", code: "points", x: 13, format: noFormat, axisFormat: noFormat },
         { name: "Wins", code: "wins", x: 17, format: noFormat, axisFormat: noFormat },
-        { name: "Earned Quals", code: "earnedQualifications", x: 0, format: noFormat, axisFormat: noFormat },
+        { name: "CS Avg #", code: "earnedQualifications", x: 0, format: tenthsFormat, axisFormat: noFormat },
         { name: "Elims", code: "elims", x: 15, format: noFormat, axisFormat: noFormat },
         { name: "Elim %", code: "elimPercentage", x: 16, format: pctFormat, axisFormat: pctAxisFormat },
         { name: "Placement", code: "placementPoints", x: 0, format: noFormat, axisFormat: noFormat },
@@ -102,7 +103,9 @@ export function playerChart(id) {
 
     const svg = div.append("svg")
         .attr("width", svgWidth + 4)
-        .attr("height", 1000)
+        .attr("height", 1000);
+
+    let championSeriesAveragers = playerInfos.filter(d => d.championSeriesAvg > 0);    
 
     drawHeaders(svg);
     drawRows(svg);
@@ -298,17 +301,23 @@ export function playerChart(id) {
             const mediumFontSize = "1.2em";
 
             // Earned Quals
-            if (text === "Earned Quals") {
+            if (text === "CS Avg #") {
+
                 svg.append("text")
-                    .attr("x", x + 8)
-                    .attr("y", 34)
-                    .text("Earned")
+                    .attr("x", x + 6)
+                    .attr("y", 26)
+                    .text("Champ.")
+                    .classed("column-button", true);
+                svg.append("text")
+                    .attr("x", x + 12)
+                    .attr("y", 46)
+                    .text("Series")
                     .classed("column-button", true);
 
                 svg.append("text")
-                    .attr("x", x + 12)
-                    .attr("y", 58)
-                    .text("Quals")
+                    .attr("x", x + 16)
+                    .attr("y", 64)
+                    .text("Avg #")
                     .classed("column-button", true);
                 return;
             }
@@ -1088,7 +1097,7 @@ export function playerChart(id) {
         }
 
         const sortColumn = filters.sort;
-        const sortOrder = (filters.sort !== "rank") ? d3.descending : d3.ascending;
+        const sortOrder = (filters.sort !== "rank" && filters.sort !== "earnedQualifications") ? d3.descending : d3.ascending;
 
         let values = d3.nest()
             .key(function (d) { return d.key; })
@@ -1101,6 +1110,13 @@ export function playerChart(id) {
 
         // Set player data, which is what gets rendered (or a slice of it)
         playerData = filterPlayersFast(values, playerDim.top(Infinity));
+
+        // Lookup Champion Series average placement
+        playerData.forEach(function (d) {
+            let avg = championSeriesAveragers.find(averager => averager.name === d.key)
+            d.values[0].value.earnedQualifications = avg ? +avg.championSeriesAvg : +10000;
+        })
+
         playerData.sort(function (a, b) {
             return sortOrder(a.values[0].value[sortColumn], b.values[0].value[sortColumn]);
         });
@@ -1121,7 +1137,14 @@ export function playerChart(id) {
             if (i == 0)
                 return row.key;
 
+            
             const value = row.values[0].value[columns[i].code];
+            
+            // Weird case = Champion Series average placement is 10000 ifthere are missing values, so return a dash for that 
+            if (i ==  5)
+                return columns[i].format(value) > 9999 ? "-" : columns[i].format(value);
+
+
             // Show the number, as long as it isn't the first one - i.e rank/count    
             if (i != 1)
                 return columns[i].format(value);

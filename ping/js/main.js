@@ -70,6 +70,7 @@ d3.json('ping/data/players.json').then(function (players) {
         rec.nationality = d[1];
         rec.team = d[2];
         rec.age = d[3];
+        rec.championSeriesAvg = d[4];
         playerInfos.push(rec);
     });
 });
@@ -490,7 +491,7 @@ function draw(facts) {
     filtersAndCount(titleSvg, width);
 
     dc.registerChart(players, null);
-    //dc.registerChart(team, null);
+    //  dc.registerChart(team, null);
 
     dc.renderAll();
 }
@@ -515,9 +516,14 @@ function getColorForRegion(region) {
 }
 
 function makePlayerStatsGroup() {
-    playerStatsGroup =
 
+    function GetPlayer() {
+        return 9;
+    }
+
+    playerStatsGroup =
         playerDim.group().reduce(
+            // Add
             function (p, v) {
                 p.soloQual = p.soloQual + v.soloQual;
                 p.duoQual = p.duoQual + v.duoQual;
@@ -530,10 +536,12 @@ function makePlayerStatsGroup() {
                 p.elimPercentage = p.elims / p.points;
                 p.placementPoints = p.placementPoints + v.placementPoints;
                 p.placementPercentage = p.placementPoints / p.points;
-                p.earnedQualifications = p.earnedQualifications + v.earnedQualifications
+                p.earnedQualifications = 4;
                 return p;
             },
+            // Remove
             function (p, v) {
+                //console.log(v);
                 p.soloQual = p.soloQual - v.soloQual;
                 p.duoQual = p.duoQual - v.duoQual;
 
@@ -545,11 +553,13 @@ function makePlayerStatsGroup() {
                 p.elimPercentage = p.elims / p.points;
                 p.placementPoints = p.placementPoints - v.placementPoints;
                 p.placementPercentage = p.placementPoints / p.points;
-                p.earnedQualifications = p.earnedQualifications - v.earnedQualifications;
+                p.earnedQualifications = 4;
 
                 return p;
             },
-            function (p) {
+            // Default
+            function (p, v) {
+                //console.log(v);
                 return {
                     soloQual: 0
                     , duoQual: 0
@@ -562,7 +572,7 @@ function makePlayerStatsGroup() {
                     , elimPercentage: 0
                     , placementPoints: 0
                     , placementPercentage: 0
-                    , earnedQualifications: 0
+                    , earnedQualifications: GetPlayer()
                 };
             }
         );

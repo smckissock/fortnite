@@ -64,13 +64,15 @@ namespace FortniteJson {
 
         public static void MakePlayerArray() {
             var list = new List<List<string>>();
-            var reader = SqlUtil.Query("SELECT * FROM PlayerFrontEndView");
+            //var reader = SqlUtil.Query("SELECT * FROM PlayerFrontEndView");
+            var reader = SqlUtil.Query("SELECT * FROM PlayerFrontEndChampionSeriesView");
             while (reader.Read()) {
                 var record = new List<string>();
                 record.Add(reader["name"].ToString());
                 record.Add(reader["nationality"].ToString());
                 record.Add(reader["team"].ToString());
                 record.Add(reader["age"].ToString());
+                record.Add(reader["CsAverage"].ToString());
                 list.Add(record);
             }
 
