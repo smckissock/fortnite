@@ -172,6 +172,23 @@ GO
 
 
 
+-- September 21, 2019 before importing M-F
+BACKUP DATABASE Fortnite
+TO DISK = N'd:\Fortnite\Fortnitedb\September 21.bak' WITH NOFORMAT, NOINIT, NAME = N'Full Database Backup', SKIP, NOREWIND, NOUNLOAD, STATS = 10
+GO
+
+RESTORE FILELISTONLY
+FROM DISK = N'd:\fortnite\fortnitedb\September 21.bak'
+GO
+
+
+
+
+
+
+
+
+
 
 
 

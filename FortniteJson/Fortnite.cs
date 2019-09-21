@@ -18,7 +18,7 @@ namespace FortniteJson {
     }
 
 
-        // Used in GetPlacementPoints() below
+    // Used in GetPlacementPoints() below
     public struct Tier {
         public int place, points;
 
@@ -99,7 +99,7 @@ namespace FortniteJson {
             var reader = SqlUtil.Query("SELECT * FROM StatsWithPlayerInfoView");
             while (reader.Read()) {
                 var record = new List<string>();
-                record.Add(reader["week"].ToString());
+                record.Add(reader["event"].ToString());
                 record.Add(reader["soloWeek"].ToString());
                 record.Add(reader["duoWeek"].ToString());
                 record.Add(reader["soloOrDuo"].ToString());
@@ -130,7 +130,7 @@ namespace FortniteJson {
             var reader = SqlUtil.Query("SELECT * FROM StatsWithPlayerInfoView");
             while (reader.Read()) {
                 var place = new Place();
-                place.week = reader["week"].ToString();
+                place.week = reader["event"].ToString();
                 place.soloQual = (System.Int32)reader["soloWeek"];
                 place.duoQual = (System.Int32)reader["duoWeek"];
                 place.soloOrDuo = reader["soloOrDuo"].ToString();
@@ -167,7 +167,7 @@ namespace FortniteJson {
             while (reader.Read()) {
                 var fields = new List<string>();
 
-                fields.Add(reader["week"].ToString());
+                fields.Add(reader["event"].ToString());
                 fields.Add(reader["soloWeek"].ToString());
                 fields.Add(reader["duoWeek"].ToString());
                 fields.Add(reader["soloOrDuo"].ToString());
@@ -258,7 +258,7 @@ namespace FortniteJson {
                         GetPlacementPoints((int)reader["GameRank"], reader["WeekID"].ToString()).ToString());
                     game.fields.Add(reader["PlacementId"].ToString());
                     game.fields.Add(reader["PlacementRank"].ToString());
-                    game.fields.Add(reader["WeekID"].ToString());
+                    game.fields.Add(reader["EventID"].ToString());
 
                     placementId = reader["PlacementID"].ToString();
                     endSeconds = (int)reader["EndSeconds"];
