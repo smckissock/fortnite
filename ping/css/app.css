@@ -94,12 +94,12 @@ body {
 
 
 .loader {
-    border: 16px solid #f3f3f3; /* Light grey */
-    border-top: 16px solid #3498db; /* Blue */
+    border: 26px solid #f3f3f3; /* Light grey */
+    border-top: 26px solid #3498db; /* Blue */
     border-radius: 50%;
     width: 120px;
     height: 120px;
-    animation: spin 2s linear infinite;
+    animation: spin 1s linear infinite;
   }
   
  @keyframes spin {
@@ -237,13 +237,13 @@ body {
 
 .player-stat-row {
     font-weight: 400;
-    font-size: 1.1em;
+    font-size: 1.0em;
     color: darkgrey;
 }
 
 .player-stat-summary {
     font-weight: 400;
-    font-size: 1.3em;
+    font-size: 1.1em;
 }
 
 .posick {

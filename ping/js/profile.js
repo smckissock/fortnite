@@ -22,7 +22,7 @@ export function profile(player) {
 
     const svgWidth = 1200;
     const svgHeight = 1200;
-    const leftMargin = 160;
+    const leftMargin = 130;
 
     const noFormat = function (d) { return d; }
     const commaFormat = d3.format(",");
@@ -316,7 +316,7 @@ export function profile(player) {
     function makeMatches(recs) {
 
         const colWidth = 80;
-        const rowHeaderWidth = 400; 
+        const rowHeaderWidth = 360; 
         
         const cols = [
             { name: "Payout", field: "payout", format: commaFormat },
@@ -332,7 +332,7 @@ export function profile(player) {
 
             function write(text, i, y) {
                 const rowHeaderWidth = 220;
-                centeredText(text, matchG, "player-stat-col-header", rowHeaderWidth + ((i + 2) * colWidth) - 30, colWidth, y);
+                centeredText(text, matchG, "player-stat-col-header", rowHeaderWidth + ((i + 2) * colWidth) - 44, colWidth, y);
             }
             
             cols.forEach(function (d, i) {
@@ -350,9 +350,9 @@ export function profile(player) {
 
             matchG.append("rect")
                 .attr("x", leftMargin)
-                .attr("y", 40)
+                .attr("y", 42)
                 .attr("width", svgWidth - leftMargin - 100)
-                .attr("height", 40)
+                .attr("height", 34)
                 .attr("fill", colors.grey)
             
             const y = 66;
@@ -373,8 +373,8 @@ export function profile(player) {
         }
 
         function rows(formatWeeks, formatSummary, priorRowsHeight) {
-            const rowHeight = 26;
-            const summaryRowHeight = 40;
+            const rowHeight = 18;
+            const summaryRowHeight = 34;
 
             // Summary row for Trio / Solo / Duo
             if (!formatSummary)  // This is a bug..
@@ -387,7 +387,7 @@ export function profile(player) {
                 .attr("height", formatWeeks.values.length * rowHeight + summaryRowHeight - 6)
                 .attr("fill", (formatSummary.key == "Total") ? formatColor[formatSummary.key] : formatColor[formatSummary.key + "s"])
 
-            text(formatSummary.key, matchG, "player-stat-summary", leftMargin + 8, priorRowsHeight + 14);
+            text(formatSummary.key, matchG, "player-stat-summary", leftMargin + 8, priorRowsHeight + 6);
             cols.forEach(function (col, colNum) {
 
                 const toShow = col.format(formatSummary.value[col.field]).toString()
@@ -399,12 +399,12 @@ export function profile(player) {
                     // Source Sans Pro has monospaced numbers, but commas are narrower than numbers
                     (toShow.length * 11) +
                     ((toShow.match(/,/g) || []).length) * 6,
-                    priorRowsHeight + 12)
+                    priorRowsHeight + 6)
             });
 
             // Week rows
             formatWeeks.values.forEach((week, rowNum) => {
-                const y = + priorRowsHeight + summaryRowHeight + (rowHeight * rowNum);
+                const y = + priorRowsHeight + summaryRowHeight + (rowHeight * rowNum) - 6;
 
                 text("#" + week.rank, matchG, "player-stat-row", leftMargin + 16, y);
                 text(week.week, matchG, "player-stat-row", leftMargin + 70, y);
