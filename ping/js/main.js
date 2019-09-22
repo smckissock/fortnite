@@ -122,6 +122,9 @@ d3.json('ping/data/data.json').then(function (dataArray) {
 
     facts = crossfilter(data);
 
+    d3.select("#root")
+        .classed("loader", false);
+
     draw(facts);
 
     d3.select("#search-input").on('keyup', function (event) {

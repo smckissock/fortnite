@@ -18,19 +18,19 @@ namespace FortniteJson {
         private static string weekId = "17"; // UPDATE EACH WEEK
 
         // Contenders Solo - Wednesday 
-        private static string match = "S10_CC_Contenders";
-        private static List<string> events = new List<string>   { "Event1", "Event2", "Event3", "Event4" };  
-        private static List<string> eventNames = new List<string>   { "CC Wednesday #1", "CC Wednesday #2", "CC Wednesday #3", "CC Wednesday #4" };  
+        //private static string match = "S10_CC_Contenders";
+        //private static List<string> events = new List<string>   { "Event1", "Event2", "Event3", "Event4" };  
+        //private static List<string> eventNames = new List<string>   { "CC Wednesday #1", "CC Wednesday #2", "CC Wednesday #3", "CC Wednesday #4" };  
                                                                                                               
         // Contenders Solo - Thursday 
         //private static string match = "S10_CC_Champions";
-        //private static List<string> events = new List<string> { "Event1", "Event2", "Event3", "Event4" }; 
+       // private static List<string> events = new List<string> { "Event1", "Event2", "Event3", "Event4" }; 
         //private static List<string> eventNames = new List<string> { "CC Thursday #1", "CC Thursday #2", "CC Thursday #3", "CC Thursday #4" };  
                                                                 
         // Contenders Solo - Friday 
-        //private static string match = "S10_CC_Trios";
-        //private static List<string> events = new List<string> { "Event1", "Event2", "Event3", "Event4" };  
-        //private static List<string> eventNames = new List<string> { "CC Friday #1", "CC Friday #2", "CC Friday #3", "CC Friday #4" }; 
+        private static string match = "S10_CC_Trios";
+        private static List<string> events = new List<string> { "Event1", "Event2", "Event3", "Event4" };  
+        private static List<string> eventNames = new List<string> { "CC Friday #1", "CC Friday #2", "CC Friday #3", "CC Friday #4" }; 
         
        
 

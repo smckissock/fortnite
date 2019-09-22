@@ -46,9 +46,9 @@ namespace FortniteJson {
             // Prior step wipes out Finals payouts. Rerun 03 Payouts for Finals.sql to put them back (or add a week filter)  
 
             //var directory = "champion-series";
-            var directory = "Cash Cup Wed";
+            //var directory = "Cash Cup Wed";
             //var directory = "Cash Cup Thurs";
-            //var directory = "Cash Cup Fri";
+            var directory = "Cash Cup Fri";
 
             //Scraper.Step1_GetFiles(directory);
             //Scraper.Step2_GetPlayersAndPlayerWeeks(directory);
@@ -57,9 +57,11 @@ namespace FortniteJson {
 
             // MAKE SURE TO UPDATE WEEK BEFORE RUNNING THIS
             // Wed 1019 1020 1021 1022
-            //Fortnite2FixUp.FixPlacementPayout("1022");
-            //Fortnite2FixUp.FixPlacementElims("1022");
-            //Fortnite2FixUp.UpdateWins("1022");
+            // Thurs 1025 1026 1027 1028
+            // Fri 1031 1032 1033 1034
+            //Fortnite2FixUp.FixPlacementPayout("1034");
+            //Fortnite2FixUp.FixPlacementElims("1034");
+            //Fortnite2FixUp.UpdateWins("1034");
 
             Fortnite.MakeJsonArray();   
 

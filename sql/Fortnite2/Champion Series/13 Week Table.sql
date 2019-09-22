@@ -85,7 +85,7 @@ INSERT INTO Event VALUES ((SELECT ID FROM Match WHERE Name = 'Champions''s Cash 
 
 
 
-
+SELECT * FROM RankPayoutTier
 
 
 
