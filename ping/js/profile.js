@@ -67,7 +67,6 @@ export function profile(player) {
     }
 
     function makeSvg() {
-
         const headerHeight = 120;
         const rankHeight = 140;
         const trendHeight = 180;
@@ -83,7 +82,7 @@ export function profile(player) {
             .attr("width", svgWidth + 6)
             .attr("height", svgHeight + 6)
             //.attr("transform", "translate(-250,-1327)") // Includes team width
-            .attr("transform", "translate(-60,-1327)")
+            .attr("transform", "translate(-160,-1327)")
             .attr("fill", "black")
 
         function makeG(top, height, color) {
@@ -332,7 +331,7 @@ export function profile(player) {
 
             function write(text, i, y) {
                 const rowHeaderWidth = 220;
-                centeredText(text, matchG, "player-stat-col-header", rowHeaderWidth + ((i + 2) * colWidth) - 44, colWidth, y);
+                centeredText(text, matchG, "player-stat-col-header", rowHeaderWidth + ((i + 2) * colWidth) - 90, colWidth, y);
             }
             
             cols.forEach(function (d, i) {

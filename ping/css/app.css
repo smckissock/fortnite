@@ -231,8 +231,9 @@ body {
 }
 
 .player-stat-col-header {
-    font-weight: 400;
-    font-size: 1.2em;
+    font-weight: 800;
+    font-size: 1.9em;
+    fill: dimgrey;
 }
 
 .player-stat-row {
