@@ -9,19 +9,39 @@ namespace FortniteJson {
     class Scraper {
 
         private static List<string> regions = new List<string> { "NAE", "NAW", "EU", "OCE", "ASIA", "BR", "ME" };
-        private static List<string> weeks = new List<string> { "Week5" };  // UPDATE EACH WEEK
-        private static string match = "S10_FNCS";
-        private static string theEvent = "Event3";
+
+        // Champion Series
+        //private static List<string> weeks = new List<string> { "Week5" };  // UPDATE EACH WEEK
+        //private static string match = "S10_FNCS";
+        //private static string theEvent = "Event3";
         private static string weekId = "17"; // UPDATE EACH WEEK
 
-        public static void Step1_GetFiles() {
+        // Contenders Solo - Wednesday 
+        private static List<string> weeks = new List<string> { "Week5" };  // UPDATE EACH WEEK
+        //private static string match = "S10_CC_Contenders";
+        //private static string match = "S10_CC_Champions";
+        private static string match = "S10_CC_Trios";
+        private static List<string> events = new List<string> { "Event1", "Event2", "Event3", "Event4" };  // UPDATE EACH WEEK
+        //private static string weekId = "17"; // UPDATE EACH WEEK
+
+        public static void Step1_GetFiles(string directory) {
             foreach (string region in regions) {
-                foreach (string week in weeks) {
-                    for (int i = 0; i < 50; i++) {
+                //foreach (string week in weeks) {
+                foreach (string anEvent in events) {
+                    for (int i = 0; i < 20; i++) {
                         string page = i.ToString();
                         string html = string.Empty;
-                        string url = @"https://fortnitetracker.com/events/epicgames_" + match + "_" + week + "_" + region + "?window=" +
-                            match + "_" + week + "_" + region + "_" + theEvent + "&page=" + page;
+
+                        // Champion Series
+                        //string url = @"https://fortnitetracker.com/events/epicgames_" + match + "_" + week + "_" + region + "?window=" +
+                        //    match + "_" + week + "_" + region + "_" + theEvent + "&page=" + page;
+
+                        // Cash Cup 
+                        var path = match + "_" + region; 
+                        string url = @"https://fortnitetracker.com/events/epicgames_" + path + "?window=" + path + "_" + anEvent + "&page=" + page;
+
+                                                // https://fortnitetracker.com/events/epicgames/_S10_CC_Contenders_NAE?window=S10_CC_Contenders_NAE_anEvent&page=0
+
 
                         HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
                         request.AutomaticDecompression = DecompressionMethods.GZip;
@@ -30,16 +50,16 @@ namespace FortniteJson {
                         using (Stream stream = response.GetResponseStream())
                         using (StreamReader reader = new StreamReader(stream)) {
                             html = reader.ReadToEnd();
-                            string fileName = @"d:\\fortnite\\fortnite-scrape\\champion-series\\" + region + "_" + week + "_" + page + ".html";
+                            string fileName = @"d:\\fortnite\\fortnite-scrape\\" + directory + "\\" + region + "_" + anEvent + "_" + page + ".html";
                             System.IO.File.WriteAllText(fileName, html);
                         }
-                        System.Threading.Thread.Sleep(500);
+                        System.Threading.Thread.Sleep(200);
                     }
                 }
             }
         }
 
-        public static void Step2_GetPlayersAndPlayerWeeks() {
+        public static void Step2_GetPlayersAndPlayerWeeks(string directory) {
             foreach (string region in regions) {
                 foreach (string week in weeks) {
                     for (int i = 0; i < 50; i++) {
@@ -75,7 +95,7 @@ namespace FortniteJson {
             }
         }
 
-        public static void Step3_ImportLeaderboard() {
+        public static void Step3_ImportLeaderboard(string directory) {
             foreach (string region in regions) {
                 foreach (string week in weeks) {
                     for (int i = 0; i < 50; i++) {
@@ -128,13 +148,13 @@ namespace FortniteJson {
             }
         }
 
-        public static void Step4_ImportTiers() {
+        public static void Step4_ImportTiers(string directory) {
             foreach (string region in regions) {
                 foreach (string week in weeks) {
                     for (int i = 0; i < 1; i++) {
                         string page = i.ToString();
 
-                        string fileName = @"d:\\fortnite\\fortnite-scrape\\champion-series\\" + region + "_" + week + "_" + page + ".html";
+                        string fileName = @"d:\\fortnite\\fortnite-scrape\\" + directory + "\\" + region + "_" + week + "_" + page + ".html";
                         string html = "";
                         try {
                             html = System.IO.File.ReadAllText(fileName);
