@@ -42,25 +42,26 @@ namespace FortniteJson {
             //Fortnite2FixUp.FixPlacementPayout();
             //Fortnite2FixUp.FixPlacementElims();
             //Fortnite2FixUp.UpdateWins();
-
+                
             // Prior step wipes out Finals payouts. Rerun 03 Payouts for Finals.sql to put them back (or add a week filter)  
 
             //var directory = "champion-series";
-            //var directory = "Cash Cup Wed";
+            var directory = "Cash Cup Wed";
             //var directory = "Cash Cup Thurs";
-            var directory = "Cash Cup Fri";
+            //var directory = "Cash Cup Fri";
 
-            Scraper.Step1_GetFiles(directory);
+            //Scraper.Step1_GetFiles(directory);
             //Scraper.Step2_GetPlayersAndPlayerWeeks(directory);
             //Scraper.Step3_ImportLeaderboard(directory);
             //Scraper.Step4_ImportTiers(directory);
 
             // MAKE SURE TO UPDATE WEEK BEFORE RUNNING THIS
-            //Fortnite2FixUp.FixPlacementPayout();
-            //Fortnite2FixUp.FixPlacementElims();
-            //Fortnite2FixUp.UpdateWins();
+            // Wed 1019 1020 1021 1022
+            //Fortnite2FixUp.FixPlacementPayout("1022");
+            //Fortnite2FixUp.FixPlacementElims("1022");
+            //Fortnite2FixUp.UpdateWins("1022");
 
-            //Fortnite.MakeJsonArray();   
+            Fortnite.MakeJsonArray();   
 
             //Analytics.GetStats();
 

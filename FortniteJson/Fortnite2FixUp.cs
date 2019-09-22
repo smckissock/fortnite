@@ -16,7 +16,7 @@ namespace FortniteJson {
         public static void FixCurrentName() {
             return;
 
-            var reader = SqlUtil.Query("SELECT PlayerID, PlayerName, WeekID FROM PlayerWeek ORDER BY playerID, WeekID");
+            var reader = SqlUtil.Query("SELECT PlayerID, PlayerName, EventID FROM PlayerEvent ORDER BY playerID, EventID");
 
             int oldPlayerId = 0;
             string oldName = "";
@@ -36,10 +36,12 @@ namespace FortniteJson {
             SqlUtil.Command("UPDATE Player SET CurrrentName = '" + oldName + "' WHERE ID = " + oldPlayerId);
         }
 
-        public static void FixPlacementPayout() {
+        public static void FixPlacementPayout(string eventId) {
             // Go though every placement to update payouts
             //var reader = SqlUtil.Query("SELECT ID, RegionID, WeekID, Rank FROM Placement WHERE ID <> 1");
-            var reader = SqlUtil.Query("SELECT ID, RegionID, WeekID, Rank FROM Placement WHERE ID <> 1 AND WeekID = " + weekId);
+            Console.WriteLine("FixPlacementPayout for " + eventId);
+
+            var reader = SqlUtil.Query("SELECT ID, RegionID, EventID, Rank FROM Placement WHERE ID <> 1 AND EventID = " + eventId);
             while (reader.Read()) {
                 var id = reader[0].ToString();
                 var regionId = reader[1].ToString();
@@ -47,7 +49,7 @@ namespace FortniteJson {
                 var rank = (int)reader[3];
 
                 int payout = 0;
-                var tiers = SqlUtil.Query("SELECT Rank, Payout FROM RankPayoutTier WHERE RegionID = " + regionId + " AND WeekID = " + weekId + " ORDER BY Rank DESC");
+                var tiers = SqlUtil.Query("SELECT Rank, Payout FROM RankPayoutTier WHERE RegionID = " + regionId + " AND EventID = " + eventId + " ORDER BY Rank DESC");
                 while (tiers.Read()) {
                     var tierRank = (int)tiers[0];
                     var tierPayout = (int)tiers[1];
@@ -64,14 +66,17 @@ namespace FortniteJson {
         }
 
 
-        public static void FixPlacementElims() {
+        public static void FixPlacementElims(string eventId) {
+
+            Console.WriteLine("FixPlacementElims for " + eventId);
+
             // Go though ever placement to update elims
             // var reader = SqlUtil.Query("SELECT ID, RegionID, WeekID, Rank FROM Placement WHERE ID <> 1");
-            var reader = SqlUtil.Query("SELECT ID, RegionID, WeekID, Rank FROM Placement WHERE ID <> 1 AND WeekID = " + weekId);
+            var reader = SqlUtil.Query("SELECT ID, RegionID, EventID, Rank FROM Placement WHERE ID <> 1 AND EventID = " + eventId);
             while (reader.Read()) {
                 var id = reader[0].ToString();
-                var regionId = reader[1].ToString();
-                var weekId = reader[2].ToString();
+                //var regionId = reader[1].ToString();
+                //var eventId = reader[2].ToString();
 
                 // Games for each placement
                 var games = SqlUtil.Query("SELECT GameRank, Elims FROM Game WHERE PlacementID = " + id + " ORDER BY EndTime");
@@ -100,9 +105,12 @@ namespace FortniteJson {
             }
         }
 
-        public static void UpdateWins() {
+        public static void UpdateWins(string eventId) {
+
+            Console.WriteLine("UpdateWins for " + eventId);
+
             //var reader = SqlUtil.Query("SELECT ID FROM Placement WHERE ID <> 1");
-            var reader = SqlUtil.Query("SELECT ID FROM Placement WHERE ID <> 1  AND WeekID = " + weekId);
+            var reader = SqlUtil.Query("SELECT ID FROM Placement WHERE ID <> 1  AND EventID = " + eventId);
             while (reader.Read()) {
                 var id = reader[0].ToString();
 
@@ -150,6 +158,9 @@ namespace FortniteJson {
             return regionId;
         }
 
+
+
+        // NOT USED
 
         public static void FixQualifications() {
             int i = 0;

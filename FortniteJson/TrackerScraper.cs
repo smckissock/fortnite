@@ -6,23 +6,33 @@ using Newtonsoft.Json;
 
 
 namespace FortniteJson {
+
     class Scraper {
 
         private static List<string> regions = new List<string> { "NAE", "NAW", "EU", "OCE", "ASIA", "BR", "ME" };
 
         // Champion Series
-        //private static List<string> weeks = new List<string> { "Week5" };  // UPDATE EACH WEEK
+        private static List<string> weeks = new List<string> { "Week5" };  // UPDATE EACH WEEK
         //private static string match = "S10_FNCS";
         //private static string theEvent = "Event3";
         private static string weekId = "17"; // UPDATE EACH WEEK
 
         // Contenders Solo - Wednesday 
-        private static List<string> weeks = new List<string> { "Week5" };  // UPDATE EACH WEEK
-        //private static string match = "S10_CC_Contenders";
+        private static string match = "S10_CC_Contenders";
+        private static List<string> events = new List<string>   { "Event1", "Event2", "Event3", "Event4" };  
+        private static List<string> eventNames = new List<string>   { "CC Wednesday #1", "CC Wednesday #2", "CC Wednesday #3", "CC Wednesday #4" };  
+                                                                                                              
+        // Contenders Solo - Thursday 
         //private static string match = "S10_CC_Champions";
-        private static string match = "S10_CC_Trios";
-        private static List<string> events = new List<string> { "Event1", "Event2", "Event3", "Event4" };  // UPDATE EACH WEEK
-        //private static string weekId = "17"; // UPDATE EACH WEEK
+        //private static List<string> events = new List<string> { "Event1", "Event2", "Event3", "Event4" }; 
+        //private static List<string> eventNames = new List<string> { "CC Thursday #1", "CC Thursday #2", "CC Thursday #3", "CC Thursday #4" };  
+                                                                
+        // Contenders Solo - Friday 
+        //private static string match = "S10_CC_Trios";
+        //private static List<string> events = new List<string> { "Event1", "Event2", "Event3", "Event4" };  
+        //private static List<string> eventNames = new List<string> { "CC Friday #1", "CC Friday #2", "CC Friday #3", "CC Friday #4" }; 
+        
+       
 
         public static void Step1_GetFiles(string directory) {
             foreach (string region in regions) {
@@ -40,8 +50,7 @@ namespace FortniteJson {
                         var path = match + "_" + region; 
                         string url = @"https://fortnitetracker.com/events/epicgames_" + path + "?window=" + path + "_" + anEvent + "&page=" + page;
 
-                                                // https://fortnitetracker.com/events/epicgames/_S10_CC_Contenders_NAE?window=S10_CC_Contenders_NAE_anEvent&page=0
-
+                        // https://fortnitetracker.com/events/epicgames/_S10_CC_Contenders_NAE?window=S10_CC_Contenders_NAE_anEvent&page=0
 
                         HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
                         request.AutomaticDecompression = DecompressionMethods.GZip;
@@ -61,11 +70,15 @@ namespace FortniteJson {
 
         public static void Step2_GetPlayersAndPlayerWeeks(string directory) {
             foreach (string region in regions) {
-                foreach (string week in weeks) {
-                    for (int i = 0; i < 50; i++) {
+                Console.WriteLine(region);
+                for (int eventNum = 0; eventNum < events.Count; eventNum++) {
+                    string epicEvent = events[eventNum];
+                    string myEvent = eventNames[eventNum];
+
+                    for (int i = 0; i < 20; i++) {
                         string page = i.ToString();
 
-                        string fileName = @"d:\\fortnite\\fortnite-scrape\\champion-series\\" + region + "_" + week + "_" + page + ".html";
+                        string fileName = @"d:\\fortnite\\fortnite-scrape\\" + directory + "\\" + region + "_" + epicEvent + "_" + page + ".html";
                         string html = "";
                         try {
                             html = System.IO.File.ReadAllText(fileName);
@@ -87,7 +100,7 @@ namespace FortniteJson {
                         foreach (var player in json) {
                             SqlUtil.Command("INSERT INTO Player VALUES('" + player.accountId + "', '', 1, 1, 1, '', '')");
 
-                            SqlUtil.Command("INSERT INTO PlayerWeek VALUES((SELECT ID FROM Player WHERE EpicGuid = '" + player.accountId + "'), " + weekId + ", " +
+                            SqlUtil.Command("INSERT INTO PlayerEvent VALUES((SELECT ID FROM Player WHERE EpicGuid = '" + player.accountId + "'), (SELECT ID FROM Event WHERE Name = '" + myEvent + "'), " +
                                 "(SELECT ID FROM Region WHERE EpicCode = '" + region + "'), '" + player.playerName + "')");
                         }
                     }
@@ -97,11 +110,15 @@ namespace FortniteJson {
 
         public static void Step3_ImportLeaderboard(string directory) {
             foreach (string region in regions) {
-                foreach (string week in weeks) {
-                    for (int i = 0; i < 50; i++) {
+                Console.WriteLine(region);
+                for (int eventNum = 0; eventNum < events.Count; eventNum++) {
+                    string epicEvent = events[eventNum];
+                    string myEvent = eventNames[eventNum];
+
+                    for (int i = 0; i < 20; i++) {
                         string page = i.ToString();
 
-                        string fileName = @"d:\\fortnite\\fortnite-scrape\\champion-series\\" + region + "_" + week + "_" + page + ".html";
+                        string fileName = @"d:\fortnite\fortnite-scrape\" + directory + "\\" + region + "_" + epicEvent + "_" + page + ".html";
                         string html = "";
                         try {
                             html = System.IO.File.ReadAllText(fileName);
@@ -119,14 +136,14 @@ namespace FortniteJson {
 
                         dynamic json = JsonConvert.DeserializeObject(json_text);
                         foreach (var placement in json.entries)
-                            Step3_InsertPlacement(placement, weekId, region);
+                            Step3_InsertPlacement(placement, myEvent, region);
                     }
                 }
             }
         }
 
-        private static void Step3_InsertPlacement(dynamic placement, string weekId, string region) {
-            SqlUtil.Command("INSERT INTO Placement (WeekID, RegionID, Rank, Points) VALUES (" + weekId + ", (SELECT ID FROM Region WHERE EpicCode = '" +
+        private static void Step3_InsertPlacement(dynamic placement, string myEvent, string region) {
+            SqlUtil.Command("INSERT INTO Placement (EventID, RegionID, Rank, Points) VALUES ((SELECT ID FROM Event WHERE Name = '" + myEvent + "'), (SELECT ID FROM Region WHERE EpicCode = '" +
                 region + "'), " + placement.rank + ", " + placement.pointsEarned + ")");
 
             // Placements have 1, 2 or 3 players attached 
@@ -150,11 +167,16 @@ namespace FortniteJson {
 
         public static void Step4_ImportTiers(string directory) {
             foreach (string region in regions) {
-                foreach (string week in weeks) {
+
+                Console.WriteLine(region);
+                for (int eventNum = 0; eventNum < events.Count; eventNum++) {
+                    string epicEvent = events[eventNum];
+                    string myEvent = eventNames[eventNum];
+
                     for (int i = 0; i < 1; i++) {
                         string page = i.ToString();
 
-                        string fileName = @"d:\\fortnite\\fortnite-scrape\\" + directory + "\\" + region + "_" + week + "_" + page + ".html";
+                        string fileName = @"d:\fortnite\fortnite-scrape\" + directory + "\\" + region + "_" + epicEvent + "_" + page + ".html";
                         string html = "";
                         try {
                             html = System.IO.File.ReadAllText(fileName);
@@ -171,34 +193,33 @@ namespace FortniteJson {
                         string json_text = html.Substring(firstChar, lastChar - firstChar);
 
                         dynamic json = JsonConvert.DeserializeObject(json_text);
-                        ;
-
-                        int round = 2; // round 3 
+                   
+                        int round = 0; // round 3 // Or 2!!
                         Step4_InsertWeekRegionTiers(
-                            json[round].payoutTable[1].ranks,
-                            json[round].scoringRules[1].rewardTiers,
-                            weekId, region);
+                            json[round].payoutTable[0].ranks, // or 1!
+                            json[round].scoringRules[0].rewardTiers,  // or 1
+                            myEvent, region);
                     }
                 }
             }
         }
 
-        private static void Step4_InsertWeekRegionTiers(dynamic payoutTiers, dynamic scoringTiers, string weekId, string region) {
+        private static void Step4_InsertWeekRegionTiers(dynamic payoutTiers, dynamic scoringTiers, string myEvent, string region) {
             //Console.WriteLine(payoutTiers);
             //Console.WriteLine(scoringTiers);
 
             foreach (var tier in payoutTiers) {
                 var threshold = tier.threshold;
                 var payout = tier.payouts[0].quantity;
-                SqlUtil.Command("INSERT INTO RankPayoutTier (WeekID, RegionID, Rank, Payout) VALUES (" +
-                    weekId + ", (SELECT ID FROM Region WHERE EpicCode = '" + region + "')," + threshold + "," + payout + ")");
+                SqlUtil.Command("INSERT INTO RankPayoutTier (EventID, RegionID, Rank, Payout) VALUES (" +
+                    "(SELECT ID FROM Event WHERE Name = '" + myEvent + "'), (SELECT ID FROM Region WHERE EpicCode = '" + region + "')," + threshold + "," + payout + ")");
             }
 
             foreach (var tier in scoringTiers) {
                 var threshold = tier.keyValue;
                 var points = tier.pointsEarned;
-                SqlUtil.Command("INSERT INTO RankPointTier (WeekID, RegionID, Rank, Points) VALUES (" +
-                    weekId + ", (SELECT ID FROM Region WHERE EpicCode = '" + region + "')," + threshold + "," + points + ")");
+                SqlUtil.Command("INSERT INTO RankPointTier (EventID, RegionID, Rank, Points) VALUES (" +
+                    "(SELECT ID FROM Event WHERE Name = '" + myEvent + "'), (SELECT ID FROM Region WHERE EpicCode = '" + region + "')," + threshold + "," + points + ")");
             }
         }
     }
