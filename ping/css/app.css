@@ -18,16 +18,16 @@ body {
 .grid {
     display: grid;
     grid-template-areas: 
-        "left-margin    title       info      search"
-        "left-margin    region      event      event"
-        "left-margin    region      player      player";
-    grid-template-columns: 10px var(--left-width) var(--team-width) 1000px;
+        "left-margin    title       info        search  right"
+        "left-margin    region      event       event   right"
+        "left-margin    region      player      player  right";
+    grid-template-columns: 10px var(--left-width) var(--team-width) 820px 300px;
     grid-template-rows: 90px 150px auto; 
     grid-gap: 2px 12px;
     margin: 0px;
     height: 1080px;
     /* width: 1920px;  */
-    width: 1440px; 
+    width: 1340px; 
 }   
 
 
@@ -71,6 +71,10 @@ body {
 .team {
     grid-area: team;
     overflow: auto;
+}
+
+.right {
+    grid-area: right;
 }
 
 .player {
