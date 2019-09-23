@@ -124,6 +124,8 @@ d3.json('ping/data/data.json').then(function (dataArray) {
 
     d3.select("#root")
         .classed("loader", false);
+    d3.select("#right")
+        .style("display", "block");    
 
     draw(facts);
 
@@ -147,6 +149,7 @@ d3.json('ping/data/data.json').then(function (dataArray) {
     // So the search box once everything is loaded
     d3.select("#search-input")
         .style("visibility", "visible");
+    
 });
 
 

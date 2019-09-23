@@ -75,6 +75,7 @@ body {
 
 .right {
     grid-area: right;
+    display: none;
 }
 
 .player {
