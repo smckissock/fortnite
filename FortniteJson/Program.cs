@@ -48,7 +48,7 @@ namespace FortniteJson {
             //var directory = "champion-series";
             //var directory = "Cash Cup Wed";
             //var directory = "Cash Cup Thurs";
-            var directory = "Cash Cup Fri";
+            var directory = "champion-series-final";
 
             //Scraper.Step1_GetFiles(directory);
             //Scraper.Step2_GetPlayersAndPlayerWeeks(directory);
@@ -59,9 +59,9 @@ namespace FortniteJson {
             // Wed 1019 1020 1021 1022
             // Thurs 1025 1026 1027 1028
             // Fri 1031 1032 1033 1034
-            //Fortnite2FixUp.FixPlacementPayout("1034");
-            //Fortnite2FixUp.FixPlacementElims("1034");
-            //Fortnite2FixUp.UpdateWins("1034");
+            //Fortnite2FixUp.FixPlacementPayout("1035");
+            //Fortnite2FixUp.FixPlacementElims("1035");
+            //Fortnite2FixUp.UpdateWins("1035");
 
             Fortnite.MakeJsonArray();   
 

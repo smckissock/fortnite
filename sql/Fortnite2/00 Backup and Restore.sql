@@ -192,6 +192,28 @@ GO
 
 
 
+-- September 23, 2019 after importing M-F -- Asia, OCE qnd ME are wrong
+BACKUP DATABASE Fortnite
+TO DISK = N'd:\Fortnite\Fortnitedb\September 23.bak' WITH NOFORMAT, NOINIT, NAME = N'Full Database Backup', SKIP, NOREWIND, NOUNLOAD, STATS = 10
+GO
+
+RESTORE FILELISTONLY
+FROM DISK = N'd:\fortnite\fortnitedb\September 23.bak'
+GO
+
+
+RESTORE FILELISTONLY
+FROM DISK = N'd:\fortnite\fortnitedb\September 22b.bak'
+GO
+
+RESTORE DATABASE Fortnite
+FROM DISK = N'd:\fortnite\fortnitedb\September 22b.bak'
+WITH MOVE 'Fortnite2' TO 'd:\fortnite\fortnitedb\September22b.mdf',
+MOVE 'Fortnite2_log' TO 'd:\fortnite\fortnitedb\FSeptember22b.ldf'
+
+
+
+
 
 
 

@@ -21,24 +21,30 @@ namespace FortniteJson {
         //private static string match = "S10_CC_Contenders";
         //private static List<string> events = new List<string>   { "Event1", "Event2", "Event3", "Event4" };  
         //private static List<string> eventNames = new List<string>   { "CC Wednesday #1", "CC Wednesday #2", "CC Wednesday #3", "CC Wednesday #4" };  
-                                                                                                              
+
         // Contenders Solo - Thursday 
         //private static string match = "S10_CC_Champions";
-       // private static List<string> events = new List<string> { "Event1", "Event2", "Event3", "Event4" }; 
+        // private static List<string> events = new List<string> { "Event1", "Event2", "Event3", "Event4" }; 
         //private static List<string> eventNames = new List<string> { "CC Thursday #1", "CC Thursday #2", "CC Thursday #3", "CC Thursday #4" };  
-                                                                
+
         // Contenders Solo - Friday 
-        private static string match = "S10_CC_Trios";
-        private static List<string> events = new List<string> { "Event1", "Event2", "Event3", "Event4" };  
-        private static List<string> eventNames = new List<string> { "CC Friday #1", "CC Friday #2", "CC Friday #3", "CC Friday #4" }; 
-        
-       
+        //private static string match = "S10_CC_Trios";
+        //private static List<string> events = new List<string> { "Event1", "Event2", "Event3", "Event4" };  
+        //private static List<string> eventNames = new List<string> { "CC Friday #1", "CC Friday #2", "CC Friday #3", "CC Friday #4" };
+
+        // Champion Series Final 
+        private static string match = "S10_FNCS_Finals";
+        private static List<string> events = new List<string> { "Event5" };
+        private static List<string> eventNames = new List<string> { "CS Final" };
+
+        private static int pages = 1;
+
 
         public static void Step1_GetFiles(string directory) {
             foreach (string region in regions) {
                 //foreach (string week in weeks) {
                 foreach (string anEvent in events) {
-                    for (int i = 0; i < 20; i++) {
+                    for (int i = 0; i < pages; i++) {
                         string page = i.ToString();
                         string html = string.Empty;
 
@@ -47,8 +53,14 @@ namespace FortniteJson {
                         //    match + "_" + week + "_" + region + "_" + theEvent + "&page=" + page;
 
                         // Cash Cup 
-                        var path = match + "_" + region; 
-                        string url = @"https://fortnitetracker.com/events/epicgames_" + path + "?window=" + path + "_" + anEvent + "&page=" + page;
+                        var path = match + "_" + region;
+
+                        var realEvent = anEvent; 
+                        if ((region == "ME") || (region == "OCE") || (region == "ASIA"))
+                            realEvent = "Event3";
+
+                        string url = @"https://fortnitetracker.com/events/epicgames_" + path + "?window=" + path + "_" + realEvent + "&page=" + page;
+                        //string url = @"https://fortnitetracker.com/events/epicgames_" + path;
 
                         // https://fortnitetracker.com/events/epicgames/_S10_CC_Contenders_NAE?window=S10_CC_Contenders_NAE_anEvent&page=0
 
@@ -75,7 +87,7 @@ namespace FortniteJson {
                     string epicEvent = events[eventNum];
                     string myEvent = eventNames[eventNum];
 
-                    for (int i = 0; i < 20; i++) {
+                    for (int i = 0; i < pages; i++) {
                         string page = i.ToString();
 
                         string fileName = @"d:\\fortnite\\fortnite-scrape\\" + directory + "\\" + region + "_" + epicEvent + "_" + page + ".html";
@@ -100,6 +112,7 @@ namespace FortniteJson {
                         foreach (var player in json) {
                             SqlUtil.Command("INSERT INTO Player VALUES('" + player.accountId + "', '', 1, 1, 1, '', '')");
 
+
                             SqlUtil.Command("INSERT INTO PlayerEvent VALUES((SELECT ID FROM Player WHERE EpicGuid = '" + player.accountId + "'), (SELECT ID FROM Event WHERE Name = '" + myEvent + "'), " +
                                 "(SELECT ID FROM Region WHERE EpicCode = '" + region + "'), '" + player.playerName + "')");
                         }
@@ -115,7 +128,7 @@ namespace FortniteJson {
                     string epicEvent = events[eventNum];
                     string myEvent = eventNames[eventNum];
 
-                    for (int i = 0; i < 20; i++) {
+                    for (int i = 0; i < pages; i++) {
                         string page = i.ToString();
 
                         string fileName = @"d:\fortnite\fortnite-scrape\" + directory + "\\" + region + "_" + epicEvent + "_" + page + ".html";
