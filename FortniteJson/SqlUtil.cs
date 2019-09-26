@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Data;
 using System.Data.SqlClient;
-using System.IO;
-using System.Collections;
+using System.Collections.Generic;
+
+
 
 namespace FortniteJson {
 
@@ -31,6 +32,15 @@ namespace FortniteJson {
                 }
                 return reader;
             }
+        }
+
+        public static List<string> GetNames(string table) {
+            var rdr = SqlUtil.Query("SELECT Name FROM " + table + " WHERE Name <> 'TBD' ORDER BY Name");
+            var names = new List<string>();
+            while (rdr.Read())
+                names.Add(rdr["Name"].ToString());
+
+            return names;
         }
 
 

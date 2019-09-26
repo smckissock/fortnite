@@ -24,9 +24,9 @@ export function regionChart(id) {
     let regionRects = [];
     
     
-    const strokeWidthThick = 6;
+    const strokeWidthThick = 8;
     const strokeWidthThin = 3;
-    const strokeDuration = 400;
+    const strokeDuration = 100;
 
     //const height = 80;
 

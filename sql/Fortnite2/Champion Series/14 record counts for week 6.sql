@@ -22,22 +22,9 @@ SELECT COUNT(*) FROM StatsWithPlayerInfoView -- 55732  55997        56605    576
 
 SELECT Event, SUM(Payout) FROM StatsWithPlayerInfoView WHERE Event Like 'CC%' GROUP BY Event
 
-SELECT * FROM Event WHERE  Name IN ('CC Friday #1', 'CC Friday #2', 'CC Friday #3', 'CC Friday #4') 
-
-SELECT * FROM StatsWithPlayerInfoView WHERE Event = 'CC Friday #4' ORDER BY Payout desc 
-
-
 
 
 SELECT Event, Region, Player, SUM(Payout) Payout, Count(*) Count
 FROM StatsWithPlayerInfoView 
 WHERE Event Like 'CC%' 
 GROUP BY Event, Region, Player
-
-
-SELECT * FROM StatSWithPLayerINfoView
-
-SELECT * FROM Format
-SELECT * FROM Event
-
-UPDATE Event SET FormatID = 3 WHERE Name IN ('CC Friday #1', 'CC Friday #2', 'CC Friday #3', 'CC Friday #4')
