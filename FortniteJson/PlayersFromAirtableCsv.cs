@@ -13,7 +13,7 @@ namespace FortniteJson {
         static string date = "2019 07 07";
 
         public static void Import() {
-            SqlUtil.Command("TRUNCATE TABLE AirtablePlayer");
+            Db.Command("TRUNCATE TABLE AirtablePlayer");
 
             Console.Write("Running..");
 
@@ -40,7 +40,7 @@ namespace FortniteJson {
                 vals.Add(fields[col]);
 
             var sqlFields = String.Join("', N'", vals);
-            SqlUtil.Command("INSERT INTO AirtablePlayer VALUES (N'" + sqlFields + "')");
+            Db.Command("INSERT INTO AirtablePlayer VALUES (N'" + sqlFields + "')");
         }
 
         private static TextFieldParser GetCsvParser(string csvFile) {

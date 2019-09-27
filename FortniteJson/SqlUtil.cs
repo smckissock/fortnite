@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace FortniteJson {
 
-    public class SqlUtil {
+    public class Db {
 
         static string sqlErrorPath = @"C:\Fortnite\FortniteJson\Sql Error\";
 
@@ -34,16 +34,7 @@ namespace FortniteJson {
             }
         }
 
-        public static List<string> GetNames(string table) {
-            var rdr = SqlUtil.Query("SELECT Name FROM " + table + " WHERE Name <> 'TBD' ORDER BY Name");
-            var names = new List<string>();
-            while (rdr.Read())
-                names.Add(rdr["Name"].ToString());
-
-            return names;
-        }
-
-
+        
         public static bool Command(string sql) {
             using (SqlCommand command = new SqlConnection(connectionString).CreateCommand()) {
                 command.CommandText = sql.Replace("''''", "''"); // if they doubled the ticks twice
@@ -78,6 +69,28 @@ namespace FortniteJson {
                     command.Connection.Close();
                 }
             }
+        }
+
+        /// <summary>
+        /// Returns Names in tables, in order
+        /// </summary>
+        public static List<string> Names(string table) {
+            var rdr = Db.Query("SELECT Name FROM " + table + " WHERE Name <> 'TBD' ORDER BY Name");
+            var names = new List<string>();
+            while (rdr.Read())
+                names.Add(rdr["Name"].ToString());
+
+            return names;
+        }
+
+
+        /// <summary>
+        /// Get first fields of first record as an int 
+        /// </summary>
+        public static int Int(string sql) {
+            var reader = Db.Query(sql);
+            reader.Read();
+            return (int)reader[0];
         }
     }
 }

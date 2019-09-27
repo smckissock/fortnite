@@ -17,7 +17,7 @@ namespace FortniteJson {
 
 
         public static void Import() {
-            SqlUtil.Command("TRUNCATE TABLE PlayerInfo");
+            Db.Command("TRUNCATE TABLE PlayerInfo");
 
             ImportSolos();
             ImportDuos();
@@ -56,7 +56,7 @@ namespace FortniteJson {
                 vals.Add(fields[col]);
 
             var sqlFields = String.Join("', '", vals);
-            SqlUtil.Command("INSERT INTO PlayerInfo VALUES ('" + sqlFields + "', " + soloOrDuo + ")");
+            Db.Command("INSERT INTO PlayerInfo VALUES ('" + sqlFields + "', " + soloOrDuo + ")");
         }
 
         private static TextFieldParser GetCsvParser(string csvFile) {

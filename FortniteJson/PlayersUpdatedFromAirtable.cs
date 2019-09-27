@@ -31,7 +31,7 @@ namespace FortniteJson {
                 UpdatePlayer(fields);
             }
 
-            SqlUtil.Command("INSERT INTO AirtableUpdate SELECT * FROM AirtableUpdateView");
+            Db.Command("INSERT INTO AirtableUpdate SELECT * FROM AirtableUpdateView");
         }
 
         private static void UpdatePlayer(string[] fields) {
@@ -47,7 +47,7 @@ namespace FortniteJson {
 
             // Insert Team if neccessary
             if (!teams.Contains(team)) {
-                SqlUtil.Command("INSERT INTO Team VALUES ('" + team.Replace("'", "''") + "')");
+                Db.Command("INSERT INTO Team VALUES ('" + team.Replace("'", "''") + "')");
                 teams.Add(team);
             }
 
@@ -62,17 +62,17 @@ namespace FortniteJson {
                 "KbmOrControllerID = (SELECT ID FROM KbmOrController WHERE Name = '" + kbmOrController + "') " +
                 "WHERE CurrentName = N'" + name + "'"; 
 
-            SqlUtil.Command(sql);
+            Db.Command(sql);
         }
 
         private static void LinkPlacementsToPlayers() {
-            SqlUtil.Command("UPDATE Placement SET PlayerID = " +
+            Db.Command("UPDATE Placement SET PlayerID = " +
                 "(SELECT ID FROM Player WHERE Placement.Player = Player.Name)");
         }
 
         private static List<string> GetTeams() {
             teams = new List<string>();
-            var reader = SqlUtil.Query("SELECT Name FROM Team");
+            var reader = Db.Query("SELECT Name FROM Team");
             while (reader.Read()) 
                 teams.Add(reader[0].ToString());
 

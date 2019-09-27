@@ -43,7 +43,7 @@ namespace FortniteJson {
 
         public static List<WeekWeight> GetWeekWeights(int weekIndex) {
             var weekWeights = new List<WeekWeight>();
-            var reader = SqlUtil.Query("SELECT ID, WeekIndex  FROM Week ORDER BY WeekIndex DESC");
+            var reader = Db.Query("SELECT ID, WeekIndex FROM Week ORDER BY WeekIndex DESC");
             int count = 0;
             while (reader.Read()) {
                 // e.g. 1.0, 0.98, 0.96...
@@ -63,61 +63,116 @@ namespace FortniteJson {
 
     public class PowerRankingPoints {
 
-        public string RegionCode;
+        public string Region;
         public string EventName;
+        public int Rank;
+        public int Payout;
 
-        PowerRankingPoints() {
+        public double WeekFactor;
+        public double PlacementPoints;
+        public double PowerPoints;
+
+        public PowerRankingPoints(string region, string eventName, int rank, int payout) {
+            Region = region;
+            EventName = eventName;
+            Rank = rank;
+            Payout = payout;
         }
 
+        public string HashCode() {
+            return Region + EventName + Rank.ToString();
+        }
 
-        //public static List<EventWeight> GetEventWeights() {
-        //    var eventWeights = new List<EventWeight>();
-
-        //    return eventWeights;
-        //}
+        public void Print() {
+            Console.WriteLine(Region + " " + EventName + " " + Rank.ToString() + " " + Payout + " " + WeekFactor.ToString() + " " + PlacementPoints.ToString() + " " + PowerPoints.ToString());
+        }
     }
 
 
     public class PowerRankings {
 
-        private static List<WeekWeight> WeekWeights;
+        private static List<WeekWeight> weekWeights;
 
-        private static Dictionary<string, PowerRankingPoints> dict = new Dictionary<string, PowerRankingPoints>();
+        private static Dictionary<string, PowerRankingPoints> pointsDict = new Dictionary<string, PowerRankingPoints>();
+        private static Dictionary<string, double> weekWeightingDict = new Dictionary<string, double>();
 
         private List<string> events = new List<string>();
         private List<string> regions = new List<string>();
 
+        // Call this to get Power Ranking Points    
+        public Double GetRanking(string anEvent, string region, int place) {
+            PowerRankingPoints pnts = pointsDict[region + anEvent + place.ToString()];
+            return pnts.PowerPoints;
+        }
+
         public PowerRankings() {
 
-            var reader = SqlUtil.Query("SELECT MAX(WeekIndex) FROM Week");
-                reader.Read();
-                int lastWeekIndex = (int)reader[0];
-            WeekWeights = WeekWeight.GetWeekWeights(lastWeekIndex);
+            weekWeights = WeekWeight.GetWeekWeights(Db.Int("SELECT MAX(WeekIndex) FROM Week"));
 
-            events = SqlUtil.GetNames("Event");     
-            regions = SqlUtil.GetNames("Region");
-            
+            events = Db.Names("Event");     
+            regions = Db.Names("Region");
+
+            // Setup dictionary to look up the weighting for each event, based on the week
+            var weekReader = Db.Query("SELECT Name, WeekID FROM Event");
+            while (weekReader.Read()) {
+                var anEvent = weekReader["Name"].ToString();
+                var weekId = (int)weekReader["WeekID"];
+
+                var factor = weekWeights.Find(x => x.Index == weekId);
+                weekWeightingDict.Add(anEvent, factor.Weight);
+            }
 
             foreach (string anEvent in events) {
                 foreach (string region in regions) {
-
-                    int rank = 0;
-                    int payout = 0;
-                    var rdr = SqlUtil.Query("SELECT Event, Region, Rank, Payout FROM PayoutTierView WHERE Event = '" + anEvent + "' AND Region = '" + region + "' ORDER BY Rank");
+                    int totalPayout = 0;
+                    
+                    // Add Power Ranking Points with event, region, place, and payout
+                    PowerRankingPoints powerRankingPoints;
+                    int rank = 1;
+                    var rdr = Db.Query("SELECT Event, Region, Rank, Payout FROM PayoutTierView WHERE Event = '" + anEvent + "' AND Region = '" + region + "' ORDER BY Rank");
                     while (rdr.Read()) {
                         var tierRank = (int)rdr["Rank"];
-                        var tierPayout = (int)rdr["Payout"];
-
-                        // Add points if they hit the tier
-                        if (rank <= tierRank)
-                            payout = tierPayout;
+                        var payout = (int)rdr["Payout"];
+                        if (rank == 1) {
+                            totalPayout += payout;  
+                            powerRankingPoints = new PowerRankingPoints(region, anEvent, rank, payout);
+                            pointsDict.Add(powerRankingPoints.HashCode(), powerRankingPoints);
+                            rank = 2;
+                        }
+                        while (rank <= tierRank) {
+                            totalPayout += payout;
+                            powerRankingPoints = new PowerRankingPoints(region, anEvent, rank, payout);
+                            pointsDict.Add(powerRankingPoints.HashCode(), powerRankingPoints);
+                            rank++;
+                        }
                     }
+
+                    // Add WeekFactor, PlacementPoints, PowerPoints;
+                    int ranks = rank - 1;
+                    double weekFactor = weekWeightingDict[anEvent];
+
+                    // This is 1 + 2 + 3..rank
+                    double parts = (ranks / 2) * (ranks + 1);
+
+                    double dollarsPerPart = totalPayout / parts;
+                    for (int i = 1; i <= ranks; i++) {
+                        PowerRankingPoints pnts = pointsDict[region + anEvent + i.ToString()];
+
+                        pnts.PlacementPoints = (ranks - i + 1) * dollarsPerPart;
+                        pnts.WeekFactor = weekFactor;
+
+                        pnts.PowerPoints = pnts.PlacementPoints * pnts.WeekFactor;
+                    }
+
+                    Console.WriteLine(anEvent + " " + region + " Total = " + totalPayout + " Count = " + (rank - 1));
+
+                    // For some reason, there are not RankPayoutTier records for world cup solo or duo
+                    //if (region == "NA East" && anEvent == "Solo Final")
+                    //    foreach (PowerRankingPoints val in pointsDict.Values)
+                    //        val.Print();
                 }
             }
-        }
-
-        public double GetRanking(string anEvent, string region, int place) {
-            return 1.0;
+            Console.WriteLine(pointsDict.Count.ToString() + " items");            
         }
     }
 }

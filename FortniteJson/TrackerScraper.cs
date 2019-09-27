@@ -110,10 +110,10 @@ namespace FortniteJson {
 
                         dynamic json = JsonConvert.DeserializeObject(json_text);
                         foreach (var player in json) {
-                            SqlUtil.Command("INSERT INTO Player VALUES('" + player.accountId + "', '', 1, 1, 1, '', '')");
+                            Db.Command("INSERT INTO Player VALUES('" + player.accountId + "', '', 1, 1, 1, '', '')");
 
 
-                            SqlUtil.Command("INSERT INTO PlayerEvent VALUES((SELECT ID FROM Player WHERE EpicGuid = '" + player.accountId + "'), (SELECT ID FROM Event WHERE Name = '" + myEvent + "'), " +
+                            Db.Command("INSERT INTO PlayerEvent VALUES((SELECT ID FROM Player WHERE EpicGuid = '" + player.accountId + "'), (SELECT ID FROM Event WHERE Name = '" + myEvent + "'), " +
                                 "(SELECT ID FROM Region WHERE EpicCode = '" + region + "'), '" + player.playerName + "')");
                         }
                     }
@@ -156,12 +156,12 @@ namespace FortniteJson {
         }
 
         private static void Step3_InsertPlacement(dynamic placement, string myEvent, string region) {
-            SqlUtil.Command("INSERT INTO Placement (EventID, RegionID, Rank, Points) VALUES ((SELECT ID FROM Event WHERE Name = '" + myEvent + "'), (SELECT ID FROM Region WHERE EpicCode = '" +
+            Db.Command("INSERT INTO Placement (EventID, RegionID, Rank, Points) VALUES ((SELECT ID FROM Event WHERE Name = '" + myEvent + "'), (SELECT ID FROM Region WHERE EpicCode = '" +
                 region + "'), " + placement.rank + ", " + placement.pointsEarned + ")");
 
             // Placements have 1, 2 or 3 players attached 
             foreach (var accountGuid in placement.teamAccountIds) {
-                SqlUtil.Command("INSERT INTO PlayerPlacement VALUES((SELECT ID FROM Player WHERE EpicGuid= '" + accountGuid + "'), " +
+                Db.Command("INSERT INTO PlayerPlacement VALUES((SELECT ID FROM Player WHERE EpicGuid= '" + accountGuid + "'), " +
                     "(SELECT MAX(ID) FROM Placement))");
             }
          
@@ -173,7 +173,7 @@ namespace FortniteJson {
                 } catch { // Isn't always there - that's ok
                 }
 
-                SqlUtil.Command("INSERT INTO Game VALUES((SELECT MAX(ID) FROM Placement), '" + game.endTime + "', " + secondsAlive + ", " +
+                Db.Command("INSERT INTO Game VALUES((SELECT MAX(ID) FROM Placement), '" + game.endTime + "', " + secondsAlive + ", " +
                     stats.PLACEMENT_STAT_INDEX + ", " + stats.TEAM_ELIMS_STAT_INDEX + ", " + stats.PLACEMENT_TIEBREAKER_STAT + ")");
             }
         }
@@ -224,14 +224,14 @@ namespace FortniteJson {
             foreach (var tier in payoutTiers) {
                 var threshold = tier.threshold;
                 var payout = tier.payouts[0].quantity;
-                SqlUtil.Command("INSERT INTO RankPayoutTier (EventID, RegionID, Rank, Payout) VALUES (" +
+                Db.Command("INSERT INTO RankPayoutTier (EventID, RegionID, Rank, Payout) VALUES (" +
                     "(SELECT ID FROM Event WHERE Name = '" + myEvent + "'), (SELECT ID FROM Region WHERE EpicCode = '" + region + "')," + threshold + "," + payout + ")");
             }
 
             foreach (var tier in scoringTiers) {
                 var threshold = tier.keyValue;
                 var points = tier.pointsEarned;
-                SqlUtil.Command("INSERT INTO RankPointTier (EventID, RegionID, Rank, Points) VALUES (" +
+                Db.Command("INSERT INTO RankPointTier (EventID, RegionID, Rank, Points) VALUES (" +
                     "(SELECT ID FROM Event WHERE Name = '" + myEvent + "'), (SELECT ID FROM Region WHERE EpicCode = '" + region + "')," + threshold + "," + points + ")");
             }
         }

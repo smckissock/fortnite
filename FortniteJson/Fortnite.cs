@@ -65,7 +65,7 @@ namespace FortniteJson {
         public static void MakePlayerArray() {
             var list = new List<List<string>>();
             //var reader = SqlUtil.Query("SELECT * FROM PlayerFrontEndView");
-            var reader = SqlUtil.Query("SELECT * FROM PlayerFrontEndChampionSeriesView");
+            var reader = Db.Query("SELECT * FROM PlayerFrontEndChampionSeriesView");
             while (reader.Read()) {
                 var record = new List<string>();
                 record.Add(reader["name"].ToString());
@@ -96,7 +96,7 @@ namespace FortniteJson {
 
         private static List<List<string>> GetArray() {
             var list = new List<List<string>>();
-            var reader = SqlUtil.Query("SELECT * FROM StatsWithPlayerInfoView");
+            var reader = Db.Query("SELECT * FROM StatsWithPlayerInfoView");
             while (reader.Read()) {
                 var record = new List<string>();
                 record.Add(reader["event"].ToString());
@@ -127,7 +127,7 @@ namespace FortniteJson {
 
         private static List<Place> GetPlaces() {
             var places = new List<Place>();
-            var reader = SqlUtil.Query("SELECT * FROM StatsWithPlayerInfoView");
+            var reader = Db.Query("SELECT * FROM StatsWithPlayerInfoView");
             while (reader.Read()) {
                 var place = new Place();
                 place.week = reader["event"].ToString();
@@ -162,7 +162,7 @@ namespace FortniteJson {
 
             lines.Add(header);
             
-            var reader = SqlUtil.Query("SELECT * FROM StatsWithPlayerInfoView");
+            var reader = Db.Query("SELECT * FROM StatsWithPlayerInfoView");
             
             while (reader.Read()) {
                 var fields = new List<string>();
@@ -238,7 +238,7 @@ namespace FortniteJson {
 
             // ORDERING is important!!
             string query = "SELECT PlacementID, Player, SecondsAlive, EndTime, GameRank, Elims , EndSeconds, PlacementRank, WeekID FROM WorldCupFinalView ORDER BY WeekID, PlacementID, EndTime";
-            var reader = SqlUtil.Query(query);
+            var reader = Db.Query(query);
 
             Game game = null;
             string placementId = "";

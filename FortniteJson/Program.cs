@@ -65,8 +65,9 @@ namespace FortniteJson {
 
             //Fortnite.MakeJsonArray();   
 
-            var powerRankings = new PowerRankings();
-            powerRankings.GetRanking("Event", "Region", 1);
+            //var powerRankings = new PowerRankings();
+            
+            Fortnite2FixUp.FixPowerPoints();
 
 
             Console.Write("DONE");
