@@ -25,7 +25,7 @@ export let filters = {
     team: "",
     search: "",
     player: "",
-    sort: "payout",
+    sort: "powerPoints",
     soloOrDuo: "",
     page: 0,
     playerCount: 0,
@@ -110,6 +110,7 @@ d3.json('ping/data/data.json').then(function (dataArray) {
         rec.elims = parseInt(d[12], 10);
         rec.placementPoints = parseInt(d[13], 10);
         rec.earnedQualifications = parseInt(d[14], 10);
+        rec.powerPoints = parseInt(d[15], 10);
 
         data.push(rec);
     });
@@ -125,7 +126,7 @@ d3.json('ping/data/data.json').then(function (dataArray) {
     d3.select("#root")
         .classed("loader", false);
     d3.select("#right")
-        .style("display", "block");    
+        .style("display", "block    ");    
 
     draw(facts);
 
@@ -454,6 +455,7 @@ function niceSortName() {
         case "elimPercentage": sort = "Elim %"; break;
         case "placementPoints": sort = "Placement Points"; break;
         case "placementPercentage": sort = "Placement %"; break;
+        case "powerPoints": sort = "Power Ranking"; break;
     }
     return sort;
 }
@@ -543,6 +545,7 @@ function makePlayerStatsGroup() {
                 p.placementPoints = p.placementPoints + v.placementPoints;
                 p.placementPercentage = p.placementPoints / p.points;
                 p.earnedQualifications = 4;
+                p.powerPoints = p.powerPoints + v.powerPoints;
                 return p;
             },
             // Remove
@@ -560,6 +563,7 @@ function makePlayerStatsGroup() {
                 p.placementPoints = p.placementPoints - v.placementPoints;
                 p.placementPercentage = p.placementPoints / p.points;
                 p.earnedQualifications = 4;
+                p.powerPoints = p.powerPoints - v.powerPoints;
 
                 return p;
             },
@@ -579,6 +583,7 @@ function makePlayerStatsGroup() {
                     , placementPoints: 0
                     , placementPercentage: 0
                     , earnedQualifications: GetPlayer()
+                    , powerPoints: 0 
                 };
             }
         );

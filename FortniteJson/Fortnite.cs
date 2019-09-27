@@ -44,6 +44,7 @@ namespace FortniteJson {
         public int elims;
         public int placementPoints;
         public int earnedQualifications;
+        public double powerPoints;
     }
     
 
@@ -53,7 +54,7 @@ namespace FortniteJson {
 
             var array = GetArray();
 
-                string fileName = @"c:\project\fortnite\ping\data\data.json";
+            string fileName = @"c:\project\fortnite\ping\data\data.json";
 
             string json = JsonConvert.SerializeObject(array);
             var niceJson = Newtonsoft.Json.Linq.JToken.Parse(json).ToString();
@@ -114,6 +115,7 @@ namespace FortniteJson {
                 record.Add(reader["elims"].ToString());
                 record.Add(reader["PlacementPoints"].ToString());
                 record.Add(reader["EarnedQualification"].ToString());
+                record.Add(reader["PowerPoints"].ToString());
 
                 //if (reader["week"].ToString() == "Solo Final")
                 //    record[0] = record[0];
@@ -125,33 +127,33 @@ namespace FortniteJson {
             return list;
         }
 
-        private static List<Place> GetPlaces() {
-            var places = new List<Place>();
-            var reader = Db.Query("SELECT * FROM StatsWithPlayerInfoView");
-            while (reader.Read()) {
-                var place = new Place();
-                place.week = reader["event"].ToString();
-                place.soloQual = (System.Int32)reader["soloWeek"];
-                place.duoQual = (System.Int32)reader["duoWeek"];
-                place.soloOrDuo = reader["soloOrDuo"].ToString();
-                place.player = reader["player"].ToString();
-                place.region = reader["region"].ToString();
-                place.nationality = reader["nationality"].ToString();
-                place.team = reader["team"].ToString();
-                place.rank = (System.Int32)reader["rank"];
-                place.payout = (System.Int32)reader["payout"];
-                place.points = (System.Int32)reader["points"];
-                place.wins = (System.Int32)reader["wins"];
-                place.elims = (System.Int32)reader["elims"];
-                place.placementPoints = (System.Int32)reader["PlacementPoints"];
-                place.earnedQualifications = (System.Int32)reader["EarnedQualification"];
+        //private static List<Place> GetPlaces() {
+        //    var places = new List<Place>();
+        //    var reader = Db.Query("SELECT * FROM StatsWithPlayerInfoView");
+        //    while (reader.Read()) {
+        //        var place = new Place();
+        //        place.week = reader["event"].ToString();
+        //        place.soloQual = (System.Int32)reader["soloWeek"];
+        //        place.duoQual = (System.Int32)reader["duoWeek"];
+        //        place.soloOrDuo = reader["soloOrDuo"].ToString();
+        //        place.player = reader["player"].ToString();
+        //        place.region = reader["region"].ToString();
+        //        place.nationality = reader["nationality"].ToString();
+        //        place.team = reader["team"].ToString();
+        //        place.rank = (System.Int32)reader["rank"];
+        //        place.payout = (System.Int32)reader["payout"];
+        //        place.points = (System.Int32)reader["points"];
+        //        place.wins = (System.Int32)reader["wins"];
+        //        place.elims = (System.Int32)reader["elims"];
+        //        place.placementPoints = (System.Int32)reader["PlacementPoints"];
+        //        place.earnedQualifications = (System.Int32)reader["EarnedQualification"];
 
-                places.Add(place);
-            }
-            reader.Close();
+        //        places.Add(place);
+        //    }
+        //    reader.Close();
 
-            return places;
-        }
+        //    return places;
+        //}
 
         // Out of date & not used (browser makes csv)
         public static void MakeCsv() {

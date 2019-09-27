@@ -63,13 +63,10 @@ namespace FortniteJson {
             //Fortnite2FixUp.FixPlacementElims("1035");
             //Fortnite2FixUp.UpdateWins("1035");
 
-            //Fortnite.MakeJsonArray();   
+            //Fortnite2FixUp.FixPowerPoints();
 
-            //var powerRankings = new PowerRankings();
-            
-            Fortnite2FixUp.FixPowerPoints();
-
-
+            Fortnite.MakeJsonArray();   
+ 
             Console.Write("DONE");
             Console.Read();
 

@@ -31,10 +31,11 @@ export function playerChart(id) {
     const columns = [
         { name: "Players", code: "player", x: 10, format: noFormat, axisFormat: noFormat },
         { name: "Rank", code: "rank", x: 16, format: noFormat, axisFormat: noFormat },
+        { name: "Power Rank", code: "powerPoints", x: 0, format: commaFormat, axisFormat: noFormat },
         { name: "Payout", code: "payout", x: 9, format: commaFormat, format: commaFormat, axisFormat: moneyKFormat },
         { name: "Points", code: "points", x: 13, format: noFormat, axisFormat: noFormat },
         { name: "Wins", code: "wins", x: 17, format: noFormat, axisFormat: noFormat },
-        { name: "CS Avg #", code: "earnedQualifications", x: 0, format: tenthsFormat, axisFormat: noFormat },
+        /* { name: "CS Avg #", code: "earnedQualifications", x: 0, format: tenthsFormat, axisFormat: noFormat }, */
         { name: "Elims", code: "elims", x: 15, format: noFormat, axisFormat: noFormat },
         { name: "Elim %", code: "elimPercentage", x: 16, format: pctFormat, axisFormat: pctAxisFormat },
         { name: "Placement", code: "placementPoints", x: 0, format: noFormat, axisFormat: noFormat },
@@ -225,7 +226,7 @@ export function playerChart(id) {
         if (showCirclePackButton)
             makeCirclePackButton();
 
-        drawColumnBorder("payout", thickBorder);
+        drawColumnBorder("powerPoints", thickBorder);
 
         // Make this after the the player rects so that always appears "on top"
         cursor = svg.append("rect")
@@ -299,6 +300,22 @@ export function playerChart(id) {
 
             const smallFontSize = "1.1em";
             const mediumFontSize = "1.2em";
+
+            // Power Rank
+            if (text === "Power Rank") {
+                svg.append("text")
+                    .attr("x", x + 10)
+                    .attr("y", 34)
+                    .text("Power")
+                    .classed("column-button", true);
+
+                svg.append("text")
+                    .attr("x", x + 15)
+                    .attr("y", 56)
+                    .text("Rank")
+                    .classed("column-button", true);
+                return;
+            }
 
             // Earned Quals
             if (text === "CS Avg #") {
@@ -1211,7 +1228,7 @@ export function playerChart(id) {
                         return 68; // width for player name 
 
                     const chars = (cellText(row, i, rowNum).toString()).length;
-                    const charWidth = 10;
+                    const charWidth = 8;
 
                     let moveRight = (6 - chars) * charWidth;
 
@@ -1230,7 +1247,7 @@ export function playerChart(id) {
                 })
                 .attr('fill', "black")
 
-                .attr("font-size", d => (d.code === filters.sort) ? "1.3em" : "1.2em")
+                .attr("font-size", d => (d.code === filters.sort) ? "1.2em" : "1.1em")
                 .attr("pointer-events", "none")
                 .attr("font-weight", d => (d.code === filters.sort) ? 600 : 260);
 
@@ -1335,7 +1352,7 @@ export function playerChart(id) {
 
         // Need to shift move sort away from rank when it doesn't make any sense.    
         } else {
-            numOrRankText.text("Rank");
+            numOrRankText.text("Place");
             numOrRankRect
                 .attr("fill", "lightblue")
                 .attr("pointer-events", "auto")
