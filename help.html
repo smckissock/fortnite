@@ -19,35 +19,36 @@
         body {
             height: 100%;
             margin: 0px;
-            font-family: burbank;
+            /* font-family: burbank; */
+            font-family: Helvetica, Arial, sans-serif;
         }
 
         ul {
             margin-top: 0px;
             margin-bottom: 0px;
-            font-weight: 600;
-            font-size: 0.8em;
+            font-weight: 400;
+            font-size: 0.9em;
             font-family: Helvetica, Arial, sans-serif;
         }
 
         li {
-            margin-top: 5px;
+            margin-top: 16px;
         }
 
         .gradient {
             height: 2680px;
-            background-image: radial-gradient(circle at top right, lightblue, #1E90FF);
+            background-image: radial-gradient(circle at top right, white, lightblue);
         }
 
         .title {
-            font-weight: 700;
-            font-size: 2.6em;
+            font-weight: 600;
+            font-size: 1.4em;
             padding: 10px 50px 0px 20px;
         }
 
         .header {
             font-weight: 600;
-            font-size: .9em;
+            font-size: 1.2em;
             padding: 0px 50px 5px 20px;
             font-family: Helvetica, Arial, sans-serif;
         }
@@ -58,18 +59,17 @@
             font-size: 1.1em;
             padding: 5px 50px 5px 20px;
         }
+
     </style>
 
 </head>
 
 <body>
     <div class="gradient">
-        <div class="title">
-            Release Notes
-        </div>
-
+        <br>
+        
         <div class="header">
-            Problems, comments and business inquiries to <a href="https://twitter.com/fortniteping1">@fortniteping1</a>
+            DM problems, comments and business inquiries to <a href="https://twitter.com/fortniteping1">@fortniteping1</a>
         </div>
 
         <div class="header">
@@ -82,10 +82,37 @@
 
         <br>
 
-        <!-- adds HTML to the CSV!!! -->
-        <!-- <a href="fwc/data/data.csv" download="data.csv">
-            <img src="fwc/img/download.png" alt="Download CSV" width="45" height="45" hspace="20">
-        </a> -->
+        <!-- POWER RANKING NOTES -->
+        <div class="title">
+            Power Ranking Notes
+        </div>
+    
+        <div class="text">
+            <ul>
+                <li><span style="font-weight: bold;">1) Major Epic events only </span> - events beginning with the World Cup through Champion Series and Cash Cups are included. We won't be including TwitchCon or other "invitational" events.</li>
+                <li><span style="font-weight: bold;">2) Points are based on regional payouts </span> - the total prize pool for an event and region is alloted linearly by placement. This smooths out the big steps in Epic payouts, and rewards consistently high placements.</li>
+                <li><span style="font-weight: bold;">3) World Cup / 20</span> - the exception to #2 is the World Cup finals. The prize pool for this event is divided by 20 when calculating scores to dampen the affect of the huge World Cup payouts.</li>
+                <li><span style="font-weight: bold;">5) Rankings are region-specific</span> - while the same calculation method is used in all regions, the scores are ultimatly based on how Epic allocated the pool regionally. If you believe these payouts favor some regions over others, don't compare scores of players in different regions.</li>
+                <li><span style="font-weight: bold;">5) Recent events matter more</span> - the most recent event is weighted the most highly; a formula causes older events to gradually lose their significance in the rankings.</li>
+                <li><span style="font-weight: bold;">6) Updated Frequency</span> - the aim is to update the rankings within one day of each event, via a mostly automated process.</li>
+            </ul>
+        </div>
+
+        <br>
+        <br>
+
+        <!-- RELEASE NOTES -->
+        
+        <div class="title">
+            Release Notes
+        </div>
+
+        <div class="text">
+            v 28
+            <ul>
+                <li>Added power rankings</li>
+            </ul>
+        </div>
 
         <div class="text">
             v 27
