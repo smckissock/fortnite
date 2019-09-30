@@ -5,8 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace FortniteJson {
-
-
+    
 
     public static class PowerRankingParams {
         // Increase this to make older results matter less
@@ -15,20 +14,7 @@ namespace FortniteJson {
         // For Current, should be most recent week (MAX WeekIndex)
         public static int AsOfWeekX;
     }
-
-
-
-    public class EventFactor {
-
-        private string anEvent;
-        private string region;
-        private int rank;
-        private int payout;
-        private int powerRankingPoints;
-
-    }
-
-
+    
     // 1.0 for most recent (highest Index), 0.98 for next, etc
     class WeekWeight {
         public int Id;

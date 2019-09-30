@@ -134,6 +134,7 @@ namespace FortniteJson {
             Console.WriteLine("Fix power points");
 
             var powerRankings = new PowerRankings();
+            int count = 0;
 
             var reader = Db.Query("SELECT ID, Region, Event, Rank FROM StatsWithPlayerInfoView");
             while (reader.Read()) {
@@ -143,10 +144,14 @@ namespace FortniteJson {
                 int rank = (int)reader["Rank"];
 
                 // For some reason, there are not RankPayoutTier records for world cup solo or duo (Good thing we aren't using them anyway...
-                if (anEvent != "Solo Final" && anEvent != "Duo Final") {
+                //if (anEvent != "Solo Final" && anEvent != "Duo Final") {
                     double pr = powerRankings.GetRanking(anEvent, region, rank);
                     Db.Command("UPDATE Placement SET PowerPoints = " + pr.ToString() + " WHERE ID = " + id);
-                }
+                //}
+
+                count++;
+                if ((count % 1000) == 0)
+                    Console.WriteLine(count.ToString());
             }
         }
 

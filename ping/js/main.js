@@ -507,7 +507,9 @@ function draw(facts) {
 function makePlayerColors() {
     playerColors = {};
     playerDim.top(Infinity).forEach(function (d) {
-        playerColors[d.player] = getColorForRegion(d.region);
+        const color = getColorForRegion(d.region);
+        if (color !== "NONE")
+            playerColors[d.player] = color;
     });
 }
 
@@ -521,6 +523,8 @@ function getColorForRegion(region) {
         case "Brazil": return colors.teal; break;
         case "Middle East": return colors.grey; break;
     }
+    // This was passed "ALL" for region 
+    return "NONE";
 }
 
 function makePlayerStatsGroup() {
