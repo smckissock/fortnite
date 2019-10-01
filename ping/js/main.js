@@ -412,6 +412,7 @@ export function updateCounts() {
         if (filters.team != "")
             filterParts.push(filters.team);
 
+        // Don't want to show "All" which is the region used for World Cup    
         if (filters.regions.length != 0)
             filterParts.push(filters.regions.join(", "));
 

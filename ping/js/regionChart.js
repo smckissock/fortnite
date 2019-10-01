@@ -73,7 +73,6 @@ export function regionChart(id) {
         })
         .on('mouseout', function (d) {
             let dom = d3.select(this);
-            //if (filters.regions.indexOf(dom.attr("data")) != -1)
             dom
                 .transition()
                 .duration(strokeDuration)
@@ -111,7 +110,10 @@ export function regionChart(id) {
         // 1 None were selected, this is the first selection
         if (filters.regions.length === 0) {
             filters.regions.push(newFilter);
+            //filters.regions.push("ALL");
+
             _chart.filter(filters.regions[0]);
+            //_chart.filter("All");
             rect
                 .transition()
                 .duration(strokeDuration)
@@ -125,6 +127,7 @@ export function regionChart(id) {
         if (filters.regions.indexOf(newFilter) == -1) {
             filters.regions.push(newFilter);
             _chart.filter([[newFilter]]);
+            
             rect
                 .transition()
                 .duration(strokeDuration)
