@@ -217,5 +217,27 @@ namespace FortniteJson {
             System.IO.File.WriteAllLines("c:\\Test\\Inserts.txt", inserts);
             Console.WriteLine(i.ToString());
         }
+
+
+
+        public static void AddPlayerPlacementNames() {
+            int i = 0;
+            var reader = Db.Query("SELECT DISTINCT PlayerID, EventID, RegionID, PlayerName, PlayerPlacementID FROM UpdateNameView");
+
+            while (reader.Read()) {
+                var playerPlacementId = reader["PlayerPlacementID"].ToString();
+                //var playerId = reader["PlayerID"].ToString();
+                //var eventId = reader["EventID"].ToString();
+                //var regionId = reader["RegionID"].ToString();
+                var name = reader["PlayerName"].ToString().Replace("'", "''");
+
+                var cmd = "UPDATE PlayerPlacement SET Player = '" + name + "' WHERE ID = " + playerPlacementId;
+                Db.Command(cmd);
+                
+                i++;
+                if (i % 1000 == 0)
+                    Console.WriteLine(i.ToString());
+            }            
+        }
     }
 }

@@ -25,7 +25,8 @@ export let filters = {
     team: "",
     search: "",
     player: "",
-    sort: "powerPoints",
+    //sort: "powerPoints",
+    sort: "payout",
     soloOrDuo: "",
     page: 0,
     playerCount: 0,
@@ -126,7 +127,7 @@ d3.json('ping/data/data.json').then(function (dataArray) {
     d3.select("#root")
         .classed("loader", false);
     d3.select("#right")
-        .style("display", "block    ");    
+        .style("display", "block");    
 
     draw(facts);
 

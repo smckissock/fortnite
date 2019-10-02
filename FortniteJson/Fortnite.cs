@@ -45,6 +45,7 @@ namespace FortniteJson {
         public int placementPoints;
         public int earnedQualifications;
         public double powerPoints;
+        public string eventName;
     }
     
 

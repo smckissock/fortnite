@@ -31,11 +31,11 @@ export function playerChart(id) {
     const columns = [
         { name: "Players", code: "player", x: 10, format: noFormat, axisFormat: noFormat },
         { name: "Rank", code: "rank", x: 16, format: noFormat, axisFormat: noFormat },
-        { name: "Power Rank", code: "powerPoints", x: 0, format: commaFormat, axisFormat: noFormat },
+        //{ name: "Power Rank", code: "powerPoints", x: 0, format: commaFormat, axisFormat: noFormat },
         { name: "Payout", code: "payout", x: 9, format: commaFormat, format: commaFormat, axisFormat: moneyKFormat },
         { name: "Points", code: "points", x: 13, format: noFormat, axisFormat: noFormat },
         { name: "Wins", code: "wins", x: 17, format: noFormat, axisFormat: noFormat },
-        /* { name: "CS Avg #", code: "earnedQualifications", x: 0, format: tenthsFormat, axisFormat: noFormat }, */
+        { name: "CS Avg #", code: "earnedQualifications", x: 0, format: tenthsFormat, axisFormat: noFormat }, 
         { name: "Elims", code: "elims", x: 15, format: noFormat, axisFormat: noFormat },
         { name: "Elim %", code: "elimPercentage", x: 16, format: pctFormat, axisFormat: pctAxisFormat },
         { name: "Placement", code: "placementPoints", x: 0, format: noFormat, axisFormat: noFormat },
