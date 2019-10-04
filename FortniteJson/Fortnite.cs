@@ -28,6 +28,7 @@ namespace FortniteJson {
         }
     }
 
+    // Not actually used anymore - send an array instead 
     public class Place {
         public string week;
         public int soloQual;
@@ -45,7 +46,7 @@ namespace FortniteJson {
         public int placementPoints;
         public int earnedQualifications;
         public double powerPoints;
-        public string eventName;
+        public string eventPlayerName;
     }
     
 
@@ -70,6 +71,7 @@ namespace FortniteJson {
             var reader = Db.Query("SELECT * FROM PlayerFrontEndChampionSeriesView");
             while (reader.Read()) {
                 var record = new List<string>();
+                record.Add(reader["id"].ToString());
                 record.Add(reader["name"].ToString());
                 record.Add(reader["nationality"].ToString());
                 record.Add(reader["team"].ToString());
@@ -117,6 +119,8 @@ namespace FortniteJson {
                 record.Add(reader["PlacementPoints"].ToString());
                 record.Add(reader["EarnedQualification"].ToString());
                 record.Add(reader["PowerPoints"].ToString());
+                record.Add(reader["EventPlayerName"].ToString());
+                record.Add(reader["PlayerID"].ToString());
 
                 //if (reader["week"].ToString() == "Solo Final")
                 //    record[0] = record[0];

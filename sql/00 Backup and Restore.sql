@@ -223,6 +223,22 @@ FROM DISK = N'd:\fortnite\fortnitedb\October 1.bak'
 GO
 
 
+-- October 3  Event Week isn't used. PLayer name moved to player placement 
+BACKUP DATABASE Fortnite
+TO DISK = N'd:\Fortnite\Fortnitedb\October 3.bak' WITH NOFORMAT, NOINIT, NAME = N'Full Database Backup', SKIP, NOREWIND, NOUNLOAD, STATS = 10
+GO
+
+
+RESTORE DATABASE Fortnite
+FROM DISK = N'd:\fortnite\fortnitedb\October 3.bak'
+WITH MOVE 'Fortnite2' TO 'd:\fortnite\fortnitedb\October3.mdf',
+MOVE 'Fortnite2_log' TO 'd:\fortnite\fortnitedb\October3.ldf'
+
+
+
+
+
+
 
 
 

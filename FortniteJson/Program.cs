@@ -55,6 +55,9 @@ namespace FortniteJson {
             //Scraper.Step3_ImportLeaderboard(directory);
             //Scraper.Step4_ImportTiers(directory);
 
+            //Fortnite2FixUp.UpdateWorldCupRegions();
+
+
             // MAKE SURE TO UPDATE WEEK BEFORE RUNNING THIS
             // Wed 1019 1020 1021 1022
             // Thurs 1025 1026 1027 1028
@@ -63,8 +66,11 @@ namespace FortniteJson {
             //Fortnite2FixUp.FixPlacementElims("1035");
             //Fortnite2FixUp.UpdateWins("1035");
 
+            //Fortnite2FixUp.FixPlayerNames();
+
             //Fortnite2FixUp.FixPowerPoints();
             //Fortnite2FixUp.AddPlayerPlacementNames();
+
 
             Fortnite.MakeJsonArray();   
  

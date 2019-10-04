@@ -67,11 +67,12 @@ d3.json('ping/data/players.json').then(function (players) {
     playerInfos = [];
     players.forEach(function (d) {
         let rec = {};
-        rec.name = d[0];
-        rec.nationality = d[1];
-        rec.team = d[2];
-        rec.age = d[3];
-        rec.championSeriesAvg = d[4];
+        rec.id = d[0];
+        rec.name = d[1];
+        rec.nationality = d[2];
+        rec.team = d[3];
+        rec.age = d[4];
+        rec.championSeriesAvg = d[5];
         playerInfos.push(rec);
     });
 });
@@ -112,6 +113,8 @@ d3.json('ping/data/data.json').then(function (dataArray) {
         rec.placementPoints = parseInt(d[13], 10);
         rec.earnedQualifications = parseInt(d[14], 10);
         rec.powerPoints = parseInt(d[15], 10);
+        rec.eventPlayerName = d[16];
+        rec.playerId = d[17];
 
         data.push(rec);
     });

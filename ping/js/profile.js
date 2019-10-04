@@ -20,7 +20,7 @@ export function profile(player) {
     let trendG;
     let matchG;  
 
-    const svgWidth = 1200;
+    const svgWidth = 1440;
     const svgHeight = 1200;
     const leftMargin = 130;
 
@@ -190,7 +190,7 @@ export function profile(player) {
     function makeRanks(stats, region) {
         text("Rank", rankG, "g-header", 30, 40);
 
-        const rectWidth = 220;
+        const rectWidth = 280;
         stats.totalPayout = stats.soloPayout + stats.duoPayout + stats.trioPayout;  
         [   {name: "Total", x: leftMargin},
             {name: "Solo", x: leftMargin + (rectWidth + 20)},
@@ -315,7 +315,7 @@ export function profile(player) {
     function makeMatches(recs) {
 
         const colWidth = 80;
-        const rowHeaderWidth = 360; 
+        const rowHeaderWidth = 600; // 360
         
         const cols = [
             { name: "Payout", field: "payout", format: commaFormat },
@@ -330,7 +330,7 @@ export function profile(player) {
         function columnHeaders() {
 
             function write(text, i, y) {
-                const rowHeaderWidth = 220;
+                const rowHeaderWidth = 460; // 220
                 centeredText(text, matchG, "player-stat-col-header", rowHeaderWidth + ((i + 2) * colWidth) - 90, colWidth, y);
             }
             
@@ -407,6 +407,8 @@ export function profile(player) {
 
                 text("#" + week.rank, matchG, "player-stat-row", leftMargin + 16, y);
                 text(week.week, matchG, "player-stat-row", leftMargin + 70, y);
+
+                text(week.eventPlayerName, matchG, "player-stat-row", leftMargin + 190, y);
 
                 const left = rowHeaderWidth + (cols.length * colWidth) - 60;
 

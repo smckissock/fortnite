@@ -110,10 +110,10 @@ export function regionChart(id) {
         // 1 None were selected, this is the first selection
         if (filters.regions.length === 0) {
             filters.regions.push(newFilter);
-            //filters.regions.push("ALL");
+            //filters.regions.push("All");
 
             _chart.filter(filters.regions[0]);
-            //_chart.filter("All");
+            //_chart.filter([["All"]]);
             rect
                 .transition()
                 .duration(strokeDuration)

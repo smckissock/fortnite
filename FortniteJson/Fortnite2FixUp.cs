@@ -156,6 +156,26 @@ namespace FortniteJson {
         }
 
 
+        public static void FixPlayerNames() {
+            var reader = Db.Query("SELECT PlayerID, Max(EventID) EventID FROM PlayerEvent GROUP BY PlayerID, PlayerName");
+            var x = 0;
+            while (reader.Read()) {
+                string playerId = reader["PlayerID"].ToString();
+                string eventId = reader["EventID"].ToString();
+
+                // UPDATE
+                Db.Command("UPDATE Player SET CurrentName = (SELECT N'PlayerName' FROM PlayerEvent WHERE PlayerID = " + playerId + " AND EventID = " + eventId + ") WHERE ID = " + playerId);
+
+
+                x++;
+                if (x % 100 == 0)
+                    Console.WriteLine(x.ToString());
+            }
+        }
+              
+                
+
+
         public static string GetRegion(string code) {
             var regionId = "0";
             switch (code) {
@@ -218,6 +238,22 @@ namespace FortniteJson {
             Console.WriteLine(i.ToString());
         }
 
+        public static void UpdateWorldCupRegions() {
+            var reader = Db.Query("SELECT PlacementID, PlayerID FROM PlayerPlacementView WHERE Event IN('Solo Final', 'Duo Final')");
+
+            while (reader.Read()) {
+                var placementId = reader["PlacementID"].ToString();
+                var playerId = reader["PlayerID"].ToString();
+
+                var reader2 = Db.Query("SELECT RegionID, Count(*) RegionCount FROM PlayerPlacementView WHERE PlayerID = " + playerId + " GROUP BY RegionID ORDER BY RegionCount DESC");
+                reader2.Read();
+                var regionId = reader2["RegionID"].ToString();
+
+                var cmd = "UPDATE Placement SET RegionID = " + regionId + " WHERE ID = " + placementId;
+                Db.Command(cmd);
+            }
+        }
+
 
 
         public static void AddPlayerPlacementNames() {
@@ -231,7 +267,7 @@ namespace FortniteJson {
                 //var regionId = reader["RegionID"].ToString();
                 var name = reader["PlayerName"].ToString().Replace("'", "''");
 
-                var cmd = "UPDATE PlayerPlacement SET Player = '" + name + "' WHERE ID = " + playerPlacementId;
+                var cmd = "UPDATE PlayerPlacement SET Player = N'" + name + "' WHERE ID = " + playerPlacementId;
                 Db.Command(cmd);
                 
                 i++;
