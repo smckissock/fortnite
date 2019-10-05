@@ -20,9 +20,9 @@ export function profile(player) {
     let trendG;
     let matchG;  
 
-    const svgWidth = 1440;
-    const svgHeight = 1200;
-    const leftMargin = 130;
+    const svgWidth = 1540;
+    const svgHeight = 1220;
+    const leftMargin = 130; // 130
 
     const noFormat = function (d) { return d; }
     const commaFormat = d3.format(",");
@@ -50,6 +50,7 @@ export function profile(player) {
     }
 
     function hide() {
+        profileOpen = false;
         
         enableSvgs(true);
         
@@ -57,8 +58,6 @@ export function profile(player) {
             .duration(400)
             .style("fill-opacity", 0.0)
             .on("end", () => svg.remove());
-
-        profileOpen = false;
 
         // Make the main screen white again
         d3.select(".gradient")
@@ -70,7 +69,7 @@ export function profile(player) {
         const headerHeight = 120;
         const rankHeight = 140;
         const trendHeight = 180;
-        const matchHeight = 600
+        const matchHeight = 600;
 
         const headerTop = 80;
         const rankTop = headerTop + headerHeight;
@@ -82,7 +81,8 @@ export function profile(player) {
             .attr("width", svgWidth + 6)
             .attr("height", svgHeight + 6)
             //.attr("transform", "translate(-250,-1327)") // Includes team width
-            .attr("transform", "translate(-160,-1327)")
+            //.attr("transform", "translate(-160,-1327)")
+            .attr("transform", "translate(-200,-1330)")
             .attr("fill", "black")
 
         function makeG(top, height, color) {
@@ -95,7 +95,7 @@ export function profile(player) {
                 .attr("x", 0)
                 .attr("y", 0)
                 .attr("width", svgWidth)
-                .attr("height", height + 1)
+                .attr("height", height + 2)
                 .attr("opacity", 1.0) 
                 .attr("fill", color)
                 .classed("profileG", true)

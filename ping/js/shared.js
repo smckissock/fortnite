@@ -26,7 +26,9 @@ export function setupStats(data) {
         .entries(data);
 
     function statsForPlayer(region, player) {
+        //const regionPlayers = regionStats.filter(d => true)[0].values;
         const regionPlayers = regionStats.filter(d => d.key === region)[0].values;
+        
         const stats = regionPlayers.filter(d => d.key === player)[0].value;
 
         stats.soloElimsRank = 1;

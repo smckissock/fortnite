@@ -1080,9 +1080,11 @@ export function playerChart(id) {
 
     function showPlayerProfile(player) {
         if (!profileOpen) {
-            d3.select(".gradient")
-                .transition()
-                .style("background-color", "lightgrey")
+
+            // No background to grey out, since we're using the whole screen
+            //d3.select(".gradient")
+            //    .transition()
+            //    .style("background-color", "lightgrey")
             
             profile(player)
         }
