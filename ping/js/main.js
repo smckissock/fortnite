@@ -48,6 +48,7 @@ let titleSvg;
 let filterTextDisplayed;
 
 let loadingSvg;
+let events;
 
 function makeLoadingSvg() {
     loadingSvg = d3.select("div.grid.gradient")
@@ -61,9 +62,7 @@ function makeLoadingSvg() {
         .attr("stroke", "black")
 }
 
-//makeLoadingSvg();
-
-d3.json('ping/data/players.json').then(function (players) {
+/* d3.json('ping/data/players.json').then(function (players) {
     playerInfos = [];
     players.forEach(function (d) {
         let rec = {};
@@ -74,11 +73,33 @@ d3.json('ping/data/players.json').then(function (players) {
         rec.age = d[4];
         rec.championSeriesAvg = d[5];
         playerInfos.push(rec);
+    }); 
+}); */
+
+
+d3.json('ping/data/dimensions.json').then(function (dimensions) {
+    playerInfos = [];
+    dimensions.players.forEach(function (d) {
+        let rec = {};
+        rec.id = d[0];
+        rec.name = d[1];
+        rec.nationality = d[2];
+        rec.team = d[3];
+        rec.age = d[4];
+        rec.championSeriesAvg = d[5];
+        playerInfos.push(rec);
     });
+
+    const weeks = dimensions.weekWeights;
+    events = dimensions.events;
+    
+    // Assign power ranking weight to each event based on week  
+    events.forEach(function (e) {
+        e.weight = weeks.find(w => w.Id === e.weekId).Weight;
+    })
 });
 
 d3.json('ping/data/data.json').then(function (dataArray) {
-    //d3.json('fwc/data/data.json').then(function (data) {
     const leftMargin = 20
 
     // From playerChart!!!
@@ -95,29 +116,36 @@ d3.json('ping/data/data.json').then(function (dataArray) {
     //disclaimer(titleSvg);
 
     data = [];
+    var begin = new Date();
     dataArray.forEach(function (d) {
         let rec = {};
-        rec.week = d[0];
-        rec.soloQual = parseInt(d[1], 10);
-        rec.duoQual = parseInt(d[2], 10);
-        rec.soloOrDuo = d[3];
-        rec.player = d[4];
-        rec.region = d[5];
-        rec.nationality = d[6];
-        rec.team = d[7];
-        rec.rank = parseInt(d[8], 10);
-        rec.payout = parseInt(d[9], 10);
-        rec.points = parseInt(d[10], 10);
-        rec.wins = parseInt(d[11], 10);
-        rec.elims = parseInt(d[12], 10);
-        rec.placementPoints = parseInt(d[13], 10);
-        rec.earnedQualifications = parseInt(d[14], 10);
-        rec.powerPoints = parseInt(d[15], 10);
-        rec.eventPlayerName = d[16];
-        rec.playerId = d[17];
+        //rec.week = d[0];
+        rec.soloQual = parseInt(d[0], 10);
+        rec.duoQual = parseInt(d[1], 10);
+        rec.soloOrDuo = d[2];
+        rec.player = d[3];
+        rec.region = d[4];
+        rec.nationality = d[5];
+        rec.team = d[6];
+        rec.rank = parseInt(d[7], 10);
+        rec.payout = parseInt(d[8], 10);
+        rec.points = parseInt(d[9], 10);
+        rec.wins = parseInt(d[10], 10);
+        rec.elims = parseInt(d[11], 10);
+        rec.placementPoints = parseInt(d[12], 10);
+        rec.earnedQualifications = parseInt(d[13], 10);
+        rec.powerPoints = parseInt(d[14], 10);
+        rec.eventPlayerName = d[15];
+        rec.playerId = parseInt(d[16], 10);
+       
+        const event = events.find(e => e.id === parseInt(d[17], 10));
+        rec.week = event.name;
+        rec.weight = event.weight;
 
         data.push(rec);
     });
+    var end = new Date();
+    console.log("Setup placements " + (end - begin) + " ms"); 
 
     
     statsForPlayer = setupStats(data);

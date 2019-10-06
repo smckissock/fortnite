@@ -70,6 +70,7 @@ namespace FortniteJson {
 
             //Fortnite2FixUp.FixPowerPoints();
             //Fortnite2FixUp.AddPlayerPlacementNames();
+            Fortnite.MakeDimensions();
 
 
             Fortnite.MakeJsonArray();   

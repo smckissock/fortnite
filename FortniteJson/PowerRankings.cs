@@ -16,7 +16,7 @@ namespace FortniteJson {
     }
     
     // 1.0 for most recent (highest Index), 0.98 for next, etc
-    class WeekWeight {
+    public class WeekWeight {
         public int Id;
         public int Index;
         public double Weight;

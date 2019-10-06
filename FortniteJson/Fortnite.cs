@@ -7,6 +7,58 @@ using Microsoft.VisualBasic.FileIO;
 
 namespace FortniteJson {
 
+
+    public class Event {
+        public int id;
+        public string name;
+        public int weekId;
+        // Format, Date, Match
+
+        public Event(int id, string name, int weekId) {
+            this.id = id;
+            this.name = name;
+            this.weekId = weekId;
+        }
+
+        public static List<Event> GetEvents() {
+            var events = new List<Event>();
+            var reader = Db.Query("SELECT ID, Name, WeekId FROM Event ORDER BY ID");
+            while (reader.Read()) {
+                events.Add(new Event(
+                    (int)reader["ID"],
+                    (string)reader["Name"],
+                    (int)reader["WeekID"])
+                );            }
+            return events;
+        }
+    }
+
+    public class Dimensions {
+
+        public List<List<string>> players;
+        public List<Event> events;
+        public List<WeekWeight> weekWeights;
+
+        public Dimensions() {
+            players = new List<List<string>>();
+            var reader = Db.Query("SELECT * FROM PlayerFrontEndChampionSeriesView");
+            while (reader.Read()) {
+                var record = new List<string>();
+                record.Add(reader["id"].ToString());
+                record.Add(reader["name"].ToString());
+                record.Add(reader["nationality"].ToString());
+                record.Add(reader["team"].ToString());
+                record.Add(reader["age"].ToString());
+                record.Add(reader["CsAverage"].ToString());
+                players.Add(record);
+            }
+
+            events = Event.GetEvents();
+            weekWeights = WeekWeight.GetWeekWeights(20);
+        }
+    }
+
+    
     public class Game {
         public List<string> fields;
         public List<string> players;
@@ -51,6 +103,17 @@ namespace FortniteJson {
     
 
     public class Fortnite {
+
+        public static void MakeDimensions() {
+            var dimensions = new Dimensions();
+
+            string fileName = @"c:\project\fortnite\ping\data\dimensions.json";
+
+            string json = JsonConvert.SerializeObject(dimensions);
+            var niceJson = Newtonsoft.Json.Linq.JToken.Parse(json).ToString();
+            File.WriteAllText(fileName, niceJson);
+        }
+
 
         public static void MakeJsonArray() {
 
@@ -103,7 +166,7 @@ namespace FortniteJson {
             var reader = Db.Query("SELECT * FROM StatsWithPlayerInfoView");
             while (reader.Read()) {
                 var record = new List<string>();
-                record.Add(reader["event"].ToString());
+                //record.Add(reader["event"].ToString());
                 record.Add(reader["soloWeek"].ToString());
                 record.Add(reader["duoWeek"].ToString());
                 record.Add(reader["soloOrDuo"].ToString());
@@ -121,6 +184,7 @@ namespace FortniteJson {
                 record.Add(reader["PowerPoints"].ToString());
                 record.Add(reader["EventPlayerName"].ToString());
                 record.Add(reader["PlayerID"].ToString());
+                record.Add(reader["EventID"].ToString());
 
                 //if (reader["week"].ToString() == "Solo Final")
                 //    record[0] = record[0];

@@ -235,6 +235,11 @@ WITH MOVE 'Fortnite2' TO 'd:\fortnite\fortnitedb\October3.mdf',
 MOVE 'Fortnite2_log' TO 'd:\fortnite\fortnitedb\October3.ldf'
 
 
+-- October 5  Before updateing WC Names 
+BACKUP DATABASE Fortnite
+TO DISK = N'd:\Fortnite\Fortnitedb\October 5.bak' WITH NOFORMAT, NOINIT, NAME = N'Full Database Backup', SKIP, NOREWIND, NOUNLOAD, STATS = 10
+GO
+
 
 
 
