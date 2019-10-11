@@ -7,16 +7,15 @@ export let profileOpen = false;
 
 export function profile(player) {
 
-    const playerId = facts.all().find(x => x.player === player).playerId;    
-    ga('set', 'page', playerId);
-    ga('send', 'pageview');
-
-
     if (player === "")
         return;
 
+    const playerId = facts.all().find(x => x.player === player).playerId;    
+    gtag('event', 'search', {
+        'value': playerId
+    });
+
     profileOpen = true;
-    console.log(profileOpen);
 
     let svg;
 

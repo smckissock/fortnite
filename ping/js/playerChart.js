@@ -1011,10 +1011,10 @@ export function playerChart(id) {
             playerCursor
                 .attr("stroke-width", thickBorder)
                 .transition()
-                .ease(d3.quad)
-                .duration(300)
-                .attr("x", x)
-                .attr("y", y)
+                //.ease(d3.quad)
+                //.duration(300)
+                //.attr("x", x)
+                //.attr("y", y)
         }
         playerCursorVisible = true;
     }
