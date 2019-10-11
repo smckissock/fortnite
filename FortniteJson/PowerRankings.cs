@@ -85,11 +85,12 @@ namespace FortniteJson {
         private List<string> events = new List<string>();
         private List<string> regions = new List<string>();
 
-        // Call this to get Power Ranking Points    
+        // Call this to get Power Ranking Points. DOES NOT INCLUDE WEEK FACTOR    
         public Double GetRanking(string anEvent, string region, int place) {
             PowerRankingPoints pnts = pointsDict[region + anEvent + place.ToString()];
             return pnts.PowerPoints;
         }
+
 
         public PowerRankings() {
 
@@ -147,7 +148,8 @@ namespace FortniteJson {
                         pnts.PlacementPoints = (ranks - i + 1) * dollarsPerPart;
                         pnts.WeekFactor = weekFactor;
 
-                        pnts.PowerPoints = pnts.PlacementPoints * pnts.WeekFactor;
+                        // pnts.PowerPoints = pnts.PlacementPoints * pnts.WeekFactor;
+                        pnts.PowerPoints = pnts.PlacementPoints;  // Multiply by week factor in browser
                     }
 
                     Console.WriteLine(anEvent + " " + region + " Total = " + totalPayout + " Count = " + (rank - 1));

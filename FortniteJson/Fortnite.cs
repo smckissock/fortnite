@@ -111,7 +111,7 @@ namespace FortniteJson {
 
             string json = JsonConvert.SerializeObject(dimensions);
             var niceJson = Newtonsoft.Json.Linq.JToken.Parse(json).ToString();
-            File.WriteAllText(fileName, niceJson);
+            File.WriteAllText(fileName,     niceJson);
         }
 
 
@@ -165,8 +165,7 @@ namespace FortniteJson {
             var list = new List<List<string>>();
             var reader = Db.Query("SELECT * FROM StatsWithPlayerInfoView");
             while (reader.Read()) {
-                var record = new List<string>();
-                //record.Add(reader["event"].ToString());
+                var record = new List<string>();                
                 record.Add(reader["soloWeek"].ToString());
                 record.Add(reader["duoWeek"].ToString());
                 record.Add(reader["soloOrDuo"].ToString());
@@ -181,7 +180,7 @@ namespace FortniteJson {
                 record.Add(reader["elims"].ToString());
                 record.Add(reader["PlacementPoints"].ToString());
                 record.Add(reader["EarnedQualification"].ToString());
-                record.Add(reader["PowerPoints"].ToString());
+                record.Add(reader["RawPowerPoints"].ToString());
                 record.Add(reader["EventPlayerName"].ToString());
                 record.Add(reader["PlayerID"].ToString());
                 record.Add(reader["EventID"].ToString());

@@ -119,7 +119,6 @@ d3.json('ping/data/data.json').then(function (dataArray) {
     var begin = new Date();
     dataArray.forEach(function (d) {
         let rec = {};
-        //rec.week = d[0];
         rec.soloQual = parseInt(d[0], 10);
         rec.duoQual = parseInt(d[1], 10);
         rec.soloOrDuo = d[2];
