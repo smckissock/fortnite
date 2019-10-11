@@ -12,6 +12,7 @@ export function profile(player) {
 
     const playerId = facts.all().find(x => x.player === player).playerId;    
     gtag('event', 'search', {
+        'event_label': playerId,
         'value': playerId
     });
 
