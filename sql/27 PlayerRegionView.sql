@@ -42,9 +42,6 @@ GO
 
 
 
-GO
-
-
 CREATE OR ALTER   VIEW [dbo].[StatsWithPlayerInfoView]  
 AS
 SELECT 
@@ -54,8 +51,7 @@ SELECT
 	, CASE WHEN Qualification = 1 AND e.Format = 'Duo' THEN CAST(REPLACE(e.Name, 'WC Week ', '') AS INT) ELSE 0 END DuoWeek
 	, e.Format  soloOrDuo
 	, pl.Name player
-	--, r.Name region
-	, pl.RegionID regionId
+	, pl.RegionID regionId  -- RegionID of the player
 	, p.Rank rank
 	, p.Points points
 	, p.Payout payout
@@ -70,6 +66,7 @@ SELECT
 	, pp.player EventPlayerName
 	, pl.ID PlayerID
 	, e.ID EventID
+	, r.Name region -- RegionID for payout tier ("ALL" (9) from WC finals)
 FROM Placement p
 JOIN EventView e ON p.EventID = e.ID
 JOIN Region r ON p.RegionID = r.ID
@@ -111,3 +108,15 @@ UPDATE Player Set RegionID = 7 WHERE ID IN (SELECT PlayerID FROM StatsWithPLayer
 
 
 SELECT * FROM region
+
+
+
+SELECT s.ID, r.Name Region, Event, Rank FROM StatsWithPlayerInfoView s JOIN Region r ON s.RegionID = r.ID
+
+SELECT s.ID, r.Name Region, Event, Rank FROM StatsWithPlayerInfoView s JOIN Region r ON s.RegionID = r.ID WHERE 
+
+
+SELECT s.ID, r.Name Region, Event, Rank FROM StatsWithPlayerInfoView s JOIN Region r ON s.RegionID = r.ID WHERE Event IN ('Solo Final', 'Duo Final')
+
+
+SELECT 

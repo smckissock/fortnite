@@ -68,7 +68,7 @@ namespace FortniteJson {
 
             //Fortnite2FixUp.FixPlayerNames();
 
-            Fortnite2FixUp.FixPlayerRegions();
+            //Fortnite2FixUp.FixPlayerRegions();
 
             //Fortnite2FixUp.FixPowerPoints();
             //Fortnite2FixUp.AddPlayerPlacementNames();
