@@ -50,6 +50,7 @@ namespace FortniteJson {
                 record.Add(reader["team"].ToString());
                 record.Add(reader["age"].ToString());
                 record.Add(reader["CsAverage"].ToString());
+                record.Add(reader["RegionID"].ToString());
                 players.Add(record);
             }
 
@@ -170,7 +171,7 @@ namespace FortniteJson {
                 record.Add(reader["duoWeek"].ToString());
                 record.Add(reader["soloOrDuo"].ToString());
                 record.Add(reader["player"].ToString());
-                record.Add(reader["region"].ToString());
+                record.Add(reader["regionId"].ToString());
                 record.Add(reader["nationality"].ToString());
                 record.Add(reader["team"].ToString());
                 record.Add(reader["rank"].ToString());

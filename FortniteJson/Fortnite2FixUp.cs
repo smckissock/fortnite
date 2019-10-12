@@ -129,6 +129,23 @@ namespace FortniteJson {
         }
 
 
+        public static void FixPlayerRegions() {
+
+            Console.WriteLine("FixPlayerRegions");
+
+            // PlayerRegionView can have multiple regions per player; that's ok, the last one updated will have the most $
+            var reader = Db.Query("SELECT PlayerID, RegionID, Payout FROM PlayerRegionView ORDER BY PlayerID, Payout ASC");
+            while (reader.Read()) {
+                var playerId = reader[0].ToString();
+                var regionId = reader[1].ToString();
+
+                Db.Command("UPDATE Player SET RegionID = " + regionId + " WHERE ID = " + playerId);
+            }
+        }
+
+
+
+
 
         public static void FixPowerPoints() {
             Console.WriteLine("Fix power points");

@@ -36,6 +36,16 @@ export let filters = {
     yMeasure: {}
 }
 
+const regions = [
+    { id: 3, name: "NA East" },
+    { id: 4, name: "NA West" },
+    { id: 5, name: "Europe" },
+    { id: 2, name: "Oceania" },
+    { id: 6, name: "Brazil" },
+    { id: 7, name: "Asia" },
+    { id: 8, name: "Middle East" }
+];
+
 
 export let statsForPlayer;
 export let playerInfos = [];
@@ -87,6 +97,7 @@ d3.json('ping/data/dimensions.json').then(function (dimensions) {
         rec.team = d[3];
         rec.age = d[4];
         rec.championSeriesAvg = d[5];
+        rec.regionId = d[6];
         playerInfos.push(rec);
     });
 
@@ -123,7 +134,8 @@ d3.json('ping/data/data.json').then(function (dataArray) {
         rec.duoQual = parseInt(d[1], 10);
         rec.soloOrDuo = d[2];
         rec.player = d[3];
-        rec.region = d[4];
+        //rec.region = d[4];
+        rec.region = regions.find(r => r.id == d[4]).name;
         rec.nationality = d[5];
         rec.team = d[6];
         rec.rank = parseInt(d[7], 10);
