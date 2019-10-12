@@ -72,20 +72,6 @@ function makeLoadingSvg() {
         .attr("stroke", "black")
 }
 
-/* d3.json('ping/data/players.json').then(function (players) {
-    playerInfos = [];
-    players.forEach(function (d) {
-        let rec = {};
-        rec.id = d[0];
-        rec.name = d[1];
-        rec.nationality = d[2];
-        rec.team = d[3];
-        rec.age = d[4];
-        rec.championSeriesAvg = d[5];
-        playerInfos.push(rec);
-    }); 
-}); */
-
 
 d3.json('ping/data/dimensions.json').then(function (dimensions) {
     playerInfos = [];
