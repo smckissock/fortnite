@@ -325,8 +325,8 @@ export function profile(player) {
         const cols = [
             { name: "Payout", field: "payout", format: commaFormat },
             { name: "Power Points", field: "powerPoints", format: commaFormat },
+            { name: "Scaled Payout", field: "rawPowerPoints", format: commaFormat },
             { name: "Week Weight", field: "weight", format: commaFormat },
-            { name: "Adjusted Payout", field: "rawPowerPoints", format: commaFormat },
             { name: "Points", field: "points", format: noFormat },
             { name: "Wins", field: "wins", format: noFormat },
             { name: "Elim Points", field: "elims", format: noFormat },
