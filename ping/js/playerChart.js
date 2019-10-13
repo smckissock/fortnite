@@ -131,7 +131,6 @@ export function playerChart(id) {
         .attr("opacity", "0")
         .attr("pointer-events", "none");
 
-
     function circlePackButtonText() {
 
         function addText(x, y, text) {
