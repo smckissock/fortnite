@@ -109,11 +109,8 @@ export const colors = {
 }
 
 // Writes stats to an svg, but pass in a css class
-export function text(text, svg, style, x, y) {
-    //if (!y)
-    //    debugger;
-
-    return svg.append("text")
+export function text(text, svg, style, x, y) {    
+    svg.append("text")
         .attr("x", x)
         .attr("y", y)
         .attr("pointer-events", "none")
@@ -127,6 +124,20 @@ export function centeredText(text, svg, style, x1, width, y) {
         .attr("x", x1 + (width / 2))
         .attr("y", y)
         .attr("text-anchor", "middle")
+        .text(text)
+        .classed(style, true);
+} 
+
+
+// Writes stats to an svg, but pass in a css class
+export function rightText(text, svg, style, x1, width, y) {
+    if (text === "NaN")
+        return;
+
+    svg.append("text")
+        .attr("x", x1 + width)
+        .attr("y", y)
+        .attr("text-anchor", "end")
         .text(text)
         .classed(style, true);
 } 

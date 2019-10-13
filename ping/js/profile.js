@@ -1,5 +1,5 @@
 import { facts, statsForPlayer, playerInfos, data } from "./main.js";
-import { text, centeredText, colors } from "./shared.js";
+import { text, centeredText, rightText, colors } from "./shared.js";
 import { events } from "./eventChart.js";
 
 // Flag to prevent multiple profiles opening
@@ -25,9 +25,9 @@ export function profile(player) {
     let trendG;
     let matchG;  
 
-    const svgWidth = 1540;
+    const svgWidth = 1542;
     const svgHeight = 1220;
-    const leftMargin = 130; // 130
+    const leftMargin = 130; // where Rank, Trend and Match goes
 
     const noFormat = function (d) { return d; }
     const commaFormat = d3.format(",");
@@ -319,11 +319,14 @@ export function profile(player) {
 
     function makeMatches(recs) {
 
-        const colWidth = 80;
-        const rowHeaderWidth = 600; // 360
-        
+        const colWidth = 70;
+        const rowHeaderWidth = 500;
+                
         const cols = [
             { name: "Payout", field: "payout", format: commaFormat },
+            { name: "Power Points", field: "powerPoints", format: commaFormat },
+            { name: "Week Weight", field: "weight", format: commaFormat },
+            { name: "Adjusted Payout", field: "rawPowerPoints", format: commaFormat },
             { name: "Points", field: "points", format: noFormat },
             { name: "Wins", field: "wins", format: noFormat },
             { name: "Elim Points", field: "elims", format: noFormat },
@@ -335,22 +338,21 @@ export function profile(player) {
         function columnHeaders() {
 
             function write(text, i, y) {
-                const rowHeaderWidth = 460; // 220
-                centeredText(text, matchG, "player-stat-col-header", rowHeaderWidth + ((i + 2) * colWidth) - 90, colWidth, y);
+                rightText(text, matchG, "player-stat-col-header", rowHeaderWidth + (i * colWidth), colWidth, y);
             }
             
             cols.forEach(function (d, i) {
                 const terms = d.name.split(" ");
                 if (terms.length === 1)
-                    write(terms[0], i, 24);
+                    write(terms[0], i, 28);
                 else {
-                    write(terms[0], i, 14);
+                    write(terms[0], i, 18);
                     write(terms[1], i, 34);
                 }    
             });            
         }
 
-        function totals(totals) {
+        function grandTotals(totals) {
 
             matchG.append("rect")
                 .attr("x", leftMargin)
@@ -364,14 +366,12 @@ export function profile(player) {
 
             cols.forEach(function (col, colNum) {
                 const toShow = col.format(totals[col.field]).toString()
-                text(
+                rightText(
                     toShow,
                     matchG,
                     "player-stat-summary",
-                    rowHeaderWidth + (colNum * colWidth) -
-                    // Source Sans Pro has monospaced numbers, but commas are narrower than numbers
-                    (toShow.length * 11) +
-                    ((toShow.match(/,/g) || []).length) * 6,
+                    rowHeaderWidth + (colNum * colWidth),
+                    colWidth,
                     y)
             });
         }
@@ -395,14 +395,13 @@ export function profile(player) {
             cols.forEach(function (col, colNum) {
 
                 const toShow = col.format(formatSummary.value[col.field]).toString()
-                text(
+
+                rightText(
                     toShow,
                     matchG,
                     "player-stat-summary",
-                    rowHeaderWidth + (colNum * colWidth) -
-                    // Source Sans Pro has monospaced numbers, but commas are narrower than numbers
-                    (toShow.length * 11) +
-                    ((toShow.match(/,/g) || []).length) * 6,
+                    rowHeaderWidth + (colNum * colWidth),
+                    colWidth, 
                     priorRowsHeight + 6)
             });
 
@@ -415,12 +414,12 @@ export function profile(player) {
 
                 text(week.eventPlayerName, matchG, "player-stat-row", leftMargin + 190, y);
 
-                const left = rowHeaderWidth + (cols.length * colWidth) - 60;
 
                 let partners = []
                 if (week.soloOrDuo != "Solo")
                     partners = getPartners(week.region, week.rank, week.week, week.player);
 
+                const left = rowHeaderWidth + (cols.length * colWidth) + 30;    
                 if (partners.length === 1)
                     text("w / " + partners[0].player, matchG, "player-stat-row", left, y);
                 if (partners.length === 2)
@@ -428,14 +427,13 @@ export function profile(player) {
 
                 cols.forEach(function (col, colNum) {
                     const toShow = col.format(week[col.field]).toString()
-                    text(
+                    
+                    rightText(
                         toShow,
                         matchG,
                         "player-stat-row",
-                        rowHeaderWidth + (colNum * colWidth) -
-                        // Source Sans Pro has monospaced numbers, but commas are narrower than numbers
-                        (toShow.length * 9.5) +
-                        ((toShow.match(/,/g) || []).length) * 6.2,
+                        rowHeaderWidth + (colNum * colWidth),
+                        colWidth,
                         y)
                 });
             });
@@ -461,6 +459,7 @@ export function profile(player) {
                     wins: d3.sum(v, d => d.wins),
                     elims: d3.sum(v, d => d.elims),
                     placementPoints: d3.sum(v, d => d.placementPoints),
+                    powerPoints: d3.sum(v, d => d.powerPoints),
                 };
             })
             .entries(recs);
@@ -472,6 +471,7 @@ export function profile(player) {
 
         let total = {};
         total.payout = d3.sum(recs, d => d.payout);
+        total.powerPoints = d3.sum(recs, d => d.powerPoints);
         total.points = d3.sum(recs, d => d.points);
         total.wins = d3.sum(recs, d => d.wins);
         total.elims = d3.sum(recs, d => d.elims);
@@ -482,7 +482,7 @@ export function profile(player) {
         text("Match", matchG, "g-header", 30, 40);
 
         columnHeaders();
-        totals(total);
+        grandTotals(total);
 
         formatWeeks[2].values = formatWeeks[2].values.sort((a, b) => ('' + a.week).localeCompare(b.week))
         formatWeeks[1].values = formatWeeks[1].values.sort((a, b) => ('' + a.week).localeCompare(b.week));

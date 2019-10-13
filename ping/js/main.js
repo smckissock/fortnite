@@ -131,13 +131,15 @@ d3.json('ping/data/data.json').then(function (dataArray) {
         rec.elims = parseInt(d[11], 10);
         rec.placementPoints = parseInt(d[12], 10);
         rec.earnedQualifications = parseInt(d[13], 10);
-        rec.powerPoints = parseInt(d[14], 10);
+        rec.rawPowerPoints = Math.round(parseInt(d[14], 10));
         rec.eventPlayerName = d[15];
         rec.playerId = parseInt(d[16], 10);
        
         const event = events.find(e => e.id === parseInt(d[17], 10));
         rec.week = event.name;
-        rec.weight = event.weight;
+        rec.weight = +event.weight;
+
+        rec.powerPoints = Math.round(rec.rawPowerPoints * rec.weight);
 
         data.push(rec);
     });
