@@ -249,6 +249,16 @@ GO
 
 
 
+-- October 15  After initial Power Rankings 
+BACKUP DATABASE Fortnite
+TO DISK = N'd:\Fortnite\Fortnitedb\October 15.bak' WITH NOFORMAT, NOINIT, NAME = N'Full Database Backup', SKIP, NOREWIND, NOUNLOAD, STATS = 10
+GO
+
+
+
+
+
+
 
 
 

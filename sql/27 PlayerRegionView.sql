@@ -116,7 +116,7 @@ SELECT s.ID, r.Name Region, Event, Rank FROM StatsWithPlayerInfoView s JOIN Regi
 SELECT s.ID, r.Name Region, Event, Rank FROM StatsWithPlayerInfoView s JOIN Region r ON s.RegionID = r.ID WHERE 
 
 
-SELECT s.ID, r.Name Region, Event, Rank FROM StatsWithPlayerInfoView s JOIN Region r ON s.RegionID = r.ID WHERE Event IN ('Solo Final', 'Duo Final')
+SELECT ID, Region, Event, Rank FROM StatsWithPlayerInfoView s JOIN Region r ON s.RegionID = r.ID WHERE Event IN ('Solo Final', 'Duo Final')
 
 
 SELECT 
