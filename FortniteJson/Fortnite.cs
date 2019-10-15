@@ -126,7 +126,7 @@ namespace FortniteJson {
             var niceJson = Newtonsoft.Json.Linq.JToken.Parse(json).ToString();
             File.WriteAllText(fileName, niceJson);
 
-            MakePlayerArray();
+            MakePlayerArray();  
         }
 
         public static void MakePlayerArray() {
@@ -181,7 +181,8 @@ namespace FortniteJson {
                 record.Add(reader["elims"].ToString());
                 record.Add(reader["PlacementPoints"].ToString());
                 record.Add(reader["EarnedQualification"].ToString());
-                    
+
+                record.Add(reader["RawPowerPoints"].ToString());
                 record.Add(reader["EventPlayerName"].ToString());
                 record.Add(reader["PlayerID"].ToString());
                 record.Add(reader["EventID"].ToString());

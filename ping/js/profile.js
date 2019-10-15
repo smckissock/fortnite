@@ -484,9 +484,8 @@ export function profile(player) {
         columnHeaders();
         grandTotals(total);
 
-        formatWeeks[2].values = formatWeeks[2].values.sort((a, b) => ('' + a.week).localeCompare(b.week))
-        formatWeeks[1].values = formatWeeks[1].values.sort((a, b) => ('' + a.week).localeCompare(b.week));
-        formatWeeks[0].values = formatWeeks[0].values.sort((a, b) => ('' + a.week).localeCompare(b.week));
+        // Sort each format by week
+        formatWeeks.forEach(fw => fw.values = fw.values.sort((a, b) => ('' + a.week).localeCompare(b.week)));
         
         let priorRowsHeight = 100;
         priorRowsHeight = rows(formatWeeks[2], formatSummaries[2], priorRowsHeight);
