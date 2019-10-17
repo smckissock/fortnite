@@ -176,7 +176,7 @@ namespace FortniteJson {
                 record.Add(reader["team"].ToString());
                 record.Add(reader["rank"].ToString());
                 record.Add(reader["payout"].ToString());
-                record.Add(reader["points"].ToString());
+                record.Add(reader["points"].ToString());    
                 record.Add(reader["wins"].ToString());
                 record.Add(reader["elims"].ToString());
                 record.Add(reader["PlacementPoints"].ToString());

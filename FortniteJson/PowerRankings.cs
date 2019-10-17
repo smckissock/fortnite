@@ -112,22 +112,29 @@ namespace FortniteJson {
             foreach (string anEvent in events) {
                 foreach (string region in regions) {
                     int totalPayout = 0;
-                    
+
+
+                   // if (anEvent == "CS Week 2" && region == "NA East")
+                   //     Console.Write("X");
+
+
                     // Add Power Ranking Points with event, region, place, and payout
                     PowerRankingPoints powerRankingPoints;
                     int rank = 1;
-                    var rdr = Db.Query("SELECT Event, Region, Rank, Payout FROM PayoutTierView WHERE Event = '" + anEvent + "' AND Region = '" + region + "' ORDER BY Rank");
+                    var rdr = Db.Query("SELECT Event, Region, Rank, Payout, TeamSize FROM PayoutTierView WHERE Event = '" + anEvent + "' AND Region = '" + region + "' ORDER BY Rank");
                     while (rdr.Read()) {
                         var tierRank = (int)rdr["Rank"];
                         var payout = (int)rdr["Payout"];
+                        var teamSize = (int)rdr["TeamSize"];  // 1, 2, 3, or 4
+
                         if (rank == 1) {
-                            totalPayout += payout;  
+                            totalPayout += payout * teamSize;  
                             powerRankingPoints = new PowerRankingPoints(region, anEvent, rank, payout);
                             pointsDict.Add(powerRankingPoints.HashCode(), powerRankingPoints);
                             rank = 2;
                         }
                         while (rank <= tierRank) {
-                            totalPayout += payout;
+                            totalPayout += payout * teamSize;
                             powerRankingPoints = new PowerRankingPoints(region, anEvent, rank, payout);
                             pointsDict.Add(powerRankingPoints.HashCode(), powerRankingPoints);
                             rank++;
@@ -142,6 +149,15 @@ namespace FortniteJson {
                     double parts = (ranks / 2) * (ranks + 1);
 
                     double dollarsPerPart = totalPayout / parts;
+
+                    // Divide World Cup winnings by 15 (Payout was 15 million not 1)
+                    if (anEvent == "Solo Final" || anEvent == "Duo Final")
+                        dollarsPerPart /= 15;
+
+                    // Divide Champion Series winnings by 3 (Payout was 3 million not 1)
+                    if (anEvent == "CS Final")
+                        dollarsPerPart /= 3;
+
                     for (int i = 1; i <= ranks; i++) {
                         PowerRankingPoints pnts = pointsDict[region + anEvent + i.ToString()];
 
