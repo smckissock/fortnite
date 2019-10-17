@@ -32,7 +32,7 @@
         }
 
         li {
-            margin-top: 16px;
+            margin-top: 10px;
         }
 
         .gradient {
@@ -42,7 +42,7 @@
 
         .title {
             font-weight: 600;
-            font-size: 1.4em;
+            font-size: 1.5em;
             padding: 10px 50px 0px 20px;
         }
 
@@ -57,6 +57,7 @@
             width: 36em;
             font-weight: 500;
             font-size: 1.1em;
+            line-height: 1.5em;
             padding: 5px 50px 5px 20px;
         }
 
@@ -77,57 +78,58 @@
             <ul>
 
                 <li><span style="font-weight: bold;">1) What do the rankings mean?</span> 
-                    The rankings are an attempt to figure out the top players in Fortnite battle royale based on their recent performance. 
-                    The system is uses calculations rather than human judgement. Still, there is only so much you can tell from the data, so this shouldn't be mistaken for the "truth."  
-                    But if you follow it, you will see players with recent strong placements moving up, and others moving down, so it should give a sense of which players are woth watching.        
+                    They are an attempt to rank the top players in Fortnite battle royale based on recent performance. 
+                    The system uses a quantitiative model described below, but there is only so much you can tell from the data, and you may have issues with particular player rankings.    
+                    Still, you will notice players with recent strong placements moving up, and others moving down, so it should give a sense of which players are worth watching.        
                 </li>
 
                 <li><span style="font-weight: bold;">2) Which events are taken into account?</span> 
-                    We will only be including major Epic events beginning with the World Cup qualifiers through the Champion Series, Cash Cups, and whatever comes next. We won't be including TwitchCon or other "invitational" events.  
+                    We will only be including major Epic events beginning with the World Cup qualifiers through the Champion Series, Cash Cups, and whatever comes next. We won't be including TwitchCon or invitational events.  
                 </li>
                 
                 <li><span style="font-weight: bold;">3) How are points allocated?</span>  
                     Points are based on Epic's regional prize pool for each event. However, we do not use Epic payouts directly to rank players. Epic's payout tiers have steep "steps" where the top placements make a lot of money, 
                     and payouts quickly drop off to a level where many players earn the same small payout. For tournaments, this makes sense, because you want to reward the very best performances in order to make finishing in the 
-                    top slots especially proftable.
-                    But our aim is different: we want to aknowkedge consistent perforamance, so we take the total prize pool and "smooth it out", so everyone in an event and region makes a slightly different amount based on their placement. 
+                    top slots especially profitable.
+                    But our aim is different: we want to aknowkedge consistent performance, so we take the total prize pool and "smooth it out", so everyone in an event and region makes a slightly different amount based on their placement. 
                     So someone who finishes #2 makes a little less than #1, and someone who finishes #50 makes a little less than #49, etc. 
                 </li>
                 
-                <li><span style="font-weight: bold;">4) How does the World Cup final factor in?</span>  
-                    The formula makes and exception for World Cup Payuots. These were huge relative to the World Cup qualifiers and other Epic events. Since we don't want to skew the scores based on these outsized payouts, 
-                    and don't want to penalize those who didn't qualify, we divide World Cup payouts by 10 for purposes of power rankings. 
+                <li><span style="font-weight: bold;">4) How do the World Cup and Champion Series Finals factor in?</span>  
+                    The model makes an exception for finals, since payouts for these are large compared to qualifiers and other Epic events. Since we don't want to skew the scores based on these outsized payouts, 
+                    and don't want to penalize those who didn't qualify to much, the payouts for these events are divied by how much larger they are than qualifying events. This means that World Cup finals payouts are divided by 15 (15 million vs 1 million),
+                    and Champion Series payouts are divided by 3 (3 million vs 1 million.) We will use the same formula for upcoming events.    
                 </li>
 
-                <li><span style="font-weight: bold;">5) Shouldn't recent events count more than past events?</span>  
-                    Yes. In our scoring system, the most recent events count 100%, the next less-recent count 98%, etc. So an event that is 50 events "old" will not add anything to a player's power ranking. 
-                    We may adjust this rule somewhat as we add more events to our database. 
+                <li><span style="font-weight: bold;">5) Do recent events count more than past events?</span>  
+                    Yes. In the model, the most recent event counts 100%, the next less-recent counts 98%, etc. So an event that is 50 events "old" will not add anything to a player's power ranking. 
+                    We may adjust this rule somewhat as we add future events to our database. 
                 </li>
                 
                 <li><span style="font-weight: bold;">6) Should I compare the rankings of players from different regions? </span>  
-                    Probably not. While the same calculation method is used in all regions, the scores are ultimatly based on how Epic allocated the prize pool regionally. 
+                    Probably not. While the same calculation method is used in all regions, the scores are ultimately based on how Epic allocated the prize pool regionally. 
                     If you believe these payouts favor some regions over others, you should not compare scores of players in different regions.
 
                     </br>
                     </br>
-                    Regardless, you typicaly just want to see the rankings for single region. To do that, click the region you want to see on the left.     
+                    Regardless, you typicaly just want to see the rankings for single region. To do that, click the region you want to see on the left to filter out the other regions.     
                 </li>
 
                 <li><span style="font-weight: bold;">7) How do the rankings work across different formats (solo, dou, trio, squad?)</span>
-                    By default, the system combines results across all formats. If you want limit to it to duo performance (for example), click only the duo events, and view the rankings. 
-                    Obviuosly, the more players involved in a particular combination, the more difficult is is to guage the contribution a single player. If it makes sense,
-                    we may want to add separate power rankings at the solo, duo or squad level.     
+                    By default, the system combines results across all formats. If you want limit it to duo performance (for example), click only the duo events, and view the rankings. 
+                    The more players involved in a particular team, the more difficult is is to guage the contribution a single player. If there is interest,
+                    we may add separate power rankings at the solo, duo, trio or squad level.     
                     
-                <li><span style="font-weight: bold;">8) Player "X" seems to be ranked too low (or too high.) How do I make sense of this?</span>
+                <li><span style="font-weight: bold;">8) Player "x" seems to be ranked too low (or too high.) How do I make sense of this?</span>
                     As much as possible, we want avoid makng the power rankings a "black box." Search for player and see their page. Their "Power Points" column for event are arrived at by multiplying their "Scaled Payout" by their "Week Weight."
                     If, looking at the math, something seems wrong, please DM us.        
 
-                <li><span style="font-weight: bold;">9) When wil this be updated?</span>  
-                    The aim is to update the rankings within a day or two of each event, via a mostly automated process. Updates will tweeted on @fortniteping1 
+                <li><span style="font-weight: bold;">9) When will this be updated?</span>  
+                    The aim is to update the rankings within a day or two of each event, via a mostly automated process. Updates will be tweeted at <a href="https://twitter.com/fortniteping1">@fortniteping1</a>  
                 </li>
 
-                <li><span style="font-weight: bold;">10) I see a PROBLEM! Who do I contact?</span>
-                   <a href="https://twitter.com/fortniteping1">@fortniteping1</a> process. Updates will tweeted on @fortniteping1 
+                <li><span style="font-weight: bold;">10) If I see a problem who do I contact?</span>
+                   DM <a href="https://twitter.com/fortniteping1">@fortniteping1</a> 
                 </li>
             </ul>
         </div>

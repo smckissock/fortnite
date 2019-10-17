@@ -155,9 +155,16 @@ body {
 
 .column-button {
     font-weight: 400;
-    font-size: 1.2em;
+    font-size: 1.2rem;
     pointer-events: none;
 }
+
+.button-text {
+    font-weight: 600;
+    font-size: 0.35em;
+    pointer-events: none;
+}
+
 
 .player-info {
     font-weight: 600;

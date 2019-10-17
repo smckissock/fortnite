@@ -25,8 +25,8 @@ export let filters = {
     team: "",
     search: "",
     player: "",
-    //sort: "powerPoints",
-    sort: "payout",
+    sort: "powerPoints",
+    //sort: "payout",
     soloOrDuo: "",
     page: 0,
     playerCount: 0,
@@ -106,7 +106,7 @@ d3.json('ping/data/data.json').then(function (dataArray) {
     //const screenWidth = LeftSideWidth + teamWidth + playerTableWidth - leftMargin;
     const screenWidth = 1920 - leftMargin;
     titleSvg = title(screenWidth);
-    //goToFinalsButton(titleSvg);
+    faqButton(titleSvg);
 
     //searchLabel(titleSvg);
     //posickLabel(titleSvg);
@@ -247,16 +247,15 @@ function title(width) {
     return svg;
 }
 
-/* function goToFinalsButton(svg) {
-    // Switch to Finals
-    const qualifierLeft = 1270;
+function faqButton(svg) {
+    const qualifierLeft = 1070;
     let qualifierButton = svg.append("a")
-        .attr("xlink:href", "https://fortnitewc.netlify.com/finals.html")
+        //.attr("xlink:href", "https://fortnitewc.netlify.com/finals.html")        
         .append("rect")
         .attr("x", qualifierLeft)
-        .attr("y", 15)
+        .attr("y", 10)
         .attr("width", 70)
-        .attr("height", 60)
+        .attr("height", 70)
         .attr("fill", "lightblue")
         .attr("stroke", "black")
         .attr("stroke-width", 0)
@@ -266,7 +265,7 @@ function title(width) {
             d3.select(this)
                 .transition()
                 .duration(100)
-                .attr("stroke-width", 3);
+                .attr("stroke-width", 5);
         })
         .on('mouseout', function (d) {
             d3.select(this)
@@ -274,25 +273,14 @@ function title(width) {
                 .duration(100)
                 .attr("stroke-width", 0);
         })
+        .on('click', function (d) {
+            window.open('faq.html', '_blank');
+        });
 
-    // "Switch to"
-    svg.append("text")
-        .attr("x", qualifierLeft + 16)
-        .attr("y", 38)
-        .text("See")
-        .attr("font-family", "Helvetica, Arial, sans-serif")
-        .attr("font-size", "1.0rem")
-        .attr("pointer-events", "none")
-
-    // "Finals"   
-    svg.append("text")
-        .attr("x", qualifierLeft + 8)
-        .attr("y", 62)
-        .text("Finals")
-        .attr("font-family", "Helvetica, Arial, sans-serif")
-        .attr("font-size", "1.0rem")
-        .attr("pointer-events", "none")
-} */
+    text("Power", svg, "button-text", qualifierLeft + 12, 32);  
+    text("Ranking", svg, "button-text", qualifierLeft + 5, 51);  
+    text("FAQ", svg, "button-text", qualifierLeft + 20, 70);    
+} 
 
 
 function posickLabel(svg) {
