@@ -247,6 +247,7 @@ function title(width) {
     return svg;
 }
 
+
 function faqButton(svg) {
     const qualifierLeft = 1070;
     let qualifierButton = svg.append("a")
