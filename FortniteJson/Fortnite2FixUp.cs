@@ -144,7 +144,7 @@ namespace FortniteJson {
         }
 
 
-
+            
 
 
         public static void FixPowerPoints() {
@@ -153,7 +153,7 @@ namespace FortniteJson {
             var powerRankings = new PowerRankings();
             int count = 0;
 
-            var reader = Db.Query("SELECT ID, Region, Event, Rank FROM StatsWithPlayerInfoView");
+            var reader = Db.Query("SELECT ID, Region, Event, Rank FROM StatsWithPlayerInfoView WHERE Event IN (SELECT Name FROM PowerRankingEventsView)  ");
             while (reader.Read()) {
                 string id = reader["ID"].ToString();
                 string region = reader["Region"].ToString();

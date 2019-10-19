@@ -96,7 +96,8 @@ namespace FortniteJson {
 
             weekWeights = WeekWeight.GetWeekWeights(Db.Int("SELECT MAX(WeekIndex) FROM Week"));
 
-            events = Db.Names("Event");     
+            //events = Db.Names("Event");
+            events = Db.Names("PowerRankingEventsView");  // Just WC and FCS
             regions = Db.Names("Region");
 
             // Setup dictionary to look up the weighting for each event, based on the week
@@ -128,13 +129,13 @@ namespace FortniteJson {
                         var teamSize = (int)rdr["TeamSize"];  // 1, 2, 3, or 4
 
                         if (rank == 1) {
-                            totalPayout += payout * teamSize;  
+                            totalPayout += payout; // * teamSize;  
                             powerRankingPoints = new PowerRankingPoints(region, anEvent, rank, payout);
                             pointsDict.Add(powerRankingPoints.HashCode(), powerRankingPoints);
                             rank = 2;
                         }
                         while (rank <= tierRank) {
-                            totalPayout += payout * teamSize;
+                            totalPayout += payout; // * teamSize;
                             powerRankingPoints = new PowerRankingPoints(region, anEvent, rank, payout);
                             pointsDict.Add(powerRankingPoints.HashCode(), powerRankingPoints);
                             rank++;

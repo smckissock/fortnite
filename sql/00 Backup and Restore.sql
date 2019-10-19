@@ -256,6 +256,12 @@ GO
 
 
 
+-- October 19  Before removing cash cups from Power Rankings 
+BACKUP DATABASE Fortnite
+TO DISK = N'd:\Fortnite\Fortnitedb\October 19.bak' WITH NOFORMAT, NOINIT, NAME = N'Full Database Backup', SKIP, NOREWIND, NOUNLOAD, STATS = 10
+GO
+
+
 
 
 
