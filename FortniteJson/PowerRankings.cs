@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -49,6 +50,8 @@ namespace FortniteJson {
 
     public class PowerRankingPoints {
 
+        public string Match;
+        public int TeamSize;
         public string Region;
         public string EventName;
         public int Rank;
@@ -58,7 +61,9 @@ namespace FortniteJson {
         public double PlacementPoints;
         public double PowerPoints;
 
-        public PowerRankingPoints(string region, string eventName, int rank, int payout) {
+        public PowerRankingPoints(string match, int teamSize, string region, string eventName, int rank, int payout) {
+            Match = match;
+            TeamSize = teamSize;
             Region = region;
             EventName = eventName;
             Rank = rank;
@@ -91,6 +96,17 @@ namespace FortniteJson {
             return pnts.PowerPoints;
         }
 
+        private static string CsvLine(string match, int teamSize, string anEvent, string region, int rank, int payout, string points) {
+            return 
+                match + "," +
+                teamSize.ToString() + "," +
+                anEvent + "," +
+                region + "," +
+                rank.ToString() + "," +
+                payout.ToString() + "," +
+                points;
+        }
+
 
         public PowerRankings() {
 
@@ -110,33 +126,38 @@ namespace FortniteJson {
                 weekWeightingDict.Add(anEvent, factor.Weight);
             }
 
+            // For csv file
+            var header = "\"Match\",\"TeamSize\",\"Event\",\"Region\",\"Rank\",\"Payout\",\"Points\"";
+            var lines = new List<string>();
+            lines.Add(header);
+
+            
             foreach (string anEvent in events) {
                 foreach (string region in regions) {
                     int totalPayout = 0;
-
-
-                   // if (anEvent == "CS Week 2" && region == "NA East")
-                   //     Console.Write("X");
-
-
+                    
+                    // if (anEvent == "CS Week 2" && region == "NA East")
+                    //     Console.Write("X");
+                    
                     // Add Power Ranking Points with event, region, place, and payout
                     PowerRankingPoints powerRankingPoints;
                     int rank = 1;
-                    var rdr = Db.Query("SELECT Event, Region, Rank, Payout, TeamSize FROM PayoutTierView WHERE Event = '" + anEvent + "' AND Region = '" + region + "' ORDER BY Rank");
+                    var rdr = Db.Query("SELECT Match, Event, Region, Rank, Payout, TeamSize FROM PayoutTierView WHERE Event = '" + anEvent + "' AND Region = '" + region + "' ORDER BY Rank");
                     while (rdr.Read()) {
+                        var match = (string)rdr["Match"];
                         var tierRank = (int)rdr["Rank"];
                         var payout = (int)rdr["Payout"];
                         var teamSize = (int)rdr["TeamSize"];  // 1, 2, 3, or 4
 
                         if (rank == 1) {
                             totalPayout += payout; // * teamSize;  
-                            powerRankingPoints = new PowerRankingPoints(region, anEvent, rank, payout);
+                            powerRankingPoints = new PowerRankingPoints(match, teamSize, region, anEvent, rank, payout);
                             pointsDict.Add(powerRankingPoints.HashCode(), powerRankingPoints);
                             rank = 2;
                         }
                         while (rank <= tierRank) {
                             totalPayout += payout; // * teamSize;
-                            powerRankingPoints = new PowerRankingPoints(region, anEvent, rank, payout);
+                            powerRankingPoints = new PowerRankingPoints(match, teamSize, region, anEvent, rank, payout);
                             pointsDict.Add(powerRankingPoints.HashCode(), powerRankingPoints);
                             rank++;
                         }
@@ -167,17 +188,17 @@ namespace FortniteJson {
 
                         // pnts.PowerPoints = pnts.PlacementPoints * pnts.WeekFactor;
                         pnts.PowerPoints = pnts.PlacementPoints;  // Multiply by week factor in browser
+
+                        lines.Add(CsvLine(pnts.Match, pnts.TeamSize, anEvent, region, i, pnts.Payout, pnts.PowerPoints.ToString()));
                     }
 
                     Console.WriteLine(anEvent + " " + region + " Total = " + totalPayout + " Count = " + (rank - 1));
-
-                    // For some reason, there are not RankPayoutTier records for world cup solo or duo
-                    //if (region == "NA East" && anEvent == "Solo Final")
-                    //    foreach (PowerRankingPoints val in pointsDict.Values)
-                    //        val.Print();
                 }
             }
-            Console.WriteLine(pointsDict.Count.ToString() + " items");            
+            string fileName = @"c:\project\fortnite\r\power-ranking-tiers\data.csv";
+            File.WriteAllText(fileName, string.Join("\n", lines));
+
+            Console.WriteLine(pointsDict.Count.ToString() + " items");
         }
     }
 }
