@@ -97,10 +97,21 @@ namespace FortniteJson {
         }
 
         private static string CsvLine(string match, int teamSize, string anEvent, string region, int rank, int payout, string points) {
+
+            string format = ""; 
+            switch (teamSize) {
+                case 1: format = "Solos"; break;
+                case 2: format = "Duos"; break;
+                case 3: format = "Trios"; break;
+                case 4: format = "Squads"; break;
+                default: format = "ERROR"; break;
+            }       
+
             return 
                 match + "," +
-                teamSize.ToString() + "," +
-                anEvent + "," +
+                format + "," +
+                //anEvent + "," +
+                ((anEvent.Contains("WC Week") && anEvent != "WC Week 10") ? " " + anEvent : anEvent) + "," +
                 region + "," +
                 rank.ToString() + "," +
                 payout.ToString() + "," +
@@ -127,7 +138,7 @@ namespace FortniteJson {
             }
 
             // For csv file
-            var header = "\"Match\",\"TeamSize\",\"Event\",\"Region\",\"Rank\",\"Payout\",\"Points\"";
+            var header = "\"Match\",\"Format\",\"Event\",\"Region\",\"Rank\",\"Payout\",\"Points\"";
             var lines = new List<string>();
             lines.Add(header);
 

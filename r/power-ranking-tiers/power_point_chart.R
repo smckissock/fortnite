@@ -135,11 +135,11 @@ wc <- placements %>%
 ggplot() +
   geom_point(
     data = wc, 
-    mapping = aes(x = Rank, y = Payout, color = Region, size = 0.4)
+    mapping = aes(x = Rank, y = Payout, color = Region)
   ) +
   geom_point(
     data = wc, 
-    mapping = aes(x = Rank, y = Points, size = 2)
+    mapping = aes(x = Rank, y = Points)
   ) +
   scale_x_log10() +
   facet_grid(Event ~ Region) +
@@ -147,6 +147,33 @@ ggplot() +
     title = paste("World Cup Qualifier Payouts and Power Points by Event and Region")
   )
 ggsave("FWC Qualifiers.png")
+
+
+
+###
+wc <- placements %>%
+  filter(Match == "Fortnite Champion Series" & Event == "CS Week 1")
+
+ggplot() +
+  geom_line(
+    data = wc, 
+    mapping = aes(x = Rank, y = Payout, color = Region), size = 3
+  ) +
+  geom_line(
+    data = wc, 
+    mapping = aes(x = Rank, y = Points), size = 1
+  ) +
+  scale_x_log10() +
+  facet_wrap(~ Region, nrow = 2) +
+  labs(
+    title = paste("Example - Week 1 Champion Series Payouts and Power Ranking Points"),
+    y = "Payout and Power Ranking Points (black)"
+  ) +
+  theme(legend.position = "none")
+
+
+ggsave("CS Week 1.png")
+
 
 
 

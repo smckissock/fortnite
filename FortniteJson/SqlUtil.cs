@@ -75,7 +75,7 @@ namespace FortniteJson {
         /// Returns Names in tables, in order
         /// </summary>
         public static List<string> Names(string table) {
-            var rdr = Db.Query("SELECT Name FROM " + table + " WHERE Name <> 'TBD' ORDER BY Name");
+            var rdr = Db.Query("SELECT Name FROM " + table + " WHERE Name <> 'TBD' ORDER BY Name DESC");
             var names = new List<string>();
             while (rdr.Read())
                 names.Add(rdr["Name"].ToString());
