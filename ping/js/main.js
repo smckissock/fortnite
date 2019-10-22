@@ -275,7 +275,8 @@ function faqButton(svg) {
                 .attr("stroke-width", 0);
         })
         .on('click', function (d) {
-            window.open('faq.html', '_blank');
+            window.open('r/power-ranking-faq', '_blank');
+            //window.open('faq.html', '_blank');
         });
 
     text("Power", svg, "button-text", qualifierLeft + 12, 32);  
