@@ -1,6 +1,8 @@
 ---
-#title: "Power Ranking FAQs"
-output: html_document
+output:
+  html_document: default
+  pdf_document: default
+  word_document: default
 ---
 
 
@@ -11,6 +13,7 @@ knitr::opts_chunk$set(fig.width=10, fig.height=6, fig.path='Figs/',
 library(tidyverse)
 ```
 ### Power Ranking FAQs
+**October 21, 2019**
 
 1. **What do the rankings mean?** They attempt to rank the top players in Fortnite battle royale based on recent performance.The system uses a quantitiative model described below, but there is only so much you can tell from the data, and you may have issues with particular player rankings. Still, you will notice players with recent strong placements moving up, and others moving down, so it should give a sense of which players are worth watching.        
                     
@@ -21,7 +24,7 @@ library(tidyverse)
 
 ```{r power_ranking_chart}
 
-placements <- read_csv("C:/project/fortnite/r/power-ranking-tiers/data.csv")
+placements <- read_csv("C:/project/fortnite/r/power-ranking-faq/data.csv")
 wc <- placements %>%
   filter(Match == "Fortnite Champion Series" & Event == "CS Week 1")
 
