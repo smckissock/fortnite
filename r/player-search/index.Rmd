@@ -1,6 +1,9 @@
 ---
+title: "Most Searched Players"
 output:
-  html_document: default
+  html_document: 
+    includes:
+      in_header: analytics.html
   pdf_document: default
   word_document: default
 ---
@@ -16,8 +19,9 @@ library(tidyverse)
 
 raw_data <- read_csv("C:/project/fortnite/r/player-search/data.csv")
 ```
-### Fortnite Ping Player Searches
-***October 27, 2019***
+Back to [Fortnite Ping](<https://www.fortniteping.com>) 
+
+***Last updated October 27, 2019***
 
 We started tracking player searches on Fortnite Ping in mid October. More than 3,000 players were searched in more than 11,000 searches. Here is the breakdown of searches by region. The relatively large number of searches in NA East may be due to the it being used to organize practice matches.   
 
@@ -40,7 +44,6 @@ ggplot(regions, aes(x = total, y = reorder(Region, total))) +
   ) 
 ```
 
-
 Here is a breakdown of the players who have more than 10 searches. Note that we don't track who was doing the searching, only who was searched!
 
 ```{r player_search_chart, fig.width = 8, fig.height = 26}
@@ -51,7 +54,6 @@ searches <- raw_data %>%
   group_by(Region) %>%
   filter(total > 10)
   #top_n(2)  -- top n in region
-
   
 ggplot(searches, aes(x = total, y = reorder(Name, total))) +
   geom_segment(aes(yend = Name), xend = 0, color = "grey50", size = 2) +
@@ -60,9 +62,6 @@ ggplot(searches, aes(x = total, y = reorder(Name, total))) +
   theme_bw() + 
   theme(legend.position = "top") + 
   theme(panel.grid.major.y = element_blank()) +
-  labs(
-    x = "",
-    y = ""
-  ) +
+  labs(x = "", y = "") +
   facet_grid(Region ~ ., scales = "free_y", space = "free_y")
 ```
