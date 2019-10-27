@@ -1,0 +1,44 @@
+---
+output:
+  html_document: default
+  pdf_document: default
+  word_document: default
+---
+
+
+```{r global_options, include=FALSE}
+knitr::opts_chunk$set(fig.width=10, fig.height=6, fig.path='Figs/',
+                      echo=FALSE, warning=FALSE, message=FALSE)
+
+# Show a maximum of 100   
+options(tibble.print_max = 100, tibble.print_min = 5)
+
+library(tidyverse)
+```
+### Fortnite Ping Player Searches
+***October 27, 2019***
+
+We started tracking player searches on Fortnite Ping in mid October. More than 3,000 players were searched in 11,000 searches. Here is the breakdown of the players who had more than 10 searches, by region. Note that we do not track who is doing the searching, only the players searched!
+
+```{r player_search_chart, fig.width = 8, fig.height = 25}
+
+raw_data <- read_csv("C:/project/fortnite/r/player-search/data.csv")
+
+searches <- raw_data %>% 
+  group_by(Name, Region) %>% 
+  summarize(total = sum(TotalEvents)) %>%
+  group_by(Region) %>%
+  filter(total > 10)
+  #top_n(2)  -- top n in region
+  
+ggplot(searches, aes(x = total, y = reorder(Name, total))) +
+  geom_segment(aes(yend = Name), xend = 0, color = "grey50", size = 2) +
+  geom_point(size = 3, aes(color = Region)) +
+  scale_color_brewer(palette = "Set1") +
+  theme_bw() + 
+  theme(panel.grid.major.y = element_blank()) +
+  labs(
+    x = "",
+    y = "Searches on Fortnite Ping since October 14"
+  ) +
+  facet_grid(Region ~ ., scales = "free_y", space = "free_y")

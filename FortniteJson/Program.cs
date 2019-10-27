@@ -66,15 +66,17 @@ namespace FortniteJson {
             //Fortnite2FixUp.FixPlacementElims("1035");
             //Fortnite2FixUp.UpdateWins("1035");
 
+            Fortnite2FixUp.ImportPlayerSearch();
+
             //Fortnite2FixUp.FixPlayerNames();
 
             //Fortnite2FixUp.FixPlayerRegions();
 
-            Fortnite2FixUp.FixPowerPoints();
+            //Fortnite2FixUp.FixPowerPoints();
             //Fortnite2FixUp.AddPlayerPlacementNames();
 
-            Fortnite.MakeDimensions();
-            Fortnite.MakeJsonArray();   
+            //Fortnite.MakeDimensions();
+            //Fortnite.MakeJsonArray();   
  
             Console.Write("DONE");
             Console.Read();

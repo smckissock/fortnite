@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
+using Microsoft.VisualBasic.FileIO;
 
 
 
@@ -182,8 +183,40 @@ namespace FortniteJson {
                     Console.WriteLine(x.ToString());
             }
         }
-              
-                
+
+        public static void ImportPlayerSearch() {
+
+            string file = "c:\\project\\fortnite\\csv\\Analytics All Web Site Data Searches by Player and Date 20191020-20191026.csv";
+            //string file = "c:\\project\\fortnite\\csv\\Players 20191014-20191020.csv";
+
+
+            var csv = GetCsvParser(file);
+            // Ignore header row
+            csv.ReadLine();
+
+            while (!csv.EndOfData) {
+                string[] fields = csv.ReadFields();
+
+                Db.Command("INSERT INTO PlayerSearch VALUES (" +
+                    fields[0] + ",'" +
+                    fields[1] + "'," +
+                    fields[2] + "," +
+                    fields[3] + ")"
+                );
+
+                Console.WriteLine(fields[0]);
+            }
+        }
+
+
+        private static TextFieldParser GetCsvParser(string csvFile) {
+            TextFieldParser csv = new TextFieldParser(csvFile, Encoding.UTF8);
+            csv.CommentTokens = new string[] { "#" };
+            csv.SetDelimiters(new string[] { "," });
+            csv.HasFieldsEnclosedInQuotes = true;
+
+            return csv;
+        }
 
 
         public static string GetRegion(string code) {
