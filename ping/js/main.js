@@ -107,6 +107,7 @@ d3.json('ping/data/data.json').then(function (dataArray) {
     const screenWidth = 1920 - leftMargin;
     titleSvg = title(screenWidth);
     faqButton(titleSvg);
+    mostSearchedButton(titleSvg);
 
     //searchLabel(titleSvg);
     //posickLabel(titleSvg);
@@ -282,6 +283,41 @@ function faqButton(svg) {
     text("Power", svg, "button-text", qualifierLeft + 12, 32);  
     text("Ranking", svg, "button-text", qualifierLeft + 5, 51);  
     text("FAQ", svg, "button-text", qualifierLeft + 20, 70);    
+} 
+
+function mostSearchedButton(svg) {
+    const qualifierLeft = 990;
+    let qualifierButton = svg.append("a")
+        //.attr("xlink:href", "https://fortnitewc.netlify.com/finals.html")        
+        .append("rect")
+        .attr("x", qualifierLeft)
+        .attr("y", 10)
+        .attr("width", 70)
+        .attr("height", 70)
+        .attr("fill", "lightblue")
+        .attr("stroke", "black")
+        .attr("stroke-width", 0)
+        .attr("rx", cornerRadius)
+        .attr("ry", cornerRadius)
+        .on('mouseover', function (d) {
+            d3.select(this)
+                .transition()
+                .duration(100)
+                .attr("stroke-width", 5);
+        })
+        .on('mouseout', function (d) {
+            d3.select(this)
+                .transition()
+                .duration(100)
+                .attr("stroke-width", 0);
+        })
+        .on('click', function (d) {
+            window.open('r/player-search', '_blank');
+        });
+
+    text("Most", svg, "button-text", qualifierLeft + 18, 32);  
+    text("Searched", svg, "button-text", qualifierLeft + 1, 51);  
+    text("Players", svg, "button-text", qualifierLeft + 9, 70);    
 } 
 
 
