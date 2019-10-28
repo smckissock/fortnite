@@ -1,0 +1,78 @@
+---
+title: "Champion Series Squads"
+output:
+  html_document: 
+    includes:
+      in_header: analytics.html
+  pdf_document: default
+  word_document: default
+---
+
+```{r global_options, include=FALSE}
+knitr::opts_chunk$set(fig.width=10, fig.height=6, fig.path='Figs/',
+                      echo=FALSE, warning=FALSE, message=FALSE)
+
+# Show a maximum of 100   
+options(tibble.print_max = 100, tibble.print_min = 5)
+
+library(gt)
+library(tidyverse)
+
+path = "C:/project/fortnite/r/champion-series-squads/data/"
+
+```
+Back to [Fortnite Ping](<https://www.fortniteping.com>) 
+
+***Last updated October 28, 2019***
+
+
+# Regions {.tabset .tabset-fade .tabset-pills}
+
+## Europe
+```{r europe_table}
+region <- read_csv(str_c(path,"Europe.csv"))
+gt_tbl <- gt(data = region)
+gt_tbl
+```
+
+## NA East
+```{r na_east_table}
+region <- read_csv(str_c(path,"NA East.csv"))
+gt_tbl <- gt(data = region)
+gt_tbl
+```
+
+## NA West
+```{r na_west_table}
+region <- read_csv(str_c(path,"NA West.csv"))
+gt_tbl <- gt(data = region)
+gt_tbl
+```
+
+## Brazil
+```{r na_brazil_table}
+region <- read_csv(str_c(path,"Brazil.csv"))
+gt_tbl <- gt(data = region)
+gt_tbl
+```
+
+## Asia
+```{r na_asia_table}
+region <- read_csv(str_c(path,"Asia.csv"))
+gt_tbl <- gt(data = region)
+gt_tbl
+```
+
+## Oceania
+```{r oceania_table}
+region <- read_csv(str_c(path,"Oceania.csv"))
+gt_tbl <- gt(data = region)
+gt_tbl
+```
+
+## Middle East
+```{r middle_east_table}
+region <- read_csv(str_c(path,"Middle East.csv"))
+gt_tbl <- gt(data = region)
+gt_tbl
+```

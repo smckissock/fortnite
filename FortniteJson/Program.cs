@@ -66,7 +66,9 @@ namespace FortniteJson {
             //Fortnite2FixUp.FixPlacementElims("1035");
             //Fortnite2FixUp.UpdateWins("1035");
 
-            Fortnite2FixUp.ImportPlayerSearch();
+            //Fortnite2FixUp.ImportPlayerSearch();
+
+            Leaderboard.SquadTest();
 
             //Fortnite2FixUp.FixPlayerNames();
 
@@ -77,7 +79,7 @@ namespace FortniteJson {
 
             //Fortnite.MakeDimensions();
             //Fortnite.MakeJsonArray();   
- 
+
             Console.Write("DONE");
             Console.Read();
 

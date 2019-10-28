@@ -67,6 +67,7 @@
     <Compile Include="Analytics.cs" />
     <Compile Include="Fortnite.cs" />
     <Compile Include="Fortnite2FixUp.cs" />
+    <Compile Include="Leaderboard.cs" />
     <Compile Include="PlayersFromAirtableCsv.cs" />
     <Compile Include="PlayersFromCsv.cs" />
     <Compile Include="PlayersUpdatedFromAirtable.cs" />

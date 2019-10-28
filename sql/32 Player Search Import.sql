@@ -27,4 +27,8 @@ ORDER BY SEARCHDate
 
 
 SELECT * FROM PLayerSearchView
+
+
+SELECT * FROM StatsWithPlayerInfoView
 	
+

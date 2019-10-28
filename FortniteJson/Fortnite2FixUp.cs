@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
 using Microsoft.VisualBasic.FileIO;
+using System.IO;
 
 
 
@@ -189,7 +190,6 @@ namespace FortniteJson {
             string file = "c:\\project\\fortnite\\csv\\Analytics All Web Site Data Searches by Player and Date 20191020-20191026.csv";
             //string file = "c:\\project\\fortnite\\csv\\Players 20191014-20191020.csv";
 
-
             var csv = GetCsvParser(file);
             // Ignore header row
             csv.ReadLine();
@@ -246,7 +246,6 @@ namespace FortniteJson {
 
             return regionId;
         }
-
 
 
         // NOT USED
