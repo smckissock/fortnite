@@ -7,11 +7,11 @@ import { clearTeam } from "./teamChart.js";
 
 export function regionChart(id) {
 
-    const left = 5;
-    const rectWidth = 160;
-    const rectHeight = 60
+    const left = 2;
+    const rectWidth = 147;
+    const rectHeight = 50
     
-    const regions = [
+/*     const regions = [
         { x: left, y: 0, color: colors.green, name: "NA EAST", filter: "NA East", textOffset: 32 },
         { x: left, y: rectHeight * 1, color: colors.orange, name: "NA WEST", filter: "NA West", textOffset: 31 },
         { x: left, y: rectHeight * 2, color: colors.blue, name: "EUROPE", filter: "Europe", textOffset: 29 },
@@ -19,6 +19,17 @@ export function regionChart(id) {
         { x: left, y: rectHeight * 4, color: colors.teal, name: "BRAZIL", filter: "Brazil", textOffset: 41 },
         { x: left, y: rectHeight * 5, color: colors.yellow, name: "ASIA", filter: "Asia", textOffset: 55 },
         { x: left, y: rectHeight * 6, color: colors.grey, name: "MIDDLE EAST", filter: "Middle East", textOffset: 9 }
+    ]; */
+
+    const top = 8;
+    const regions = [
+        { x: left, y: top, color: colors.green, name: "NA EAST", filter: "NA East", textOffset: 34 },
+        { x: left + rectWidth, y: top, color: colors.orange, name: "NA WEST", filter: "NA West", textOffset: 34 },
+        { x: left + rectWidth * 2, y: top, color: colors.blue, name: "EUROPE", filter: "Europe", textOffset: 35 },
+        { x: left + rectWidth * 3, y: top, color: colors.pink, name: "OCEANIA", filter: "Oceania", textOffset: 29 },
+        { x: left + rectWidth * 4, y: top, color: colors.teal, name: "BRAZIL", filter: "Brazil", textOffset: 39 },
+        { x: left + rectWidth * 5, y: top, color: colors.yellow, name: "ASIA", filter: "Asia", textOffset: 51 },
+        { x: left + rectWidth * 6, y: top, color: colors.grey, name: "MIDDLE EAST", filter: "Middle East", textOffset: 11 }
     ];
 
     let regionRects = [];
@@ -48,13 +59,15 @@ export function regionChart(id) {
 
     const svg = div.append("svg")
         .classed("region-svg", true)
-        .attr("width", 180)
-        .attr("height", (rectHeight * 7) + 30);
+        .attr("width", 1100)
+        .attr("height", rectHeight + 10);
+        //.attr("width", 180)
+        //.attr("height", (rectHeight * 7) + 30);
 
     svg.selectAll("rect").data(regions).enter().append("rect")
         .attr("x", d => d.x)
-        .attr("y", d => d.y + 10)
-        .attr("width", rectWidth)
+        .attr("y", d => d.y)
+        .attr("width", rectWidth - 10)
         .attr("height", rectHeight - 10)
         .attr("fill", d => d.color)
     
@@ -85,10 +98,10 @@ export function regionChart(id) {
     
         svg.selectAll("text").data(regions).enter().append("text")
             .attr("x", d => d.x + d.textOffset)
-            .attr("y", d => d.y + 42)
+            .attr("y", d => d.y + 26)
             .text(d => d.name)
-            .attr("font-size", "1.5em")
-            .attr("font-weight", "400")
+            .attr("font-size", "1.2em")
+            .attr("font-weight", "600")
             .attr("fill", "black")
             .attr("pointer-events", "none"); 
 

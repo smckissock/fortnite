@@ -25,8 +25,8 @@ export function profile(player) {
     let trendG;
     let matchG;  
 
-    const svgWidth = 1542;
-    const svgHeight = 1220;
+    const svgWidth = 1372;
+    const svgHeight = 1320;
     const leftMargin = 130; // where Rank, Trend and Match goes
 
     const noFormat = function (d) { return d; }
@@ -74,7 +74,7 @@ export function profile(player) {
         const headerHeight = 120;
         const rankHeight = 140;
         const trendHeight = 180;
-        const matchHeight = 600;
+        const matchHeight = 700;
 
         const headerTop = 80;
         const rankTop = headerTop + headerHeight;
@@ -87,7 +87,7 @@ export function profile(player) {
             .attr("height", svgHeight + 6)
             //.attr("transform", "translate(-250,-1327)") // Includes team width
             //.attr("transform", "translate(-160,-1327)")
-            .attr("transform", "translate(-200,-1330)")
+            .attr("transform", "translate(-40,-1380)")
             .attr("fill", "black")
 
         function makeG(top, height, color) {
@@ -118,10 +118,10 @@ export function profile(player) {
 
         function makeHelpButton(stats) {
             //text("World Cup Finals not included", svg, "player-stat-row", screenWidth - 730, 120);
-            text("fortniteping.com", svg, "little-ping", svgWidth - 300, 117);
+            text("fortniteping.com", svg, "little-ping", svgWidth - 320, 117);
 
             headerG.append("circle")
-                .attr("cx", svgWidth - 30)
+                .attr("cx", svgWidth - 60)
                 .attr("cy", 30)
                 .attr("r", 22)
                 .attr("fill", "lightblue")
@@ -145,7 +145,7 @@ export function profile(player) {
                 });
 
             headerG.append("text")
-                .attr("x", svgWidth - 38)
+                .attr("x", svgWidth - 68)
                 .attr("y", 39)
                 .text("X")
                 .attr("font-size", "1.7em")
@@ -195,7 +195,7 @@ export function profile(player) {
     function makeRanks(stats, region) {
         text("Rank", rankG, "g-header", 30, 40);
 
-        const rectWidth = 280;
+        const rectWidth = 220;
         stats.totalPayout = stats.soloPayout + stats.duoPayout + stats.trioPayout;  
         [   {name: "Total", x: leftMargin},
             {name: "Solo", x: leftMargin + (rectWidth + 20)},

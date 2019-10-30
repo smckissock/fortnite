@@ -250,11 +250,11 @@ function title(width) {
 
 
 function faqButton(svg) {
-    const qualifierLeft = 1070;
+    const left = 890;
     let qualifierButton = svg.append("a")
         //.attr("xlink:href", "https://fortnitewc.netlify.com/finals.html")        
         .append("rect")
-        .attr("x", qualifierLeft)
+        .attr("x", left)
         .attr("y", 10)
         .attr("width", 70)
         .attr("height", 70)
@@ -280,13 +280,13 @@ function faqButton(svg) {
             //window.open('faq.html', '_blank');
         });
 
-    text("Power", svg, "button-text", qualifierLeft + 12, 32);  
-    text("Ranking", svg, "button-text", qualifierLeft + 5, 51);  
-    text("FAQ", svg, "button-text", qualifierLeft + 20, 70);    
+    text("Power", svg, "button-text", left + 12, 32);  
+    text("Ranking", svg, "button-text", left + 5, 51);  
+    text("FAQ", svg, "button-text", left + 20, 70);    
 } 
 
 function mostSearchedButton(svg) {
-    const qualifierLeft = 990;
+    const qualifierLeft = 810;
     let qualifierButton = svg.append("a")
         //.attr("xlink:href", "https://fortnitewc.netlify.com/finals.html")        
         .append("rect")
@@ -352,7 +352,7 @@ function disclaimer(svg) {
 }
 
 function filtersAndCount(svg, screenWidth) {
-    const fromRight = 880;
+    const fromRight = 910;
     svg.append("text")
         .attr("x", screenWidth - fromRight)
         .attr("y", 54)
@@ -370,9 +370,10 @@ function filtersAndCount(svg, screenWidth) {
 
 function helpButton(svg, screenWidth) {
 
+    const y = 46
     svg.append("circle")
-        .attr("cx", screenWidth - 30)
-        .attr("cy", 34)
+        .attr("cx", screenWidth - 20)
+        .attr("cy", y)
         .attr("r", 22)
         .attr("fill", "lightblue")
         .attr("stroke", "black")
@@ -394,8 +395,8 @@ function helpButton(svg, screenWidth) {
         });
 
     svg.append("text")
-        .attr("x", screenWidth - 38)
-        .attr("y", 46)
+        .attr("x", screenWidth - 28)
+        .attr("y", y + 12)
         .text("?")
         .attr("font-size", ".7em")
         .attr("fill", "black")
@@ -553,7 +554,7 @@ function draw(facts) {
 
     const width = 1464;
     //downloadButton(titleSvg, width);
-    helpButton(titleSvg, width - 50 - 200); // 200 for teams
+    helpButton(titleSvg, width - 50 - 400); // 200 for teams
     filtersAndCount(titleSvg, width);
 
     dc.registerChart(players, null);
