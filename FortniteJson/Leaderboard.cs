@@ -17,7 +17,7 @@ namespace FortniteJson {
             List<string> lines = new List<string>();
             var header = "\"Region\",\"Player\",\"Payout\",\"RawPowerPoints\"";
 
-            int playersPerRegion = 200; 
+            int playersPerRegion = 1000; 
             int count = 0;
             var region = "";
             //var reader = Db.Query("SELECT Region, Player, Payout, RawPowerPoints FROM StatsWithPlayerInfoView WHERE Region <> 'All' ORDER BY Region, Payout");
@@ -41,9 +41,11 @@ namespace FortniteJson {
                 fields.Add(reader["Player"].ToString());
                 fields.Add(reader["Payout"].ToString());
                 fields.Add(reader["PowerPoints"].ToString());
-                
-                if (count <= playersPerRegion)
+
+                if (count < playersPerRegion) {
                     lines.Add("\"" + string.Join("\",\"", fields) + "\"");
+                    Console.WriteLine(reader["Player"].ToString());
+                }
 
                 count++;
             }
