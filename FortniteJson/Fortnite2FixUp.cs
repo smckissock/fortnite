@@ -207,7 +207,7 @@ namespace FortniteJson {
                 Console.WriteLine(fields[0]);
             }
         }
-
+            
 
         private static TextFieldParser GetCsvParser(string csvFile) {
             TextFieldParser csv = new TextFieldParser(csvFile, Encoding.UTF8);

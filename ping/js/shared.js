@@ -108,14 +108,19 @@ export const colors = {
     grey: '#B3B3B3', 
 }
 
-// Writes stats to an svg, but pass in a css class
-export function text(text, svg, style, x, y) {    
-    svg.append("text")
+// Writes stats to an svg, with a css class and optional id
+export function text(text, svg, style, x, y, id = "") {  
+    const textElm = 
+        svg.append("text")
         .attr("x", x)
         .attr("y", y)
         .attr("pointer-events", "none")
         .text(text)
         .classed(style, true)
+
+    // Give it an id, if provided    
+    if (id != "")
+        textElm.attr("id", id);    
 }
 
 // Writes stats to an svg, but pass in a css class

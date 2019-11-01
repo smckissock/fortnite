@@ -87,7 +87,7 @@ export function profile(player) {
             .attr("height", svgHeight + 6)
             //.attr("transform", "translate(-250,-1327)") // Includes team width
             //.attr("transform", "translate(-160,-1327)")
-            .attr("transform", "translate(-40,-1380)")
+            .attr("transform", "translate(-40,-1430)")
             .attr("fill", "black")
 
         function makeG(top, height, color) {

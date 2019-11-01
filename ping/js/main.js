@@ -55,6 +55,7 @@ let playerStatsGroup;
 const LeftSideWidth = 340;
 
 let titleSvg;
+let filtersSvg;
 let filterTextDisplayed;
 
 let loadingSvg;
@@ -351,21 +352,16 @@ function disclaimer(svg) {
         .attr("font-weight", 400)
 }
 
-function filtersAndCount(svg, screenWidth) {
-    const fromRight = 910;
-    svg.append("text")
-        .attr("x", screenWidth - fromRight)
-        .attr("y", 54)
-        .text("")
-        .attr("id", "filterText1")
-        .classed("filters-string", true);
+function filtersAndCount() {
+    const height = 34;
 
-    svg.append("text")
-        .attr("x", screenWidth - fromRight)
-        .attr("y", 54)
-        .text("")
-        .attr("id", "filterText2")
-        .classed("filters-string", true);
+    const div = d3.select(".filters");
+    filtersSvg = div.append("svg")
+        .attr("width", "800px")
+        .attr("height", "50px");
+    
+    text("", filtersSvg, "filters-string", 10, height, "filterText1");  
+    text("", filtersSvg, "filters-string", 10, height, "filterText2"); 
 }
 
 function helpButton(svg, screenWidth) {
@@ -495,15 +491,15 @@ export function updateCounts() {
 
     // Toggle the filter to display, then fade it in and fade the old one out
     filterTextDisplayed = (filterTextDisplayed === "#filterText1") ? "#filterText2" : "#filterText1";
-    titleSvg.select(filterTextDisplayed)
+    filtersSvg.select(filterTextDisplayed)
         .transition()
         .duration(300)
         .text(filterText)
         .attr("fill-opacity", 1.0);
-    titleSvg.select((filterTextDisplayed === "#filterText2") ? "#filterText1" : "#filterText2")
+    filtersSvg.select((filterTextDisplayed === "#filterText2") ? "#filterText1" : "#filterText2")
         .transition()
         .duration(400)
-        .attr("fill-opacity", 0);
+        .attr("fill-opacity", 0); 
 }
 
 function niceSortName() {
@@ -555,7 +551,8 @@ function draw(facts) {
     const width = 1464;
     //downloadButton(titleSvg, width);
     helpButton(titleSvg, width - 50 - 400); // 200 for teams
-    filtersAndCount(titleSvg, width);
+
+    filtersAndCount();
 
     dc.registerChart(players, null);
     //  dc.registerChart(team, null);
