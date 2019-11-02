@@ -16,14 +16,36 @@ knitr::opts_chunk$set(fig.width=10, fig.height=6, fig.path='Figs/',
 options(tibble.print_max = 100, tibble.print_min = 5)
 
 library(tidyverse)
+library(DBI)
 
-raw_data <- read_csv("C:/project/fortnite/r/player-search/data.csv")
+con <- DBI::dbConnect(odbc::odbc(), 
+                      Driver = "SQL Server", 
+                      Server = "DESKTOP-S1K43CL\\SQLEXPRESS", 
+                      Database = "Fortnite", 
+                      Trusted_Connection = "True")
+
+
+player_count_tbl <- dbGetQuery(con, paste0("SELECT COUNT (DISTINCT Name) FROM PlayerSearchView ")) 
+player_count <- prettyNum(player_count_tbl[1, 1], big.mark=",")
+
+search_count_tbl <- dbGetQuery(con, paste0("SELECT SUM(UniqueEvents) FROM PlayerSearchView")) 
+search_count <- prettyNum(search_count_tbl[1, 1], big.mark=",")
+
+
+## UPDATE THESE
+min_searches <- 15
+update_date <- "November 2, 2019"
+
+
+#raw_data <- read_csv("C:/project/fortnite/r/player-search/data.csv")
+raw_data <- dbGetQuery(con, paste0("SELECT * FROM PlayerSearchView"))
+
 ```
 Back to [Fortnite Ping](<https://www.fortniteping.com>) 
 
-***Last updated October 27, 2019***
+***Last updated `r update_date`***
 
-We started tracking player searches on Fortnite Ping in mid October. More than 3,000 players were searched in more than 11,000 searches. Here is the breakdown of searches by region. The relatively large number of searches in NA East may be due to the it being used to organize practice matches.   
+We started tracking player searches on Fortnite Ping in mid October 2019. As of now, `r player_count` players have been searched in more than `r search_count` searches. Here is the breakdown of searches by region. The relatively large number of searches in NA East may be due to the it being used to organize scrims.
 
 ```{r region_search_chart, fig.width = 7, fig.height = 2}
 
@@ -44,7 +66,7 @@ ggplot(regions, aes(x = total, y = reorder(Region, total))) +
   ) 
 ```
 
-Here is a breakdown of the players who have more than 10 searches. Note that we don't track who was doing the searching, only who was searched!
+Here is a breakdown of the players who have more than `r min_searches` searches. Note that we don't track who was doing the searching, only who was searched.
 
 ```{r player_search_chart, fig.width = 8, fig.height = 26}
 
@@ -52,7 +74,7 @@ searches <- raw_data %>%
   group_by(Name, Region) %>% 
   summarize(total = sum(TotalEvents)) %>%
   group_by(Region) %>%
-  filter(total > 10)
+  filter(total > min_searches)
   #top_n(2)  -- top n in region
   
 ggplot(searches, aes(x = total, y = reorder(Name, total))) +
@@ -64,4 +86,8 @@ ggplot(searches, aes(x = total, y = reorder(Name, total))) +
   theme(panel.grid.major.y = element_blank()) +
   labs(x = "", y = "") +
   facet_grid(Region ~ ., scales = "free_y", space = "free_y")
+
+
+#raw_data
+#dbGetQuery(con, paste0("SELECT * FROM PlayerSearchView"))
 ```

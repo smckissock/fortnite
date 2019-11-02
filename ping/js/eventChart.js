@@ -123,7 +123,7 @@ export function eventChart(id) {
         events.forEach(function (format) {
 
             // Solo, duo, trio, squad on left 
-            text(format.format, svg, "checkbox-label", 10, formatNum * height + 23 + top)
+            text(format.format, svg, "checkbox-label", 6, formatNum * height + 21 + top)
             
             // Event rectangle "buttons" 
             svg.selectAll("rect." + format.format).data(format.items).enter().append("rect")

@@ -187,12 +187,12 @@ namespace FortniteJson {
 
         public static void ImportPlayerSearch() {
 
-            string file = "c:\\project\\fortnite\\csv\\Analytics All Web Site Data Searches by Player and Date 20191020-20191026.csv";
+            string file = "c:\\project\\fortnite\\csv\\Analytics All Web Site Data Searches by Player and Date 20191026-20191101.csv";
             //string file = "c:\\project\\fortnite\\csv\\Players 20191014-20191020.csv";
 
             var csv = GetCsvParser(file);
             // Ignore header row
-            csv.ReadLine();
+            csv.ReadFields();
 
             while (!csv.EndOfData) {
                 string[] fields = csv.ReadFields();
