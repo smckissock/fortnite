@@ -14,6 +14,9 @@ FROM StatsWithPlayerInfoView
 WHERE Region <> 'All' 
 GROUP BY Region, Player
 
+ORDER BY Region, Payout DESC
+
+
+
 
 SELECT * FROM SquadTestView 
-ORDER BY Region, Payout DESC

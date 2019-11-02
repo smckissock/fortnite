@@ -35,6 +35,15 @@ export const events = [
             { num: "W5", weekNum: 16, name: "CS Week 5", type: "Champion Series", date: "September 15", done: true },
             { num: "F", weekNum: 17, name: "CS Final", type: "Champion Series", date: "September 22", done: true }
         ]
+    },
+    {
+        format: "Squads", items: [
+            { num: "W1", weekNum: 18, name: "CS Squad Wk 1", type: "Champion Series Squads", date: "November 4", done: false },
+            { num: "W2", weekNum: 19, name: "CS Squad Wk 2", type: "Champion Series Squads", date: "November 10", done: false },
+            { num: "W3", weekNum: 20, name: "CS Squad Wk 3", type: "Champion Series Squads", date: "November 17", done: false },
+            { num: "W4", weekNum: 21, name: "CS Squad Wk 4", type: "Champion Series Squads", date: "November 24", done: false },
+            { num: "F", weekNum: 22, name: "CS Final", type: "Champion Series  Squads", date: "December 9", done: false }
+        ]
     }
 ];
 
@@ -81,14 +90,15 @@ export function eventChart(id) {
     function makeTimelines() {
         
         const firstWeek = 1;
-        const lastWeek = 18;
+        const lastWeek = 23;
         const xScale = d3.scaleLinear()
             .domain([firstWeek, lastWeek])
             .range([76, svgWidth]);
 
         [
             { firstWeek: 1, lastWeek: 12, name: "Fortnite World Cup" },
-            { firstWeek: 12, lastWeek: 18, name: "Fortnite Champion Series" }
+            { firstWeek: 12, lastWeek: 18, name: "FNCS Trios" },
+            { firstWeek: 18, lastWeek: 23, name: "FNCS Squads" }
         ]
             .forEach(function (event) {
                 const left = xScale(event.firstWeek) - 4;
@@ -108,31 +118,19 @@ export function eventChart(id) {
             });
 
         const top = 40;
+        const height = 26;
         let formatNum = 0;
         events.forEach(function (format) {
 
-            text(format.format, svg, "checkbox-label", 10, formatNum * 35 + 27 + top)
-            let formatCheckBox = new checkBox(format.format);
-            formatCheckBox
-                .size(25)
-                .x(62)
-                .y(formatNum * 35 + 8 + top)
-                .rx(corner)
-                .ry(corner)
-                .markStrokeWidth(4)
-                .boxStrokeWidth(1)
-                .checked(false)
-                .clickEvent(function () {
-                    formatCheck(format.format, formatCheckBox.checked())
-                });
-            // Maybe later...    
-            //svg.call(formatCheckBox);
-
+            // Solo, duo, trio, squad on left 
+            text(format.format, svg, "checkbox-label", 10, formatNum * height + 23 + top)
+            
+            // Event rectangle "buttons" 
             svg.selectAll("rect." + format.format).data(format.items).enter().append("rect")
                 .attr("x", d => xScale(d.weekNum))
-                .attr("y", formatNum * 35 + 3 + top)
-                .attr("width", 46)
-                .attr("height", 34)
+                .attr("y", formatNum * height + 3 + top)
+                .attr("width", 36)
+                .attr("height", height - 1)
                 .attr("fill", d => d.done == true ? "cornflowerblue" : "#888888")
                 .attr("stroke", "black")
                 .attr("stroke-width", 0)
@@ -162,7 +160,9 @@ export function eventChart(id) {
                     let x = week.num != "W10" ? xScale(week.weekNum) + 11 : xScale(week.weekNum) + 7;
                     if (week.num == "F")
                         x = xScale(week.weekNum) + 17;
-                    text(week.num, svg, "week-label", x, formatNum * 35 + 25 + top);
+
+                    // Labels on buttons     
+                    text(week.num, svg, "week-label", x - 3, formatNum * height + 21 + top);
                 })
 
             formatNum++;

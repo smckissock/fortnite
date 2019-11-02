@@ -264,6 +264,17 @@ GO
 
 
 
+-- November 1 Before Adding Squads 
+BACKUP DATABASE Fortnite
+TO DISK = N'd:\Fortnite\Fortnitedb\November 1.bak' WITH NOFORMAT, NOINIT, NAME = N'Full Database Backup', SKIP, NOREWIND, NOUNLOAD, STATS = 10
+GO
+
+
+
+
+
+
+
 
 
 
