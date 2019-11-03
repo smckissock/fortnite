@@ -88,6 +88,19 @@ ggplot(searches, aes(x = total, y = reorder(Name, total))) +
   facet_grid(Region ~ ., scales = "free_y", space = "free_y")
 
 
-#raw_data
-#dbGetQuery(con, paste0("SELECT * FROM PlayerSearchView"))
+
 ```
+
+**Player searces by region and day**
+
+```{r player_search_by_day_chart, fig.width = 9, fig.height = 4}
+
+days <- raw_data  
+
+ggplot(days, aes(x = SearchDate, y = TotalEvents, fill = Region)) +
+  geom_col() +
+  labs(y = "Player Searches", x = "") + 
+  theme(axis.text.x = element_text(angle = 40, hjust = 1))
+
+```
+
