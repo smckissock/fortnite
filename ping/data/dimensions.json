@@ -29043,93 +29043,143 @@
       "id": 1035,
       "name": "CS Final",
       "weekId": 17
+    },
+    {
+      "id": 2035,
+      "name": "CS Squads #1",
+      "weekId": 18
+    },
+    {
+      "id": 2036,
+      "name": "CS Squads #2",
+      "weekId": 19
+    },
+    {
+      "id": 2037,
+      "name": "CS Squads #3",
+      "weekId": 20
+    },
+    {
+      "id": 2038,
+      "name": "CS Squads #4",
+      "weekId": 21
+    },
+    {
+      "id": 2039,
+      "name": "CS Squads Final",
+      "weekId": 22
     }
   ],
   "weekWeights": [
     {
+      "Id": 22,
+      "Index": 22,
+      "Weight": 1.0
+    },
+    {
+      "Id": 21,
+      "Index": 21,
+      "Weight": 0.98
+    },
+    {
+      "Id": 20,
+      "Index": 20,
+      "Weight": 0.96
+    },
+    {
+      "Id": 19,
+      "Index": 19,
+      "Weight": 0.94
+    },
+    {
+      "Id": 18,
+      "Index": 18,
+      "Weight": 0.92
+    },
+    {
       "Id": 17,
       "Index": 17,
-      "Weight": 1.0
+      "Weight": 0.9
     },
     {
       "Id": 16,
       "Index": 16,
-      "Weight": 0.98
+      "Weight": 0.88
     },
     {
       "Id": 15,
       "Index": 15,
-      "Weight": 0.96
+      "Weight": 0.86
     },
     {
       "Id": 14,
       "Index": 14,
-      "Weight": 0.94
+      "Weight": 0.84
     },
     {
       "Id": 13,
       "Index": 13,
-      "Weight": 0.92
+      "Weight": 0.82000000000000006
     },
     {
       "Id": 12,
       "Index": 12,
-      "Weight": 0.9
+      "Weight": 0.8
     },
     {
       "Id": 11,
       "Index": 11,
-      "Weight": 0.88
+      "Weight": 0.78
     },
     {
       "Id": 10,
       "Index": 10,
-      "Weight": 0.86
+      "Weight": 0.76
     },
     {
       "Id": 9,
       "Index": 9,
-      "Weight": 0.84
+      "Weight": 0.74
     },
     {
       "Id": 8,
       "Index": 8,
-      "Weight": 0.82000000000000006
+      "Weight": 0.72
     },
     {
       "Id": 7,
       "Index": 7,
-      "Weight": 0.8
+      "Weight": 0.7
     },
     {
       "Id": 6,
       "Index": 6,
-      "Weight": 0.78
+      "Weight": 0.67999999999999994
     },
     {
       "Id": 5,
       "Index": 5,
-      "Weight": 0.76
+      "Weight": 0.65999999999999992
     },
     {
       "Id": 4,
       "Index": 4,
-      "Weight": 0.74
+      "Weight": 0.64
     },
     {
       "Id": 3,
       "Index": 3,
-      "Weight": 0.72
+      "Weight": 0.62
     },
     {
       "Id": 2,
       "Index": 2,
-      "Weight": 0.7
+      "Weight": 0.6
     },
     {
       "Id": 1,
       "Index": 1,
-      "Weight": 0.67999999999999994
+      "Weight": 0.58000000000000007
     }
   ]
 }

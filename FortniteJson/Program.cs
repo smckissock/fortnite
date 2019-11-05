@@ -48,7 +48,8 @@ namespace FortniteJson {
             //var directory = "champion-series";
             //var directory = "Cash Cup Wed";
             //var directory = "Cash Cup Thurs";
-            var directory = "champion-series-final";
+            //var directory = "champion-series-final";
+            var directory = "champion series squad week 1";
 
             //Scraper.Step1_GetFiles(directory);
             //Scraper.Step2_GetPlayersAndPlayerWeeks(directory);
@@ -62,11 +63,13 @@ namespace FortniteJson {
             // Wed 1019 1020 1021 1022
             // Thurs 1025 1026 1027 1028
             // Fri 1031 1032 1033 1034
-            //Fortnite2FixUp.FixPlacementPayout("1035");
-            //Fortnite2FixUp.FixPlacementElims("1035");
-            //Fortnite2FixUp.UpdateWins("1035");
 
-            Fortnite2FixUp.ImportPlayerSearch();
+            var eventId = "2035";
+            //Fortnite2FixUp.FixPlacementPayout(eventId);  // EventID
+            //Fortnite2FixUp.FixPlacementElims(eventId);
+            //Fortnite2FixUp.UpdateWins(eventId);
+
+            //Fortnite2FixUp.ImportPlayerSearch();
 
             //Leaderboard.SquadTest();
 
@@ -77,8 +80,9 @@ namespace FortniteJson {
             //Fortnite2FixUp.FixPowerPoints();
             //Fortnite2FixUp.AddPlayerPlacementNames();
 
-            //Fortnite.MakeDimensions();
-            //Fortnite.MakeJsonArray();   
+            // Fortnite.MakeDimensions();
+            Fortnite.MakeJsonArray();   
+
 
             Console.Write("DONE");
             Console.Read();

@@ -55,7 +55,7 @@ namespace FortniteJson {
             }
 
             events = Event.GetEvents();
-            weekWeights = WeekWeight.GetWeekWeights(20);
+            weekWeights = WeekWeight.GetWeekWeights("100");
         }
     }
 

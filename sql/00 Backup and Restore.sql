@@ -264,14 +264,28 @@ GO
 
 
 
--- November 1 Before Adding Squads 
+-- November 1 Before Adding Squad events 
 BACKUP DATABASE Fortnite
 TO DISK = N'd:\Fortnite\Fortnitedb\November 1.bak' WITH NOFORMAT, NOINIT, NAME = N'Full Database Backup', SKIP, NOREWIND, NOUNLOAD, STATS = 10
 GO
 
 
 
+-- November 4 Before importing squad week1  
+BACKUP DATABASE Fortnite
+TO DISK = N'd:\Fortnite\Fortnitedb\November 4.bak' WITH NOFORMAT, NOINIT, NAME = N'Full Database Backup', SKIP, NOREWIND, NOUNLOAD, STATS = 10
+GO
 
+
+
+RESTORE FILELISTONLY
+FROM DISK = N'd:\fortnite\fortnitedb\November 4.bak'
+GO
+
+RESTORE DATABASE Fortnite
+FROM DISK = N'd:\fortnite\fortnitedb\November 4.bak'
+WITH MOVE 'Fortnite2' TO 'd:\fortnite\fortnitedb\November 4.mdf',
+MOVE 'Fortnite2_log' TO 'd:\fortnite\fortnitedb\November 4.ldf'
 
 
 

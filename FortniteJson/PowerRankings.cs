@@ -28,9 +28,9 @@ namespace FortniteJson {
             Weight = weight;
         }
 
-        public static List<WeekWeight> GetWeekWeights(int weekIndex) {
+        public static List<WeekWeight> GetWeekWeights(string weekIndex) {
             var weekWeights = new List<WeekWeight>();
-            var reader = Db.Query("SELECT ID, WeekIndex FROM Week ORDER BY WeekIndex DESC");
+            var reader = Db.Query("SELECT ID, WeekIndex FROM Week WHERE WeekIndex <= " + weekIndex + " ORDER BY WeekIndex DESC");
             int count = 0;
             while (reader.Read()) {
                 // e.g. 1.0, 0.98, 0.96...
@@ -121,14 +121,17 @@ namespace FortniteJson {
 
         public PowerRankings() {
 
-            weekWeights = WeekWeight.GetWeekWeights(Db.Int("SELECT MAX(WeekIndex) FROM Week"));
+            string currentWeekId = "18";
+
+            // Update Week
+            weekWeights = WeekWeight.GetWeekWeights(currentWeekId);
 
             //events = Db.Names("Event");
             events = Db.Names("PowerRankingEventsView");  // Just WC and FCS
             regions = Db.Names("Region");
 
             // Setup dictionary to look up the weighting for each event, based on the week
-            var weekReader = Db.Query("SELECT Name, WeekID FROM Event");
+            var weekReader = Db.Query("SELECT Name, WeekID FROM Event WHERE WeekID <= " + currentWeekId);
             while (weekReader.Read()) {
                 var anEvent = weekReader["Name"].ToString();
                 var weekId = (int)weekReader["WeekID"];
@@ -206,7 +209,7 @@ namespace FortniteJson {
                     Console.WriteLine(anEvent + " " + region + " Total = " + totalPayout + " Count = " + (rank - 1));
                 }
             }
-            string fileName = @"c:\project\fortnite\r\power-ranking-tiers\data.csv";
+            string fileName = @"c:\project\fortnite\r\power-ranking-faq\data.csv";
             File.WriteAllText(fileName, string.Join("\n", lines));
 
             Console.WriteLine(pointsDict.Count.ToString() + " items");

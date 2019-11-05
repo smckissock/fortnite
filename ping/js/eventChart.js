@@ -38,10 +38,10 @@ export const events = [
     },
     {
         format: "Squads", items: [
-            { num: "W1", weekNum: 18, name: "CS Squad Wk 1", type: "Champion Series Squads", date: "November 4", done: false },
-            { num: "W2", weekNum: 19, name: "CS Squad Wk 2", type: "Champion Series Squads", date: "November 10", done: false },
-            { num: "W3", weekNum: 20, name: "CS Squad Wk 3", type: "Champion Series Squads", date: "November 17", done: false },
-            { num: "W4", weekNum: 21, name: "CS Squad Wk 4", type: "Champion Series Squads", date: "November 24", done: false },
+            { num: "W1", weekNum: 18, name: "CS Squads #1", type: "Champion Series Squads", date: "November 4", done: true },
+            { num: "W2", weekNum: 19, name: "CS Squads #2", type: "Champion Series Squads", date: "November 10", done: false },
+            { num: "W3", weekNum: 20, name: "CS Squads #3", type: "Champion Series Squads", date: "November 17", done: false },
+            { num: "W4", weekNum: 21, name: "CS Squads #4", type: "Champion Series Squads", date: "November 24", done: false },
             { num: "F", weekNum: 22, name: "CS Final", type: "Champion Series  Squads", date: "December 9", done: false }
         ]
     }
@@ -123,7 +123,7 @@ export function eventChart(id) {
         events.forEach(function (format) {
 
             // Solo, duo, trio, squad on left 
-            text(format.format, svg, "checkbox-label", 6, formatNum * height + 21 + top)
+            text(format.format, svg, "checkbox-label", 6    , formatNum * height + 21 + top)
             
             // Event rectangle "buttons" 
             svg.selectAll("rect." + format.format).data(format.items).enter().append("rect")

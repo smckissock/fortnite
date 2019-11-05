@@ -177,8 +177,7 @@ namespace FortniteJson {
 
                 // UPDATE
                 Db.Command("UPDATE Player SET CurrentName = (SELECT N'PlayerName' FROM PlayerEvent WHERE PlayerID = " + playerId + " AND EventID = " + eventId + ") WHERE ID = " + playerId);
-
-
+                
                 x++;
                 if (x % 100 == 0)
                     Console.WriteLine(x.ToString());
