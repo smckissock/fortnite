@@ -3,10 +3,10 @@ GO
 
 
 --Saved Report: Searches by Player and Date
-
-SELECT MIN(SearchDate) Earliest, MAX(SearchDate) Latest   FROM PlayerSearch -- 2019-10-20
-SELECT SUM(TotalEvents), SUM(UniqueEvents) FROM PlayerSearch -- 5512
-SELECT  COUNT(*) FROM PlayerSearch -- 3432
+--                                                                          -- 11/1        11/7
+SELECT MIN(SearchDate) Earliest, MAX(SearchDate) Latest   FROM PlayerSearch -- 10/14-11/1
+SELECT SUM(TotalEvents), SUM(UniqueEvents) FROM PlayerSearch				-- 16,219
+SELECT  COUNT(*) FROM PlayerSearch											-- 10415
 
 
 

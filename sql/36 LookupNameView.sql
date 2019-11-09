@@ -22,7 +22,7 @@ JOIN Event e ON e.ID = pe.EventID
 --INSERT INTO PlayerPlacement VALUES((SELECT ID FROM Player WHERE EpicGuid= '14172e753af34ab4abe3c2de6348bc23'), (SELECT MAX(ID) FROM Placement), 
 --(SELECT PLayerName FROM LookupNameView WHERE EpicGuid= '14172e753af34ab4abe3c2de6348bc23' AND EventName = 'CS Squads #1'))
 
-
+SELECT * FROM Week
 
 INSERT INTO PlayerPlacement VALUES((SELECT ID FROM Player WHERE EpicGuid= 'a851fb5bdc324a71b7288d06a3b5f647'), (SELECT MAX(ID) FROM Placement), 
 
@@ -31,6 +31,9 @@ INSERT INTO PlayerPlacement VALUES((SELECT ID FROM Player WHERE EpicGuid= 'a851f
 
 
 SELECT * FROM Player WHERe EpicGUID = 'a851fb5bdc324a71b7288d06a3b5f647'
+
+
+SELECT Name, WeekID FROM Event WHERE WeekID <= 18
 
 
 

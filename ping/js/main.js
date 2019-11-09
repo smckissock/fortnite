@@ -140,6 +140,7 @@ d3.json('ping/data/data.json').then(function (dataArray) {
         const event = events.find(e => e.id === parseInt(d[17], 10));
         rec.week = event.name;
         rec.weight = +event.weight;
+        rec.weight = rec.weight + .08; // Change this each week!!
 
         rec.powerPoints = Math.round(rec.rawPowerPoints * rec.weight);
 
@@ -475,9 +476,7 @@ export function updateCounts() {
         else
             if (filters.weeks.length != 0)
                 filterParts.push(filters.weeks.join(", "));
-        //if (filters.week != "")
-        //    filterParts.push(filters.week);
-
+        
         if (filters.search != "")
             filterParts.push('"' + filters.search + '"');
 

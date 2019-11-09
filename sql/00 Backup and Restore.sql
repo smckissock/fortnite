@@ -32,7 +32,7 @@ GO
 RESTORE FILELISTONLY
 FROM DISK = N'd:\db\FortniteJuly24.bak'
 GO
-
+[Fortnite_bad_cs_final]
 
 -- Didn't test this
 RESTORE DATABASE Fortnite2
@@ -286,6 +286,23 @@ RESTORE DATABASE Fortnite
 FROM DISK = N'd:\fortnite\fortnitedb\November 4.bak'
 WITH MOVE 'Fortnite2' TO 'd:\fortnite\fortnitedb\November 4.mdf',
 MOVE 'Fortnite2_log' TO 'd:\fortnite\fortnitedb\November 4.ldf'
+
+
+-- November 5 After importing squad week1, before updating names  
+BACKUP DATABASE Fortnite
+TO DISK = N'd:\Fortnite\Fortnitedb\November 5.bak' WITH NOFORMAT, NOINIT, NAME = N'Full Database Backup', SKIP, NOREWIND, NOUNLOAD, STATS = 10
+GO
+
+
+
+RESTORE FILELISTONLY
+FROM DISK = N'd:\fortnite\fortnitedb\November 5.bak'
+GO
+
+RESTORE DATABASE Fortnite
+FROM DISK = N'd:\fortnite\fortnitedb\November 5.bak'
+WITH MOVE 'Fortnite2' TO 'd:\fortnite\fortnitedb\November 5.mdf',
+MOVE 'Fortnite2_log' TO 'd:\fortnite\fortnitedb\November 5.ldf'
 
 
 

@@ -73,15 +73,20 @@ namespace FortniteJson {
 
             //Leaderboard.SquadTest();
 
+
+            Squads.MakeSquadCsvs();
+            //Squads.Update("2035");
+
             //Fortnite2FixUp.FixPlayerNames();
 
+            // DO NOT RUN THIS.  IT GIVES WC PLACEMENTS (REGION 1) THE REGION OF THE PLAYER 
             //Fortnite2FixUp.FixPlayerRegions();
 
             //Fortnite2FixUp.FixPowerPoints();
             //Fortnite2FixUp.AddPlayerPlacementNames();
 
-            // Fortnite.MakeDimensions();
-            Fortnite.MakeJsonArray();   
+            //Fortnite.MakeDimensions();
+            //Fortnite.MakeJsonArray();   
 
 
             Console.Write("DONE");

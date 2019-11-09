@@ -41,7 +41,8 @@ export function profile(player) {
             "Total": colors.grey,
             "Solos": colors.blue,
             "Duos": colors.orange,
-            "Trios": colors.yellow
+            "Trios": colors.yellow,
+            "Squads": colors.green
         }
 
 
@@ -195,12 +196,13 @@ export function profile(player) {
     function makeRanks(stats, region) {
         text("Rank", rankG, "g-header", 30, 40);
 
-        const rectWidth = 220;
+        const rectWidth = 213;
         stats.totalPayout = stats.soloPayout + stats.duoPayout + stats.trioPayout;  
         [   {name: "Total", x: leftMargin},
             {name: "Solo", x: leftMargin + (rectWidth + 20)},
             {name: "Duo", x: leftMargin + (rectWidth + 20) * 2},
-            {name: "Trio", x: leftMargin + (rectWidth + 20) * 3}  
+            {name: "Trio", x: leftMargin + (rectWidth + 20) * 3}, 
+            {name: "Squad", x: leftMargin + (rectWidth + 20) * 4} 
         ].forEach(function(d) {
             const rect = rankG.append("rect")
                 .attr("x", d.x)
@@ -289,8 +291,8 @@ export function profile(player) {
         });
 
         const y = 0;
-        [   {name: "World Cup", x1: leftMargin, width: (13 * (weekWidth + 3.6))},
-            {name: "Champion Series", x1: leftMargin + (14 * weekWidth), width: (weekWidth + 4) * 5 + 5} 
+        [   {name: "World Cup", x1: leftMargin, width: 13 * (weekWidth + 2) - 6},
+            {name: "Champion Series", x1: leftMargin + 13 * (weekWidth + 2) , width: (weekWidth + 6) * 7} 
         ].forEach(function(d) {
             trendG.append("rect")
                 .attr("x", d.x1)
@@ -320,7 +322,7 @@ export function profile(player) {
     function makeMatches(recs) {
 
         const colWidth = 70;
-        const rowHeaderWidth = 500;
+        const rowHeaderWidth = 470;
                 
         const cols = [
             { name: "Payout", field: "payout", format: commaFormat },
@@ -330,9 +332,9 @@ export function profile(player) {
             { name: "Points", field: "points", format: noFormat },
             { name: "Wins", field: "wins", format: noFormat },
             { name: "Elim Points", field: "elims", format: noFormat },
-            { name: "Elim %", field: "elimPct", format: pctFormat },
-            { name: "Plcmnt Points", field: "placementPoints", format: noFormat },
-            { name: "Plcmnt %", field: "placementPct", format: pctFormat }
+            { name: "Elim %", field: "elimPct", format: pctFormat }
+            //{ name: "Plcmnt Points", field: "placementPoints", format: noFormat },
+            //{ name: "Plcmnt %", field: "placementPct", format: pctFormat }
         ];
 
         function columnHeaders() {
@@ -424,6 +426,8 @@ export function profile(player) {
                     text("w / " + partners[0].player, matchG, "player-stat-row", left, y);
                 if (partners.length === 2)
                     text("w / " + partners[0].player + " & " + partners[1].player, matchG, "player-stat-row", left, y);
+                if (partners.length === 3)
+                    text("w / " + partners[0].player + " & " + partners[1].player + " & " + partners[2].player, matchG, "player-stat-row", left, y);    
 
                 cols.forEach(function (col, colNum) {
                     const toShow = col.format(week[col.field]).toString()
@@ -488,6 +492,7 @@ export function profile(player) {
         formatWeeks.forEach(fw => fw.values = fw.values.sort((a, b) => ('' + a.week).localeCompare(b.week)));
         
         let priorRowsHeight = 100;
+        priorRowsHeight = rows(formatWeeks[3], formatSummaries[3], priorRowsHeight);
         priorRowsHeight = rows(formatWeeks[2], formatSummaries[2], priorRowsHeight);
         priorRowsHeight = rows(formatWeeks[1], formatSummaries[1], priorRowsHeight);
         rows(formatWeeks[0], formatSummaries[0], priorRowsHeight);

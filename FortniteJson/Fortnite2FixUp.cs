@@ -128,7 +128,7 @@ namespace FortniteJson {
                 Db.Command("UPDATE Placement SET Wins = " + wins.ToString() + " WHERE ID = " + id);
                 //Thread.Sleep(1);
             }
-        }
+        }   
 
 
         public static void FixPlayerRegions() {
@@ -169,14 +169,15 @@ namespace FortniteJson {
 
 
         public static void FixPlayerNames() {
-            var reader = Db.Query("SELECT PlayerID, Max(EventID) EventID FROM PlayerEvent GROUP BY PlayerID, PlayerName");
+            //var reader = Db.Query("SELECT PlayerID, Max(EventID) EventID FROM PlayerEvent GROUP BY PlayerID, PlayerName");
+            var reader = Db.Query("SELECT PlayerID, Max(PlacementID) PlacementID FROM PlayerPlacement GROUP BY PlayerID, Player ORDER BY PlacementID");
             var x = 0;
             while (reader.Read()) {
                 string playerId = reader["PlayerID"].ToString();
-                string eventId = reader["EventID"].ToString();
+                string placementId = reader["PlacementID"].ToString();
 
                 // UPDATE
-                Db.Command("UPDATE Player SET CurrentName = (SELECT N'PlayerName' FROM PlayerEvent WHERE PlayerID = " + playerId + " AND EventID = " + eventId + ") WHERE ID = " + playerId);
+                Db.Command("UPDATE Player SET CurrentName = (SELECT Player FROM PlayerPlacement WHERE PlayerID = " + playerId + " AND PlacementID = " + placementId + ") WHERE ID = " + playerId);
                 
                 x++;
                 if (x % 100 == 0)
@@ -186,7 +187,7 @@ namespace FortniteJson {
 
         public static void ImportPlayerSearch() {
 
-            string file = "c:\\project\\fortnite\\csv\\Analytics All Web Site Data Searches by Player and Date 20191026-20191101.csv";
+            string file = "c:\\project\\fortnite\\csv\\Analytics All Web Site Data Searches by Player and Date 20191101-20191107.csv";
             //string file = "c:\\project\\fortnite\\csv\\Players 20191014-20191020.csv";
 
             var csv = GetCsvParser(file);
