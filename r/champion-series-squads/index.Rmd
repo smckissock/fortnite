@@ -1,5 +1,5 @@
 ---
-title: "Champion Series Squads"
+title: "FNCS Squads"
 output:
   html_document: 
     includes:
@@ -29,50 +29,54 @@ path = "C:/project/fortnite/r/champion-series-squads/data/"
 ```
 Back to [Fortnite Ping](<https://www.fortniteping.com>) 
 
-***Last updated October 28, 2019***
+***Last updated November 10, 2019***
 
 
-# Regions {.tabset .tabset-fade}
+# {.tabset .tabset-fade}
+
+
+```{r definition, echo = FALSE}
+region_table <- function(csv) {
+  region <- read_csv(str_c(path, csv))
+  datatable(region, 
+    class = 'cell-border nowrap stripe compact',
+    options = list(paging = FALSE)
+  )
+}
+```
 
 ## Europe
 ```{r europe_table}
 
-region <- read_csv(str_c(path,"Europe.csv"))
-datatable(region)
+region_table("Europe.csv")
 ```
 
 ## NA East
 ```{r na_east_table}
-region <- read_csv(str_c(path,"NA East.csv"))
-datatable(region)
+region_table("NA East.csv")
 ```
 
 ## NA West
 ```{r na_west_table}
-region <- read_csv(str_c(path,"NA West.csv"))
-datatable(region)
+region_table("NA West.csv")
 ```
 
 ## Brazil
 ```{r na_brazil_table}
-region <- read_csv(str_c(path,"Brazil.csv"))
-datatable(region)
+region_table("Brazil.csv")
 ```
 
 ## Asia
 ```{r na_asia_table}
-region <- read_csv(str_c(path,"Asia.csv"))
-datatable(region)
+region_table("Asia.csv")
 ```
 
 ## Oceania
 ```{r oceania_table}
-region <- read_csv(str_c(path,"Oceania.csv"))
-datatable(region)
+region_table("Oceania.csv")
 ```
 
 ## Middle East
 ```{r middle_east_table}
-region <- read_csv(str_c(path,"Middle East.csv"))
-datatable(region)
+region_table("Middle East.csv")
 ```

@@ -16,3 +16,12 @@ WHERE m.PowerRankings = 1 AND e.WeekID < 19
 GO
 
 
+UPDATE Placement SET Payout = Payout / 4 WHERE EventID = 2035 
+
+SELECT * FROM Placement WHERE EventID = 2035
+
+
+SELECT * FROM StatsWithPlayerInfoView WHERE EventID = 2035
+
+
+SELECT * FROM Region

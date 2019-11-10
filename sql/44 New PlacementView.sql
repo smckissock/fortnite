@@ -16,7 +16,8 @@ SELECT
 	p.Points,
 	p.Elims,
 	p.Wins,
-	pl.ID PlayerID
+	pl.ID PlayerID,
+	r.ID RegionID
 FROM Placement p
 JOIN EventView e ON p.EventID = e.ID
 JOIN Region r ON p.RegionID = r.ID

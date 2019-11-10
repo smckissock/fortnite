@@ -306,6 +306,17 @@ MOVE 'Fortnite2_log' TO 'd:\fortnite\fortnitedb\November 5.ldf'
 
 
 
+-- November 11 Before adding power points to player
+BACKUP DATABASE Fortnite
+TO DISK = N'd:\Fortnite\Fortnitedb\November 11.bak' WITH NOFORMAT, NOINIT, NAME = N'Full Database Backup', SKIP, NOREWIND, NOUNLOAD, STATS = 10
+GO
+BACKUP DATABASE Fortnite
+TO DISK = N'g:\db\November 11.bak' WITH NOFORMAT, NOINIT, NAME = N'Full Database Backup', SKIP, NOREWIND, NOUNLOAD, STATS = 10
+GO
+
+
+
+
 
 
 

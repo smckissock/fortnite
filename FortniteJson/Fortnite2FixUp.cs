@@ -151,7 +151,7 @@ namespace FortniteJson {
             var powerRankings = new PowerRankings();
             int count = 0;
 
-            var reader = Db.Query("SELECT ID, Region, Event, Rank FROM StatsWithPlayerInfoView WHERE Event IN (SELECT Name FROM PowerRankingEventsView)  ");
+            var reader = Db.Query("SELECT ID, Region, Event, Rank FROM StatsView WHERE Event IN (SELECT Name FROM PowerRankingEventsView)  ");
             while (reader.Read()) {
                 string id = reader["ID"].ToString();
                 string region = reader["Region"].ToString();
@@ -164,6 +164,29 @@ namespace FortniteJson {
                 count++;
                 if ((count % 1000) == 0)
                     Console.WriteLine(count.ToString());
+            }
+        }
+
+        public static void UpdatePlayerPowerPoints() {
+            Console.WriteLine("Update player power points");
+
+            var powerRankings = new PowerRankings();
+            
+            //var reader = Db.Query("SELECT DISTINCT PlayerID FROM StatsView WHERE SoloOrDuo = 'Squad'"); -- Only picks up players with money
+            var reader = Db.Query("SELECT PLayerID FROM PlayerPlacementView WHERE Event = 'CS Squads #1'");
+            while (reader.Read()) {
+                string playerId = reader["PlayerId"].ToString();
+                double totalPoints = 0.0;
+
+                var placements = Db.Query("SELECT RawPowerPoints, Event FROM StatsView WHERE PlayerID = " + playerId);
+                while (placements.Read()) {
+                    Double points = Convert.ToDouble(placements["RawPowerPoints"]) * powerRankings.GetWeekWeight(placements["Event"].ToString());
+                    totalPoints += Math.Floor(points); 
+                }
+                placements.Close();
+
+                Db.Command("UPDATE Player SET PowerPoints = " + totalPoints.ToString() + " WHERE ID = " + playerId);
+                Console.WriteLine(playerId + " " + totalPoints.ToString());
             }
         }
 

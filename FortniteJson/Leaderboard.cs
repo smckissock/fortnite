@@ -20,7 +20,7 @@ namespace FortniteJson {
             int playersPerRegion = 1000; 
             int count = 0;
             var region = "";
-            //var reader = Db.Query("SELECT Region, Player, Payout, RawPowerPoints FROM StatsWithPlayerInfoView WHERE Region <> 'All' ORDER BY Region, Payout");
+            //var reader = Db.Query("SELECT Region, Player, Payout, RawPowerPoints FROM StatsView WHERE Region <> 'All' ORDER BY Region, Payout");
 
             var reader = Db.Query("SELECT Region, Player, Payout, PowerPoints FROM SquadTestView ORDER BY Region, Payout DESC");
 

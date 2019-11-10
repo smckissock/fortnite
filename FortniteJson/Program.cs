@@ -74,7 +74,14 @@ namespace FortniteJson {
             //Leaderboard.SquadTest();
 
 
-            Squads.MakeSquadCsvs();
+
+            
+
+
+            //Fortnite2FixUp.UpdatePlayerPowerPoints();
+            Squads.MakeSquadCsvs(); // For R tables
+
+
             //Squads.Update("2035");
 
             //Fortnite2FixUp.FixPlayerNames();

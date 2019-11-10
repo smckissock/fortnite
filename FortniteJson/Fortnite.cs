@@ -164,7 +164,7 @@ namespace FortniteJson {
 
         private static List<List<string>> GetArray() {
             var list = new List<List<string>>();
-            var reader = Db.Query("SELECT * FROM StatsWithPlayerInfoView");
+            var reader = Db.Query("SELECT * FROM StatsView");
             while (reader.Read()) {
                 var record = new List<string>();                
                 record.Add(reader["soloWeek"].ToString());
@@ -199,7 +199,7 @@ namespace FortniteJson {
 
         //private static List<Place> GetPlaces() {
         //    var places = new List<Place>();
-        //    var reader = Db.Query("SELECT * FROM StatsWithPlayerInfoView");
+        //    var reader = Db.Query("SELECT * FROM StatsView");
         //    while (reader.Read()) {
         //        var place = new Place();
         //        place.week = reader["event"].ToString();
@@ -234,7 +234,7 @@ namespace FortniteJson {
 
             lines.Add(header);
             
-            var reader = Db.Query("SELECT * FROM StatsWithPlayerInfoView");
+            var reader = Db.Query("SELECT * FROM StatsView");
             
             while (reader.Read()) {
                 var fields = new List<string>();

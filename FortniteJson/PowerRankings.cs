@@ -199,7 +199,7 @@ namespace FortniteJson {
 
                         pnts.PlacementPoints = (ranks - i + 1) * dollarsPerPart;
                         pnts.WeekFactor = weekFactor;
-
+                            
                         // pnts.PowerPoints = pnts.PlacementPoints * pnts.WeekFactor;
                         pnts.PowerPoints = pnts.PlacementPoints;  // Multiply by week factor in browser
 
@@ -213,6 +213,11 @@ namespace FortniteJson {
             File.WriteAllText(fileName, string.Join("\n", lines));
 
             Console.WriteLine(pointsDict.Count.ToString() + " items");
+        }
+
+        // Pass in e.g. "WC Week 10" - Event from StatsView
+        public double GetWeekWeight(string eventName) {
+            return weekWeightingDict[eventName];
         }
     }
 }
