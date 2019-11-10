@@ -109,6 +109,7 @@ d3.json('ping/data/data.json').then(function (dataArray) {
     titleSvg = title(screenWidth);
     faqButton(titleSvg);
     mostSearchedButton(titleSvg);
+    squadLeaderboardButton(titleSvg);
 
     //searchLabel(titleSvg);
     //posickLabel(titleSvg);
@@ -321,6 +322,41 @@ function mostSearchedButton(svg) {
     text("Searched", svg, "button-text", qualifierLeft + 1, 51);  
     text("Players", svg, "button-text", qualifierLeft + 9, 70);    
 } 
+
+function squadLeaderboardButton(svg) {
+    const qualifierLeft = 730;
+    let qualifierButton = svg.append("a")
+        //.attr("xlink:href", "https://fortnitewc.netlify.com/finals.html")        
+        .append("rect")
+        .attr("x", qualifierLeft)
+        .attr("y", 10)
+        .attr("width", 70)
+        .attr("height", 70)
+        .attr("fill", "lightblue")
+        .attr("stroke", "black")
+        .attr("stroke-width", 0)
+        .attr("rx", cornerRadius)
+        .attr("ry", cornerRadius)
+        .on('mouseover', function (d) {
+            d3.select(this)
+                .transition()
+                .duration(100)
+                .attr("stroke-width", 5);
+        })
+        .on('mouseout', function (d) {
+            d3.select(this)
+                .transition()
+                .duration(100)
+                .attr("stroke-width", 0);
+        })
+        .on('click', function (d) {
+            window.open('r/champion-series-squads', '_blank');
+        });
+
+    text("FNCS", svg, "button-text", qualifierLeft + 16, 32);  
+    text("Squad", svg, "button-text", qualifierLeft + 13, 51);  
+    text("Leaders", svg, "button-text", qualifierLeft + 7, 70);    
+}  
 
 
 function posickLabel(svg) {
