@@ -212,7 +212,7 @@ export function profile(player) {
                 .attr("opacity", 1.0) 
                 .attr("fill", (d.name == "Total") ? formatColor[d.name] : formatColor[d.name + "s"])  // Good Lord. Need to make it always "Solos" 
             
-            centeredText(d.name, rankG, "player-info", d.x, rectWidth, 34);
+            centeredText((d.name == "Total") ? "Overall" : d.name, rankG, "player-info", d.x, rectWidth, 34);
             centeredText("$" + num(stats[d.name.toLowerCase() + "Payout"]), rankG, "player-info", d.x, rectWidth, 66);
             centeredText("#" + stats[d.name.toLowerCase() + "PayoutRank"] + " " + region, rankG, "player-info", d.x, rectWidth, 100);
         });
@@ -364,7 +364,7 @@ export function profile(player) {
                 .attr("fill", colors.grey)
             
             const y = 66;
-            text("Total", matchG, "player-stat-summary", leftMargin, y);
+            text("Overaall", matchG, "player-stat-summary", leftMargin, y);
 
             cols.forEach(function (col, colNum) {
                 const toShow = col.format(totals[col.field]).toString()
