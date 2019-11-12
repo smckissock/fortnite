@@ -13,6 +13,13 @@ knitr::opts_chunk$set(fig.width=10, fig.height=6, fig.path='Figs/',
                       echo=FALSE, warning=FALSE, message=FALSE)
 
 library(tidyverse)
+library(DBI)
+
+con <- DBI::dbConnect(odbc::odbc(), 
+                      Driver = "SQL Server", 
+                      Server = "DESKTOP-S1K43CL\\SQLEXPRESS", 
+                      Database = "Fortnite", 
+                      Trusted_Connection = "True")
 ```
 Back to [Fortnite Ping](<https://www.fortniteping.com>)
 

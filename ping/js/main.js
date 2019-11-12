@@ -109,7 +109,7 @@ d3.json('ping/data/data.json').then(function (dataArray) {
     titleSvg = title(screenWidth);
     faqButton(titleSvg);
     mostSearchedButton(titleSvg);
-    squadLeaderboardButton(titleSvg);
+    //squadLeaderboardButton(titleSvg);
 
     //searchLabel(titleSvg);
     //posickLabel(titleSvg);
@@ -141,7 +141,7 @@ d3.json('ping/data/data.json').then(function (dataArray) {
         const event = events.find(e => e.id === parseInt(d[17], 10));
         rec.week = event.name;
         rec.weight = +event.weight;
-        rec.weight = rec.weight + .08; // Change this each week!!
+        rec.weight = rec.weight + .06; // Change this each week!! (-.02)
 
         rec.powerPoints = Math.round(rec.rawPowerPoints * rec.weight);
 

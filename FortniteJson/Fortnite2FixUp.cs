@@ -145,6 +145,8 @@ namespace FortniteJson {
             }
         }
 
+
+
         public static void FixPowerPoints() {
             Console.WriteLine("Fix power points");
 

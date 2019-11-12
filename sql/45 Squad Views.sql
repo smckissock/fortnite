@@ -36,7 +36,7 @@ WITH Player (SquadID, PlayerID, PlayerName, PowerPoints, SquadRank) AS (
 			PowerPoints,
 			RANK () OVER ( 
 				PARTITION BY SquadID
-				ORDER BY PlayerID DESC
+				ORDER BY PowerPoints DESC, ID
 			) SquadRank
 		FROM
 			SquadPlayerView
@@ -69,7 +69,30 @@ LEFT JOIN (SELECT SquadID, PlayerName, PowerPoints, PlayerID FROM Player WHERE S
 LEFT JOIN (SELECT SquadID, PlayerName, PowerPoints, PlayerID FROM Player WHERE SquadRank = 3) p3 ON p3.SquadID = s.ID
 LEFT JOIN (SELECT SquadID, PlayerName, PowerPoints, PlayerID FROM Player WHERE SquadRank = 4) p4 ON p4.SquadID = s.ID
 
+
 SELECT * FROM SquadView
 
+SELECT DISTINCT Player, PlayerID, * FROM StatsView WHERE SoloOrDuo = 'Squad' AND RegionID = 3
 
-SELECT * FROM Player
+
+SELECT * FROM Player WHERE ID IN (SELECT DISTINCT PlayerID FROM StatsView WHERE SoloOrDuo = 'Squad') 
+
+
+AND CurrentName Like '%mis%'
+ORDER BY PowerPoints
+
+
+SELECT * FROM SquadPlacement
+
+SELECT * fROM Event WHERE EventID = 2035
+
+SELECT * FROM Placement WHERE EventID = 2035
+
+SELECT * FROM PlayerPlacementView WHERE Event = 'CS Squads #1'
+
+
+SELECT Region, AveragePowerPoints, PowerPoints1, Player1, PowerPoints2, Player2, PowerPoints3, Player3, PowerPoints4, Player4 FROM SquadView ORDER BY Region
+
+
+
+SELECT * FROM Player WHERe PowerPoints IS NULL

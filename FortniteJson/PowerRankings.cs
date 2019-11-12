@@ -55,18 +55,20 @@ namespace FortniteJson {
         public string Region;
         public string EventName;
         public int Rank;
+        public int TeamPayout;
         public int Payout;
 
         public double WeekFactor;
         public double PlacementPoints;
         public double PowerPoints;
 
-        public PowerRankingPoints(string match, int teamSize, string region, string eventName, int rank, int payout) {
+        public PowerRankingPoints(string match, int teamSize, string region, string eventName, int rank, int teamPayout, int payout) {
             Match = match;
             TeamSize = teamSize;
             Region = region;
             EventName = eventName;
             Rank = rank;
+            TeamPayout = teamPayout;
             Payout = payout;
         }
 
@@ -96,7 +98,7 @@ namespace FortniteJson {
             return pnts.PowerPoints;
         }
 
-        private static string CsvLine(string match, int teamSize, string anEvent, string region, int rank, int payout, string points) {
+        private static string CsvLine(string match, int teamSize, string anEvent, string region, int rank, int teamPayout, int payout, string points) {
 
             string format = ""; 
             switch (teamSize) {
@@ -114,6 +116,7 @@ namespace FortniteJson {
                 ((anEvent.Contains("WC Week") && anEvent != "WC Week 10") ? " " + anEvent : anEvent) + "," +
                 region + "," +
                 rank.ToString() + "," +
+                teamPayout.ToString() + "," +
                 payout.ToString() + "," +
                 points;
         }
@@ -121,7 +124,7 @@ namespace FortniteJson {
 
         public PowerRankings() {
 
-            string currentWeekId = "18";
+            string currentWeekId = "19";
 
             // Update Week
             weekWeights = WeekWeight.GetWeekWeights(currentWeekId);
@@ -132,6 +135,7 @@ namespace FortniteJson {
 
             // Setup dictionary to look up the weighting for each event, based on the week
             var weekReader = Db.Query("SELECT Name, WeekID FROM Event WHERE WeekID <= " + currentWeekId);
+            weekWeightingDict.Clear();
             while (weekReader.Read()) {
                 var anEvent = weekReader["Name"].ToString();
                 var weekId = (int)weekReader["WeekID"];
@@ -141,11 +145,11 @@ namespace FortniteJson {
             }
 
             // For csv file
-            var header = "\"Match\",\"Format\",\"Event\",\"Region\",\"Rank\",\"Payout\",\"Points\"";
+            var header = "\"Match\",\"Format\",\"Event\",\"Region\",\"Rank\",\"TeamPayout\"\"Payout\",\"Points\"";
             var lines = new List<string>();
             lines.Add(header);
 
-            
+            pointsDict.Clear();
             foreach (string anEvent in events) {
                 foreach (string region in regions) {
                     int totalPayout = 0;
@@ -160,18 +164,19 @@ namespace FortniteJson {
                     while (rdr.Read()) {
                         var match = (string)rdr["Match"];
                         var tierRank = (int)rdr["Rank"];
-                        var payout = (int)rdr["Payout"];
+                        var teamPayout = (int)rdr["Payout"];
                         var teamSize = (int)rdr["TeamSize"];  // 1, 2, 3, or 4
+                        var payout = teamPayout / teamSize;
 
                         if (rank == 1) {
                             totalPayout += payout; // * teamSize;  
-                            powerRankingPoints = new PowerRankingPoints(match, teamSize, region, anEvent, rank, payout);
+                            powerRankingPoints = new PowerRankingPoints(match, teamSize, region, anEvent, rank, teamPayout, payout);
                             pointsDict.Add(powerRankingPoints.HashCode(), powerRankingPoints);
                             rank = 2;
                         }
                         while (rank <= tierRank) {
                             totalPayout += payout; // * teamSize;
-                            powerRankingPoints = new PowerRankingPoints(match, teamSize, region, anEvent, rank, payout);
+                            powerRankingPoints = new PowerRankingPoints(match, teamSize, region, anEvent, rank, teamPayout, payout);
                             pointsDict.Add(powerRankingPoints.HashCode(), powerRankingPoints);
                             rank++;
                         }
@@ -192,7 +197,7 @@ namespace FortniteJson {
 
                     // Divide Champion Series winnings by 3 (Payout was 3 million not 1)
                     if (anEvent == "CS Final")
-                        dollarsPerPart /= 3;
+                        dollarsPerPart /= 3;                 
 
                     for (int i = 1; i <= ranks; i++) {
                         PowerRankingPoints pnts = pointsDict[region + anEvent + i.ToString()];
@@ -203,7 +208,7 @@ namespace FortniteJson {
                         // pnts.PowerPoints = pnts.PlacementPoints * pnts.WeekFactor;
                         pnts.PowerPoints = pnts.PlacementPoints;  // Multiply by week factor in browser
 
-                        lines.Add(CsvLine(pnts.Match, pnts.TeamSize, anEvent, region, i, pnts.Payout, pnts.PowerPoints.ToString()));
+                        lines.Add(CsvLine(pnts.Match, pnts.TeamSize, anEvent, region, i, pnts.TeamPayout, pnts.Payout, pnts.PowerPoints.ToString()));
                     }
 
                     Console.WriteLine(anEvent + " " + region + " Total = " + totalPayout + " Count = " + (rank - 1));

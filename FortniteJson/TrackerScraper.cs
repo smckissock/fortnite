@@ -33,9 +33,9 @@ namespace FortniteJson {
         //private static List<string> eventNames = new List<string> { "CC Friday #1", "CC Friday #2", "CC Friday #3", "CC Friday #4" };
 
         // Champion Series Final 
-        private static string match = "S11_FNCS_Week1";
+        private static string match = "S11_FNCS_Week2";
         private static List<string> events = new List<string> { "Event3" };  // Weird epic name
-        private static List<string> eventNames = new List<string> { "CS Squads #1" }; // My name from Event.Name: CS Squads #1
+        private static List<string> eventNames = new List<string> { "CS Squads #2" }; // My name from Event.Name: CS Squads #1
 
         private static int pages = 1;
 
@@ -118,7 +118,7 @@ namespace FortniteJson {
                             Db.Command("INSERT INTO Player VALUES('" + player.accountId + "', '', 1, 1, 1, '', '', (SELECT ID FROM Region WHERE EpicCode = '" + region + "'))");
                             
                             Db.Command("INSERT INTO PlayerEvent VALUES((SELECT ID FROM Player WHERE EpicGuid = '" + player.accountId + "'), (SELECT ID FROM Event WHERE Name = '" + myEvent + "'), " +
-                                "(SELECT ID FROM Region WHERE EpicCode = '" + region + "'), '" + player.playerName + "')");
+                                "(SELECT ID FROM Region WHERE EpicCode = '" + region + "'), N'" + player.playerName + "')");
                         }
                     }
                 }
@@ -166,7 +166,7 @@ namespace FortniteJson {
             // Placements have 1, 2 or 3 players attached 
             foreach (var accountGuid in placement.teamAccountIds) {
                 Db.Command("INSERT INTO PlayerPlacement VALUES((SELECT ID FROM Player WHERE EpicGuid= '" + accountGuid + "'), " +
-                    "(SELECT MAX(ID) FROM Placement), (SELECT PLayerName FROM LookupNameView WHERE EpicGuid= '" + accountGuid + "' AND EventName = '" + myEvent + "'))");
+                    "(SELECT MAX(ID) FROM Placement), (SELECT PlayerName FROM LookupNameView WHERE EpicGuid= '" + accountGuid + "' AND EventName = '" + myEvent + "'))");
             }
          
             foreach (var game in placement.sessionHistory) {
@@ -225,12 +225,12 @@ namespace FortniteJson {
             //Console.WriteLine(payoutTiers);
             //Console.WriteLine(scoringTiers);
 
-            foreach (var tier in payoutTiers) {
-                var threshold = tier.threshold;
-                var payout = tier.payouts[0].quantity;
-                Db.Command("INSERT INTO RankPayoutTier (EventID, RegionID, Rank, Payout) VALUES (" +
-                    "(SELECT ID FROM Event WHERE Name = '" + myEvent + "'), (SELECT ID FROM Region WHERE EpicCode = '" + region + "')," + threshold + "," + payout + ")");
-            }
+            //foreach (var tier in payoutTiers) {
+            //    var threshold = tier.threshold;
+            //    var payout = tier.payouts[0].quantity;
+            //    Db.Command("INSERT INTO RankPayoutTier (EventID, RegionID, Rank, Payout) VALUES (" +
+            //        "(SELECT ID FROM Event WHERE Name = '" + myEvent + "'), (SELECT ID FROM Region WHERE EpicCode = '" + region + "')," + threshold + "," + payout + ")");
+            //}
 
             foreach (var tier in scoringTiers) {
                 var threshold = tier.keyValue;

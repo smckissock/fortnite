@@ -37,8 +37,8 @@ min_searches <- 20
 update_date <- "November 8, 2019"
 
 
-raw_data <- read_csv("C:/project/fortnite/r/player-search/data2.csv")
-#raw_data <- dbGetQuery(con, paste0("SELECT * FROM PlayerSearchView"))
+#raw_data <- read_csv("C:/project/fortnite/r/player-search/data2.csv")
+raw_data <- dbGetQuery(con, paste0("SELECT * FROM PlayerSearchView"))
 
 ```
 Back to [Fortnite Ping](<https://www.fortniteping.com>) 

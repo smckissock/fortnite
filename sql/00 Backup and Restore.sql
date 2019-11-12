@@ -316,7 +316,27 @@ GO
 
 
 
+-- November 12 Before Importing W2 Squads
+BACKUP DATABASE Fortnite
+TO DISK = N'd:\Fortnite\Fortnitedb\November 12.bak' WITH NOFORMAT, NOINIT, NAME = N'Full Database Backup', SKIP, NOREWIND, NOUNLOAD, STATS = 10
+GO
+BACKUP DATABASE Fortnite
+TO DISK = N'g:\db\November 12.bak' WITH NOFORMAT, NOINIT, NAME = N'Full Database Backup', SKIP, NOREWIND, NOUNLOAD, STATS = 10
+GO
 
+
+RESTORE DATABASE Fortnite
+FROM DISK = N'd:\fortnite\fortnitedb\November 12.bak'
+WITH MOVE 'Fortnite2' TO 'd:\fortnite\fortnitedb\November 12.mdf',
+MOVE 'Fortnite2_log' TO 'd:\fortnite\fortnitedb\November 12.ldf'
+ALTER LOGIN [DESKTOP-S1K43CL\scott] WITH DEFAULT_DATABASE = Fortnite
+
+
+
+
+
+
+	
 
 
 
