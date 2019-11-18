@@ -12,10 +12,10 @@ namespace FortniteJson {
         private static List<string> regions = new List<string> { "NAE", "NAW", "EU", "OCE", "ASIA", "BR", "ME" };
 
         // Champion Series
-        private static List<string> weeks = new List<string> { "Week5" };  // UPDATE EACH WEEK
+        //private static List<string> weeks = new List<string> { "Week5" };  // UPDATE EACH WEEK
         //private static string match = "S10_FNCS";
         //private static string theEvent = "Event3";
-        private static string weekId = "18"; // UPDATE EACH WEEK
+        //private static string weekId = "18"; // UPDATE EACH WEEK
 
         // Contenders Solo - Wednesday 
         //private static string match = "S10_CC_Contenders";
@@ -33,9 +33,10 @@ namespace FortniteJson {
         //private static List<string> eventNames = new List<string> { "CC Friday #1", "CC Friday #2", "CC Friday #3", "CC Friday #4" };
 
         // Champion Series Final 
-        private static string match = "S11_FNCS_Week2";
-        private static List<string> events = new List<string> { "Event3" };  // Weird epic name
-        private static List<string> eventNames = new List<string> { "CS Squads #2" }; // My name from Event.Name: CS Squads #1
+        private static string match = "S11_FNCS_Week3";
+        //private static List<string> events = new List<string> { "Event2" };  // Saturday
+        private static List<string> events = new List<string> { "Event3" };  // Sunday
+        private static List<string> eventNames = new List<string> { "CS Squads #3" }; // My name from Event.Name: CS Squads #1
 
         private static int pages = 1;
 
@@ -56,11 +57,12 @@ namespace FortniteJson {
                         var path = match + "_" + region;
 
                         var realEvent = anEvent; 
-                        if ((region == "ME") || (region == "OCE") || (region == "ASIA"))
-                            realEvent = "Event3";
+                        //if ((region == "ME") || (region == "OCE") || (region == "ASIA"))
+                        //    realEvent = "Event3";
 
                         string url = @"https://fortnitetracker.com/events/epicgames_" + path + "?window=" + path + "_" + realEvent + "&page=" + page;
                         //string url = @"https://fortnitetracker.com/events/epicgames_" + path;
+                        Console.WriteLine(url);
 
                         // https://fortnitetracker.com/events/epicgames/_S10_CC_Contenders_NAE?window=S10_CC_Contenders_NAE_anEvent&page=0
 

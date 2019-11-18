@@ -40,7 +40,7 @@ export const events = [
         format: "Squads", items: [
             { num: "W1", weekNum: 18, name: "CS Squads #1", type: "Champion Series Squads", date: "November 4", done: true },
             { num: "W2", weekNum: 19, name: "CS Squads #2", type: "Champion Series Squads", date: "November 10", done: true },
-            { num: "W3", weekNum: 20, name: "CS Squads #3", type: "Champion Series Squads", date: "November 17", done: false },
+            { num: "W3", weekNum: 20, name: "CS Squads #3", type: "Champion Series Squads", date: "November 17", done: true },
             { num: "W4", weekNum: 21, name: "CS Squads #4", type: "Champion Series Squads", date: "November 24", done: false },
             { num: "F", weekNum: 22, name: "CS Final", type: "Champion Series  Squads", date: "December 9", done: false }
         ]

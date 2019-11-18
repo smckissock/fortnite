@@ -9,27 +9,26 @@ namespace FortniteJson {
 
             Console.WriteLine("Running..");
 
-            var directory = "champion series squad week 2";
-            var eventId = "2036";
+            //var directory = "champion series squad week 3 sat";
+            var directory = "champion series squad week 3";
+            var eventId = "2037";
 
             //Scraper.Step1_GetFiles(directory);
             //Scraper.Step2_GetPlayersAndPlayerWeeks(directory);
             //Scraper.Step3_ImportLeaderboard(directory);
             //Scraper.Step4_ImportTiers(directory);
 
-            //Fortnite2FixUp.FixPlacementPayout(eventId);  
-            //Fortnite2FixUp.FixPlacementElims(eventId);
-            //Fortnite2FixUp.UpdateWins(eventId);
+            //Fortnite2FixUp.FixPayoutElimsAndWins(eventId);
 
-                      
-            Fortnite2FixUp.UpdatePlayerPowerPoints(); // Player
-            Fortnite2FixUp.FixPowerPoints();            // Placement
+            // update PowerRankings() current weekId  
+            // Update PowerRnakingEventsView 
+            Fortnite2FixUp.UpdatePlayerPowerPoints();   
+            Fortnite2FixUp.UpdatePlacementPowerPoints();            
 
             //Fortnite2FixUp.AddPlayerPlacementNames();
             //Fortnite2FixUp.FixPlayerNames();
 
             Fortnite.MakeDimensions();
-
             Fortnite.MakeJsonArray();   
 
 

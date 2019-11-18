@@ -38,7 +38,14 @@ namespace FortniteJson {
             Db.Command("UPDATE Player SET CurrrentName = '" + oldName + "' WHERE ID = " + oldPlayerId);
         }
 
-        public static void FixPlacementPayout(string eventId) {
+
+        public static void FixPayoutElimsAndWins (string eventId) {
+            FixPlacementPayout(eventId);
+            FixPlacementElims(eventId);
+            UpdateWins(eventId);
+        }
+
+        private static void FixPlacementPayout(string eventId) {
             // Go though every placement to update payouts
             //var reader = SqlUtil.Query("SELECT ID, RegionID, WeekID, Rank FROM Placement WHERE ID <> 1");
             Console.WriteLine("FixPlacementPayout for " + eventId);
@@ -67,7 +74,7 @@ namespace FortniteJson {
             }
         }
 
-        public static void FixPlacementElims(string eventId) {
+        private static void FixPlacementElims(string eventId) {
 
             Console.WriteLine("FixPlacementElims for " + eventId);
 
@@ -106,7 +113,7 @@ namespace FortniteJson {
             }
         }
 
-        public static void UpdateWins(string eventId) {
+        private static void UpdateWins(string eventId) {
 
             Console.WriteLine("UpdateWins for " + eventId);
 
@@ -147,7 +154,7 @@ namespace FortniteJson {
 
 
 
-        public static void FixPowerPoints() {
+        public static void UpdatePlacementPowerPoints() {
             Console.WriteLine("Fix power points");
 
             var powerRankings = new PowerRankings();

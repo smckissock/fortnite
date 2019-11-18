@@ -364,7 +364,7 @@ export function profile(player) {
                 .attr("fill", colors.grey)
             
             const y = 66;
-            text("Overaall", matchG, "player-stat-summary", leftMargin, y);
+            text("Overall", matchG, "player-stat-summary", leftMargin, y);
 
             cols.forEach(function (col, colNum) {
                 const toShow = col.format(totals[col.field]).toString()

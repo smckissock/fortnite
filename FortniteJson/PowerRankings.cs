@@ -124,7 +124,7 @@ namespace FortniteJson {
 
         public PowerRankings() {
 
-            string currentWeekId = "19";
+            string currentWeekId = "20";
 
             // Update Week
             weekWeights = WeekWeight.GetWeekWeights(currentWeekId);
@@ -193,7 +193,7 @@ namespace FortniteJson {
 
                     // Divide World Cup winnings by 15 (Payout was 15 million not 1)
                     if (anEvent == "Solo Final" || anEvent == "Duo Final")
-                        dollarsPerPart /= 15;
+                        dollarsPerPart /= 30;
 
                     // Divide Champion Series winnings by 3 (Payout was 3 million not 1)
                     if (anEvent == "CS Final")

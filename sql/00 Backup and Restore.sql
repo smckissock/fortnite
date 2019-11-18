@@ -334,6 +334,21 @@ ALTER LOGIN [DESKTOP-S1K43CL\scott] WITH DEFAULT_DATABASE = Fortnite
 
 
 
+-- November 14 After Importing W2 Squads
+BACKUP DATABASE Fortnite
+TO DISK = N'd:\Fortnite\Fortnitedb\November 14.bak' WITH NOFORMAT, NOINIT, NAME = N'Full Database Backup', SKIP, NOREWIND, NOUNLOAD, STATS = 10
+GO
+BACKUP DATABASE Fortnite
+TO DISK = N'g:\db\November 14.bak' WITH NOFORMAT, NOINIT, NAME = N'Full Database Backup', SKIP, NOREWIND, NOUNLOAD, STATS = 10
+GO
+
+
+
+
+
+
+
+
 
 
 	
