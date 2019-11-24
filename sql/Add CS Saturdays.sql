@@ -19,10 +19,14 @@ SELECT * fROM Week
 
 SELECT * fROM Placement WHERe EventID = 2037
 
-UPDATE Placement SET Payout = Payout / 4 WHERe EventID = 2037
+--UPDATE Placement SET Payout = Payout / 4 WHERe EventID = 2037
 
 
 
-SELECT * FROM RankPayoutTier WHERE EventID = 2037
+SELECT * FROM RankPayoutTier WHERE EventID = 2036
+
+
+
+SELECT * FROM RankPayoutTier WHERE 
 
 

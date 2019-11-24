@@ -32,6 +32,8 @@ Back to [Fortnite Ping](<https://www.fortniteping.com>)
 
 ```{r power_ranking_chart}
 
+#placements <- dbGetQuery(con, paste0("SELECT * FROM PlayerSearchView"))
+
 placements <- read_csv("C:/project/fortnite/r/power-ranking-faq/data.csv")
 wc <- placements %>%
   filter(Match == "Fortnite Champion Series" & Event == "CS Week 1")
@@ -54,7 +56,7 @@ ggplot() +
   theme(legend.position = "none")
 ```
                 
-4. **How do the World Cup and Champion Series Finals factor in?** The model makes an exception for finals, since payouts for these are large compared to qualifiers and other Epic events. Since we don't want to skew the scores based on these outsized payouts, and don't want to penalize those who didn't qualify to much, the payouts for these events are divied by how much larger they are than qualifying events. This means that World Cup finals payouts are divided by 15 (15 million vs 1 million), and Champion Series payouts are divided by 3 (3 million vs 1 million.) We will use the same formula for upcoming events.    
+4. **How do the World Cup and Champion Series Finals factor in?** The model makes an exception for finals, since payouts for these are large compared to qualifiers and other Epic events. Since we don't want to skew the scores based on these outsized payouts, and don't want to penalize those who didn't qualify to much, the payouts for these events are divied by how much larger they are than qualifying events. This means that World Cup finals payouts are divided by 30 (15 million vs 500k), and Champion Series payouts are divided by 3 (3 million vs 1 million.) We will use the same formula for upcoming events.    
                 
 5. **Do recent events count more than past events?** Yes. In the model, the most recent event counts 100%, the next less-recent counts 98%, etc. So an event that is 50 events "old" will not add anything to a player's power ranking. We may adjust this rule somewhat as we add future events to our database. 
 

@@ -33,19 +33,19 @@ namespace FortniteJson {
         //private static List<string> eventNames = new List<string> { "CC Friday #1", "CC Friday #2", "CC Friday #3", "CC Friday #4" };
 
         // Champion Series Final 
-        private static string match = "S11_FNCS_Week3";
+        //private static string match = "S11_FNCS_Week3";
         //private static List<string> events = new List<string> { "Event2" };  // Saturday
-        private static List<string> events = new List<string> { "Event3" };  // Sunday
-        private static List<string> eventNames = new List<string> { "CS Squads #3" }; // My name from Event.Name: CS Squads #1
+        //private static List<string> events = new List<string> { "Event3" };  // Sunday
+        //private static List<string> eventNames = new List<string> { "CS Squads #3" }; // My name from Event.Name: CS Squads #1
 
-        private static int pages = 1;
+        //private static int pages = 1;
 
 
-        public static void Step1_GetFiles(string directory) {
+        public static void Step1_GetFiles(ImportInfo info) {
             foreach (string region in regions) {
                 //foreach (string week in weeks) {
-                foreach (string anEvent in events) {
-                    for (int i = 0; i < pages; i++) {
+                foreach (string anEvent in info.Events) {
+                    for (int i = 0; i < info.Pages; i++) {
                         string page = i.ToString(); 
                         string html = string.Empty;
 
@@ -54,7 +54,7 @@ namespace FortniteJson {
                         //    match + "_" + week + "_" + region + "_" + theEvent + "&page=" + page;
 
                         // Cash Cup 
-                        var path = match + "_" + region;
+                        var path = info.Match + "_" + region;
 
                         var realEvent = anEvent; 
                         //if ((region == "ME") || (region == "OCE") || (region == "ASIA"))
@@ -73,7 +73,7 @@ namespace FortniteJson {
                         using (Stream stream = response.GetResponseStream())
                         using (StreamReader reader = new StreamReader(stream)) {
                             html = reader.ReadToEnd();
-                            string fileName = @"d:\\fortnite\\fortnite-scrape\\" + directory + "\\" + region + "_" + anEvent + "_" + page + ".html";
+                            string fileName = @"d:\\fortnite\\fortnite-scrape\\" + info.Directory + "\\" + region + "_" + anEvent + "_" + page + ".html";
                             System.IO.File.WriteAllText(fileName, html);
                         }
                         System.Threading.Thread.Sleep(200);
@@ -86,17 +86,17 @@ namespace FortniteJson {
         // Looks at the section of imp_accounts array, which has Epic accounts the names that players used for the week. 
         // Inserts new players (just Epic ID)
         // Inserts a PlayerEvent Record
-        public static void Step2_GetPlayersAndPlayerWeeks(string directory) {
+        public static void Step2_GetPlayersAndPlayerWeeks(ImportInfo info) {
             foreach (string region in regions) {
                 Console.WriteLine(region);
-                for (int eventNum = 0; eventNum < events.Count; eventNum++) {
-                    string epicEvent = events[eventNum];
-                    string myEvent = eventNames[eventNum];
+                for (int eventNum = 0; eventNum < info.Events.Count; eventNum++) {
+                    string epicEvent = info.Events[eventNum];
+                    string myEvent = info.EventNames[eventNum];
 
-                    for (int i = 0; i < pages; i++) {
+                    for (int i = 0; i < info.Pages; i++) {
                         string page = i.ToString();
 
-                        string fileName = @"d:\\fortnite\\fortnite-scrape\\" + directory + "\\" + region + "_" + epicEvent + "_" + page + ".html";
+                        string fileName = @"d:\\fortnite\\fortnite-scrape\\" + info.Directory + "\\" + region + "_" + epicEvent + "_" + page + ".html";
                         string html = "";
                         try {
                             html = System.IO.File.ReadAllText(fileName);
@@ -127,17 +127,17 @@ namespace FortniteJson {
             }
         }
 
-        public static void Step3_ImportLeaderboard(string directory) {
+        public static void Step3_ImportLeaderboard(ImportInfo info) {
             foreach (string region in regions) {
                 Console.WriteLine(region);
-                for (int eventNum = 0; eventNum < events.Count; eventNum++) {
-                    string epicEvent = events[eventNum];
-                    string myEvent = eventNames[eventNum];
+                for (int eventNum = 0; eventNum < info.Events.Count; eventNum++) {
+                    string epicEvent = info.Events[eventNum];
+                    string myEvent = info.EventNames[eventNum];
 
-                    for (int i = 0; i < pages; i++) {
+                    for (int i = 0; i < info.Pages; i++) {
                         string page = i.ToString();
 
-                        string fileName = @"d:\fortnite\fortnite-scrape\" + directory + "\\" + region + "_" + epicEvent + "_" + page + ".html";
+                        string fileName = @"d:\fortnite\fortnite-scrape\" + info.Directory + "\\" + region + "_" + epicEvent + "_" + page + ".html";
                         string html = "";
                         try {
                             html = System.IO.File.ReadAllText(fileName);
@@ -155,7 +155,8 @@ namespace FortniteJson {
 
                         dynamic json = JsonConvert.DeserializeObject(json_text);
                         foreach (var placement in json.entries)
-                            Step3_InsertPlacement(placement, myEvent, region);
+                            if (placement.rank >= info.MinimumPlacement)
+                                Step3_InsertPlacement(placement, myEvent, region);
                     }
                 }
             }
@@ -184,18 +185,18 @@ namespace FortniteJson {
             }
         }
 
-        public static void Step4_ImportTiers(string directory) {
+        public static void Step4_ImportTiers(ImportInfo info) {
             foreach (string region in regions) {
 
                 Console.WriteLine(region);
-                for (int eventNum = 0; eventNum < events.Count; eventNum++) {
-                    string epicEvent = events[eventNum];
-                    string myEvent = eventNames[eventNum];
+                for (int eventNum = 0; eventNum < info.Events.Count; eventNum++) {
+                    string epicEvent = info.Events[eventNum];
+                    string myEvent = info.EventNames[eventNum];
 
                     for (int i = 0; i < 1; i++) {
                         string page = i.ToString();
 
-                        string fileName = @"d:\fortnite\fortnite-scrape\" + directory + "\\" + region + "_" + epicEvent + "_" + page + ".html";
+                        string fileName = @"d:\fortnite\fortnite-scrape\" + info.Directory + "\\" + region + "_" + epicEvent + "_" + page + ".html";
                         string html = "";
                         try {
                             html = System.IO.File.ReadAllText(fileName);

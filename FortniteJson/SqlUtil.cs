@@ -9,7 +9,7 @@ namespace FortniteJson {
 
     public class Db {
 
-        static string sqlErrorPath = @"C:\Fortnite\FortniteJson\Sql Error\";
+        //static string sqlErrorPath = @"C:\Fortnite\FortniteJson\Sql Error\";
 
         static string db = "Fortnite";
 
@@ -92,7 +92,26 @@ namespace FortniteJson {
         public static int Int(string sql) {
             var reader = Db.Query(sql);
             reader.Read();
-            return (int)reader[0];
+            int result = (int)reader[0];
+
+            // Read a second time (and fail)  This will close the connection!
+            reader.Read();
+
+            return result;
+        }
+
+
+        /// <summary>
+        ///  Returns a Dictionary if keys and IDs for table 
+        /// </summary>
+        public static Dictionary<string, int> Dictionary(string table, string key){
+            var dict = new Dictionary<string, int>();
+
+            var reader = Db.Query("SELECT " + key + ", ID FROM " + table);
+            while (reader.Read())
+                dict.Add(reader[0].ToString(), (int)reader[1]);
+
+            return dict;
         }
     }
 }

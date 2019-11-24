@@ -39,10 +39,10 @@ namespace FortniteJson {
         }
 
 
-        public static void FixPayoutElimsAndWins (string eventId) {
-            FixPlacementPayout(eventId);
-            FixPlacementElims(eventId);
-            UpdateWins(eventId);
+        public static void FixPayoutElimsAndWins (ImportInfo info) {
+            FixPlacementPayout(info.EventId);
+            FixPlacementElims(info.EventId);
+            UpdateWins(info.EventId);
         }
 
         private static void FixPlacementPayout(string eventId) {
@@ -50,7 +50,7 @@ namespace FortniteJson {
             //var reader = SqlUtil.Query("SELECT ID, RegionID, WeekID, Rank FROM Placement WHERE ID <> 1");
             Console.WriteLine("FixPlacementPayout for " + eventId);
 
-            var reader = Db.Query("SELECT ID, RegionID, EventID, Rank FROM Placement WHERE ID <> 1 AND EventID = " + eventId);
+                var reader = Db.Query("SELECT ID, RegionID, EventID, Rank FROM Placement WHERE ID <> 1 AND EventID = " + eventId);
             while (reader.Read()) {
                 var id = reader[0].ToString();
                 var regionId = reader[1].ToString();
@@ -182,7 +182,9 @@ namespace FortniteJson {
             var powerRankings = new PowerRankings();
             
             //var reader = Db.Query("SELECT DISTINCT PlayerID FROM StatsView WHERE SoloOrDuo = 'Squad'"); -- Only picks up players with money
-            var reader = Db.Query("SELECT PLayerID FROM PlayerPlacementView WHERE Event = 'CS Squads #1'");
+            //var reader = Db.Query("SELECT PlayerID FROM PlayerPlacementView WHERE Event = 'CS Squads #1'");
+            var reader = Db.Query("SELECT DISTINCT PlayerID FROM PlayerPlacementView"); // WHERE Event = 'CS Squads #1'");
+            var players = 0;
             while (reader.Read()) {
                 string playerId = reader["PlayerId"].ToString();
                 double totalPoints = 0.0;
@@ -195,7 +197,12 @@ namespace FortniteJson {
                 placements.Close();
 
                 Db.Command("UPDATE Player SET PowerPoints = " + totalPoints.ToString() + " WHERE ID = " + playerId);
-                Console.WriteLine(playerId + " " + totalPoints.ToString());
+
+                if (players % 1000 == 0)
+                    Console.WriteLine(players.ToString());
+                //Console.WriteLine(playerId + " " + totalPoints.ToString());
+
+                players++;
             }
         }
 

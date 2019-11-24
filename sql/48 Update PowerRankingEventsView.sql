@@ -22,3 +22,4 @@ JOIN Match m ON m.ID = e.MatchID
 WHERE m.PowerRankings = 1 AND e.WeekID < 21
 GO
 
+SELECT * FROM PlayerSearchView
