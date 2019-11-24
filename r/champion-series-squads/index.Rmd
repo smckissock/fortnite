@@ -1,5 +1,5 @@
 ---
-title: "FNCS Squads"
+title: "Fortnite Ping Squad Leaderboard"
 output:
   html_document: 
     includes:
@@ -15,10 +15,19 @@ knitr::opts_chunk$set(fig.width=10, fig.height=6, fig.path='Figs/',
 # Show a maximum of 100   
 options(tibble.print_max = 100, tibble.print_min = 15)
 
-library(gt)
 library(tidyverse)
 library(utf8)
 library(DT)
+library(DBI)
+
+con <- DBI::dbConnect(odbc::odbc(), 
+                      Driver = "SQL Server", 
+                      Server = "DESKTOP-S1K43CL\\SQLEXPRESS", 
+                      Database = "Fortnite", 
+                      Trusted_Connection = "True")
+
+
+squads <- dbGetQuery(con, paste0("SELECT * FROM SquadDisplayView ORDER BY Region, [Squad Rank]")) 
 
 loc = locale(date_names = "en", date_format = "%AD", time_format = "%AT",
   decimal_mark = ".", grouping_mark = ",", tz = "UTC",
@@ -29,14 +38,30 @@ path = "C:/project/fortnite/r/champion-series-squads/data/"
 ```
 Back to [Fortnite Ping](<https://www.fortniteping.com>) 
 
-***Last updated November 10, 2019***
+* Player 1 - 4: players and their Power Ranking points. Player #1 has the most points on each squad; #4 has the least
+* Squad Placements: placements for FNCS weeks 1-3, and their average. Squads that didn't place in each week are excluded.
+* Squad Rank: squad ranking in each region based on average placement in weeks 1-3 of FNCS
+* Players Rank: rank of squads in each region based on the sum of the squad member's Power Ranking points.
+* Chemistry Score: difference between "Players Rank" and "Squad Rank." Negative scores means a squad is performing less well than the sum of the team's Power Rankings would lead you to expect. A positive number means the squad is performing better, suggesting the team members play well together, or that the team has up-and-coming players.    
 
 
 # {.tabset .tabset-fade}
 
 
 ```{r definition, echo = FALSE}
-region_table <- function(csv) {
+
+region_table <- function(region) {
+  
+  region <- filter(squads, Region == region) %>%
+    select(-Region)
+  
+  datatable(region, 
+    class = 'cell-border nowrap stripe compact',
+    options = list(paging = FALSE)
+  )
+}
+
+region_table_csv <- function(csv) {
   region <- read_csv(str_c(path, csv))
   datatable(region, 
     class = 'cell-border nowrap stripe compact',
@@ -48,35 +73,35 @@ region_table <- function(csv) {
 ## Europe
 ```{r europe_table}
 
-region_table("Europe.csv")
+region_table("Europe")
 ```
 
 ## NA East
 ```{r na_east_table}
-region_table("NA East.csv")
+region_table("NA East")
 ```
 
 ## NA West
 ```{r na_west_table}
-region_table("NA West.csv")
+region_table("NA West")
 ```
 
 ## Brazil
 ```{r na_brazil_table}
-region_table("Brazil.csv")
+region_table("Brazil")
 ```
 
 ## Asia
 ```{r na_asia_table}
-region_table("Asia.csv")
+region_table("Asia")
 ```
 
 ## Oceania
 ```{r oceania_table}
-region_table("Oceania.csv")
+region_table("Oceania")
 ```
 
 ## Middle East
 ```{r middle_east_table}
-region_table("Middle East.csv")
+region_table("Middle East")
 ```

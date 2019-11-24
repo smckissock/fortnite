@@ -13,13 +13,7 @@ knitr::opts_chunk$set(fig.width=10, fig.height=6, fig.path='Figs/',
                       echo=FALSE, warning=FALSE, message=FALSE)
 
 library(tidyverse)
-library(DBI)
 
-con <- DBI::dbConnect(odbc::odbc(), 
-                      Driver = "SQL Server", 
-                      Server = "DESKTOP-S1K43CL\\SQLEXPRESS", 
-                      Database = "Fortnite", 
-                      Trusted_Connection = "True")
 ```
 Back to [Fortnite Ping](<https://www.fortniteping.com>)
 
@@ -31,8 +25,6 @@ Back to [Fortnite Ping](<https://www.fortniteping.com>)
 3. **How are points allocated?** Points are based on Epic's regional prize pool for each event. However, we do not use Epic payouts directly to rank players. Epic's payout tiers have steep "steps" where the top placements make a lot of money,and payouts quickly drop off to a level where many players earn the same small payout. For tournaments, this makes sense, because you want to reward the very best performances in order to make finishing in the top slots especially profitable. But our aim is different: we want to aknowkedge consistent performance, so we take the total prize pool and "smooth it out", so everyone in an event and region makes a slightly different amount based on their placement.So someone who finishes #2 makes a little less than #1, and someone who finishes #50 makes a little less than #49, etc. 
 
 ```{r power_ranking_chart}
-
-#placements <- dbGetQuery(con, paste0("SELECT * FROM PlayerSearchView"))
 
 placements <- read_csv("C:/project/fortnite/r/power-ranking-faq/data.csv")
 wc <- placements %>%

@@ -145,7 +145,7 @@ namespace FortniteJson {
             }
 
             // For csv file
-            var header = "\"Match\",\"Format\",\"Event\",\"Region\",\"Rank\",\"TeamPayout\"\"Payout\",\"Points\"";
+            var header = "\"Match\",\"Format\",\"Event\",\"Region\",\"Rank\",\"Payout\",\"Points\"";
             var lines = new List<string>();
             lines.Add(header);
 

@@ -109,7 +109,7 @@ d3.json('ping/data/data.json').then(function (dataArray) {
     titleSvg = title(screenWidth);
     faqButton(titleSvg);
     mostSearchedButton(titleSvg);
-    //squadLeaderboardButton(titleSvg);
+    squadLeaderboardButton(titleSvg);
 
     //searchLabel(titleSvg);
     //posickLabel(titleSvg);

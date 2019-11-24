@@ -59,11 +59,11 @@ namespace FortniteJson {
             Fortnite.MakeJsonArray();   
 
 
-            //Fortnite2FixUp.ImportPlayerSearch();
+            Fortnite2FixUp.ImportPlayerSearch();
 
 
             //Squads.Update("2037");
-            Squads.MakeSquadCsvs(); // For R tables
+            //Squads.MakeSquadCsvs(); // For R tables
 
             Console.Write("DONE");
             Console.Read();
