@@ -43,6 +43,16 @@ SELECT
 	, ((w1.Rank + w2.Rank + w3.Rank) / 3 ) AverageRank 	
 	, ((p1.PowerPoints + p2.PowerPoints + p3.PowerPoints + p4.PowerPoints) / 4 ) AveragePowerPoints 
 
+	, RANK () OVER ( 
+		PARTITION BY s.RegionID
+		ORDER BY w1.Rank + w2.Rank + w3.Rank 
+	) PlacementRank
+
+	, RANK () OVER ( 
+		PARTITION BY s.RegionID
+		ORDER BY p1.PowerPoints + p2.PowerPoints + p3.PowerPoints + p4.PowerPoints DESC
+	) PowerPointRank
+
 	, p1.PlayerName Player1
 	, p1.PowerPoints PowerPoints1 
 	, p2.PlayerName Player2

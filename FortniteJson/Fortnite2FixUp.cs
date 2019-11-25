@@ -39,10 +39,10 @@ namespace FortniteJson {
         }
 
 
-        public static void FixPayoutElimsAndWins (ImportInfo info) {
-            FixPlacementPayout(info.EventId);
-            FixPlacementElims(info.EventId);
-            UpdateWins(info.EventId);
+        public static void FixPayoutElimsAndWins (string eventId) {
+            FixPlacementPayout(eventId);
+            FixPlacementElims(eventId);
+            UpdateWins(eventId);
         }
 
         private static void FixPlacementPayout(string eventId) {

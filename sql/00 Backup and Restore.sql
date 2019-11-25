@@ -345,6 +345,44 @@ GO
 
 
 
+-- November 21 After Importing W3 Squads
+BACKUP DATABASE Fortnite
+TO DISK = N'd:\Fortnite\Fortnitedb\November 21.bak' WITH NOFORMAT, NOINIT, NAME = N'Full Database Backup', SKIP, NOREWIND, NOUNLOAD, STATS = 10
+GO
+BACKUP DATABASE Fortnite
+TO DISK = N'g:\db\November 21.bak' WITH NOFORMAT, NOINIT, NAME = N'Full Database Backup', SKIP, NOREWIND, NOUNLOAD, STATS = 10
+GO
+
+
+
+-- November 23 Before repopulating Squad tables
+BACKUP DATABASE Fortnite
+TO DISK = N'd:\Fortnite\Fortnitedb\November 23.bak' WITH NOFORMAT, NOINIT, NAME = N'Full Database Backup', SKIP, NOREWIND, NOUNLOAD, STATS = 10
+GO
+BACKUP DATABASE Fortnite
+TO DISK = N'g:\db\November 23.bak' WITH NOFORMAT, NOINIT, NAME = N'Full Database Backup', SKIP, NOREWIND, NOUNLOAD, STATS = 10
+GO
+
+
+
+
+-- November 25 Before week 4 squad
+BACKUP DATABASE Fortnite
+TO DISK = N'd:\Fortnite\Fortnitedb\November 25.bak' WITH NOFORMAT, NOINIT, NAME = N'Full Database Backup', SKIP, NOREWIND, NOUNLOAD, STATS = 10
+GO
+BACKUP DATABASE Fortnite
+TO DISK = N'g:\db\November 25.bak' WITH NOFORMAT, NOINIT, NAME = N'Full Database Backup', SKIP, NOREWIND, NOUNLOAD, STATS = 10
+GO
+
+
+
+
+
+
+
+
+
+
 
 
 

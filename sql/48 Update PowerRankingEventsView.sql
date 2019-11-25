@@ -19,7 +19,8 @@ SELECT
 	m.Name Match
 FROM Event e 
 JOIN Match m ON m.ID = e.MatchID
-WHERE m.PowerRankings = 1 AND e.WeekID < 21
+WHERE m.PowerRankings = 1 AND e.WeekID < 22
 GO
 
-SELECT * FROM PlayerSearchView
+
+SELECT  * FROM Week

@@ -109,12 +109,12 @@ AS
 SELECT 
 	Region
 		
-	, Player1 + ' ' + CONVERT(nvarchar(100), FORMAT((PowerPoints1 / 1000), 'N1')) + 'k' [Player 1]
+	, Player1 + ' ' + CONVERT(nvarchar(100), FORMAT((PowerPoints1 / 1000), 'N1')) + 'k' [Player1]
 	, Player2 + ' ' + CONVERT(nvarchar(100), FORMAT((PowerPoints2 / 1000), 'N1')) + 'k' [Player 2]
 	, Player3 + ' ' + CONVERT(nvarchar(100), FORMAT((PowerPoints3 / 1000), 'N1')) + 'k' [Player 3]
 	, Player4 + ' ' + CONVERT(nvarchar(100), FORMAT((PowerPoints4 / 1000), 'N1')) + 'k' [Player 4]
 	
-	, CONVERT(nvarchar(100), W1Rank)  + ' - ' +  CONVERT(nvarchar(100), W2Rank) + ' - ' + CONVERT(nvarchar(100), W3Rank) + '  Avg: ' +  FORMAT(AverageRank, 'N1') [Sqaud Placements]
+	, CONVERT(nvarchar(100), W1Rank)  + ' - ' +  CONVERT(nvarchar(100), W2Rank) + ' - ' + CONVERT(nvarchar(100), W3Rank) + '  Avg: ' +  FORMAT(AverageRank, 'N1') [Squad Placements]
 		
 	, PlacementRank [Squad Rank]
 	, PowerPointRank [Players Rank]

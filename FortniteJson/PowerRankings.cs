@@ -124,7 +124,7 @@ namespace FortniteJson {
 
         public PowerRankings() {
 
-            string currentWeekId = "20";
+            string currentWeekId = "21";
 
             // Update Week
             weekWeights = WeekWeight.GetWeekWeights(currentWeekId);
