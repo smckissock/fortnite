@@ -57,8 +57,8 @@ region_table <- function(region) {
   
   datatable(region, 
     class = 'cell-border nowrap stripe compact',
-    options = list(paging = FALSE)
-  )
+    options = list(paging = FALSE)) #%>%
+  #formatStyle('Player 1',  color = 'red', backgroundColor = 'orange', fontWeight = 'bold')
 }
 
 region_table_csv <- function(csv) {
