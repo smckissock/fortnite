@@ -377,6 +377,17 @@ GO
 
 
 
+-- November 25 After week 4 squad
+BACKUP DATABASE Fortnite
+TO DISK = N'd:\Fortnite\Fortnitedb\November 25b.bak' WITH NOFORMAT, NOINIT, NAME = N'Full Database Backup', SKIP, NOREWIND, NOUNLOAD, STATS = 10
+GO
+BACKUP DATABASE Fortnite
+TO DISK = N'g:\db\November 25b.bak' WITH NOFORMAT, NOINIT, NAME = N'Full Database Backup', SKIP, NOREWIND, NOUNLOAD, STATS = 10
+GO
+
+
+
+
 
 
 

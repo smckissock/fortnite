@@ -27,7 +27,7 @@ con <- DBI::dbConnect(odbc::odbc(),
                       Trusted_Connection = "True")
 
 
-squads <- dbGetQuery(con, paste0("SELECT * FROM SquadDisplayView ORDER BY Region, [Squad Rank]")) 
+squads <- dbGetQuery(con, paste0("SELECT * FROM SquadDisplayView ORDER BY Region, [Placement Rank]")) 
 
 loc = locale(date_names = "en", date_format = "%AD", time_format = "%AT",
   decimal_mark = ".", grouping_mark = ",", tz = "UTC",
@@ -51,14 +51,29 @@ Back to [Fortnite Ping](<https://www.fortniteping.com>)
 ```{r definition, echo = FALSE}
 
 region_table <- function(region) {
-  
+
   region <- filter(squads, Region == region) %>%
     select(-Region)
   
+  breaks <- c(5, 25, 50, 100)
+  colors <- c(
+    rgb(38, 110, 246, maxColorValue = 255), 
+    rgb(71, 201, 255, maxColorValue = 255), 
+    rgb(130, 233, 255, maxColorValue = 255), 
+    rgb(184, 242, 255, maxColorValue = 255), 
+    rgb(255, 255, 255, maxColorValue = 255)
+  )
+  
   datatable(region, 
     class = 'cell-border nowrap stripe compact',
-    options = list(paging = FALSE)) #%>%
-  #formatStyle('Player 1',  color = 'red', backgroundColor = 'orange', fontWeight = 'bold')
+    options = list(paging = FALSE)) %>% 
+    formatStyle('P1', background = styleInterval(breaks, colors)) %>%  
+    formatStyle('P2', background = styleInterval(breaks, colors)) %>% 
+    formatStyle('P3', background = styleInterval(breaks, colors)) %>%  
+    formatStyle('P4', background = styleInterval(breaks, colors)) %>%
+    formatStyle('Placement Rank', background = styleInterval(breaks, colors)) %>%
+    formatStyle('Power Rank', background = styleInterval(breaks, colors)) %>%
+    formatStyle('Chemistry Score', fontWeight = styleInterval( c(-5, 5), c('bold', 'normal', 'bold')))
 }
 
 region_table_csv <- function(csv) {
