@@ -27,7 +27,7 @@ con <- DBI::dbConnect(odbc::odbc(),
                       Trusted_Connection = "True")
 
 
-squads <- dbGetQuery(con, paste0("SELECT * FROM SquadDisplayView ORDER BY Region, [Placement Rank]")) 
+squads <- dbGetQuery(con, paste0("SELECT * FROM SquadDisplayView ORDER BY Region, [FNCS Rank]")) 
 
 loc = locale(date_names = "en", date_format = "%AD", time_format = "%AT",
   decimal_mark = ".", grouping_mark = ",", tz = "UTC",
@@ -71,7 +71,7 @@ region_table <- function(region) {
     formatStyle('P2', background = styleInterval(breaks, colors)) %>% 
     formatStyle('P3', background = styleInterval(breaks, colors)) %>%  
     formatStyle('P4', background = styleInterval(breaks, colors)) %>%
-    formatStyle('Placement Rank', background = styleInterval(breaks, colors)) %>%
+    formatStyle('FNCS Rank', background = styleInterval(breaks, colors)) %>%
     formatStyle('Power Rank', background = styleInterval(breaks, colors)) %>%
     formatStyle('Chemistry Score', fontWeight = styleInterval( c(-5, 5), c('bold', 'normal', 'bold')))
 }
