@@ -117,9 +117,9 @@ SELECT
 	, PlayerRank4 P4
 	, Player4 + ' ' + CONVERT(nvarchar(100), FORMAT((PowerPoints4 / 1000), 'N1')) + 'k' [Player 4]
 	
-	, CONVERT(nvarchar(100), W1Rank)  + ' - ' +  CONVERT(nvarchar(100), W2Rank) + ' - ' + CONVERT(nvarchar(100), W3Rank) + ' - ' + CONVERT(nvarchar(100), W4Rank) +'  Avg: ' +  FORMAT(AverageRank, 'N1') [Squad Placements]
+	, CONVERT(nvarchar(100), W1Rank)  + ' - ' +  CONVERT(nvarchar(100), W2Rank) + ' - ' + CONVERT(nvarchar(100), W3Rank) + ' - ' + CONVERT(nvarchar(100), W4Rank) +'  Avg: ' +  FORMAT(AverageRank, 'N1') [FNCS Placements]
 			
-	, PlacementRank [Pacement Rank]
+	, PlacementRank [FNCS Rank]
 	, PowerPointRank [Power Rank]
 	, PowerPointRank - PlacementRank  [Chemistry Score]
 FROM SquadStatsView 

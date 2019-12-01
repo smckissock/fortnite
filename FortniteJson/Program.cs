@@ -24,12 +24,12 @@ namespace FortniteJson {
             // All data governing import goes here
             var info = new ImportInfo();
 
-            info.Directory = "champion series squad week 4 Sat";
-            info.EventId = "2038";                                  // 2035 = squad week 1
-            info.Match = "S11_FNCS_Week4";
-            info.Events = new List<string> { "Event2" };            // Typically Sunday is Event3, Saturday is 1 & 2 
-            info.EventNames = new List<string> { "CS Squads #4" };  // Name for Event.Name, ex: CS Squads #1
-            info.Pages = 6;                                         // Number of scraped pages to import
+            info.Directory = "champion series squad heat 4";
+            info.EventId = "2047";                                  // 2035 = squad week 1 ; 2044 Heat 1
+            info.Match = "S11_FNCS_Finals";
+            info.Events = new List<string> { "Event4" };            // Typically Sunday is Event3, Saturday is 1 & 2 
+            info.EventNames = new List<string> { "CS Squads Heat #4" };  // Name for Event.Name, ex: CS Squads #1
+            info.Pages = 1;                                         // Number of scraped pages to import
             info.MinimumPlacement = 0;                             // Importer will not insert placement records for placements less than this
 
 
@@ -63,8 +63,9 @@ namespace FortniteJson {
             //Fortnite2FixUp.ImportPlayerSearch();
 
 
-            Squads.Update("2038");
+            Squads.Update("2047");
             //Squads.MakeSquadCsvs(); // For R tables
+
 
             Console.Write("DONE");
             Console.Read();

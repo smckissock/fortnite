@@ -388,6 +388,17 @@ GO
 
 
 
+RESTORE FILELISTONLY
+FROM DISK = N'd:\fortnite\fortnitedb\November 29.bak'
+GO
+
+
+RESTORE DATABASE Fortnite
+FROM DISK = N'd:\fortnite\fortnitedb\November 29.bak'
+WITH MOVE 'Fortnite2' TO 'd:\fortnite\fortnitedb\FortniteNov29.mdf',
+MOVE 'Fortnite2_log' TO 'd:\fortnite\fortnitedb\FortniteNov29_log.ldf'
+
+
 
 
 

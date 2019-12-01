@@ -22,55 +22,7 @@ namespace FortniteJson {
         public static void Update(string eventId) {
             AddSquads(eventId);
         }
-
-        public static void MakeSquadCsvs() {
-            string path = @"c:\project\fortnite\r\champion-series-squads\data\";
-
-            var lines = new List<string>();
-            var header = @"Wk 1, wk 2, Wk 3, Avg,Avg Power Points,#1 Points,#1,#2 Points,#2,#3 Points,#3,#4 Points,#4";
-            lines.Add(header);
-
-            //var reader = Db.Query("SELECT Region, AveragePowerPoints, PowerPoints1, Player1, PowerPoints2, Player2, PowerPoints3, Player3, PowerPoints4, Player4 FROM SquadView ORDER BY Region");
-            var reader = Db.Query("SELECT Region, W1Rank, W2Rank, W3Rank, AverageRank, AveragePowerPoints, PowerPoints1, Player1, PowerPoints2, Player2, PowerPoints3, Player3, PowerPoints4, Player4 FROM SquadStatsView ORDER BY Region");
-            var oldRegion = "";
-            var region = "X";
-            while (reader.Read()) {
-                region = reader["Region"].ToString();
-                if (oldRegion != region) {
-                    if (oldRegion != "")
-                        File.WriteAllText(path + oldRegion + ".csv", string.Join("\n", lines));
-
-                    lines = new List<string>();
-                    lines.Add(header);
-                    oldRegion = region;
-                }
-
-                var fields = new List<string>();
-
-                fields.Add(FormatNum(Convert.ToDouble(reader["W1Rank"])));
-                fields.Add(FormatNum(Convert.ToDouble(reader["W2Rank"])));
-                fields.Add(FormatNum(Convert.ToDouble(reader["W3Rank"])));
-                fields.Add(FormatNum(Convert.ToDouble(reader["AverageRank"])));
-
-                fields.Add(FormatNum(Convert.ToDouble(reader["AveragePowerPoints"])));
-
-                fields.Add(reader["PowerPoints1"].ToString());
-                fields.Add(reader["player1"].ToString());
-
-                fields.Add(reader["PowerPoints2"].ToString());
-                fields.Add(reader["player2"].ToString());
-
-                fields.Add(reader["PowerPoints3"].ToString());
-                fields.Add(reader["player3"].ToString());
-
-                fields.Add(reader["PowerPoints4"].ToString());
-                fields.Add(reader["player4"].ToString());
-                
-                lines.Add("\"" + string.Join("\",\"", fields) + "\"");
-            }
-            File.WriteAllText(path + region + ".csv", string.Join("\n", lines));
-        }
-
+         
 
         // Takes 2323.22 and returns "2,323" 
         private static string FormatNum(double num) {
@@ -78,8 +30,6 @@ namespace FortniteJson {
             string x = String.Format("{0:n0}", formatted);
             return x;
         }
-
-
 
         private static void AddSquads(string eventId) {
 
@@ -138,6 +88,56 @@ namespace FortniteJson {
                         break;
                 }
             }
+        }
+
+
+
+        public static void MakeSquadCsvs() {
+            string path = @"c:\project\fortnite\r\champion-series-squads\data\";
+
+            var lines = new List<string>();
+            var header = @"Wk 1, wk 2, Wk 3, Avg,Avg Power Points,#1 Points,#1,#2 Points,#2,#3 Points,#3,#4 Points,#4";
+            lines.Add(header);
+
+            //var reader = Db.Query("SELECT Region, AveragePowerPoints, PowerPoints1, Player1, PowerPoints2, Player2, PowerPoints3, Player3, PowerPoints4, Player4 FROM SquadView ORDER BY Region");
+            var reader = Db.Query("SELECT Region, W1Rank, W2Rank, W3Rank, AverageRank, AveragePowerPoints, PowerPoints1, Player1, PowerPoints2, Player2, PowerPoints3, Player3, PowerPoints4, Player4 FROM SquadStatsView ORDER BY Region");
+            var oldRegion = "";
+            var region = "X";
+            while (reader.Read()) {
+                region = reader["Region"].ToString();
+                if (oldRegion != region) {
+                    if (oldRegion != "")
+                        File.WriteAllText(path + oldRegion + ".csv", string.Join("\n", lines));
+
+                    lines = new List<string>();
+                    lines.Add(header);
+                    oldRegion = region;
+                }
+
+                var fields = new List<string>();
+
+                fields.Add(FormatNum(Convert.ToDouble(reader["W1Rank"])));
+                fields.Add(FormatNum(Convert.ToDouble(reader["W2Rank"])));
+                fields.Add(FormatNum(Convert.ToDouble(reader["W3Rank"])));
+                fields.Add(FormatNum(Convert.ToDouble(reader["AverageRank"])));
+
+                fields.Add(FormatNum(Convert.ToDouble(reader["AveragePowerPoints"])));
+
+                fields.Add(reader["PowerPoints1"].ToString());
+                fields.Add(reader["player1"].ToString());
+
+                fields.Add(reader["PowerPoints2"].ToString());
+                fields.Add(reader["player2"].ToString());
+
+                fields.Add(reader["PowerPoints3"].ToString());
+                fields.Add(reader["player3"].ToString());
+
+                fields.Add(reader["PowerPoints4"].ToString());
+                fields.Add(reader["player4"].ToString());
+
+                lines.Add("\"" + string.Join("\",\"", fields) + "\"");
+            }
+            File.WriteAllText(path + region + ".csv", string.Join("\n", lines));
         }
     }
 }

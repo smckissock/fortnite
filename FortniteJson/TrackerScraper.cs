@@ -69,12 +69,18 @@ namespace FortniteJson {
                         HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
                         request.AutomaticDecompression = DecompressionMethods.GZip;
 
-                        using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
-                        using (Stream stream = response.GetResponseStream())
-                        using (StreamReader reader = new StreamReader(stream)) {
+                        try {
+                            using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+                        
+                            using (Stream stream = response.GetResponseStream())
+                                using (StreamReader reader = new StreamReader(stream)) {
                             html = reader.ReadToEnd();
                             string fileName = @"d:\\fortnite\\fortnite-scrape\\" + info.Directory + "\\" + region + "_" + anEvent + "_" + page + ".html";
                             System.IO.File.WriteAllText(fileName, html);
+                        }
+                        }
+                        catch (Exception e) {
+                            continue;
                         }
                         System.Threading.Thread.Sleep(200);
                     }
@@ -91,7 +97,9 @@ namespace FortniteJson {
                 Console.WriteLine(region);
                 for (int eventNum = 0; eventNum < info.Events.Count; eventNum++) {
                     string epicEvent = info.Events[eventNum];
+
                     string myEvent = info.EventNames[eventNum];
+                    //string myEvent = "CS Squads Final";
 
                     for (int i = 0; i < info.Pages; i++) {
                         string page = i.ToString();
@@ -155,14 +163,15 @@ namespace FortniteJson {
 
                         dynamic json = JsonConvert.DeserializeObject(json_text);
                         foreach (var placement in json.entries)
-                            if (placement.rank >= info.MinimumPlacement)
+                            if (placement.rank >= info.MinimumPlacement) {
                                 Step3_InsertPlacement(placement, myEvent, region);
+                            }
                     }
                 }
             }
         }
 
-        private static void Step3_InsertPlacement(dynamic placement, string myEvent, string region) {
+        private static void Step3_InsertPlacement(dynamic placement, string myEvent, string region, string heat = "") {
             Db.Command("INSERT INTO Placement (EventID, RegionID, Rank, Points) VALUES ((SELECT ID FROM Event WHERE Name = '" + myEvent + "'), (SELECT ID FROM Region WHERE EpicCode = '" +
                 region + "'), " + placement.rank + ", " + placement.pointsEarned + ")");
 
