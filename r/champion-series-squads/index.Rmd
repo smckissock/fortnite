@@ -27,7 +27,8 @@ con <- DBI::dbConnect(odbc::odbc(),
                       Trusted_Connection = "True")
 
 
-squads <- dbGetQuery(con, paste0("SELECT * FROM SquadDisplayView ORDER BY Region, [FNCS Rank]")) 
+#squads <- dbGetQuery(con, paste0("SELECT * FROM SquadDisplayView ORDER BY Region, [FNCS Rank]")) 
+squads <- dbGetQuery(con, paste0("SELECT * FROM SquadDisplayView ORDER BY Region, Heat, [FNCS Rank]")) 
 
 loc = locale(date_names = "en", date_format = "%AD", time_format = "%AT",
   decimal_mark = ".", grouping_mark = ",", tz = "UTC",
@@ -37,13 +38,6 @@ path = "C:/project/fortnite/r/champion-series-squads/data/"
 
 ```
 Back to [Fortnite Ping](<https://www.fortniteping.com>) 
-
-* Player 1 - 4: players and their Power Ranking points. Player #1 has the most points on each squad; #4 has the least
-* Squad Placements: placements for FNCS weeks 1-3, and their average. Squads that didn't place in each week are excluded.
-* Squad Rank: squad ranking in each region based on average placement in weeks 1-3 of FNCS
-* Players Rank: rank of squads in each region based on the sum of the squad member's Power Ranking points.
-* Chemistry Score: difference between "Players Rank" and "Squad Rank." Negative scores means a squad is performing less well than the sum of the team's Power Rankings would lead you to expect. A positive number means the squad is performing better, suggesting the team members play well together, or that the team has up-and-coming players.    
-
 
 # {.tabset .tabset-fade}
 
@@ -73,7 +67,7 @@ region_table <- function(region) {
     formatStyle('P4', background = styleInterval(breaks, colors)) %>%
     formatStyle('FNCS Rank', background = styleInterval(breaks, colors)) %>%
     formatStyle('Power Rank', background = styleInterval(breaks, colors)) %>%
-    formatStyle('Chemistry Score', fontWeight = styleInterval( c(-5, 5), c('bold', 'normal', 'bold')))
+    formatStyle('Chemistry', fontWeight = styleInterval( c(-5, 5), c('bold', 'normal', 'bold')))
 }
 
 region_table_csv <- function(csv) {
@@ -120,3 +114,11 @@ region_table("Oceania")
 ```{r middle_east_table}
 region_table("Middle East")
 ```
+
+## Column Key
+
+* Player 1 - 4: players and their Power Ranking points. Player #1 has the most points on each squad; #4 has the least
+* Squad Placements: placements for FNCS weeks 1-3, and their average. Squads that didn't place in each week are excluded.
+* Squad Rank: squad ranking in each region based on average placement in weeks 1-3 of FNCS
+* Players Rank: rank of squads in each region based on the sum of the squad member's Power Ranking points.
+* Chemistry: difference between "Players Rank" and "Squad Rank." Negative scores means a squad is performing less well than the sum of the team's Power Rankings would lead you to expect. A positive number means the squad is performing better, suggesting the team members play well together, or that the team has up-and-coming players.  
