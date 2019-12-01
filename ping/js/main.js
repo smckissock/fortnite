@@ -324,7 +324,8 @@ function mostSearchedButton(svg) {
 } 
 
 function squadLeaderboardButton(svg) {
-    const qualifierLeft = 730;
+    //const qualifierLeft = 700;
+    const qualifierLeft = 360;
     let qualifierButton = svg.append("a")
         //.attr("xlink:href", "https://fortnitewc.netlify.com/finals.html")        
         .append("rect")
@@ -355,7 +356,7 @@ function squadLeaderboardButton(svg) {
 
     text("FNCS", svg, "button-text", qualifierLeft + 16, 32);  
     text("Squad", svg, "button-text", qualifierLeft + 13, 51);  
-    text("Leaders", svg, "button-text", qualifierLeft + 7, 70);    
+    text("Seeds", svg, "button-text", qualifierLeft + 14, 70);    
 }  
 
 
