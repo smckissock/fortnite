@@ -1,5 +1,5 @@
 ---
-title: "Fortnite Ping Squad Leaderboard"
+title: "Fortnite Ping FNCS Heat Seeds"
 output:
   html_document: 
     includes:
@@ -52,7 +52,7 @@ region_tables <- function(region, heat) {
   
   #heat <- filter(region, Heat == heat_num)
   
-  breaks <- c(5, 25, 50, 100)
+  breaks <- c(25, 50, 100, 200)
   colors <- c(
     rgb(38, 110, 246, maxColorValue = 255), 
     rgb(71, 201, 255, maxColorValue = 255), 
@@ -69,7 +69,7 @@ region_tables <- function(region, heat) {
     formatStyle('P3', background = styleInterval(breaks, colors)) %>%  
     formatStyle('P4', background = styleInterval(breaks, colors)) %>%
     #formatStyle('Seed', background = styleInterval(breaks, colors)) %>%
-    formatStyle('Power Rank', background = styleInterval(breaks, colors)) %>%
+    #formatStyle('Power Rank', background = styleInterval(breaks, colors)) %>%
     formatStyle('Chemistry', fontWeight = styleInterval( c(-5, 5), c('bold', 'normal', 'bold')))
 }
 
@@ -85,7 +85,7 @@ heat_table <- function(region, heat_num) {
   
   heat <- filter(region, Heat == heat_num)
   
-  breaks <- c(5, 10, 15, 100)
+  breaks <- c(25, 50, 100, 200)
   colors <- c(
     rgb(38, 110, 246, maxColorValue = 255), 
     rgb(71, 201, 255, maxColorValue = 255), 
@@ -109,61 +109,140 @@ heat_table <- function(region, heat_num) {
 ```
 
 ## Europe
-```{r europe_table}
 
-region_tables("Europe", 1)
-region_tables("Europe", 2)
-region_tables("Europe", 3)
-region_tables("Europe", 4)
+### Europe Heat 1
+```{r europe_heat1} 
+region_tables("Europe", 1) 
+```
 
+### Europe Heat 2
+```{r europe_heat2} 
+region_tables("Europe", 2) 
+```
+
+### Europe Heat 3
+```{r europe_heat3} 
+region_tables("Europe", 3) 
+```
+
+### Europe Heat 4
+```{r europe_heat4} 
+region_tables("Europe", 4) 
 ```
 
 ## NA East
-```{r na_east_table}
-region_tables("NA East", 1)
-region_tables("NA East", 2)
-region_tables("NA East", 3)
-region_tables("NA East", 4)
+
+### NA East Heat 1
+```{r na_east_heat1} 
+region_tables("NA East", 1) 
+```
+
+### NA East Heat 2
+```{r na_east_heat2} 
+region_tables("NA East", 2) 
+```
+
+### NA East Heat 3
+```{r na_east_heat3} 
+region_tables("NA East", 3) 
+```
+
+### NA East Heat 4
+```{r na_east_heat4} 
+region_tables("NA East", 4) 
 ```
 
 ## NA West
-```{r na_west_table}
-region_tables("NA West", 1)
-region_tables("NA West", 2)
-region_tables("NA West", 3)
-region_tables("NA West", 4)
+
+### NA West Heat 1
+```{r na_west_heat1} 
+region_tables("NA West", 1) 
 ```
+
+### NA West Heat 2
+
+```{r na_west_heat2} 
+region_tables("NA West", 2) 
+```
+
+### NA West Heat 3
+```{r na_west_heat3} 
+region_tables("NA West", 3) 
+```
+
+### NA West Heat 4
+```{r na_west_heat4} 
+region_tables("NA West", 4) 
 
 ## Brazil
-```{r na_brazil_table}
-region_tables("Brazil", 1)
-region_tables("Brazil", 2)
-region_tables("Brazil", 3)
-region_tables("Brazil", 4)
+
+### Brazil Heat 1
+```{r brazil_heat1} 
+region_tables("Brazil", 1) 
 ```
 
+### Brazil Heat 2
+```{r brazil_heat2} 
+region_tables("NA West", 2) 
+```
+
+### Brazil Heat 3
+```{r brazil_heat3} 
+region_tables("NA West", 3) 
+```
+
+### Brazil  Heat 4
+```{r brazil_heat4} 
+region_tables("Brazil ", 4) 
+
+```
+
+
 ## Asia
-```{r na_asia_table}
-region_tables("Asia", 1)
-region_tables("Asia", 2)
+
+### Asia Heat 1
+```{r asia_heat1} 
+region_tables("Asia", 1) 
+```
+
+### Asia Heat 2
+```{r asia_heat2} 
+region_tables("Asia", 2) 
 ```
 
 ## Oceania
-```{r oceania_table}
-region_tables("Oceania", 1)
-region_tables("Oceania", 2)
+
+### Oceania Heat 1
+```{r oceania_heat1} 
+region_tables("Oceania", 1) 
+```
+
+### Oceania Heat 2
+```{r oceania_heat2} 
+region_tables("Oceania", 2) 
 ```
 
 ## Middle East
-```{r middle_east_table}
-region_tables("Middle East", 1)
-region_tables("Middle East", 2)
+
+### Middle East Heat 1
+```{r middle_east_heat1} 
+region_tables("Middle East", 1) 
 ```
+
+### Middle East Heat 2
+```{r middle_east_heat2} 
+region_tables("Middle East", 2) 
+```
+
 
 ## Column Key
 
-* Player 1 - 4: players and their Power Ranking points. Player #1 has the most points on each squad; #4 has the least
-* Squad Placements: placements for FNCS weeks 1-3, and their average. Squads that didn't place in each week are excluded.
-* Squad Rank: squad ranking in each region based on average placement in weeks 1-3 of FNCS
-* Players Rank: rank of squads in each region based on the sum of the squad member's Power Ranking points.
-* Chemistry: difference between "Players Rank" and "Squad Rank." Negative scores means a squad is performing less well than the sum of the team's Power Rankings would lead you to expect. A positive number means the squad is performing better, suggesting the team members play well together, or that the team has up-and-coming players.  
+##### Blue cells mean higher player Power Rankings   
+
+* Column Key
+  + Seed: Ranking of squad based on average placement in qualifiers (the "FNCS Placements" column.)  
+  + Player 1 - 4: players and their Power Ranking points. Player #1 has the most points on each squad; #4 has the least
+  + Squad Placements: placements for FNCS weeks 1-4, and their average. Weekly placements are capped at a maximum of 500.
+  + Avg Points: Average power ranking of squad, in thousands.
+  + Power Rank: Rank of squads in the heat based on the "Avg Points" column.
+  + Chemistry: Difference between "Power Rank" and "Seed" cloumns. Negative scores mean a squad is performing less well than the sum of the team's Power Rankings would lead you to expect. A positive number means the squad is performing better, suggesting the team members play well together, or that the team has up-and-coming players.  

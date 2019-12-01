@@ -169,10 +169,10 @@ SELECT
 	, s.Heat
 	, s.Rank
 
-	, ISNULL(w1.Rank, 0) W1Rank
-	, ISNULL(w2.Rank, 0) W2Rank
-	, ISNULL(w3.Rank, 0) W3Rank
-	, ISNULL(w4.Rank, 0) W4Rank
+	, ISNULL(w1.Rank, 500) W1Rank
+	, ISNULL(w2.Rank, 500) W2Rank
+	, ISNULL(w3.Rank, 500) W3Rank
+	, ISNULL(w4.Rank, 500) W4Rank
 
 	--, ISNULL(CONVERT(DECIMAL(10, 1), w1.Rank) + w2.Rank + w3.Rank + w4.Rank / 4, 1000) AverageRank 	
 	,	(ISNULL(CONVERT(DECIMAL(10, 1), w1.Rank), 500) + 
@@ -184,12 +184,11 @@ SELECT
 
 	, RANK () OVER ( 
 		PARTITION BY s.RegionID, s.Heat
-		--ORDER BY w1.Rank + w2.Rank + w3.Rank + w4.Rank
 		ORDER BY ISNULL(w1.Rank, 500) + ISNULL(w2.Rank, 500) + ISNULL(w3.Rank, 500) + ISNULL(w4.Rank, 500)
 	) PlacementRank
 	
 	, RANK () OVER ( 
-		PARTITION BY s.RegionID
+		PARTITION BY s.RegionID, s.Heat
 		ORDER BY p1.PowerPoints + p2.PowerPoints + p3.PowerPoints + p4.PowerPoints DESC
 	) PowerPointRank
 
@@ -257,7 +256,8 @@ SELECT
 		CONVERT(nvarchar(100), W4Rank) +
 		'  Avg: ' +  FORMAT(AverageRank, 'N1') [FNCS Placements]
 			
-	, FORMAT(((PowerPoints1 + PowerPoints2  + PowerPoints3  + PowerPoints4 ) / 4 / 1000), 'N1') [Avg Points]
+	--, FORMAT(((PowerPoints1 + PowerPoints2  + PowerPoints3  + PowerPoints4 ) / 4 / 1000), 'N1') [Avg Points]
+	, CONVERT(nvarchar(100), FORMAT(((PowerPoints1 + PowerPoints2  + PowerPoints3  + PowerPoints4 ) / 4 / 1000), 'N1')) + 'k' [Avg Points]
 	
 	, PowerPointRank [Power Rank]
 	, PowerPointRank - PlacementRank  [Chemistry]
