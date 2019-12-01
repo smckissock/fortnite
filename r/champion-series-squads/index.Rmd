@@ -28,7 +28,7 @@ con <- DBI::dbConnect(odbc::odbc(),
 
 
 #squads <- dbGetQuery(con, paste0("SELECT * FROM SquadDisplayView ORDER BY Region, [FNCS Rank]")) 
-squads <- dbGetQuery(con, paste0("SELECT * FROM SquadDisplayView ORDER BY Region, Heat, [FNCS Rank]")) 
+squads <- dbGetQuery(con, paste0("SELECT * FROM SquadDisplayView ORDER BY Region, Heat, Seed")) 
 
 loc = locale(date_names = "en", date_format = "%AD", time_format = "%AT",
   decimal_mark = ".", grouping_mark = ",", tz = "UTC",
@@ -44,10 +44,13 @@ Back to [Fortnite Ping](<https://www.fortniteping.com>)
 
 ```{r definition, echo = FALSE}
 
-region_table <- function(region) {
+region_tables <- function(region, heat) {
 
-  region <- filter(squads, Region == region) %>%
-    select(-Region)
+  table <- filter(squads, Region == region & Heat == heat) %>%
+    select(-Region) %>%
+    select(-Heat)  
+  
+  #heat <- filter(region, Heat == heat_num)
   
   breaks <- c(5, 25, 50, 100)
   colors <- c(
@@ -58,14 +61,14 @@ region_table <- function(region) {
     rgb(255, 255, 255, maxColorValue = 255)
   )
   
-  datatable(region, 
+  datatable(table, 
     class = 'cell-border nowrap stripe compact',
     options = list(paging = FALSE)) %>% 
     formatStyle('P1', background = styleInterval(breaks, colors)) %>%  
     formatStyle('P2', background = styleInterval(breaks, colors)) %>% 
     formatStyle('P3', background = styleInterval(breaks, colors)) %>%  
     formatStyle('P4', background = styleInterval(breaks, colors)) %>%
-    formatStyle('FNCS Rank', background = styleInterval(breaks, colors)) %>%
+    #formatStyle('Seed', background = styleInterval(breaks, colors)) %>%
     formatStyle('Power Rank', background = styleInterval(breaks, colors)) %>%
     formatStyle('Chemistry', fontWeight = styleInterval( c(-5, 5), c('bold', 'normal', 'bold')))
 }
@@ -77,42 +80,84 @@ region_table_csv <- function(csv) {
     options = list(paging = FALSE)
   )
 }
+
+heat_table <- function(region, heat_num) {
+  
+  heat <- filter(region, Heat == heat_num)
+  
+  breaks <- c(5, 10, 15, 100)
+  colors <- c(
+    rgb(38, 110, 246, maxColorValue = 255), 
+    rgb(71, 201, 255, maxColorValue = 255), 
+    rgb(130, 233, 255, maxColorValue = 255), 
+    rgb(184, 242, 255, maxColorValue = 255), 
+    rgb(255, 255, 255, maxColorValue = 255)
+  )
+  
+  datatable(heat, 
+    class = 'cell-border nowrap stripe compact',
+    options = list(paging = FALSE)) %>% 
+    formatStyle('P1', background = styleInterval(breaks, colors)) %>%  
+    formatStyle('P2', background = styleInterval(breaks, colors)) %>% 
+    formatStyle('P3', background = styleInterval(breaks, colors)) %>%  
+    formatStyle('P4', background = styleInterval(breaks, colors)) %>%
+    formatStyle('Seed', background = styleInterval(breaks, colors)) %>%
+    #formatStyle('Power Rank', background = styleInterval(breaks, colors)) %>%
+    formatStyle('Chemistry', fontWeight = styleInterval( c(-5, 5), c('bold', 'normal', 'bold')))
+}
+  
 ```
 
 ## Europe
 ```{r europe_table}
 
-region_table("Europe")
+region_tables("Europe", 1)
+region_tables("Europe", 2)
+region_tables("Europe", 3)
+region_tables("Europe", 4)
+
 ```
 
 ## NA East
 ```{r na_east_table}
-region_table("NA East")
+region_tables("NA East", 1)
+region_tables("NA East", 2)
+region_tables("NA East", 3)
+region_tables("NA East", 4)
 ```
 
 ## NA West
 ```{r na_west_table}
-region_table("NA West")
+region_tables("NA West", 1)
+region_tables("NA West", 2)
+region_tables("NA West", 3)
+region_tables("NA West", 4)
 ```
 
 ## Brazil
 ```{r na_brazil_table}
-region_table("Brazil")
+region_tables("Brazil", 1)
+region_tables("Brazil", 2)
+region_tables("Brazil", 3)
+region_tables("Brazil", 4)
 ```
 
 ## Asia
 ```{r na_asia_table}
-region_table("Asia")
+region_tables("Asia", 1)
+region_tables("Asia", 2)
 ```
 
 ## Oceania
 ```{r oceania_table}
-region_table("Oceania")
+region_tables("Oceania", 1)
+region_tables("Oceania", 2)
 ```
 
 ## Middle East
 ```{r middle_east_table}
-region_table("Middle East")
+region_tables("Middle East", 1)
+region_tables("Middle East", 2)
 ```
 
 ## Column Key

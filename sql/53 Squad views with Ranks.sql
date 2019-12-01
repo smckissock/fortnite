@@ -185,7 +185,7 @@ SELECT
 	, RANK () OVER ( 
 		PARTITION BY s.RegionID, s.Heat
 		--ORDER BY w1.Rank + w2.Rank + w3.Rank + w4.Rank
-		ORDER BY ISNULL(w1.Rank, 500) + ISNULL(w2.Rank, 500) + ISNULL(w3.Rank, 500) + ISNULL(w4.Rank, 500))
+		ORDER BY ISNULL(w1.Rank, 500) + ISNULL(w2.Rank, 500) + ISNULL(w3.Rank, 500) + ISNULL(w4.Rank, 500)
 	) PlacementRank
 	
 	, RANK () OVER ( 
@@ -236,11 +236,9 @@ GO
 CREATE OR ALTER    VIEW [dbo].[SquadDisplayView]
 AS
 
-SELECT 
-	Region
-	, Heat
-	, Rank
-		
+SELECT
+	PlacementRank [Seed]
+
 	, PlayerRank1 P1
 	, Player1 + ' ' + CONVERT(nvarchar(100), FORMAT((PowerPoints1 / 1000), 'N1')) + 'k' [Player 1]
 
@@ -259,30 +257,15 @@ SELECT
 		CONVERT(nvarchar(100), W4Rank) +
 		'  Avg: ' +  FORMAT(AverageRank, 'N1') [FNCS Placements]
 			
-	, AverageRank
-	, PlacementRank [FNCS Rank]
+	, FORMAT(((PowerPoints1 + PowerPoints2  + PowerPoints3  + PowerPoints4 ) / 4 / 1000), 'N1') [Avg Points]
+	
 	, PowerPointRank [Power Rank]
 	, PowerPointRank - PlacementRank  [Chemistry]
+	
+	, Region
+	, Heat
 FROM SquadStatsView 
 WHERE Heat <> 0
 GO
 
 
-SELECT Count(*) FROM SquadStatsView
-SELECT Count(*) FROM SquadDisplayView
-
-
-SELECT * FROM SquadDisplayView 
-WHERE Heat = 3 AND Region = 'NA East'
-ORDER BY Region, Heat, AverageRank DESC 
-
-
-
-
-SELECT * FROM SquadStatsView 
-WHERE Heat = 3 AND Region = 'NA East'
-ORDER BY Region, Heat, AverageRank 
-
-
-SELECT (3+21+48+84)/4
-SELECT 3+21+48+84/4
