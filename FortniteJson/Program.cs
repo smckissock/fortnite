@@ -60,10 +60,10 @@ namespace FortniteJson {
             //Fortnite.MakeJsonArray();   
 
 
-            //Fortnite2FixUp.ImportPlayerSearch();
+            Fortnite2FixUp.ImportPlayerSearch();
 
 
-            Squads.Update("2047");
+            //Squads.Update("2047");
             //Squads.MakeSquadCsvs(); // For R tables
 
 

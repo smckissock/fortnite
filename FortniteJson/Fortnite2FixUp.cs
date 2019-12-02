@@ -226,7 +226,7 @@ namespace FortniteJson {
 
         public static void ImportPlayerSearch() {
 
-            string file = "c:\\project\\fortnite\\csv\\Analytics All Web Site Data Searches by Player and Date 20191104-20191123.csv";
+            string file = "c:\\project\\fortnite\\csv\\Analytics All Web Site Data Searches by Player and Date 20191007-20191201.csv";
             //string file = "c:\\project\\fortnite\\csv\\Players 20191014-20191020.csv";
 
             var csv = GetCsvParser(file);

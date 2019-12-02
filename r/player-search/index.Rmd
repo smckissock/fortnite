@@ -34,7 +34,7 @@ search_count <- prettyNum(search_count_tbl[1, 1], big.mark=",")
 
 ## UPDATE THESE
 min_searches <- 25
-update_date <- "November 23, 2019"
+update_date <- "December 2, 2019"
 
 
 #raw_data <- read_csv("C:/project/fortnite/r/player-search/data2.csv")
@@ -93,7 +93,7 @@ ggplot(searches, aes(x = total, y = reorder(Name, total))) +
 
 **Player searches by region and day**
 
-```{r player_search_by_day_chart, fig.width = 9, fig.height = 4}
+```{r player_search_by_day_chart, fig.width = 14, fig.height = 4}
 
 days <- raw_data  
 
