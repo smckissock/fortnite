@@ -17,17 +17,17 @@ body {
  .grid {
     display: grid;
     grid-template-areas: 
-        "left-margin    title       info        info    right"
-        "left-margin    search      filters     filters right"
-        "left-margin    region      region      region  right"
-        "left-margin    event       event       event   right"
-        "left-margin    player      player      player  right";
-    grid-template-columns: 10px 200px 136px 660px 300px;
+        "left-margin    title       info        info    ads     right"
+        "left-margin    search      filters     filters ads     right"
+        "left-margin    region      region      region  ads     right"
+        "left-margin    event       event       event   ads     right"
+        "left-margin    player      player      player  ads     right";
+    grid-template-columns: 10px 200px 136px 660px 125px 300px;
     grid-template-rows: 84px 45px 50px 150px auto; 
     grid-gap: 2px 12px;
     margin: 0px;
     height: 1080px;
-    width: 1340px; 
+    width: 1540px; 
 }   
 
 /*  grid-area */
@@ -76,9 +76,9 @@ body {
     overflow: auto;
 }
 
-.right {
-    grid-area: right;
-    display: none;
+
+.ads {
+    grid-area: ads;
 }
 
 .player {
