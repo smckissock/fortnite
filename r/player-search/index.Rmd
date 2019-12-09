@@ -34,7 +34,7 @@ search_count <- prettyNum(search_count_tbl[1, 1], big.mark=",")
 
 ## UPDATE THESE
 min_searches <- 25
-update_date <- "December 2, 2019"
+update_date <- "December 9, 2019"
 
 
 #raw_data <- read_csv("C:/project/fortnite/r/player-search/data2.csv")
@@ -45,7 +45,7 @@ Back to [Fortnite Ping](<https://www.fortniteping.com>)
 
 ***Last updated `r update_date`***
 
-We started tracking player searches on Fortnite Ping in mid October 2019. `r player_count` players have been searched in more than `r search_count` searches. Here is the breakdown of searches by region. The relatively large number of searches in NA East may be due to the it being used to organize scrims.
+We started tracking player searches on Fortnite Ping in mid October 2019. `r player_count` players have been searched in more than `r search_count` searches. Here is the breakdown of searches by region.
 
 ```{r region_search_chart, fig.width = 7, fig.height = 2}
 
