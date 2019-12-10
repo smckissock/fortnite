@@ -29,6 +29,7 @@ con <- DBI::dbConnect(odbc::odbc(),
 
 #squads <- dbGetQuery(con, paste0("SELECT * FROM SquadDisplayView ORDER BY Region, [FNCS Rank]")) 
 squads <- dbGetQuery(con, paste0("SELECT * FROM SquadDisplayView ORDER BY Region, Heat, Seed")) 
+#chart-squads <- dbGetQuery(con, paste0("SELECT * FROM SquadDisplayView ORDER BY Region, Heat, Seed")) 
 
 loc = locale(date_names = "en", date_format = "%AD", time_format = "%AT",
   decimal_mark = ".", grouping_mark = ",", tz = "UTC",
@@ -70,7 +71,10 @@ region_tables <- function(region, heat) {
     formatStyle('P4', background = styleInterval(breaks, colors)) %>%
     #formatStyle('Seed', background = styleInterval(breaks, colors)) %>%
     #formatStyle('Power Rank', background = styleInterval(breaks, colors)) %>%
-    formatStyle('Chemistry', fontWeight = styleInterval( c(-5, 5), c('bold', 'normal', 'bold')))
+    formatStyle('Chemistry', fontWeight = styleInterval( c(-5, 5), c('bold', 'normal', 'bold'))) 
+  
+  #p <- ggplot(table, aes(Seed, Chemistry))
+  #p + geom_point() 
 }
 
 region_table_csv <- function(csv) {
