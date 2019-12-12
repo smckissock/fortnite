@@ -2,7 +2,31 @@ USE Fortnite2
 GO
 
 
+-- December 11 after importing squad finals, but power point problem
+BACKUP DATABASE Fortnite
+TO DISK = N'd:\Fortnite\Fortnitedb\November11.bak' WITH NOFORMAT, NOINIT, NAME = N'Full Database Backup', SKIP, NOREWIND, NOUNLOAD, STATS = 10
+GO
+BACKUP DATABASE Fortnite
+TO DISK = N'g:\db\November11.bak' WITH NOFORMAT, NOINIT, NAME = N'Full Database Backup', SKIP, NOREWIND, NOUNLOAD, STATS = 10
+GO
 
+
+
+
+-- December 10 before importing squad finals
+BACKUP DATABASE Fortnite
+TO DISK = N'd:\Fortnite\Fortnitedb\November10.bak' WITH NOFORMAT, NOINIT, NAME = N'Full Database Backup', SKIP, NOREWIND, NOUNLOAD, STATS = 10
+GO
+BACKUP DATABASE Fortnite
+TO DISK = N'g:\db\November10.bak' WITH NOFORMAT, NOINIT, NAME = N'Full Database Backup', SKIP, NOREWIND, NOUNLOAD, STATS = 10
+GO
+
+
+
+
+-- Below are top to bottom
+---------------------
+---------------------
 
 -- July 20, 2019
 BACKUP DATABASE Fortnite2

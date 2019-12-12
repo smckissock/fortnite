@@ -124,7 +124,7 @@ namespace FortniteJson {
 
         public PowerRankings() {
 
-            string currentWeekId = "21";
+            string currentWeekId = "22";
 
             // Update Week
             weekWeights = WeekWeight.GetWeekWeights(currentWeekId);
@@ -145,7 +145,7 @@ namespace FortniteJson {
             }
 
             // For csv file
-            var header = "\"Match\",\"Format\",\"Event\",\"Region\",\"Rank\",\"Payout\",\"Points\"";
+            var header = "\"Match\",\"Format\",\"Event\",\"Region\",\"Rank\",\"Payout\",\"Payout\",\"Points\"";
             var lines = new List<string>();
             lines.Add(header);
 

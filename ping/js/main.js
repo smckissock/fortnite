@@ -141,7 +141,7 @@ d3.json('ping/data/data.json').then(function (dataArray) {
         const event = events.find(e => e.id === parseInt(d[17], 10));
         rec.week = event.name;
         rec.weight = +event.weight;
-        rec.weight = rec.weight + .02; // Change this each week!! (-.02)
+        rec.weight = rec.weight;// + .02; // Change this each week!! (-.02)
 
         rec.powerPoints = Math.round(rec.rawPowerPoints * rec.weight);
 

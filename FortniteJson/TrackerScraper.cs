@@ -98,9 +98,11 @@ namespace FortniteJson {
                 for (int eventNum = 0; eventNum < info.Events.Count; eventNum++) {
                     string epicEvent = info.Events[eventNum];
 
-                    string myEvent = info.EventNames[eventNum];
-                    //string myEvent = "CS Squads Final";
+                    if ((region == "ME") || (region == "OCE") || (region == "ASIA"))
+                        epicEvent = "Event3";
 
+                    string myEvent = info.EventNames[eventNum];
+                    
                     for (int i = 0; i < info.Pages; i++) {
                         string page = i.ToString();
 
@@ -140,6 +142,9 @@ namespace FortniteJson {
                 Console.WriteLine(region);
                 for (int eventNum = 0; eventNum < info.Events.Count; eventNum++) {
                     string epicEvent = info.Events[eventNum];
+                    if ((region == "ME") || (region == "OCE") || (region == "ASIA"))
+                        epicEvent = "Event3";
+
                     string myEvent = info.EventNames[eventNum];
 
                     for (int i = 0; i < info.Pages; i++) {
@@ -200,6 +205,9 @@ namespace FortniteJson {
                 Console.WriteLine(region);
                 for (int eventNum = 0; eventNum < info.Events.Count; eventNum++) {
                     string epicEvent = info.Events[eventNum];
+                    if ((region == "ME") || (region == "OCE") || (region == "ASIA"))
+                        epicEvent = "Event3";
+
                     string myEvent = info.EventNames[eventNum];
 
                     for (int i = 0; i < 1; i++) {
@@ -237,12 +245,12 @@ namespace FortniteJson {
             //Console.WriteLine(payoutTiers);
             //Console.WriteLine(scoringTiers);
 
-            //foreach (var tier in payoutTiers) {
-            //    var threshold = tier.threshold;
-            //    var payout = tier.payouts[0].quantity;
-            //    Db.Command("INSERT INTO RankPayoutTier (EventID, RegionID, Rank, Payout) VALUES (" +
-            //        "(SELECT ID FROM Event WHERE Name = '" + myEvent + "'), (SELECT ID FROM Region WHERE EpicCode = '" + region + "')," + threshold + "," + payout + ")");
-            //}
+            foreach (var tier in payoutTiers) {
+                var threshold = tier.threshold;
+                var payout = tier.payouts[0].quantity;
+                Db.Command("INSERT INTO RankPayoutTier (EventID, RegionID, Rank, Payout) VALUES (" +
+                    "(SELECT ID FROM Event WHERE Name = '" + myEvent + "'), (SELECT ID FROM Region WHERE EpicCode = '" + region + "')," + threshold + "," + payout + ")");
+            }
 
             foreach (var tier in scoringTiers) {
                 var threshold = tier.keyValue;

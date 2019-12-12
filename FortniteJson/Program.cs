@@ -24,11 +24,11 @@ namespace FortniteJson {
             // All data governing import goes here
             var info = new ImportInfo();
 
-            info.Directory = "champion series squad heat 4";
-            info.EventId = "2047";                                  // 2035 = squad week 1 ; 2044 Heat 1
-            info.Match = "S11_FNCS_Finals";
-            info.Events = new List<string> { "Event4" };            // Typically Sunday is Event3, Saturday is 1 & 2 
-            info.EventNames = new List<string> { "CS Squads Heat #4" };  // Name for Event.Name, ex: CS Squads #1
+            info.Directory = "champion series squad finals";
+            info.EventId = "2039";                                  // 2035 = squad week 1 ; 2044 Heat 1
+            info.Match = "S11_FNCS_Finals";                         // Tracker code
+            info.Events = new List<string> { "Event5" };            // Typically Sunday is Event3, Saturday is 1 & 2 
+            info.EventNames = new List<string> { "CS Squads Final" };  // Name for Event.Name, ex: CS Squads #1
             info.Pages = 1;                                         // Number of scraped pages to import
             info.MinimumPlacement = 0;                             // Importer will not insert placement records for placements less than this
 
@@ -47,7 +47,8 @@ namespace FortniteJson {
 
             //Fortnite2FixUp.FixPayoutElimsAndWins(info.EventId);
 
-            // update PowerRankings() current weekId  
+            // BEFORE RUNNING THIS, UPDATE PowerRankings() current weekId !!!!  
+            // ALSO: Change week in PowerRankingEventsView!!!
             //Fortnite2FixUp.UpdatePlayerPowerPoints();   
             //Fortnite2FixUp.UpdatePlacementPowerPoints();            
 
@@ -56,11 +57,11 @@ namespace FortniteJson {
             //Fortnite2FixUp.AddPlayerPlacementNames();
             //Fortnite2FixUp.FixPlayerNames();
 
-            //Fortnite.MakeDimensions();
-            //Fortnite.MakeJsonArray();   
+            Fortnite.MakeDimensions();
+            Fortnite.MakeJsonArray();   
 
 
-            Fortnite2FixUp.ImportPlayerSearch();
+            //Fortnite2FixUp.ImportPlayerSearch();
 
 
             //Squads.Update("2047");

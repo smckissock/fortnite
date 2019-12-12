@@ -42,7 +42,7 @@ export const events = [
             { num: "W2", weekNum: 19, name: "CS Squads #2", type: "Champion Series Squads", date: "November 10", done: true },
             { num: "W3", weekNum: 20, name: "CS Squads #3", type: "Champion Series Squads", date: "November 17", done: true },
             { num: "W4", weekNum: 21, name: "CS Squads #4", type: "Champion Series Squads", date: "November 24", done: true },
-            { num: "F", weekNum: 22, name: "CS Final", type: "Champion Series  Squads", date: "December 9", done: false }
+            { num: "F", weekNum: 22, name: "CS Squads Final", type: "Champion Series Squads", date: "December 9", done: true }
         ]
     }
 ];

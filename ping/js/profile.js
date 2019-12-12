@@ -197,7 +197,7 @@ export function profile(player) {
         text("Rank", rankG, "g-header", 30, 40);
 
         const rectWidth = 213;
-        stats.totalPayout = stats.soloPayout + stats.duoPayout + stats.trioPayout;  
+        stats.totalPayout = stats.soloPayout + stats.duoPayout + stats.trioPayout + stats.squadPayout;  
         [   {name: "Total", x: leftMargin},
             {name: "Solo", x: leftMargin + (rectWidth + 20)},
             {name: "Duo", x: leftMargin + (rectWidth + 20) * 2},
@@ -291,8 +291,11 @@ export function profile(player) {
         });
 
         const y = 0;
-        [   {name: "World Cup", x1: leftMargin, width: 13 * (weekWidth + 2) - 6},
-            {name: "Champion Series", x1: leftMargin + 13 * (weekWidth + 2) , width: (weekWidth + 6) * 7} 
+        //[   {name: "World Cup", x1: leftMargin, width: 13 * (weekWidth + 2) - 6},
+        //    {name: "Champion Series Trios", x1: leftMargin + 13 * (weekWidth + 2) , width: (weekWidth + 6) * 7}
+        [   {name: "World Cup",                 x1: leftMargin,                             width: (weekWidth + 4) * 12 - 6}
+           ,{name: "Champion Series Trios",     x1: leftMargin + 12 * (weekWidth + 4),      width: (weekWidth + 4) * 6 - 5}
+           ,{name: "Champion Series Squads",    x1: leftMargin + 18 * (weekWidth + 4) ,     width: (weekWidth + 4) * 5}
         ].forEach(function(d) {
             trendG.append("rect")
                 .attr("x", d.x1)
