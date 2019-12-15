@@ -101,7 +101,7 @@ namespace FortniteJson {
         public double powerPoints;
         public string eventPlayerName;
     }
-    
+
 
     public class Fortnite {
 
@@ -126,7 +126,7 @@ namespace FortniteJson {
             var niceJson = Newtonsoft.Json.Linq.JToken.Parse(json).ToString();
             File.WriteAllText(fileName, niceJson);
 
-            MakePlayerArray();  
+            MakePlayerArray();
         }
 
         public static void MakePlayerArray() {
@@ -166,7 +166,7 @@ namespace FortniteJson {
             var list = new List<List<string>>();
             var reader = Db.Query("SELECT * FROM StatsView");
             while (reader.Read()) {
-                var record = new List<string>();                
+                var record = new List<string>();
                 record.Add(reader["soloWeek"].ToString());
                 record.Add(reader["duoWeek"].ToString());
                 record.Add(reader["soloOrDuo"].ToString());
@@ -176,7 +176,7 @@ namespace FortniteJson {
                 record.Add(reader["team"].ToString());
                 record.Add(reader["rank"].ToString());
                 record.Add(reader["payout"].ToString());
-                record.Add(reader["points"].ToString());    
+                record.Add(reader["points"].ToString());
                 record.Add(reader["wins"].ToString());
                 record.Add(reader["elims"].ToString());
                 record.Add(reader["PlacementPoints"].ToString());
@@ -233,9 +233,9 @@ namespace FortniteJson {
             //var header = "\042week\042,\042soloWeek\042,\042duoWeek\042,\042soloOrDuo\042,\042player\042,\042region\042,\042rank\042,\042payout\042,\042points\042,\042wins\042,\042elims\042,\042placementPoints\042,\042earnedQualification\042";
 
             lines.Add(header);
-            
+
             var reader = Db.Query("SELECT * FROM StatsView");
-            
+
             while (reader.Read()) {
                 var fields = new List<string>();
 
@@ -287,7 +287,7 @@ namespace FortniteJson {
             foreach (Tier tier in tiers)
                 if (tier.place >= rank)
                     points += tier.points;
-            
+
             return points;
         }
 
@@ -302,7 +302,18 @@ namespace FortniteJson {
             var niceJson = Newtonsoft.Json.Linq.JToken.Parse(json).ToString();
             File.WriteAllText(fileName, niceJson);
         }
-        
+
+        public static void MakeSquadGames() {
+
+            var games = MakeSquadGameList();
+
+            string fileName = @"c:\project\fortnite\ping\data\squad_finals.json";
+
+            string json = JsonConvert.SerializeObject(games);
+            var niceJson = Newtonsoft.Json.Linq.JToken.Parse(json).ToString();
+            File.WriteAllText(fileName, niceJson);
+        }
+
 
         public static List<Game> MakeWorldCupGamesGames() {
 
@@ -349,6 +360,67 @@ namespace FortniteJson {
             var niceJson = Newtonsoft.Json.Linq.JToken.Parse(json).ToString();
             File.WriteAllText(fileName, niceJson);
 
+        }
+
+
+        public static List<Game> MakeSquadGameList() {
+
+            var list = new List<Game>();
+
+            // ORDERING is important!!
+            //string query = "SELECT PlacementID, Player, SecondsAlive, EndTime, GameRank, Elims , EndSeconds, PlacementRank, WeekID FROM WorldCupFinalView ORDER BY WeekID, PlacementID, EndTime";
+            string query = "SELECT PlacementID, Player, SecondsAlive, EndTime, GameRank, Elims , EndSeconds, PlacementRank, Region FROM SquadFinalView ORDER BY Region, PlacementID, EndTime";
+            var reader = Db.Query(query);
+
+            Game game = null;
+            string placementId = "";
+            int endSeconds = 0;
+            while (reader.Read()) {
+
+                if ((game == null) || (placementId != reader["PlacementID"].ToString()) || endSeconds != (int)reader["EndSeconds"]) {
+                    game = new Game();
+                    game.players.Add(reader["Player"].ToString());
+
+                    game.fields.Add(reader["SecondsAlive"].ToString());
+                    game.fields.Add(reader["EndTime"].ToString());
+                    game.fields.Add(reader["GameRank"].ToString());
+                    game.fields.Add(reader["Elims"].ToString());
+                    game.fields.Add(reader["EndSeconds"].ToString());
+                    game.fields.Add(GetSquadPlacementPoints((int)reader["GameRank"]).ToString());
+                    game.fields.Add(reader["PlacementId"].ToString());
+                    game.fields.Add(reader["PlacementRank"].ToString());
+                    game.fields.Add(reader["Region"].ToString());
+
+                    placementId = reader["PlacementID"].ToString(); // ?
+                    endSeconds = (int)reader["EndSeconds"];  // ?
+
+
+
+                    list.Add(game);
+                } else {
+                    game.players.Add(reader["Player"].ToString());
+                }
+            }
+
+            return list;
+        }
+
+
+        private static int GetSquadPlacementPoints(int rank) {
+
+            var tiers = new List<Tier>();
+            tiers.Add(new Tier(1, 3));
+            tiers.Add(new Tier(2, 3));
+            tiers.Add(new Tier(3, 3));
+            tiers.Add(new Tier(6, 3));
+            tiers.Add(new Tier(8, 3));
+
+            int points = 0;
+            foreach (Tier tier in tiers)
+                if (tier.place >= rank)
+                    points += tier.points;
+
+            return points;
         }
     }
 }

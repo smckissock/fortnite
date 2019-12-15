@@ -10,27 +10,33 @@ const chartWidth = 1200 // Not including left margin
 const leftMargin = 15;
 
 let regions = [];
-let solosOrDuos = "Duos";
+
+let regionInfos = [];
+
+
 
 let titleText;
 let toggleButtonText;
 
 let xScale;
 
-let format = {
+/* let format = {
     teams: null,
     regionTotals: null,
     beforeMatch: null
 }
-
-const isLan = true;
+ */
 
 // One of these is assigned to format at all times   
-let solos = {};
-let duos = {};
-format = duos;
+//let solos = {};
+//let duos = {};
+//format = duos;
 
-let regionTotals;
+//let regionTotals;
+
+let currentRegion;
+
+
 const toggleLeft = 626;
 const playerWidth = 400;
 
@@ -38,16 +44,17 @@ const commaFormat = d3.format(",");
 
 const regionInfo = [
     { color: colors.green, name: "NA EAST", filter: "NA East", textOffset: 5 },
-    { color: colors.purple, name: "NA WEST", filter: "NA West", textOffset: 4 },
+    { color: colors.orange, name: "NA WEST", filter: "NA West", textOffset: 4 },
     { color: colors.blue, name: "EUROPE", filter: "Europe", textOffset: 6 },
-    { color: colors.red, name: "OCEANIA", filter: "Oceania", textOffset: 4 },
+    { color: colors.pink, name: "OCEANIA", filter: "Oceania", textOffset: 4 },
     { color: colors.teal, name: "BRAZIL", filter: "Brazil", textOffset: 11 },
-    { color: colors.brown, name: "ASIA", filter: "Asia", textOffset: 18 }
+    { color: colors.grey, name: "ASIA", filter: "Asia", textOffset: 18 },
+    { color: colors.yellow, name: "M. EAST", filter: "Middle East", textOffset: 8 }
 ];
 
 
-//d3.json('fwc/data/duo_games.json').then(function (data) {
-d3.json('fwc/data/finals.json').then(function (data) {
+//d3.json('fwc/data/finals.json').then(function (data) {
+d3.json('ping/data/squad_finals.json').then(function (data) {
     let games = [];
     data.forEach(function (d) {
         let rec = {};
@@ -60,32 +67,56 @@ d3.json('fwc/data/finals.json').then(function (data) {
         rec.placementPoints = d.fields[5];
         rec.placementId = d.fields[6];
         rec.placementRank = d.fields[7];
-        rec.week = d.fields[8];
+        rec.region = d.fields[8];       
 
-        rec.players = [];
-        rec.players[0] = d.players[0];
-
-        // Will only be one for solo
-        if (d.players[1])
-            rec.players[1] = d.players[1];
-
+        rec.players = d.players;
+        
         games.push(rec);
     });
 
-    let duoGames = games.filter(game => game.week === "11");
-    let soloGames = games.filter(game => game.week === "12");
+    regions = d3.nest()
+        .key(d => d.region)
+        .entries(games);
 
-    duos.teams = d3.nest()
-        .key(d => d.placementRank)
-        .entries(duoGames);
-    addDuoRegions(duos.teams);
+    regions.forEach(region => 
+        region.teams = d3.nest()
+            .key(d => d.placementRank)
+            .entries(region.values)
+    ); 
+    
+    //duos.teams = d3.nest()
+    //.key(d => d.placementRank)
+    //.entries(duoGames);
 
-    solos.teams = d3.nest()
-        .key(d => d.placementRank)
-        .entries(soloGames);
-    addSoloRegions(solos.teams);
+    regions.forEach(function (region) {
+        region.teams.forEach(function (team) {
 
-    duos.regionTotals = d3.nest()
+            // ? 
+            let beforeMatch = team.values[0].endSeconds - team.values[0].secondsAlive; 
+
+            // Add extra fields to each game
+            team.values.forEach(function (game) {
+                // Normalize seconds to start of match = 0
+                game.start = game.endSeconds - beforeMatch - game.secondsAlive;
+                game.end = game.endSeconds - beforeMatch;
+
+                // Add nice time string
+                const minutes = Math.floor(game.secondsAlive / 60);
+                const seconds = game.secondsAlive - minutes * 60;
+                game.time = minutes + ":" + ((seconds.toString().length == 1) ? "0" + seconds : seconds);
+            })
+        })
+    })
+
+
+        // Add team level sum of elims and placement points
+    //    team.elims = d3.sum(team.values, game => game.elims);
+    //    team.placementPoints = d3.sum(team.values, game => game.placementPoints);
+    //    team.games = team.values.length;
+        
+    currentRegion = regions[4];   
+   
+/*     duos.regionTotals = d3.nest()
         .key(team => team.region)
         .rollup(function (teams) {
             return {
@@ -95,36 +126,23 @@ d3.json('fwc/data/finals.json').then(function (data) {
         })
         .entries(duos.teams);
 
-    solos.regionTotals = d3.nest()
-        .key(team => team.region)
-        .rollup(function (teams) {
-            return {
-                count: teams.length,
-                payout: d3.sum(teams, function (team) { return team.payout; })
-            };
-        })
-        .entries(solos.teams);
-
-    regionInfo.forEach(function (region) {
+/*     regionInfo.forEach(function (region) {
         region.duosCount = duos.regionTotals.find(r => r.key == region.name).value.count;
         region.duosPayout = duos.regionTotals.find(r => r.key == region.name).value.payout;
 
         region.solosCount = solos.regionTotals.find(r => r.key == region.name).value.count;
         region.solosPayout = solos.regionTotals.find(r => r.key == region.name).value.payout;
-    });
+    }); */
 
-    duos.beforeMatch =
+/*     duos.beforeMatch =
         duos.teams[0].values[0].endSeconds -
-        duos.teams[0].values[0].secondsAlive - 100; // First started late
+        duos.teams[0].values[0].secondsAlive - 100; // First started late */
 
-    solos.beforeMatch =
-        solos.teams[0].values[0].endSeconds -
-        solos.teams[0].values[0].secondsAlive - 100; // First started late
 
     matchStart = 0;
     matchEnd = 60 * 60 * 4.7;
 
-    duos.teams.forEach(function (team) {
+/*     duos.teams.forEach(function (team) {
 
         // Add extra fields to each game
         team.values.forEach(function (game) {
@@ -142,9 +160,9 @@ d3.json('fwc/data/finals.json').then(function (data) {
         team.elims = d3.sum(team.values, game => game.elims);
         team.placementPoints = d3.sum(team.values, game => game.placementPoints);
         team.games = team.values.length;
-    });
+    }); */
 
-    solos.teams.forEach(function (team) {
+/*     solos.teams.forEach(function (team) {
 
         // Add extra fields to each game
         team.values.forEach(function (game) {
@@ -162,7 +180,7 @@ d3.json('fwc/data/finals.json').then(function (data) {
         team.elims = d3.sum(team.values, game => game.elims);
         team.placementPoints = d3.sum(team.values, game => game.placementPoints);
         team.games = team.values.length;
-    });
+    }); */
 
     xScale = d3.scaleLinear()
         .domain([matchStart, matchEnd])
@@ -170,14 +188,14 @@ d3.json('fwc/data/finals.json').then(function (data) {
 
     drawHeader();
     drawGameHeaders();
-    drawLeaderboard();
+ //   drawLeaderboard();
 });
 
 
 function drawHeader() {
 
     function drawButtons() {
-        const left = 740
+        const left = 660
         const buttonHeight = 80;
         regionInfo.forEach(function (region, i) {
             svg.append("rect")
@@ -202,23 +220,25 @@ function drawHeader() {
                     dom
                         .transition()
                         .duration(100)
-                        .attr("stroke-width", (regions.indexOf(dom.attr("data")) == -1) ? 0 : 6);
+                        //.attr("stroke-width", (regions.indexOf(dom.attr("data")) == -1) ? 0 : 6);
+                        .attr("stroke-width", 6);  // !!
                 })
                 .on('click', function (d) {
                     let dom = d3.select(this);
                     const region = dom.attr("data");
 
                     // Select it because it is not already selected
-                    if (regions.indexOf(region) == -1)
+                    /* if (regions.indexOf(region) == -1)
                         regions.push(region)
                     else
-                        regions = regions.filter(d => d !== region);
+                        regions = regions.filter(d => d !== region); */
 
                     updateLeaderboard();
                     dom
                         .transition()
                         .duration(100)
-                        .attr("stroke-width", (regions.indexOf(dom.attr("data")) == -1) ? 0 : 6);
+                        //.attr("stroke-width", (regions.indexOf(dom.attr("data")) == -1) ? 0 : 6);
+                        .attr("stroke-width", 6);  // !!
                 })
 
             svg.append("text")
@@ -229,7 +249,7 @@ function drawHeader() {
                 .text(region.name)
                 .classed("region-name", true)
 
-            let teamType = ((solosOrDuos == "Solos") ? " players" : " duos");
+          /*   let teamType = ((solosOrDuos == "Solos") ? " players" : " duos");
             region.countText = svg.append("text")
                 .attr("x", left + (i * 80) + 6)
                 .attr("y", 48)
@@ -241,11 +261,11 @@ function drawHeader() {
                 .attr("y", 69)
                 .attr("font-size", "0.6rem")
                 .text("$" + ((solosOrDuos == "Solos") ? commaFormat(region.solosPayout) : commaFormat(region.duosPayout)))
-                .classed("region-stats", true)
+                .classed("region-stats", true) */
         }); // End region buttons
 
         let opacity = 1;
-        let solosOrDuosButton = svg.append("rect")
+  /*       let solosOrDuosButton = svg.append("rect")
             .attr("x", 630)
             .attr("y", 3)
             .attr("width", 100)
@@ -270,10 +290,10 @@ function drawHeader() {
             })
             .on('click', function (d) {
                 toggleSolosOrDuos();
-            });
+            }); */
 
         // "Switch to"
-        svg.append("text")
+   /*      svg.append("text")
             .attr("x", toggleLeft + 15)
             .attr("y", 35)
             .text("Switch to")
@@ -289,7 +309,7 @@ function drawHeader() {
             .attr("font-family", "Source Sans Pro, sans-serif")
             .attr("font-size", "1.4rem")
             .attr("pointer-events", "none")
-            .attr("opacity", opacity)
+            .attr("opacity", opacity) */
 
 
         // Switch to Qualifiers
@@ -348,27 +368,27 @@ function drawHeader() {
     titleText = svg.append("text")
         .attr("x", 20)
         .attr("y", 56)
-        .text("FORTNITE World Cup " + solosOrDuos)
+        .text("FORTNITE  FNCS Squads")
         .attr("font-size", "1.1em")
         .attr("font-family", "burbank")
         .attr("fill", "black");
 
     // Creator Code
     const posickTop = 84
-    svg.append("text")
+    /* svg.append("text")
         .attr("x", 20)
         .attr("y", posickTop)
         .text("USE CREATOR CODE")
         .attr("font-family", "Source Sans Pro, sans-serif")
         .attr("font-size", "1.0rem")
-
+ */
     // Posick
-    svg.append("text")
+    /* svg.append("text")
         .attr("x", 170)
         .attr("y", posickTop)
         .text('"Posick"')
         .attr("font-family", "Source Sans Pro, sans-serif")
-        .attr("font-size", "1.4rem")
+        .attr("font-size", "1.4rem") */
     //.classed("player", true);
 
     // NOT IMPLEMENTED - If we use the game view, it would be nice to add a key to show what a win, elim point or placement point looks like.
@@ -385,11 +405,11 @@ function drawHeader() {
     drawButtons();
 }
 
-function otherFormat() {
+/* function otherFormat() {
     return (solosOrDuos === "Solos") ? "Duos" : "Solos";
-}
+} */
 
-function toggleSolosOrDuos() {
+/* function toggleSolosOrDuos() {
     solosOrDuos = (solosOrDuos === "Solos") ? "Duos" : "Solos";
     format = (solosOrDuos === "Solos") ? solos : duos;
 
@@ -413,11 +433,11 @@ function toggleSolosOrDuos() {
     d3.selectAll(".leaderboard-team").remove();
     d3.selectAll(".leaderboard-svg").remove();
     drawLeaderboard();
-}
+} */
 
 
 function updateLeaderboard() {
-    let includedTeams = format.teams.filter(team => regions.includes(team.region));
+    //let includedTeams = format.teams.filter(team => regions.includes(team.region));
 
     let x = d3.selectAll(".leaderboard-team")
         .each(function (team, i) {
@@ -456,9 +476,6 @@ function updateLeaderboard() {
 
 function drawGameHeaders() {
 
-    if (!isLan)
-        return;
-
     const gameHeaderHeight = 40
 
     const div = d3.select(".timeline");
@@ -471,8 +488,8 @@ function drawGameHeaders() {
 
     // Add the earliest start and the latest end to each game 
     games.forEach(function (game) {
-        game.start = d3.min(format.teams, d => d.values[game.num - 1] ? d.values[game.num - 1].start : 99999999);
-        game.end = d3.max(format.teams, d => d.values[game.num - 1] ? d.values[game.num - 1].end : 0);
+        game.start = d3.min(currentRegion.teams, d => d.values[game.num - 1] ? d.values[game.num - 1].start : 99999999);
+        game.end = d3.max(currentRegion.teams, d => d.values[game.num - 1] ? d.values[game.num - 1].end : 0);
     });
 
     // Boxes for game headers

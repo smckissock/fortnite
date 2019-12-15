@@ -57,12 +57,13 @@ namespace FortniteJson {
             //Fortnite2FixUp.AddPlayerPlacementNames();
             //Fortnite2FixUp.FixPlayerNames();
 
-            Fortnite.MakeDimensions();
-            Fortnite.MakeJsonArray();   
+            //Fortnite.MakeDimensions();
+            //Fortnite.MakeJsonArray();
 
 
             //Fortnite2FixUp.ImportPlayerSearch();
 
+            Fortnite.MakeSquadGames();
 
             //Squads.Update("2047");
             //Squads.MakeSquadCsvs(); // For R tables
