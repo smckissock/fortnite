@@ -290,30 +290,10 @@ function drawHeader() {
 
         let opacity = 1;
  
-        // "Switch to"
-   /*      svg.append("text")
-            .attr("x", toggleLeft + 15)
-            .attr("y", 35)
-            .text("Switch to")
-            .attr("font-family", "Source Sans Pro, sans-serif")
-            .attr("font-size", "1.2rem")
-            .attr("pointer-events", "none")
-            .attr("opacity", opacity)
-
-        toggleButtonText = svg.append("text")
-            .attr("x", toggleLeft + ((solosOrDuos == "Duos") ? 16 : 20))
-            .attr("y", 64)
-            .text(d => otherFormat())
-            .attr("font-family", "Source Sans Pro, sans-serif")
-            .attr("font-size", "1.4rem")
-            .attr("pointer-events", "none")
-            .attr("opacity", opacity) */
-
-
-        // Switch to Qualifiers
+        // Back to Ping
         const qualifierLeft = 520
         let qualifierButton = svg.append("a")
-            .attr("xlink:href", "https://fortnitewc.netlify.com")
+            .attr("xlink:href", "https://fortniteping.com")
             .append("rect")
             .attr("x", qualifierLeft)
             .attr("y", 3)
@@ -337,20 +317,29 @@ function drawHeader() {
                     .attr("stroke-width", 0);
             })
 
-        // "Switch to"
+        // "Back to"
         svg.append("text")
-            .attr("x", qualifierLeft + 8)
-            .attr("y", 35)
-            .text("Switch to")
+            .attr("x", qualifierLeft + 19)
+            .attr("y", 30)
+            .text("Back to")
             .attr("font-family", "Source Sans Pro, sans-serif")
             .attr("font-size", "1.2rem")
             .attr("pointer-events", "none")
 
-        // Qualifier    
+        // Fortnite    
         svg.append("text")
-            .attr("x", qualifierLeft + 7)
-            .attr("y", 62)
-            .text("Qualifiers")
+            .attr("x", qualifierLeft + 17)
+            .attr("y", 51)
+            .text("Fortnite")
+            .attr("font-family", "Source Sans Pro, sans-serif")
+            .attr("font-size", "1.2rem")
+            .attr("pointer-events", "none")   
+            
+        // Ping    
+        svg.append("text")
+            .attr("x", qualifierLeft + 30)
+            .attr("y", 70)
+            .text("Ping")
             .attr("font-family", "Source Sans Pro, sans-serif")
             .attr("font-size", "1.2rem")
             .attr("pointer-events", "none")           
