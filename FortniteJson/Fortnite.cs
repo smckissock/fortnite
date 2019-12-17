@@ -314,6 +314,17 @@ namespace FortniteJson {
             File.WriteAllText(fileName, niceJson);
         }
 
+        public static void MakeSquadPayouts() {
+
+            var payouts = MakeSquadPayoutList();
+
+            string fileName = @"c:\project\fortnite\ping\data\squad_finals_payout.json";
+
+            string json = JsonConvert.SerializeObject(payouts);
+            var niceJson = Newtonsoft.Json.Linq.JToken.Parse(json).ToString();
+            File.WriteAllText(fileName, niceJson);
+        }
+
 
         public static List<Game> MakeWorldCupGamesGames() {
 

@@ -96,6 +96,11 @@ d3.json('ping/data/squad_finals.json').then(function (data) {
         region.color = regionInfo.find(d => d.filter == region.key).color;
         region.teams.forEach(function (team) {
 
+            // Add team level sum of elims and placement points
+            team.elims = d3.sum(team.values, game => game.elims);
+            team.placementPoints = d3.sum(team.values, game => game.placementPoints);
+            team.games = team.values.length;
+
             // ? 
             let beforeMatch = team.values[0].endSeconds - team.values[0].secondsAlive; 
 
@@ -114,10 +119,10 @@ d3.json('ping/data/squad_finals.json').then(function (data) {
     })
 
 
-        // Add team level sum of elims and placement points
-    //    team.elims = d3.sum(team.values, game => game.elims);
-    //    team.placementPoints = d3.sum(team.values, game => game.placementPoints);
-    //    team.games = team.values.length;
+  /*   // Add team level sum of elims and placement points
+    team.elims = d3.sum(team.values, game => game.elims);
+    team.placementPoints = d3.sum(team.values, game => game.placementPoints);
+    team.games = team.values.length; */
         
     currentRegion = regions[4];   
    
@@ -490,27 +495,28 @@ function drawLeaderboard() {
     // Elim percentage  
     const pctFormat = d3.format(",.1%");
     svg.selectAll("g").data(currentRegion.teams)
+        .each(d => console.log(d))
         .append("text")
         .attr("x", playerWidth - 93)
         .attr("y", (d, i) => i * rowHeight + 20)
         .text(d => pctFormat(d.elims / (d.elims + d.placementPoints)) + " elim pct")
         .classed("points", true)
 
-    // Elims   
-   /*  svg.selectAll("g").data(currentRegion.teams)
+    // Elims 
+    svg.selectAll("g").data(currentRegion.teams)
         .append("text")
         .attr("x", playerWidth - 93)
         .attr("y", (d, i) => i * rowHeight + 35)
         .text(d => d.elims.toString() + " elim points")
-        .classed("points", true) */
+        .classed("points", true)  
 
     // Placement points   
-    /* svg.selectAll("g").data(currentRegion.teams)
+    svg.selectAll("g").data(currentRegion.teams)
         .append("text")
         .attr("x", playerWidth - 93)
         .attr("y", (d, i) => i * rowHeight + 50)
         .text(d => d.placementPoints.toString() + " place points")
-        .classed("points", true) */
+        .classed("points", true)  
 
     svg.selectAll("g").data(currentRegion.teams)
         .each(function (teamGames, teamIndex) {

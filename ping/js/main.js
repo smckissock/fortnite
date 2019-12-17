@@ -351,13 +351,18 @@ function squadLeaderboardButton(svg) {
                 .attr("stroke-width", 0);
         })
         .on('click', function (d) {
-            window.open('r/champion-series-squads', '_blank');
+            window.open('squad-finals.html', '_blank');
         });
 
-    text("FNCS", svg, "button-text", qualifierLeft + 16, 32);  
-    text("Squad", svg, "button-text", qualifierLeft + 13, 51);  
-    text("Seeds", svg, "button-text", qualifierLeft + 14, 70);    
+    //text("FNCS", svg, "button-text", qualifierLeft + 16, 32);  
+    //text("Squad", svg, "button-text", qualifierLeft + 13, 51);  
+    //text("Seeds", svg, "button-text", qualifierLeft + 14, 70);
+    
+    text("FNCS", svg, "button-text", qualifierLeft + 15, 32);  
+    text("Squad", svg, "button-text", qualifierLeft + 11, 51);  
+    text("Recap", svg, "button-text", qualifierLeft + 13, 70);
 }  
+
 
 
 function posickLabel(svg) {
