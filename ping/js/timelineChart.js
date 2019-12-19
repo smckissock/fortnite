@@ -1,4 +1,4 @@
-import { colors } from "./shared.js";
+import { colors, placementString } from "./shared.js";
 
 
 let matchStart;
@@ -338,7 +338,7 @@ function drawHeader() {
         // Fortnite    
         svg.append("text")
             .attr("x", qualifierLeft + 17)
-            .attr("y", 51)
+            .attr("y", 50)
             .text("Fortnite")
             .attr("font-family", "Source Sans Pro, sans-serif")
             .attr("font-size", "1.2rem")
@@ -494,7 +494,6 @@ function drawLeaderboard() {
     // Elim percentage  
     const pctFormat = d3.format(",.1%");
     svg.selectAll("g").data(currentRegion.teams)
-        .each(d => console.log(d))
         .append("text")
         .attr("x", playerWidth - 93)
         .attr("y", (d, i) => i * rowHeight + 20)
@@ -519,13 +518,13 @@ function drawLeaderboard() {
         .text(d => (d.averagePlace.toFixed(1)).toString() + " avg place")
         .classed("points", true)  
 
+    // Draw boxes for each game    
     svg.selectAll("g").data(currentRegion.teams)
         .each(function (teamGames, teamIndex) {
             const g = d3.select(this);
             let totalPoints = 0;
             g
                 .selectAll("rect.team-rect")
-
                 .data(teamGames.values)
                 .enter()
                 .append("rect")
@@ -535,60 +534,47 @@ function drawLeaderboard() {
                 .attr("height", 45)
                 .attr("fill", "white")
                 .attr("stroke", "black")
-                .attr("stroke-width", game => (game.rank === "1") ? 5 : 0)
+                .attr("stroke-opacity", 1.0)
+                //.attr("stroke-width", game => (game.rank === "1") ? 5 : 0)
+                .attr("stroke-width", function(d) {
+                    console.log(d.placementPoints / 2);
+                    return Math.round(d.placementPoints / 1.5);
+                    //game => game.placementPoints / 2)
+                })
                 .on('click', function (game) {
                     console.log(game.start + " -> " + game.end + "  " + game.secondsAlive);
                 })
                 .on('mouseover', game => tooltip(svg, game))
                 .on('mouseout', function (game) {
-                    d3.select(this).attr("stroke-width", game => (game.rank === "1") ? 6 : 1)
+                    //d3.select(this).attr("stroke-width", game => (game.rank === "1") ? 6 : 1)
                     d3.selectAll(".tooltip").remove();
                 })
                 .classed("team-rect", true)
 
+                
                 .each(function (game) {
-                    const top = 12;
-                    const bottom = 33
-
+                    // Draw elim lines
+                    const top = 15;
+                    const bottom = 31
                     for (let i = 0; i < game.elims; i++) {
-                        const xElim = xScale(game.start) + (i * 4) + 7;
+                        const xElim = xScale(game.start) + (i * 6) + 10;
                         g // Elim lines
                             .append("line")
                             .attr("x1", xElim)
                             .attr("x2", xElim)
                             .attr("y1", teamIndex * rowHeight + top)
                             .attr("y2", teamIndex * rowHeight + bottom)
-                            .attr("stroke-width", "2")
-                            .attr("stroke", "darkgrey")
-                            .attr("pointer-events", "none");
-                    }
-                    const elimOffset = game.elims * 4 + 1
-                    for (let i = 0; i < game.placementPoints; i++) {
-                        const x = xScale(game.start) + (i * 4) + 7 + elimOffset;
-                        g // Placement lines
-                            .append("line")
-                            .attr("x1", x)
-                            .attr("x2", x)
-                            .attr("y1", teamIndex * rowHeight + top)
-                            .attr("y2", teamIndex * rowHeight + bottom)
-                            .attr("stroke-width", "2")
+                            .attr("stroke-width", "3")
                             .attr("stroke", "black")
+                            .attr("opacity", 1.0)
                             .attr("pointer-events", "none");
                     }
-                    const gamePoints = parseInt(game.elims) + parseInt(game.placementPoints);
-                    totalPoints += gamePoints;
-                    g // Points in game
+
+                    g // Placement label
                         .append("text")
                         .attr("x", xScale(game.start) + 6)
-                        .attr("y", teamIndex * rowHeight + 47)
-                        .text(gamePoints.toString())
-                        .classed("points", true)
-
-                    g // Running total of points
-                        .append("text")
-                        .attr("x", xScale(game.start) + 70)
-                        .attr("y", teamIndex * rowHeight + 47)
-                        .text(totalPoints.toString())
+                        .attr("y", teamIndex * rowHeight + 45)
+                        .text(placementString(game.rank))
                         .classed("points", true)
                 });
         })
