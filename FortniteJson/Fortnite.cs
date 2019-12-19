@@ -70,6 +70,12 @@ namespace FortniteJson {
         } 
     }
 
+    public class EventPayout {
+        public string region;
+        public int rank;
+        public int payout;
+    }
+
 
     // Used in GetPlacementPoints() below
     public struct Tier {
@@ -404,9 +410,6 @@ namespace FortniteJson {
 
                     placementId = reader["PlacementID"].ToString(); // ?
                     endSeconds = (int)reader["EndSeconds"];  // ?
-
-
-
                     list.Add(game);
                 } else {
                     game.players.Add(reader["Player"].ToString());
@@ -414,6 +417,27 @@ namespace FortniteJson {
             }
 
             return list;
+        }
+
+        public static List<EventPayout> MakeSquadPayoutList() {
+            
+            var payouts = new List<EventPayout>();
+
+            string query =
+                "SELECT r.Name, p.Rank, p.Payout FROM Placement p " +
+                "JOIN Region r on r.ID = p.RegionId " +
+                "WHERE p.EventID = 2039 ORDER BY r.Name, p.Rank";
+
+            var reader = Db.Query(query);
+            while (reader.Read()) {
+                var pay = new EventPayout();
+                pay.region = reader["Name"].ToString();
+                pay.rank = (int)reader["rank"];
+                pay.payout = (int)reader["payout"];
+                payouts.Add(pay);
+            }
+
+            return payouts;
         }
 
 

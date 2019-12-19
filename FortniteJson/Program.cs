@@ -63,7 +63,9 @@ namespace FortniteJson {
 
             //Fortnite2FixUp.ImportPlayerSearch();
 
-            Fortnite.MakeSquadGames();
+            //Fortnite.MakeSquadGames();
+            Fortnite.MakeSquadPayouts();
+
 
             //Squads.Update("2047");
             //Squads.MakeSquadCsvs(); // For R tables

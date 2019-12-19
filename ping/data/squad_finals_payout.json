@@ -1,0 +1,847 @@
+[
+  {
+    "region": "Asia",
+    "rank": 1,
+    "payout": 10875
+  },
+  {
+    "region": "Asia",
+    "rank": 2,
+    "payout": 5250
+  },
+  {
+    "region": "Asia",
+    "rank": 3,
+    "payout": 3000
+  },
+  {
+    "region": "Asia",
+    "rank": 4,
+    "payout": 2250
+  },
+  {
+    "region": "Asia",
+    "rank": 5,
+    "payout": 1875
+  },
+  {
+    "region": "Asia",
+    "rank": 6,
+    "payout": 1500
+  },
+  {
+    "region": "Asia",
+    "rank": 7,
+    "payout": 1125
+  },
+  {
+    "region": "Asia",
+    "rank": 8,
+    "payout": 750
+  },
+  {
+    "region": "Asia",
+    "rank": 9,
+    "payout": 600
+  },
+  {
+    "region": "Asia",
+    "rank": 10,
+    "payout": 300
+  },
+  {
+    "region": "Asia",
+    "rank": 11,
+    "payout": 300
+  },
+  {
+    "region": "Asia",
+    "rank": 12,
+    "payout": 300
+  },
+  {
+    "region": "Asia",
+    "rank": 13,
+    "payout": 300
+  },
+  {
+    "region": "Asia",
+    "rank": 14,
+    "payout": 300
+  },
+  {
+    "region": "Asia",
+    "rank": 15,
+    "payout": 300
+  },
+  {
+    "region": "Asia",
+    "rank": 16,
+    "payout": 300
+  },
+  {
+    "region": "Asia",
+    "rank": 17,
+    "payout": 300
+  },
+  {
+    "region": "Asia",
+    "rank": 18,
+    "payout": 300
+  },
+  {
+    "region": "Asia",
+    "rank": 19,
+    "payout": 300
+  },
+  {
+    "region": "Asia",
+    "rank": 20,
+    "payout": 300
+  },
+  {
+    "region": "Asia",
+    "rank": 21,
+    "payout": 300
+  },
+  {
+    "region": "Asia",
+    "rank": 22,
+    "payout": 300
+  },
+  {
+    "region": "Asia",
+    "rank": 23,
+    "payout": 300
+  },
+  {
+    "region": "Brazil",
+    "rank": 1,
+    "payout": 18750
+  },
+  {
+    "region": "Brazil",
+    "rank": 2,
+    "payout": 7500
+  },
+  {
+    "region": "Brazil",
+    "rank": 3,
+    "payout": 6000
+  },
+  {
+    "region": "Brazil",
+    "rank": 4,
+    "payout": 4500
+  },
+  {
+    "region": "Brazil",
+    "rank": 5,
+    "payout": 3750
+  },
+  {
+    "region": "Brazil",
+    "rank": 6,
+    "payout": 3000
+  },
+  {
+    "region": "Brazil",
+    "rank": 7,
+    "payout": 2250
+  },
+  {
+    "region": "Brazil",
+    "rank": 8,
+    "payout": 1500
+  },
+  {
+    "region": "Brazil",
+    "rank": 9,
+    "payout": 1200
+  },
+  {
+    "region": "Brazil",
+    "rank": 10,
+    "payout": 600
+  },
+  {
+    "region": "Brazil",
+    "rank": 11,
+    "payout": 600
+  },
+  {
+    "region": "Brazil",
+    "rank": 12,
+    "payout": 600
+  },
+  {
+    "region": "Brazil",
+    "rank": 13,
+    "payout": 600
+  },
+  {
+    "region": "Brazil",
+    "rank": 14,
+    "payout": 600
+  },
+  {
+    "region": "Brazil",
+    "rank": 15,
+    "payout": 600
+  },
+  {
+    "region": "Brazil",
+    "rank": 16,
+    "payout": 600
+  },
+  {
+    "region": "Brazil",
+    "rank": 17,
+    "payout": 600
+  },
+  {
+    "region": "Brazil",
+    "rank": 18,
+    "payout": 600
+  },
+  {
+    "region": "Brazil",
+    "rank": 19,
+    "payout": 600
+  },
+  {
+    "region": "Brazil",
+    "rank": 20,
+    "payout": 600
+  },
+  {
+    "region": "Brazil",
+    "rank": 21,
+    "payout": 600
+  },
+  {
+    "region": "Brazil",
+    "rank": 22,
+    "payout": 600
+  },
+  {
+    "region": "Brazil",
+    "rank": 23,
+    "payout": 600
+  },
+  {
+    "region": "Brazil",
+    "rank": 24,
+    "payout": 600
+  },
+  {
+    "region": "Europe",
+    "rank": 1,
+    "payout": 75000
+  },
+  {
+    "region": "Europe",
+    "rank": 2,
+    "payout": 30000
+  },
+  {
+    "region": "Europe",
+    "rank": 3,
+    "payout": 24000
+  },
+  {
+    "region": "Europe",
+    "rank": 4,
+    "payout": 18000
+  },
+  {
+    "region": "Europe",
+    "rank": 5,
+    "payout": 15000
+  },
+  {
+    "region": "Europe",
+    "rank": 6,
+    "payout": 12000
+  },
+  {
+    "region": "Europe",
+    "rank": 7,
+    "payout": 9000
+  },
+  {
+    "region": "Europe",
+    "rank": 8,
+    "payout": 6000
+  },
+  {
+    "region": "Europe",
+    "rank": 9,
+    "payout": 4800
+  },
+  {
+    "region": "Europe",
+    "rank": 10,
+    "payout": 2400
+  },
+  {
+    "region": "Europe",
+    "rank": 11,
+    "payout": 2400
+  },
+  {
+    "region": "Europe",
+    "rank": 12,
+    "payout": 2400
+  },
+  {
+    "region": "Europe",
+    "rank": 13,
+    "payout": 2400
+  },
+  {
+    "region": "Europe",
+    "rank": 14,
+    "payout": 2400
+  },
+  {
+    "region": "Europe",
+    "rank": 15,
+    "payout": 2400
+  },
+  {
+    "region": "Europe",
+    "rank": 16,
+    "payout": 2400
+  },
+  {
+    "region": "Europe",
+    "rank": 17,
+    "payout": 2400
+  },
+  {
+    "region": "Europe",
+    "rank": 18,
+    "payout": 2400
+  },
+  {
+    "region": "Europe",
+    "rank": 19,
+    "payout": 2400
+  },
+  {
+    "region": "Europe",
+    "rank": 20,
+    "payout": 2400
+  },
+  {
+    "region": "Europe",
+    "rank": 21,
+    "payout": 2400
+  },
+  {
+    "region": "Europe",
+    "rank": 22,
+    "payout": 2400
+  },
+  {
+    "region": "Europe",
+    "rank": 23,
+    "payout": 2400
+  },
+  {
+    "region": "Europe",
+    "rank": 24,
+    "payout": 2400
+  },
+  {
+    "region": "Middle East",
+    "rank": 1,
+    "payout": 10875
+  },
+  {
+    "region": "Middle East",
+    "rank": 2,
+    "payout": 5250
+  },
+  {
+    "region": "Middle East",
+    "rank": 3,
+    "payout": 3000
+  },
+  {
+    "region": "Middle East",
+    "rank": 4,
+    "payout": 2250
+  },
+  {
+    "region": "Middle East",
+    "rank": 5,
+    "payout": 1875
+  },
+  {
+    "region": "Middle East",
+    "rank": 6,
+    "payout": 1500
+  },
+  {
+    "region": "Middle East",
+    "rank": 7,
+    "payout": 1125
+  },
+  {
+    "region": "Middle East",
+    "rank": 8,
+    "payout": 750
+  },
+  {
+    "region": "Middle East",
+    "rank": 9,
+    "payout": 600
+  },
+  {
+    "region": "Middle East",
+    "rank": 10,
+    "payout": 300
+  },
+  {
+    "region": "Middle East",
+    "rank": 11,
+    "payout": 300
+  },
+  {
+    "region": "Middle East",
+    "rank": 12,
+    "payout": 300
+  },
+  {
+    "region": "Middle East",
+    "rank": 13,
+    "payout": 300
+  },
+  {
+    "region": "Middle East",
+    "rank": 14,
+    "payout": 300
+  },
+  {
+    "region": "Middle East",
+    "rank": 15,
+    "payout": 300
+  },
+  {
+    "region": "Middle East",
+    "rank": 16,
+    "payout": 300
+  },
+  {
+    "region": "Middle East",
+    "rank": 17,
+    "payout": 300
+  },
+  {
+    "region": "Middle East",
+    "rank": 18,
+    "payout": 300
+  },
+  {
+    "region": "Middle East",
+    "rank": 19,
+    "payout": 300
+  },
+  {
+    "region": "Middle East",
+    "rank": 20,
+    "payout": 300
+  },
+  {
+    "region": "Middle East",
+    "rank": 21,
+    "payout": 300
+  },
+  {
+    "region": "Middle East",
+    "rank": 22,
+    "payout": 300
+  },
+  {
+    "region": "Middle East",
+    "rank": 23,
+    "payout": 300
+  },
+  {
+    "region": "Middle East",
+    "rank": 24,
+    "payout": 300
+  },
+  {
+    "region": "Middle East",
+    "rank": 25,
+    "payout": 0
+  },
+  {
+    "region": "NA East",
+    "rank": 1,
+    "payout": 46875
+  },
+  {
+    "region": "NA East",
+    "rank": 2,
+    "payout": 18750
+  },
+  {
+    "region": "NA East",
+    "rank": 3,
+    "payout": 15000
+  },
+  {
+    "region": "NA East",
+    "rank": 4,
+    "payout": 11250
+  },
+  {
+    "region": "NA East",
+    "rank": 5,
+    "payout": 9375
+  },
+  {
+    "region": "NA East",
+    "rank": 6,
+    "payout": 7500
+  },
+  {
+    "region": "NA East",
+    "rank": 7,
+    "payout": 5625
+  },
+  {
+    "region": "NA East",
+    "rank": 8,
+    "payout": 3750
+  },
+  {
+    "region": "NA East",
+    "rank": 9,
+    "payout": 3000
+  },
+  {
+    "region": "NA East",
+    "rank": 10,
+    "payout": 600
+  },
+  {
+    "region": "NA East",
+    "rank": 11,
+    "payout": 600
+  },
+  {
+    "region": "NA East",
+    "rank": 12,
+    "payout": 600
+  },
+  {
+    "region": "NA East",
+    "rank": 13,
+    "payout": 600
+  },
+  {
+    "region": "NA East",
+    "rank": 14,
+    "payout": 600
+  },
+  {
+    "region": "NA East",
+    "rank": 15,
+    "payout": 600
+  },
+  {
+    "region": "NA East",
+    "rank": 16,
+    "payout": 600
+  },
+  {
+    "region": "NA East",
+    "rank": 17,
+    "payout": 600
+  },
+  {
+    "region": "NA East",
+    "rank": 18,
+    "payout": 600
+  },
+  {
+    "region": "NA East",
+    "rank": 19,
+    "payout": 600
+  },
+  {
+    "region": "NA East",
+    "rank": 20,
+    "payout": 600
+  },
+  {
+    "region": "NA East",
+    "rank": 21,
+    "payout": 600
+  },
+  {
+    "region": "NA East",
+    "rank": 22,
+    "payout": 600
+  },
+  {
+    "region": "NA East",
+    "rank": 23,
+    "payout": 600
+  },
+  {
+    "region": "NA East",
+    "rank": 24,
+    "payout": 600
+  },
+  {
+    "region": "NA West",
+    "rank": 1,
+    "payout": 18750
+  },
+  {
+    "region": "NA West",
+    "rank": 2,
+    "payout": 7500
+  },
+  {
+    "region": "NA West",
+    "rank": 3,
+    "payout": 6000
+  },
+  {
+    "region": "NA West",
+    "rank": 4,
+    "payout": 4500
+  },
+  {
+    "region": "NA West",
+    "rank": 5,
+    "payout": 3750
+  },
+  {
+    "region": "NA West",
+    "rank": 6,
+    "payout": 3000
+  },
+  {
+    "region": "NA West",
+    "rank": 7,
+    "payout": 2250
+  },
+  {
+    "region": "NA West",
+    "rank": 8,
+    "payout": 1500
+  },
+  {
+    "region": "NA West",
+    "rank": 9,
+    "payout": 1200
+  },
+  {
+    "region": "NA West",
+    "rank": 10,
+    "payout": 600
+  },
+  {
+    "region": "NA West",
+    "rank": 11,
+    "payout": 600
+  },
+  {
+    "region": "NA West",
+    "rank": 12,
+    "payout": 600
+  },
+  {
+    "region": "NA West",
+    "rank": 13,
+    "payout": 600
+  },
+  {
+    "region": "NA West",
+    "rank": 14,
+    "payout": 600
+  },
+  {
+    "region": "NA West",
+    "rank": 15,
+    "payout": 600
+  },
+  {
+    "region": "NA West",
+    "rank": 16,
+    "payout": 600
+  },
+  {
+    "region": "NA West",
+    "rank": 17,
+    "payout": 600
+  },
+  {
+    "region": "NA West",
+    "rank": 18,
+    "payout": 600
+  },
+  {
+    "region": "NA West",
+    "rank": 19,
+    "payout": 600
+  },
+  {
+    "region": "NA West",
+    "rank": 20,
+    "payout": 600
+  },
+  {
+    "region": "NA West",
+    "rank": 21,
+    "payout": 600
+  },
+  {
+    "region": "NA West",
+    "rank": 22,
+    "payout": 600
+  },
+  {
+    "region": "NA West",
+    "rank": 23,
+    "payout": 600
+  },
+  {
+    "region": "NA West",
+    "rank": 24,
+    "payout": 600
+  },
+  {
+    "region": "Oceania",
+    "rank": 1,
+    "payout": 10875
+  },
+  {
+    "region": "Oceania",
+    "rank": 2,
+    "payout": 5250
+  },
+  {
+    "region": "Oceania",
+    "rank": 3,
+    "payout": 3000
+  },
+  {
+    "region": "Oceania",
+    "rank": 4,
+    "payout": 2250
+  },
+  {
+    "region": "Oceania",
+    "rank": 5,
+    "payout": 1875
+  },
+  {
+    "region": "Oceania",
+    "rank": 6,
+    "payout": 1500
+  },
+  {
+    "region": "Oceania",
+    "rank": 7,
+    "payout": 1125
+  },
+  {
+    "region": "Oceania",
+    "rank": 8,
+    "payout": 750
+  },
+  {
+    "region": "Oceania",
+    "rank": 9,
+    "payout": 600
+  },
+  {
+    "region": "Oceania",
+    "rank": 10,
+    "payout": 300
+  },
+  {
+    "region": "Oceania",
+    "rank": 11,
+    "payout": 300
+  },
+  {
+    "region": "Oceania",
+    "rank": 12,
+    "payout": 300
+  },
+  {
+    "region": "Oceania",
+    "rank": 13,
+    "payout": 300
+  },
+  {
+    "region": "Oceania",
+    "rank": 14,
+    "payout": 300
+  },
+  {
+    "region": "Oceania",
+    "rank": 15,
+    "payout": 300
+  },
+  {
+    "region": "Oceania",
+    "rank": 16,
+    "payout": 300
+  },
+  {
+    "region": "Oceania",
+    "rank": 17,
+    "payout": 300
+  },
+  {
+    "region": "Oceania",
+    "rank": 18,
+    "payout": 300
+  },
+  {
+    "region": "Oceania",
+    "rank": 19,
+    "payout": 300
+  },
+  {
+    "region": "Oceania",
+    "rank": 20,
+    "payout": 300
+  },
+  {
+    "region": "Oceania",
+    "rank": 21,
+    "payout": 300
+  },
+  {
+    "region": "Oceania",
+    "rank": 22,
+    "payout": 300
+  },
+  {
+    "region": "Oceania",
+    "rank": 23,
+    "payout": 300
+  },
+  {
+    "region": "Oceania",
+    "rank": 24,
+    "payout": 300
+  },
+  {
+    "region": "Oceania",
+    "rank": 25,
+    "payout": 0
+  }
+]

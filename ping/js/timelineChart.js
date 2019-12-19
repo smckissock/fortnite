@@ -7,9 +7,10 @@ let matchEnd;
 const cornerRadius = 8;
 
 const chartWidth = 1200 // Not including left margin
-const leftMargin = 15;
+const leftMargin = 10   ;
 
 let regions = [];
+let payouts = [];
 
 let regionInfos = [];
 
@@ -54,6 +55,11 @@ const regionInfo = [
     { color: colors.yellow, name: "M. EAST", filter: "Middle East", textOffset: 8 }
 ];
 
+
+// Ugh, but this gets here first!
+d3.json('ping/data/squad_finals_payout.json').then(function (data) {
+    payouts = data;
+});
 
 
 //d3.json('fwc/data/finals.json').then(function (data) {
@@ -100,6 +106,9 @@ d3.json('ping/data/squad_finals.json').then(function (data) {
             team.elims = d3.sum(team.values, game => game.elims);
             team.placementPoints = d3.sum(team.values, game => game.placementPoints);
             team.games = team.values.length;
+            team.averagePlace = d3.sum(team.values, game => game.rank) / team.games;
+
+            team.payout = payouts.find(d => d.region == region.key && team.key == d.rank).payout
 
             // ? 
             let beforeMatch = team.values[0].endSeconds - team.values[0].secondsAlive; 
@@ -439,15 +448,16 @@ function drawLeaderboard() {
         .classed("rank", true)
 
     // Payout    
-    /* svg.selectAll("g").data(currentRegion.teams)
+    svg.selectAll("g").data(currentRegion.teams)
         .append("text")
-        .attr("x", leftMargin + 15)
+        .attr("x", leftMargin + 5)
         .attr("y", (d, i) => i * rowHeight + 48)
         .text(d => "$" + commaFormat(d.payout.toString()))
         .classed("points", true)
- */
-    // First and second player
-    const leftPlayer = 60;
+
+
+    // Players 1-4
+    const leftPlayer = 66;
     svg.selectAll("g").data(currentRegion.teams)
         .append("text")
         .attr("x", leftMargin + leftPlayer)        
@@ -491,12 +501,13 @@ function drawLeaderboard() {
         .text(d => pctFormat(d.elims / (d.elims + d.placementPoints)) + " elim pct")
         .classed("points", true)
 
-    // Elims 
+    // Elims per game
     svg.selectAll("g").data(currentRegion.teams)
         .append("text")
         .attr("x", playerWidth - 93)
         .attr("y", (d, i) => i * rowHeight + 35)
         .text(d => d.elims.toString() + " elim points")
+        .text(d => ((d.elims / d.games).toFixed(1)).toString() + " elims/game")
         .classed("points", true)  
 
     // Placement points   
@@ -504,7 +515,8 @@ function drawLeaderboard() {
         .append("text")
         .attr("x", playerWidth - 93)
         .attr("y", (d, i) => i * rowHeight + 50)
-        .text(d => d.placementPoints.toString() + " place points")
+        //.text(d => d.placementPoints.toString() + " place points")
+        .text(d => (d.averagePlace.toFixed(1)).toString() + " avg place")
         .classed("points", true)  
 
     svg.selectAll("g").data(currentRegion.teams)
