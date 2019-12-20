@@ -1,0 +1,25 @@
+.big-fortnite {
+    font-size: 1.1em;
+    letter-spacing: .2rem;
+    font-family: "Burbank";
+}
+
+.big-ping {
+    font-weight: 900;
+    font-size: 1.2em;
+    letter-spacing: .03rem;
+}
+
+.little-fortnite {
+    font-size: 1.7em;
+    letter-spacing: .2rem;
+    font-family: "Burbank";
+    fill-opacity : .4;
+}
+
+.little-ping {
+    font-weight: 1000;
+    font-size: 0.7em;
+    letter-spacing: .05rem;
+    fill-opacity : 1.0;
+}
