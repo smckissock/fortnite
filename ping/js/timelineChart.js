@@ -1,4 +1,4 @@
-import { colors, placementString } from "./shared.js";
+import { colors, placementString, text } from "./shared.js";
 
 
 let matchStart;
@@ -62,7 +62,6 @@ d3.json('ping/data/squad_finals_payout.json').then(function (data) {
 });
 
 
-//d3.json('fwc/data/finals.json').then(function (data) {
 d3.json('ping/data/squad_finals.json').then(function (data) {
     let games = [];
     data.forEach(function (d) {
@@ -126,80 +125,11 @@ d3.json('ping/data/squad_finals.json').then(function (data) {
             })
         })
     })
-
-
-  /*   // Add team level sum of elims and placement points
-    team.elims = d3.sum(team.values, game => game.elims);
-    team.placementPoints = d3.sum(team.values, game => game.placementPoints);
-    team.games = team.values.length; */
         
-    currentRegion = regions[4];   
+    currentRegion = regions[4];  // NA East 
    
-/*     duos.regionTotals = d3.nest()
-        .key(team => team.region)
-        .rollup(function (teams) {
-            return {
-                count: teams.length,
-                payout: d3.sum(teams, function (team) { return team.payout; })
-            };
-        })
-        .entries(duos.teams);
-
-/*     regionInfo.forEach(function (region) {
-        region.duosCount = duos.regionTotals.find(r => r.key == region.name).value.count;
-        region.duosPayout = duos.regionTotals.find(r => r.key == region.name).value.payout;
-
-        region.solosCount = solos.regionTotals.find(r => r.key == region.name).value.count;
-        region.solosPayout = solos.regionTotals.find(r => r.key == region.name).value.payout;
-    }); */
-
-/*     duos.beforeMatch =
-        duos.teams[0].values[0].endSeconds -
-        duos.teams[0].values[0].secondsAlive - 100; // First started late */
-
-
     matchStart = 0;
     matchEnd = 60 * 60 * 4.7;
-
-/*     duos.teams.forEach(function (team) {
-
-        // Add extra fields to each game
-        team.values.forEach(function (game) {
-            // Normalize seconds to start of match = 0
-            game.start = game.endSeconds - duos.beforeMatch - game.secondsAlive;
-            game.end = game.endSeconds - duos.beforeMatch;
-
-            // Add nice time string
-            const minutes = Math.floor(game.secondsAlive / 60);
-            const seconds = game.secondsAlive - minutes * 60;
-            game.time = minutes + ":" + ((seconds.toString().length == 1) ? "0" + seconds : seconds);
-        })
-
-        // Add team level sum of elims and placement points
-        team.elims = d3.sum(team.values, game => game.elims);
-        team.placementPoints = d3.sum(team.values, game => game.placementPoints);
-        team.games = team.values.length;
-    }); */
-
-/*     solos.teams.forEach(function (team) {
-
-        // Add extra fields to each game
-        team.values.forEach(function (game) {
-            // Normalize seconds to start of match = 0
-            game.start = game.endSeconds - solos.beforeMatch - game.secondsAlive;
-            game.end = game.endSeconds - solos.beforeMatch;
-
-            // Add nice time string
-            const minutes = Math.floor(game.secondsAlive / 60);
-            const seconds = game.secondsAlive - minutes * 60;
-            game.time = minutes + ":" + ((seconds.toString().length == 1) ? "0" + seconds : seconds);
-        })
-
-        // Add team level sum of elims and placement points
-        team.elims = d3.sum(team.values, game => game.elims);
-        team.placementPoints = d3.sum(team.values, game => game.placementPoints);
-        team.games = team.values.length;
-    }); */
 
     xScale = d3.scaleLinear()
         .domain([matchStart, matchEnd])
@@ -211,7 +141,6 @@ d3.json('ping/data/squad_finals.json').then(function (data) {
         .attr("width", chartWidth + leftMargin)
         .attr("height", rowHeight * 100)
         .classed("leaderboard-svg", true);
-
 
     // Title, region buttons    
     drawHeader();
@@ -280,26 +209,13 @@ function drawHeader() {
                 .attr("font-size", "1.2rem")
                 .attr("pointer-events", "none")
                 .text(region.name)
-                .classed("region-name", true)
-
-          /*   let teamType = ((solosOrDuos == "Solos") ? " players" : " duos");
-            region.countText = svg.append("text")
-                .attr("x", left + (i * 80) + 6)
-                .attr("y", 48)
-                .text((solosOrDuos == "Solos") ? region.solosCount.toString() : region.duosCount.toString() + teamType)
-                .classed("region-stats", true)
-
-            region.payoutText = svg.append("text")
-                .attr("x", left + (i * 80) + 4)
-                .attr("y", 69)
-                .attr("font-size", "0.6rem")
-                .text("$" + ((solosOrDuos == "Solos") ? commaFormat(region.solosPayout) : commaFormat(region.duosPayout)))
-                .classed("region-stats", true) */
+                .classed("region-name", true)         
         }); // End region buttons
+
 
         let opacity = 1;
  
-        // Back to Ping
+        // Back to Ping button
         const qualifierLeft = 520
         let qualifierButton = svg.append("a")
             .attr("xlink:href", "https://fortniteping.com")
@@ -361,13 +277,20 @@ function drawHeader() {
         .attr("height", headerHeight);
 
     // "FORTNITE"    
-    titleText = svg.append("text")
+    /* titleText = svg.append("text")
         .attr("x", 20)
         .attr("y", 56)
         .text("FORTNITE  FNCS Squads")
         .attr("font-size", "1.1em")
         .attr("font-family", "burbank")
-        .attr("fill", "black");
+        .attr("fill", "black"); */  
+
+    text("FORTNITE", svg, "big-fortnite", 20, 55);
+    text("ping", svg, "big-ping", 225, 52);
+
+    text("FNCS", svg, "little-ping", 380, 36);
+    text("Finals", svg, "little-ping", 375, 68);
+    
 
     // NOT IMPLEMENTED - If we use the game view, it would be nice to add a key to show what a win, elim point or placement point looks like.
     // Key stuff follows
@@ -410,13 +333,6 @@ function showRegion(region) {
 
 function drawLeaderboard() {
 
-   /*  let div = d3.select(".timeline");
-    const rowHeight = 60;
-
-    const svg = div.append("svg")
-        .attr("width", chartWidth + leftMargin)
-        .attr("height", rowHeight * 100)
-        .classed("leaderboard-svg", true); */
     let svg = leaderboardSvg;
 
     // Big rect for team background 
@@ -440,52 +356,47 @@ function drawLeaderboard() {
     // Labels on the left
 
     // Rank
-    svg.selectAll("g").data(currentRegion.teams)
-        .append("text")
+    svg.selectAll("g").data(currentRegion.teams).append("text")
         .attr("x", leftMargin + 13)
         .attr("y", (d, i) => i * rowHeight + 31)
         .text(d => "#" + d.key.toString())
         .classed("rank", true)
 
     // Payout    
-    svg.selectAll("g").data(currentRegion.teams)
-        .append("text")
+    svg.selectAll("g").data(currentRegion.teams).append("text")
         .attr("x", leftMargin + 5)
         .attr("y", (d, i) => i * rowHeight + 48)
         .text(d => "$" + commaFormat(d.payout.toString()))
         .classed("points", true)
 
 
-    // Players 1-4
+    // Players 1 & 2
     const leftPlayer = 66;
-    svg.selectAll("g").data(currentRegion.teams)
-        .append("text")
+    svg.selectAll("g").data(currentRegion.teams).append("text")
         .attr("x", leftMargin + leftPlayer)        
         .attr("y", (d, i) => i * rowHeight + 23)
         .text(d => d.values[0].players[0] + ", " + d.values[0].players[1])
         .classed("squad-player", true)
 
-    svg.selectAll("g").data(currentRegion.teams)
-        .append("text")
+    // Players 3 & 4
+    svg.selectAll("g").data(currentRegion.teams).append("text")
         .attr("x", leftMargin + leftPlayer)        
         .attr("y", (d, i) => i * rowHeight + 47)
         .text(d => d.values[0].players[2] + ", " + d.values[0].players[3])
         .classed("squad-player", true)
 
 
-    // Labels on the right 
+    // Labels just to the right of the player names 
 
     // Big Points   
-    svg.selectAll("g").data(currentRegion.teams)
-        .append("text")
+    svg.selectAll("g").data(currentRegion.teams).append("text")
         .attr("x", playerWidth - 145)
         .attr("y", (d, i) => i * rowHeight + 33)
         .text(d => d.elims + d.placementPoints)
         .classed("rank", true)
 
     // "Points" label
-    svg.selectAll("g").data(currentRegion.teams)
-        .append("text")
+    svg.selectAll("g").data(currentRegion.teams).append("text")
         .attr("x", playerWidth - 150)
         .attr("y", (d, i) => i * rowHeight + 49)
         .text("points")
@@ -493,16 +404,14 @@ function drawLeaderboard() {
 
     // Elim percentage  
     const pctFormat = d3.format(",.1%");
-    svg.selectAll("g").data(currentRegion.teams)
-        .append("text")
+    svg.selectAll("g").data(currentRegion.teams).append("text")
         .attr("x", playerWidth - 93)
         .attr("y", (d, i) => i * rowHeight + 20)
         .text(d => pctFormat(d.elims / (d.elims + d.placementPoints)) + " elim pct")
         .classed("points", true)
 
     // Elims per game
-    svg.selectAll("g").data(currentRegion.teams)
-        .append("text")
+    svg.selectAll("g").data(currentRegion.teams).append("text")
         .attr("x", playerWidth - 93)
         .attr("y", (d, i) => i * rowHeight + 35)
         .text(d => d.elims.toString() + " elim points")
@@ -510,8 +419,7 @@ function drawLeaderboard() {
         .classed("points", true)  
 
     // Placement points   
-    svg.selectAll("g").data(currentRegion.teams)
-        .append("text")
+    svg.selectAll("g").data(currentRegion.teams).append("text")
         .attr("x", playerWidth - 93)
         .attr("y", (d, i) => i * rowHeight + 50)
         //.text(d => d.placementPoints.toString() + " place points")
@@ -524,10 +432,7 @@ function drawLeaderboard() {
             const g = d3.select(this);
             let totalPoints = 0;
             g
-                .selectAll("rect.team-rect")
-                .data(teamGames.values)
-                .enter()
-                .append("rect")
+                .selectAll("rect.team-rect").data(teamGames.values).enter().append("rect")
                 .attr("x", game => xScale(game.start))
                 .attr("y", (d, i) => teamIndex * rowHeight + 7)
                 .attr("width", game => xScale(game.end) - xScale(game.start))
@@ -570,7 +475,7 @@ function drawLeaderboard() {
                             .attr("pointer-events", "none");
                     }
 
-                    g // Placement label
+                    g // Placement label - 1st, 2nd, 3rd..
                         .append("text")
                         .attr("x", xScale(game.start) + 6)
                         .attr("y", teamIndex * rowHeight + 45)
@@ -621,8 +526,7 @@ function updateLeaderboard() {
 function drawGameHeaders() {
     if (gamesSvg)
         gamesSvg.remove();
-    
-    
+        
     const gameHeaderHeight = 40
     
     const div = d3.select(".games");
@@ -640,11 +544,7 @@ function drawGameHeaders() {
     });
 
     // Boxes for game headers
-    gamesSvg
-        .selectAll("rect")
-        .data(games)
-        .enter()
-        .append("rect")
+    gamesSvg.selectAll("rect").data(games).enter().append("rect")
         .attr("x", game => xScale(game.start))
         .attr("y", 0)
         .attr("width", game => xScale(game.end) - xScale(game.start))
@@ -700,12 +600,9 @@ function updateGameHeaders() {
 
         rect
             .transition()
-            .duration(1000)
-            //.attr("x", game => xScale(game.start) + 10)
-            //.attr("width", game => xScale(game.end) - xScale(game.start) + 40)
+            .duration(1000)          
             .attr("width", width)
             .attr("x", x)
-        //.text(game => formatSeconds(game.end - game.start))
 
         const time = d3.select(".game-time-" + game.num);
         time.text = formatSeconds(game.end - game.start);
@@ -755,40 +652,3 @@ function tooltip(svg, game) {
     d3.select(this)
         .attr("stroke-width", 4)
 }
-
-function addSoloRegions(teams) {
-
-    let i = 1;
-    function addRegion(region, payout) {
-        let team = teams.filter(d => d.key == i.toString())[0];
-        team.region = region;
-        team.payout = payout;
-        team.ordering = i;
-        i++;
-    }
-
-    addRegion('NA EAST', 3000000); // 1
-    addRegion('NA EAST', 1800000);
-  
-    addRegion('NA EAST', 50000);
-    addRegion('ASIA', 50000);
-
-}
-
-function addDuoRegions(teams) {
-
-    let i = 1;
-    function addRegion(region, payout) {
-        let team = teams.filter(d => d.key == i.toString())[0];
-        team.region = region;
-        team.payout = payout;
-        team.ordering = i;
-        i++;
-    }
-
-    addRegion('EUROPE', 3000000); // 1
-    addRegion('EUROPE', 2225000);
-  
-    addRegion('ASIA', 100000);
-    addRegion('OCEANIA', 100000);
-};

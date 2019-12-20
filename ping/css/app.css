@@ -23,7 +23,7 @@ body {
         "left-margin    event       event       event   ads     right"
         "left-margin    player      player      player  ads     right";
     /* grid-template-columns: 10px 200px 136px 660px 125px 300px; */
-    grid-template-columns: 10px 200px 136px 660px 0px 300px;
+    grid-template-columns: 10px 200px 136px 660px 0  px 300px;
     grid-template-rows: 84px 45px 50px 150px auto; 
     grid-gap: 2px 12px;
     margin: 0px;
@@ -179,7 +179,7 @@ body {
     text-align: right;
 } 
 
-.big-fortnite {
+/* .big-fortnite {
     font-size: 1.1em;
     letter-spacing: .2rem;
     font-family: "Burbank";
@@ -203,7 +203,7 @@ body {
     font-size: 1.7rem;
     letter-spacing: .05rem;
     fill-opacity : .4;
-}
+} */
 
 .checkbox-label {
     font-weight: 400;
