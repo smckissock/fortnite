@@ -403,16 +403,17 @@ function drawLeaderboard() {
         .classed("points", true)
 
     // Elim percentage  
+    const fromRight = 100
     const pctFormat = d3.format(",.1%");
     svg.selectAll("g").data(currentRegion.teams).append("text")
-        .attr("x", playerWidth - 93)
+        .attr("x", playerWidth - fromRight)
         .attr("y", (d, i) => i * rowHeight + 20)
         .text(d => pctFormat(d.elims / (d.elims + d.placementPoints)) + " elim pct")
         .classed("points", true)
 
     // Elims per game
     svg.selectAll("g").data(currentRegion.teams).append("text")
-        .attr("x", playerWidth - 93)
+        .attr("x", playerWidth - fromRight)
         .attr("y", (d, i) => i * rowHeight + 35)
         .text(d => d.elims.toString() + " elim points")
         .text(d => ((d.elims / d.games).toFixed(1)).toString() + " elims/game")
@@ -420,7 +421,7 @@ function drawLeaderboard() {
 
     // Placement points   
     svg.selectAll("g").data(currentRegion.teams).append("text")
-        .attr("x", playerWidth - 93)
+        .attr("x", playerWidth - fromRight)
         .attr("y", (d, i) => i * rowHeight + 50)
         //.text(d => d.placementPoints.toString() + " place points")
         .text(d => (d.averagePlace.toFixed(1)).toString() + " avg place")
