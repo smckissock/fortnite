@@ -23,7 +23,11 @@ export const events = [
             { num: "W6", weekNum: 6, name: "WC Week 6", type: "World Cup", date: "May 19", done: true },
             { num: "W8", weekNum: 8, name: "WC Week 8", type: "World Cup", date: "June 2", done: true },
             { num: "W10", weekNum: 10, name: "WC Week 10", type: "World Cup", date: "June 21", done: true },
-            { num: "F", weekNum: 11, name: "Duo Final", type: "World Cup", date: "July 27", done: true }
+            { num: "F", weekNum: 11, name: "Duo Final", type: "World Cup", date: "July 27", done: true },
+
+            { num: "#1", weekNum: 23, name: "WR #1", type: "Winter Royale", date: "December 20", done: false },
+            { num: "#2", weekNum: 24, name: "WR #2", type: "Winter Royale", date: "December 21", done: false },
+            { num: "#3", weekNum: 25, name: "WR #3", type: "Winter Royale", date: "December 22", done: false },
         ]
     },
     {
@@ -90,7 +94,7 @@ export function eventChart(id) {
     function makeTimelines() {
         
         const firstWeek = 1;
-        const lastWeek = 23;
+        const lastWeek = 26;
         const xScale = d3.scaleLinear()
             .domain([firstWeek, lastWeek])
             .range([76, svgWidth]);
@@ -98,13 +102,19 @@ export function eventChart(id) {
         [
             { firstWeek: 1, lastWeek: 12, name: "Fortnite World Cup" },
             { firstWeek: 12, lastWeek: 18, name: "FNCS Trios" },
-            { firstWeek: 18, lastWeek: 23, name: "FNCS Squads" }
-        ]
+            { firstWeek: 18, lastWeek: 23, name: "FNCS Squads" },
+
+            { firstWeek: 23, lastWeek: 26, name: "Winter" }
+        ]   // Draw big match rectangles
             .forEach(function (event) {
                 const left = xScale(event.firstWeek) - 4;
                 const width = xScale(event.lastWeek) - left - 5;
 
                 text(event.name, svg, "event-name", left + 10, 30)
+                if (event.name == "Winter")
+                    text("Royale", svg, "event-name", left + 10, 50)
+
+                
                 svg.append("rect")
                     .attr("x", left)
                     .attr("y", 10)
@@ -120,6 +130,7 @@ export function eventChart(id) {
         const top = 40;
         const height = 26;
         let formatNum = 0;
+        // Draw event buttons
         events.forEach(function (format) {
 
             // Solo, duo, trio, squad on left 
@@ -127,9 +138,9 @@ export function eventChart(id) {
             
             // Event rectangle "buttons" 
             svg.selectAll("rect." + format.format).data(format.items).enter().append("rect")
-                .attr("x", d => xScale(d.weekNum))
+                .attr("x", d => xScale(d.weekNum) - 2)
                 .attr("y", formatNum * height + 3 + top)
-                .attr("width", 36)
+                .attr("width", 32)
                 .attr("height", height - 1)
                 .attr("fill", d => d.done == true ? "cornflowerblue" : "#888888")
                 .attr("stroke", "black")
@@ -154,12 +165,13 @@ export function eventChart(id) {
                 }).on('click', function (d) {
                     clickRect(d3.select(this), d);
                 })
+                // Add labels to event buttons
                 .each(function (week) {
                     weekRects.push(d3.select(this));
 
-                    let x = week.num != "W10" ? xScale(week.weekNum) + 11 : xScale(week.weekNum) + 7;
+                    let x = week.num != "W10" ? xScale(week.weekNum) + 8 : xScale(week.weekNum) + 3;
                     if (week.num == "F")
-                        x = xScale(week.weekNum) + 17;
+                        x = xScale(week.weekNum) + 13;
 
                     // Labels on buttons     
                     text(week.num, svg, "week-label", x - 3, formatNum * height + 21 + top);

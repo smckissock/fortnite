@@ -1,6 +1,16 @@
 USE Fortnite2
 GO
 
+-- December 21 before Winter Royale
+BACKUP DATABASE Fortnite
+TO DISK = N'd:\Fortnite\Fortnitedb\December21.bak' WITH NOFORMAT, NOINIT, NAME = N'Full Database Backup', SKIP, NOREWIND, NOUNLOAD, STATS = 10
+GO
+BACKUP DATABASE Fortnite
+TO DISK = N'g:\db\December21.bak' WITH NOFORMAT, NOINIT, NAME = N'Full Database Backup', SKIP, NOREWIND, NOUNLOAD, STATS = 10
+GO
+
+
+
 
 -- December 11 after importing squad finals, but power point problem
 BACKUP DATABASE Fortnite
