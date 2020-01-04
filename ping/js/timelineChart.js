@@ -3,6 +3,7 @@ import { colors, placementString, text, secondsToString } from "./shared.js";
 
 let matchStart;
 let matchEnd;
+let notStarted = true;
 
 const cornerRadius = 8;
 
@@ -312,24 +313,45 @@ function showRegion(region) {
 
 const tickDuration = 50;    // 
 const updateFrequency = 1; // Update every x miliseconds 
-let time = 0;
+
+let time = 1000000;
+
+let running = false;
+
 let ticker = d3.interval(e => {
     time += 10;
-    timeLabel.text(secondsToString(time));
-    if (time % tickDuration * updateFrequency == 0)
-        updateGames(time);
+    
+    if (running) {
+        timeLabel.text(secondsToString(time));  
+
+        if (time % tickDuration * updateFrequency == 0) 
+            updateGames(time);
+    }
 
     if (time > matchEnd)
-        ticker.stop();
+        running = false;
 },
 tickDuration);
+
+function playGames() {
+    if (notStarted) {
+        timeLabel.style("opacity", 1.0);
+        d3.selectAll(".game-rect").remove();
+        notStarted = false;
+        time = 0;
+    }
+    running = true;
+}
+
+function pauseGames() {
+    running = false;
+}
 
 
 function updateGames(seconds) {
     //console.log(seconds);
     gameBoxes(seconds);
 }
-
 
 
 function drawLeaderboard() {
@@ -427,7 +449,10 @@ function drawLeaderboard() {
         .text(d => (d.averagePlace.toFixed(1)).toString() + " avg place")
         .classed("points", true);
 
-        gameBoxes(svg, matchStart);
+    gameBoxes(svg, matchStart);
+
+    notStarted = true;
+    updateGames(1000000);
 }
 
 
@@ -442,8 +467,7 @@ function gameBoxes(time) {
 
             const gamesToShow = teamGames.values.filter(d => d.end < time);
             g
-                //.selectAll("rect.team-rect").data(teamGames.values).enter().append("rect")
-                .selectAll("rect.team-rect").data(gamesToShow).enter().append("rect")
+                .selectAll("rect.game-rect").data(gamesToShow).enter().append("rect")
                 .attr("x", game => xScale(game.start))
                 .attr("y", (d, i) => teamIndex * rowHeight + 7)
                 .attr("width", game => xScale(game.end) - xScale(game.start))
@@ -463,8 +487,7 @@ function gameBoxes(time) {
                     //d3.select(this).attr("stroke-width", game => (game.rank === "1") ? 6 : 1)
                     d3.selectAll(".tooltip").remove();
                 })
-                .classed("team-rect", true)
-
+                .classed("game-rect", true)
 
                 .each(function (game) {
                     // Draw elim lines
@@ -481,7 +504,8 @@ function gameBoxes(time) {
                             .attr("stroke-width", "3")
                             .attr("stroke", "black")
                             .attr("opacity", 1.0)
-                            .attr("pointer-events", "none");
+                            .attr("pointer-events", "none")
+                            .classed("game-rect", true);
                     }
 
                     g // Placement label - 1st, 2nd, 3rd..
@@ -490,6 +514,7 @@ function gameBoxes(time) {
                         .attr("y", teamIndex * rowHeight + 45)
                         .text(placementString(game.rank))
                         .classed("points", true)
+                        .classed("game-rect", true)
                 });
         })
     }
@@ -532,7 +557,10 @@ function gameBoxes(time) {
 } */
 
 
-function makePlayButton() {
+function makePlayButton(playGames, pauseGames) {
+
+    let playFunction = playGames;
+    let pauseFunction = pauseGames; 
 
     // "Not Started", "Playing" or "Paused"
     let state = "Not Started";
@@ -543,11 +571,13 @@ function makePlayButton() {
             state = "Playing";
             // play();
             console.log(state);
+            playFunction();
         } else {
             drawPlaySymbol();
             state = "Paused";
             // pause(); 
             console.log(state);
+            pauseFunction();
         }
     }
 
@@ -559,12 +589,12 @@ function makePlayButton() {
         const pauseLeft = 27;  
         gamesSvg.append("line")
             .attr("x1", pauseLeft).attr("x2", pauseLeft)
-            .attr("y1", pauseTop).attr("y2", pauseTop + 28)
+            .attr("y1", pauseTop).attr("y2", pauseTop + 29)
             .classed("pause-button", true);
             
         gamesSvg.append("line")
             .attr("x1", pauseLeft + 16).attr("x2", pauseLeft + 16)
-            .attr("y1", pauseTop).attr("y2", pauseTop + 28)
+            .attr("y1", pauseTop).attr("y2", pauseTop + 29)
             .classed("pause-button", true);
     }
 
@@ -585,7 +615,7 @@ function makePlayButton() {
             .attr("height", 44)
             .attr("stroke", "black")
             .attr("stroke-width", 0)
-            .style("fill-opacity", .05)
+            .style("fill-opacity", 0)
             .on('click', function (d) {
                 let dom = d3.select(this);
                 const region = dom.attr("data");
@@ -616,9 +646,9 @@ function drawGameHeaders() {
     function drawReplayControls() {
         d3.select("#timeLabel").remove();
         timeLabel = text("0:00:00", gamesSvg, "timer", 74, 36, "timeLabel")
+        timeLabel.style("opacity", 0);
 
-        playButton = makePlayButton();
-        //playButton.click();
+        playButton = makePlayButton(playGames, pauseGames);
     }
 
     if (gamesSvg)
