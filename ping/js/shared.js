@@ -137,7 +137,7 @@ export const colors = {
     grey: '#B3B3B3', 
 }
 
-// Writes stats to an svg, with a css class and optional id
+// Writes text to an svg, with a css class and optional id
 export function text(text, svg, style, x, y, id = "") {  
     const textElm = 
         svg.append("text")
@@ -149,10 +149,12 @@ export function text(text, svg, style, x, y, id = "") {
 
     // Give it an id, if provided    
     if (id != "")
-        textElm.attr("id", id);    
+        textElm.attr("id", id);  
+        
+    return textElm;    
 }
 
-// Writes stats to an svg, but pass in a css class
+// Writes centered text to an svg, but pass in a css class
 export function centeredText(text, svg, style, x1, width, y) {
     svg.append("text")
         .attr("x", x1 + (width / 2))
@@ -163,7 +165,7 @@ export function centeredText(text, svg, style, x1, width, y) {
 } 
 
 
-// Writes stats to an svg, but pass in a css class
+// Writes right justified text to an svg, but pass in a css class
 export function rightText(text, svg, style, x1, width, y) {
     if (text === "NaN")
         return;
@@ -175,3 +177,15 @@ export function rightText(text, svg, style, x1, width, y) {
         .text(text)
         .classed(style, true);
 } 
+
+export function secondsToString(secs) {
+    //var sec_num = parseInt(this, 10); // don't forget the second param
+    var hours   = Math.floor(secs / 3600);
+    var minutes = Math.floor((secs - (hours * 3600)) / 60);
+    var seconds = secs - (hours * 3600) - (minutes * 60);
+
+    if (minutes < 10) {minutes = "0" + minutes;}
+    if (seconds < 10) {seconds = "0" + seconds;}
+    
+    return hours + ':' + minutes + ':' + seconds;
+}

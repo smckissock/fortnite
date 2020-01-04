@@ -1,4 +1,4 @@
-import { colors, placementString, text } from "./shared.js";
+import { colors, placementString, text, secondsToString } from "./shared.js";
 
 
 let matchStart;
@@ -7,7 +7,7 @@ let matchEnd;
 const cornerRadius = 8;
 
 const chartWidth = 1200 // Not including left margin
-const leftMargin = 10   ;
+const leftMargin = 10;
 
 let regions = [];
 let payouts = [];
@@ -18,6 +18,9 @@ let gamesSvg;
 let leaderboardSvg;
 
 let regionCursor;
+
+let timeLabel;
+let playButton;
 
 
 
@@ -75,10 +78,10 @@ d3.json('ping/data/squad_finals.json').then(function (data) {
         rec.placementPoints = d.fields[5];
         rec.placementId = d.fields[6];
         rec.placementRank = d.fields[7];
-        rec.region = d.fields[8];       
+        rec.region = d.fields[8];
 
         rec.players = d.players;
-        
+
         games.push(rec);
     });
 
@@ -86,12 +89,12 @@ d3.json('ping/data/squad_finals.json').then(function (data) {
         .key(d => d.region)
         .entries(games);
 
-    regions.forEach(region => 
+    regions.forEach(region =>
         region.teams = d3.nest()
             .key(d => d.placementRank)
             .entries(region.values)
-    ); 
-    
+    );
+
     //duos.teams = d3.nest()
     //.key(d => d.placementRank)
     //.entries(duoGames);
@@ -110,7 +113,7 @@ d3.json('ping/data/squad_finals.json').then(function (data) {
             team.payout = payouts.find(d => d.region == region.key && team.key == d.rank).payout
 
             // ? 
-            let beforeMatch = team.values[0].endSeconds - team.values[0].secondsAlive; 
+            let beforeMatch = team.values[0].endSeconds - team.values[0].secondsAlive;
 
             // Add extra fields to each game
             team.values.forEach(function (game) {
@@ -125,9 +128,9 @@ d3.json('ping/data/squad_finals.json').then(function (data) {
             })
         })
     })
-        
+
     currentRegion = regions[4];  // NA East 
-   
+
     matchStart = 0;
     matchEnd = 60 * 60 * 4.7;
 
@@ -136,7 +139,7 @@ d3.json('ping/data/squad_finals.json').then(function (data) {
         .range([playerWidth + leftMargin, playerWidth + leftMargin + chartWidth - 90]);
 
     let div = d3.select(".timeline");
-        
+
     leaderboardSvg = div.append("svg")
         .attr("width", chartWidth + leftMargin)
         .attr("height", rowHeight * 100)
@@ -164,7 +167,7 @@ function drawHeader() {
     }
 
 
-    function drawButtons() {
+    function drawRegionButtons() {
         const left = 660
         const buttonHeight = 80;
         regionInfo.forEach(function (region, i) {
@@ -191,7 +194,7 @@ function drawHeader() {
                         .transition()
                         .duration(100)
 
-                        .attr("stroke-width", 0);  
+                        .attr("stroke-width", 0);
                 })
                 .on('click', function (d) {
                     let dom = d3.select(this);
@@ -209,12 +212,12 @@ function drawHeader() {
                 .attr("font-size", "1.2rem")
                 .attr("pointer-events", "none")
                 .text(region.name)
-                .classed("region-name", true)         
+                .classed("region-name", true)
         }); // End region buttons
 
 
         let opacity = 1;
- 
+
         // Back to Ping button
         const qualifierLeft = 520
         let qualifierButton = svg.append("a")
@@ -258,8 +261,8 @@ function drawHeader() {
             .text("Fortnite")
             .attr("font-family", "Source Sans Pro, sans-serif")
             .attr("font-size", "1.2rem")
-            .attr("pointer-events", "none")   
-            
+            .attr("pointer-events", "none")
+
         // Ping    
         svg.append("text")
             .attr("x", qualifierLeft + 30)
@@ -267,7 +270,7 @@ function drawHeader() {
             .text("Ping")
             .attr("font-family", "Source Sans Pro, sans-serif")
             .attr("font-size", "1.2rem")
-            .attr("pointer-events", "none")           
+            .attr("pointer-events", "none")
     }
 
     const headerHeight = 86;
@@ -276,34 +279,13 @@ function drawHeader() {
         .attr("width", leftMargin + chartWidth)
         .attr("height", headerHeight);
 
-    // "FORTNITE"    
-    /* titleText = svg.append("text")
-        .attr("x", 20)
-        .attr("y", 56)
-        .text("FORTNITE  FNCS Squads")
-        .attr("font-size", "1.1em")
-        .attr("font-family", "burbank")
-        .attr("fill", "black"); */  
-
     text("FORTNITE", svg, "big-fortnite", 20, 55);
     text("ping", svg, "big-ping", 225, 52);
 
     text("FNCS", svg, "little-ping", 380, 36);
     text("Finals", svg, "little-ping", 375, 68);
-    
 
-    // NOT IMPLEMENTED - If we use the game view, it would be nice to add a key to show what a win, elim point or placement point looks like.
-    // Key stuff follows
-/*     let winRect = svg.append("rect")
-        .attr("x", 130)
-        .attr("y", 100)
-        .attr("width", 70)
-        .attr("height", 50)
-        .attr("fill", "white")
-        .attr("stroke", "black")
-        .attr("stroke-width", 5) */
-
-    drawButtons();
+    drawRegionButtons();
 
     // Make this after the the player rects so that always appears "on top"
     regionCursor = svg.append("rect")
@@ -321,14 +303,33 @@ function drawHeader() {
 
 
 function showRegion(region) {
-
     currentRegion = regions.find(d => d.key == region);
     drawGameHeaders();
-    
+
     d3.selectAll(".leaderboard-team").remove();
     drawLeaderboard();
-
 }
+
+const tickDuration = 50;    // 
+const updateFrequency = 1; // Update every x miliseconds 
+let time = 0;
+let ticker = d3.interval(e => {
+    time += 10;
+    timeLabel.text(secondsToString(time));
+    if (time % tickDuration * updateFrequency == 0)
+        updateGames(time);
+
+    if (time > matchEnd)
+        ticker.stop();
+},
+tickDuration);
+
+
+function updateGames(seconds) {
+    //console.log(seconds);
+    gameBoxes(seconds);
+}
+
 
 
 function drawLeaderboard() {
@@ -373,18 +374,17 @@ function drawLeaderboard() {
     // Players 1 & 2
     const leftPlayer = 66;
     svg.selectAll("g").data(currentRegion.teams).append("text")
-        .attr("x", leftMargin + leftPlayer)        
+        .attr("x", leftMargin + leftPlayer)
         .attr("y", (d, i) => i * rowHeight + 23)
         .text(d => d.values[0].players[0] + ", " + d.values[0].players[1])
         .classed("squad-player", true)
 
     // Players 3 & 4
     svg.selectAll("g").data(currentRegion.teams).append("text")
-        .attr("x", leftMargin + leftPlayer)        
+        .attr("x", leftMargin + leftPlayer)
         .attr("y", (d, i) => i * rowHeight + 47)
         .text(d => d.values[0].players[2] + ", " + d.values[0].players[3])
         .classed("squad-player", true)
-
 
     // Labels just to the right of the player names 
 
@@ -417,7 +417,7 @@ function drawLeaderboard() {
         .attr("y", (d, i) => i * rowHeight + 35)
         .text(d => d.elims.toString() + " elim points")
         .text(d => ((d.elims / d.games).toFixed(1)).toString() + " elims/game")
-        .classed("points", true)  
+        .classed("points", true)
 
     // Placement points   
     svg.selectAll("g").data(currentRegion.teams).append("text")
@@ -425,15 +425,25 @@ function drawLeaderboard() {
         .attr("y", (d, i) => i * rowHeight + 50)
         //.text(d => d.placementPoints.toString() + " place points")
         .text(d => (d.averagePlace.toFixed(1)).toString() + " avg place")
-        .classed("points", true)  
+        .classed("points", true);
+
+        gameBoxes(svg, matchStart);
+}
+
+
+function gameBoxes(time) {
+    const svg = leaderboardSvg;
 
     // Draw boxes for each game    
     svg.selectAll("g").data(currentRegion.teams)
         .each(function (teamGames, teamIndex) {
             const g = d3.select(this);
             let totalPoints = 0;
+
+            const gamesToShow = teamGames.values.filter(d => d.end < time);
             g
-                .selectAll("rect.team-rect").data(teamGames.values).enter().append("rect")
+                //.selectAll("rect.team-rect").data(teamGames.values).enter().append("rect")
+                .selectAll("rect.team-rect").data(gamesToShow).enter().append("rect")
                 .attr("x", game => xScale(game.start))
                 .attr("y", (d, i) => teamIndex * rowHeight + 7)
                 .attr("width", game => xScale(game.end) - xScale(game.start))
@@ -442,10 +452,8 @@ function drawLeaderboard() {
                 .attr("stroke", "black")
                 .attr("stroke-opacity", 1.0)
                 //.attr("stroke-width", game => (game.rank === "1") ? 5 : 0)
-                .attr("stroke-width", function(d) {
-                    console.log(d.placementPoints / 2);
+                .attr("stroke-width", function (d) {
                     return Math.round(d.placementPoints / 1.5);
-                    //game => game.placementPoints / 2)
                 })
                 .on('click', function (game) {
                     console.log(game.start + " -> " + game.end + "  " + game.secondsAlive);
@@ -457,7 +465,7 @@ function drawLeaderboard() {
                 })
                 .classed("team-rect", true)
 
-                
+
                 .each(function (game) {
                     // Draw elim lines
                     const top = 15;
@@ -484,11 +492,11 @@ function drawLeaderboard() {
                         .classed("points", true)
                 });
         })
-}
+    }
 
 
-function updateLeaderboard() {
-    
+/* function updateLeaderboard() {
+
     let x = d3.selectAll(".leaderboard-team")
         .each(function (team, i) {
             const dom = d3.select(this);
@@ -521,15 +529,103 @@ function updateLeaderboard() {
                     .style("opacity", "1")
                     .attr("transform", "translate(0," + toMove + ")");
         });
+} */
+
+
+function makePlayButton() {
+
+    // "Not Started", "Playing" or "Paused"
+    let state = "Not Started";
+    
+    const click = function() {
+        if (state == "Not Started" || state == "Paused") {
+            drawPauseSymbol();
+            state = "Playing";
+            // play();
+            console.log(state);
+        } else {
+            drawPlaySymbol();
+            state = "Paused";
+            // pause(); 
+            console.log(state);
+        }
+    }
+
+
+    function drawPauseSymbol() {   
+        d3.selectAll(".play-button").remove();
+        
+        const pauseTop = 10;   
+        const pauseLeft = 27;  
+        gamesSvg.append("line")
+            .attr("x1", pauseLeft).attr("x2", pauseLeft)
+            .attr("y1", pauseTop).attr("y2", pauseTop + 28)
+            .classed("pause-button", true);
+            
+        gamesSvg.append("line")
+            .attr("x1", pauseLeft + 16).attr("x2", pauseLeft + 16)
+            .attr("y1", pauseTop).attr("y2", pauseTop + 28)
+            .classed("pause-button", true);
+    }
+
+    function drawPlaySymbol() {
+        d3.selectAll(".pause-button").remove();            
+     
+        var trianglePoints = "22 7, 48 25, 22 41, 22 7";
+        gamesSvg.append('polyline')
+            .attr('points', trianglePoints)
+            .classed("play-button", true);
+    }
+
+    const playButton = 
+        gamesSvg.append("rect")
+            .attr("x", 12)
+            .attr("y", 3)
+            .attr("width", 46)
+            .attr("height", 44)
+            .attr("stroke", "black")
+            .attr("stroke-width", 0)
+            .style("fill-opacity", .05)
+            .on('click', function (d) {
+                let dom = d3.select(this);
+                const region = dom.attr("data");
+                click();
+            })
+            .on('mouseover', function (d) {
+                d3.select(this)
+                    .transition()
+                    .duration(100)
+                    .attr("stroke-width", 4)
+            })
+            .on('mouseout', function (d) {
+                d3.select(this)
+                    .transition()
+                    .duration(100)
+                    .attr("stroke-width", 0);
+            })
+
+        drawPlaySymbol();    
+        
+        return {
+            click: click
+        } 
 }
 
-
 function drawGameHeaders() {
+
+    function drawReplayControls() {
+        d3.select("#timeLabel").remove();
+        timeLabel = text("0:00:00", gamesSvg, "timer", 74, 36, "timeLabel")
+
+        playButton = makePlayButton();
+        //playButton.click();
+    }
+
     if (gamesSvg)
         gamesSvg.remove();
-        
-    const gameHeaderHeight = 40
-    
+
+    const gameHeaderHeight = 50
+
     const div = d3.select(".games");
     gamesSvg = div.append("svg")
         .attr("width", chartWidth + leftMargin)
@@ -573,11 +669,13 @@ function drawGameHeaders() {
         .text(game => formatSeconds(game.end - game.start))
         .classed("game-time", true)
     //.attr("class", d => "game-time-" + d.num);
+
+    drawReplayControls();
 }
 
 
 // Not called. Supposed to transition the x and width of the game rectangles 
-function updateGameHeaders() {
+/* function updateGameHeaders() {
 
     function formatSeconds(seconds) {
         return Math.floor(seconds / 60) + ':' + ('0' + Math.floor(seconds % 60)).slice(-2);
@@ -601,7 +699,7 @@ function updateGameHeaders() {
 
         rect
             .transition()
-            .duration(1000)          
+            .duration(1000)
             .attr("width", width)
             .attr("x", x)
 
@@ -609,7 +707,7 @@ function updateGameHeaders() {
         time.text = formatSeconds(game.end - game.start);
     });
 }
-
+ */
 
 
 
