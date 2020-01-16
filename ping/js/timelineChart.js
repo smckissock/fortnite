@@ -23,6 +23,8 @@ let regionCursor;
 let timeLabel;
 let playButton;
 
+let gamesEnded;
+
 
 
 let titleText;
@@ -30,15 +32,6 @@ let toggleButtonText;
 
 let xScale;
 
-/* let format = {
-    teams: null,
-    regionTotals: null,
-    beforeMatch: null
-}
- */
-
-
-//let regionTotals;
 
 let currentRegion;
 
@@ -96,10 +89,6 @@ d3.json('ping/data/squad_finals.json').then(function (data) {
             .entries(region.values)
     );
 
-    //duos.teams = d3.nest()
-    //.key(d => d.placementRank)
-    //.entries(duoGames);
-
     regions.forEach(function (region) {
         // Attach color
         region.color = regionInfo.find(d => d.filter == region.key).color;
@@ -112,6 +101,11 @@ d3.json('ping/data/squad_finals.json').then(function (data) {
             team.averagePlace = d3.sum(team.values, game => game.rank) / team.games;
 
             team.payout = payouts.find(d => d.region == region.key && team.key == d.rank).payout
+
+            team.player1 = team.values[0].players[0]; 
+            team.player2 = team.values[0].players[1];
+            team.player3 = team.values[0].players[2];
+            team.player4 = team.values[0].players[3];
 
             // ? 
             let beforeMatch = team.values[0].endSeconds - team.values[0].secondsAlive;
@@ -311,20 +305,17 @@ function showRegion(region) {
     drawLeaderboard();
 }
 
-const tickDuration = 50;    // 
-const updateFrequency = 1; // Update every x miliseconds 
+const tickDuration = 20;         // Tick to update clock 
+const updateGamesFrequency = 20;  // Update games every x virtual seconds 
 
-let time = 1000000;
-
+let time = Infinity;
 let running = false;
-
 let ticker = d3.interval(e => {
-    time += 10;
-    
     if (running) {
+        time += 1; // Seconds in virtual clock
         timeLabel.text(secondsToString(time));  
 
-        if (time % tickDuration * updateFrequency == 0) 
+        if (time % updateGamesFrequency == 0) 
             updateGames(time);
     }
 
@@ -338,19 +329,18 @@ function playGames() {
         timeLabel.style("opacity", 1.0);
         d3.selectAll(".game-rect").remove();
         notStarted = false;
-        time = 0;
+        time = 240;
     }
     running = true;
 }
 
-function pauseGames() {
-    running = false;
-}
-
-
 function updateGames(seconds) {
     //console.log(seconds);
     gameBoxes(seconds);
+}
+
+function pauseGames() {
+    running = false;
 }
 
 
@@ -360,17 +350,23 @@ function drawLeaderboard() {
 
     // Big rect for team background 
     svg.selectAll("g").data(currentRegion.teams).enter().append("g")
-        .classed("leaderboard-team", true)
-        .append("rect")
-        .attr("x", leftMargin)
         .attr("y", function (d, i) {
             let y = i * rowHeight + 3;
             d.y = y;
             return y;
         })
+        .classed("leaderboard-team", true)
+        .attr("id", d => "n" + d.key.toString())
+        .append("rect")
+        .attr("x", leftMargin)        
+        .attr("y", function (d, i) {
+            let y = i * rowHeight + 3;
+            d.y = y;
+            return y;
+        }) 
         .attr("fill", currentRegion.color)
         .attr("width", chartWidth - 3)
-        .attr("height", rowHeight - 8)
+        .attr("height", rowHeight - 5)
         .attr("stroke", "black")
         .attr("stroke-width", 0)
         .attr("rx", cornerRadius)
@@ -384,11 +380,12 @@ function drawLeaderboard() {
         .attr("y", (d, i) => i * rowHeight + 31)
         .text(d => "#" + d.key.toString())
         .classed("rank", true)
+        .classed("_team-rank", true)
 
     // Payout    
     svg.selectAll("g").data(currentRegion.teams).append("text")
         .attr("x", leftMargin + 5)
-        .attr("y", (d, i) => i * rowHeight + 48)
+        .attr("y", (d, i) => i * rowHeight + 48)        
         .text(d => "$" + commaFormat(d.payout.toString()))
         .classed("points", true)
 
@@ -397,15 +394,15 @@ function drawLeaderboard() {
     const leftPlayer = 66;
     svg.selectAll("g").data(currentRegion.teams).append("text")
         .attr("x", leftMargin + leftPlayer)
-        .attr("y", (d, i) => i * rowHeight + 23)
-        .text(d => d.values[0].players[0] + ", " + d.values[0].players[1])
+        .attr("y", (d, i) => i * rowHeight + 23)        
+        .text(d => d.player1 + ", " + d.player2)
         .classed("squad-player", true)
 
     // Players 3 & 4
     svg.selectAll("g").data(currentRegion.teams).append("text")
         .attr("x", leftMargin + leftPlayer)
-        .attr("y", (d, i) => i * rowHeight + 47)
-        .text(d => d.values[0].players[2] + ", " + d.values[0].players[3])
+        .attr("y", (d, i) => i * rowHeight + 47)       
+        .text(d => d.player3 + ", " + d.player3)
         .classed("squad-player", true)
 
     // Labels just to the right of the player names 
@@ -414,13 +411,15 @@ function drawLeaderboard() {
     svg.selectAll("g").data(currentRegion.teams).append("text")
         .attr("x", playerWidth - 145)
         .attr("y", (d, i) => i * rowHeight + 33)
+        
         .text(d => d.elims + d.placementPoints)
         .classed("rank", true)
+        .classed("_team-points", true)
 
     // "Points" label
     svg.selectAll("g").data(currentRegion.teams).append("text")
         .attr("x", playerWidth - 150)
-        .attr("y", (d, i) => i * rowHeight + 49)
+        .attr("y", (d, i) => i * rowHeight + 49)        
         .text("points")
         .classed("points", true)
 
@@ -428,54 +427,79 @@ function drawLeaderboard() {
     const fromRight = 100
     const pctFormat = d3.format(",.1%");
     svg.selectAll("g").data(currentRegion.teams).append("text")
-        .attr("x", playerWidth - fromRight)
-        .attr("y", (d, i) => i * rowHeight + 20)
+        .attr("x", playerWidth - fromRight)     
+        .attr("y", (d, i) => i * rowHeight + 19)   
         .text(d => pctFormat(d.elims / (d.elims + d.placementPoints)) + " elim pct")
         .classed("points", true)
 
     // Elims per game
     svg.selectAll("g").data(currentRegion.teams).append("text")
         .attr("x", playerWidth - fromRight)
-        .attr("y", (d, i) => i * rowHeight + 35)
-        .text(d => d.elims.toString() + " elim points")
+        .attr("y", (d, i) => i * rowHeight + 35)        
         .text(d => ((d.elims / d.games).toFixed(1)).toString() + " elims/game")
         .classed("points", true)
 
-    // Placement points   
+    // Average placements   
     svg.selectAll("g").data(currentRegion.teams).append("text")
         .attr("x", playerWidth - fromRight)
-        .attr("y", (d, i) => i * rowHeight + 50)
-        //.text(d => d.placementPoints.toString() + " place points")
+        .attr("y", (d, i) => i * rowHeight + 50)       
         .text(d => (d.averagePlace.toFixed(1)).toString() + " avg place")
         .classed("points", true);
 
     gameBoxes(svg, matchStart);
 
     notStarted = true;
-    updateGames(1000000);
+    updateGames(Infinity);
 }
 
 
 function gameBoxes(time) {
-    const svg = leaderboardSvg;
 
+     // Only do anything if a game has ended
+     const games = d3.sum(currentRegion.teams, team => team.values.filter(d => d.end < time).length);
+     if (games === gamesEnded)
+         return;
+     gamesEnded = games;
+     
+
+    // Update data for new games
+    const teams = currentRegion.teams;
+    teams.forEach(function(team) {
+        team.currentGames = team.values.filter(d => d.end < time);
+        team.currentPoints = d3.sum(team.currentGames, d => +d.placementPoints + +d.elims);
+        team.currentSort = team.currentPoints * 100 - team.currentGames.length; 
+        // Other stats?
+    })
+
+    teams.sort((a, b) => b.currentSort - a.currentSort);
+    teams.forEach(function(d, i) {d.currentRank = i + 1});
+
+    console.clear();
+    console.log("GAMES: " + games)
+    console.table(teams);
+    
+    
     // Draw boxes for each game    
-    svg.selectAll("g").data(currentRegion.teams)
-        .each(function (teamGames, teamIndex) {
-            const g = d3.select(this);
-            let totalPoints = 0;
+    const svg = leaderboardSvg;
+    svg.selectAll(".leaderboard-team").data(currentRegion.teams)
+        .each(function (team, teamIndex) {
+            
+            const teamG = svg.select("#n" + team.key.toString())
 
-            const gamesToShow = teamGames.values.filter(d => d.end < time);
-            g
-                .selectAll("rect.game-rect").data(gamesToShow).enter().append("rect")
+            teamG.select("text._team-points").text(team.currentPoints);
+            teamG.select("text._team-rank").text("#" + team.currentRank);
+                       
+            // Draw game boxes for each team in the timespan
+            teamG
+                .selectAll("rect.game-rect").data(team.currentGames).enter().append("rect")
                 .attr("x", game => xScale(game.start))
-                .attr("y", (d, i) => teamIndex * rowHeight + 7)
+                .attr("y", 37)
+                .attr("y", teamIndex * rowHeight + 8)       
                 .attr("width", game => xScale(game.end) - xScale(game.start))
                 .attr("height", 45)
                 .attr("fill", "white")
                 .attr("stroke", "black")
-                .attr("stroke-opacity", 1.0)
-                //.attr("stroke-width", game => (game.rank === "1") ? 5 : 0)
+                .attr("stroke-opacity", 1.0)                
                 .attr("stroke-width", function (d) {
                     return Math.round(d.placementPoints / 1.5);
                 })
@@ -489,72 +513,58 @@ function gameBoxes(time) {
                 })
                 .classed("game-rect", true)
 
+                // Draw elim lines
                 .each(function (game) {
-                    // Draw elim lines
+                    // 1st, 2nd...
+                    text(placementString(game.rank), teamG, "points", xScale(game.start) + 6, teamIndex * rowHeight + 45).classed("game-rect", true);
+                    return;
+
                     const top = 15;
                     const bottom = 31
                     for (let i = 0; i < game.elims; i++) {
                         const xElim = xScale(game.start) + (i * 6) + 10;
-                        g // Elim lines
+                        teamG // Elim lines
                             .append("line")
                             .attr("x1", xElim)
-                            .attr("x2", xElim)
-                            .attr("y1", teamIndex * rowHeight + top)
-                            .attr("y2", teamIndex * rowHeight + bottom)
+                            .attr("x2", xElim)                            
+                            .attr("y1", teamIndex * rowHeight + top)    
+                            .attr("y2", teamIndex * rowHeight + bottom)    
                             .attr("stroke-width", "3")
                             .attr("stroke", "black")
                             .attr("opacity", 1.0)
                             .attr("pointer-events", "none")
                             .classed("game-rect", true);
                     }
-
-                    g // Placement label - 1st, 2nd, 3rd..
-                        .append("text")
-                        .attr("x", xScale(game.start) + 6)
-                        .attr("y", teamIndex * rowHeight + 45)
-                        .text(placementString(game.rank))
-                        .classed("points", true)
-                        .classed("game-rect", true)
+                    
                 });
         })
-    }
+        //sortLeaderboard();
 
-
-/* function updateLeaderboard() {
-
-    let x = d3.selectAll(".leaderboard-team")
-        .each(function (team, i) {
-            const dom = d3.select(this);
-            const curY = team.y;
-
-            let y = -1;
-            if (includedTeams.length == 0) {
-                y = i * 60;
-            } else {
-                for (var i = 0; i < includedTeams.length; i++) {
-                    const includedTeam = includedTeams[i]
-                    if (includedTeam.key == team.key) {
-                        console.log(dom.attr())
-                        y = i * 60;  // RowHeight;
-                        console.log(y)
-                    }
-                }
-            }
-
-            const toMove = y - curY;
-            const duration = 400;
-            if (y == -1)
-                dom.transition()
-                    .duration(duration)
-                    .style("opacity", "0")
-            else
-                dom
+        // Resorts team SVGs and updates stats
+        function sortLeaderboard() {  
+            debugger;
+            d3.selectAll(".leaderboard-team")
+            .each(function (team, i) {
+                const g = d3.select(this);
+                            
+                //g.select("text._team-points").text(team.points);
+                //g.select("text._team-rank").text("#" + (1 + +team.currentRank));
+                return;
+            
+                const curY = team.y;
+                //const y = +team.currentRank 
+                const toMove = y - curY;
+                const y = 0; 
+                g
                     .transition()
                     .duration(duration)
                     .style("opacity", "1")
                     .attr("transform", "translate(0," + toMove + ")");
-        });
-} */
+                    //.attr("y", i * rowHeight)  
+            });
+        } 
+    }
+
 
 
 function makePlayButton(playGames, pauseGames) {
